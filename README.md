@@ -39,7 +39,7 @@ The assignment's step 1 also puts the problem definition and the scope here.
 Sections 2-5 are filled in step 9, once the app exists.
 -->
 
-_TODO: one sentence that says what this app is._
+A web app for live lessons, where everything a lesson needs (attendance, polls, comments, video summaries and homework reviews) sits under the lesson and opens from the student's phone.
 
 **Client:** an academic college.
 **Approach:** design first, and reuse existing open-source code wherever we can.
