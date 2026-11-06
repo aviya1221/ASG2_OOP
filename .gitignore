@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+
+# Secrets: API keys and client secrets live only in local .env files.
+# Copy app/server/.env.example to app/server/.env and fill it in.
+.env
+.env.*
+!.env.example
+
+# Build output and logs
+dist/
+coverage/
+*.log
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

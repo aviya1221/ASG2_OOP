@@ -167,7 +167,7 @@ The testing strategy must address the classes from step 7. STP = how we will tes
 Lecturer's definition of done: **a feature is not done until its docs and tests are updated.** Build attendance end to end first (a "vertical slice").
 
 - [ ] Decide: vibe code vs. find and compose existing code; document the decision, sources and licenses
-- [ ] Project scaffold + `.gitignore`
+- [x] Project scaffold + `.gitignore`
 - [ ] LLM layer (used by the video summary and the homework review), behind one interface so the provider can be swapped or mocked (lecture 03a, risk R4):
   - [ ] Provider-neutral contract: interface, request and result types, errors, a fake client for tests and an offline demo
   - [ ] Gemini adapter: official Google Gen AI SDK, Interactions API, file upload, embeddings

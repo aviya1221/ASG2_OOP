@@ -1,0 +1,27 @@
+{
+  // The server runs TypeScript directly with tsx (no build step).
+  // `tsc --noEmit` is only used as a type checker (`npm run typecheck`).
+  "compilerOptions": {
+    "target": "ES2023",
+    "lib": ["ES2023"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "types": ["node"],
+
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "exactOptionalPropertyTypes": false,
+
+    // Imports use the real file name (./LlmClient.ts), the same rule as
+    // Node's built-in TypeScript support, so the code can later run without tsx.
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "erasableSyntaxOnly": true,
+    "noEmit": true,
+
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src", "scripts", "test"]
+}
