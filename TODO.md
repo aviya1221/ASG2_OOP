@@ -67,12 +67,11 @@ The lecturer requires that we **actually test** every tool we suggest.
 
 ## Step 3: SoW (Statement of Work) → [docs/03-SoW.md](docs/03-SoW.md)
 
-The SoW answers only the lecturer's core questions: why, what is delivered, when, and at what cost.
+The SoW answers only why, what is delivered and at what cost.
 
 - [x] 1. Why: the problem and the goal
 - [x] 2. What: deliverables table with IDs (`D-1`, `D-2`, ...), each one concrete (not "a working system")
-- [ ] 3. When: milestone dates up to the demo
-- [x] 4. How much: cost in money and effort
+- [x] 3. How much: cost in money and effort
 - [x] The deliverables are the 5 assignment features (D-1 to D-5, same order as F1 to F5), not the work documents
 
 ## Step 4: SRS (Software Requirements Specification) → [docs/04-SRS.md](docs/04-SRS.md)

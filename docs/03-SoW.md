@@ -51,13 +51,13 @@ Mermaid supports `gantt` charts, which GitHub renders.
 
 ## 1. Why (objectives)
 
-Today's teaching tools are scattered, each with its own login or room code. We want one in-class app that holds everything a lesson needs (Assignment 2, Introduction to Software Engineering).
+Today's teaching tools are scattered, each with its own login or room code. We want one in-class app that holds everything a lesson needs.
 
 ## 2. What is delivered (deliverables)
 
 A web app for live lessons: the admin builds the timetable, and each lesson has tabs (attendance, polls and more) that the teacher runs and the students use from their phone's browser.
 
-The features, from the assignment:
+The features:
 
 | ID | Feature |
 |----|---------|
@@ -67,10 +67,7 @@ The features, from the assignment:
 | D-4 | Video summary: the teacher gets an automatic summary of a recorded lesson video |
 | D-5 | Homework review: students and teachers get an AI review of a homework, including a comparison with other students' work |
 
-## 3. When (milestones)
 
-The design documents by _TODO: date_; the app shown in the class demo on _TODO: date_.
-
-## 4. How much (cost)
+## 3. How much (cost)
 
 No money: every tool runs on a free tier. The effort is the team's own time until the demo.
