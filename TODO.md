@@ -174,7 +174,7 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
   - [x] Document the LLM layer in `app/README.md` (structure, settings, reused libraries)
 - [ ] Sign in with Google (identity only; roles come from our own data):
   - [x] Server-side check of the Google sign-in token
-  - [ ] Setup guide: what to create in Google Cloud (consent screen, client ID, allowed origins)
+  - [x] Setup guide: what to create in Google Cloud (consent screen, client ID, allowed origins)
 - [ ] Lecturer: create a class session (QR code / session code)
 - [ ] Student: join from a phone and mark attendance
 - [ ] Prevent duplicate check-ins (one record per student per session)
