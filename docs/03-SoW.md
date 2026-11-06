@@ -49,92 +49,45 @@ There are no payments; milestones are dates and checkpoints up to the demo.
 Mermaid supports `gantt` charts, which GitHub renders.
 -->
 
+A web app for live lessons: the admin builds the timetable, and each lesson has tabs (attendance, polls and more) that the teacher runs and the students use from their phone's browser.
+We deliver it with attendance (including a spreadsheet export) and live polls working in a 10-minute class demo, plus the design documents of steps 2 to 8.
+
 ## 1. Objectives
 
-**Problem.** Today's online teaching tools don't serve a live class well. Each one is a separate service with its own login or room code, so attendance, polls and student feedback end up scattered across several tools.
-
-**Goals.**
-
-1. One web app for the classroom that students open in their phone's browser. Everything that happens in a lesson lives under that lesson.
-2. Attendance is the main feature: students mark their attendance from their phones, and the teacher gets a spreadsheet.
-3. A teacher can run a quick poll during a live lesson and see the answers as they come in.
-4. Show it working in a real 10-minute demo in this class.
-
-**Background.** This is Assignment 2 of Introduction to Software Engineering (OOP, OOD). It is a design challenge first. Reusing existing code is preferred over writing everything from scratch, and the design must stay simple (KISS).
+Today's teaching tools are scattered, each with its own login or room code. Our goal is one in-class app that holds everything a lesson needs, shown working live (Assignment 2: design first, reuse code, KISS).
 
 ## 2. Deliverables
 
 | ID | Deliverable | Description | Acceptance criterion |
 |----|-------------|-------------|----------------------|
-| D-1 | Attendance module (main feature) | Attendance tab in the lesson: students mark their attendance from their phones, and the teacher downloads the lesson's attendance spreadsheet | In the demo, students check in from at least 3 different phones, and the downloaded spreadsheet has one row per checked-in student, with the lesson and the check-in time |
-| D-2 | Polls module | Polls tab in the lesson: the teacher opens a multiple-choice poll during the lesson, the lesson's students answer inside the app, and results show live. Strategy: [F3-polls-strategy.md](features/F3-polls-strategy.md) | In the demo, at least 3 students answer from their phones without entering any code, the teacher's chart updates without reloading the page, and a student who answers twice is counted once |
-| D-3 | Timetable and roles | Admin, teacher and student views. The admin creates a course with its teacher, weekly hours and students, and each lesson page has one tab per feature | The admin creates a course with a teacher and 3 students; after logging in, the teacher and each of the students see that lesson with its tabs |
-| D-4 | Deployed web app | A public URL that opens in a phone browser with nothing to install, plus the README quick start | The URL opens on an Android phone and on an iPhone, and a teammate runs the app locally by following only the README quick start |
-| D-5 | Technical tools report | Candidate tools per need, a hands-on spike for each, a comparison table, decisions (ADRs) and risks: [02-tools-report.md](02-tools-report.md) | Every recommended tool has a spike with a screenshot, and every major choice has an ADR |
-| D-6 | SRS | Functional and non-functional requirements with a traceability matrix: [04-SRS.md](04-SRS.md) | Every requirement reads "The system shall...", has a priority and traces to a deliverable, and every non-functional requirement has a number and a unit |
-| D-7 | Use cases | Main use cases with a use-case diagram: [05-use-cases.md](05-use-cases.md) | Every use case has the lecturer's 6 fields, and every in-scope requirement is covered by a use case |
-| D-8 | SDD | System components, interfaces, data, deployment and rationale: [06-SDD.md](06-SDD.md) | Every requirement is allocated to a component |
-| D-9 | EDD per component | Class and sequence diagrams, one file per component: [07-EDD/](07-EDD/) | Every SDD component has an EDD file with the 8 sections, a class diagram and at least one sequence diagram |
-| D-10 | STP / STD | Test plan and test cases: [08-STP-STD.md](08-STP-STD.md) | Every EDD class has a planned test, and every in-scope requirement has at least one test case |
-| D-11 | Live demo in class | A 10-minute demo on real phones: [10-demo-plan.md](10-demo-plan.md) | It ends within 10 minutes, and every live step maps to a use case or a requirement |
-| D-12 | Conclusion | A short summary of the results: [11-conclusion.md](11-conclusion.md) | It compares every deliverable in this table with what was actually delivered |
-
-Comments and suggestions, the class video summary and the homework review get their deliverable IDs once step 1 decides whether each one is built for the demo or designed only.
+| D-1 | Attendance module (main feature) | Students check in from their phones; the teacher downloads a spreadsheet | In the demo, 3 or more phones check in, and the spreadsheet has one row per checked-in student with the check-in time |
+| D-2 | Polls module | A multiple-choice poll inside the lesson, with live results ([strategy](features/F3-polls-strategy.md)) | In the demo, 3 or more students answer without entering a code, the chart updates without reloading, and a second answer counts once |
+| D-3 | Timetable and roles | Admin, teacher and student views; the admin creates courses | A course with a teacher and 3 students appears for each of them after they log in |
+| D-4 | Design documents | Steps 2 to 8: tools report, SRS, use cases, SDD, EDD, STP / STD | The lecturer check reports no errors |
 
 ## 3. Scope
 
-Comments and suggestions, the class video summary and the homework review are not placed yet. Step 1 decides whether each one is built for the demo, designed only, or left out.
-
 ### 3.1 In scope
 
-- A web app that runs in the phone's browser, with three roles: admin, teacher and student (D-3, D-4).
-- A timetable built by the admin: courses, their teachers, weekly hours and students (D-3).
-- A lesson page with one tab per feature (D-3).
-- Attendance with a spreadsheet export, as the main feature (D-1).
-- Live multiple-choice polls inside the lesson (D-2).
-- The design documents of steps 2 to 8 (D-5 to D-10), the class demo (D-11) and the conclusion (D-12).
+The three roles, the timetable, the attendance and polls tabs, and the design documents. Comments, video summary and homework review are still open (decided in step 1).
 
 ### 3.2 Out of scope
 
-- Integration with Moodle, Zoom or any personal-information system (assignment brief).
-- A native mobile app: students use the phone's browser.
-- Joining a lesson or a poll with a room code, or sending students to an outside poll site.
-- Poll types other than multiple choice, such as open text, word clouds or quiz scoring.
+Integration with Moodle, Zoom or personal-information systems; a native app; room codes or outside poll sites.
 
 ## 4. Milestones
 
-<!-- Table: milestone | date | deliverables (D-n). Then a Mermaid gantt chart. -->
+_TODO: the demo date and the checkpoints before it._
 
 ## 5. Acceptance criteria
 
-The lecturer is the client. A deliverable is accepted when its criterion in section 2 is met, and in addition:
-
-1. **Documents** (D-5 to D-12): the lecturer check (`.claude/skills/lecturer-doc-check`) reports no errors.
-2. **Software modules** (D-1 to D-4) meet the definition of done (lecture 02a, slide 21): the feature's documents and tests are updated in the same change, and its tests pass.
+The lecturer is the client. Each deliverable is accepted by its criterion in section 2.
 
 ## 6. Assumptions and roles
 
 ### 6.1 Assumptions, constraints and dependencies
 
-**Assumptions**
-
-- Every student in the demo has a smartphone with a current browser and internet access in class.
-- The admin enters the courses, teachers and students before the lesson.
-- Teachers and students log in, so the app always knows who each user is and which lessons they belong to.
-
-**Constraints** (assignment brief)
-
-- KISS: students use a web app in their phone's browser, with nothing to install.
-- No integration with Moodle, Zoom or personal-information systems.
-- Design only what can be implemented. Reuse existing code where possible, but only code whose license allows it (such as CC0 or MIT), recorded in [app/README.md](../app/README.md).
-- The demo is live, in this class, and lasts 10 minutes.
-- No budget: every tool must have a free tier.
-
-**Dependencies**
-
-- The tool choice in the tools report (D-5): attendance and polls both need a database that pushes live updates, and a public hosting service.
-- The class network must let phones reach the public URL on demo day.
-- The polls module copies pieces of PollPosition (CC0); see [F3-polls-strategy.md](features/F3-polls-strategy.md).
+Students have a smartphone with internet in class. No budget, so every tool needs a free tier. Attendance and polls depend on the tool choice in step 2 offering live updates.
 
 ### 6.2 Roles and responsibilities (RACI)
 
@@ -145,9 +98,5 @@ The lecturer is the client. A deliverable is accepted when its criterion in sect
 
 | ID | Risk | Probability | Impact | Mitigation |
 |----|------|-------------|--------|------------|
-| R-1 | The class Wi-Fi blocks or drops the app during the demo | Medium | High | Test on the class network before demo day; keep a phone hotspot as plan B and a recorded backup video |
-| R-2 | A chosen tool lacks a needed feature, such as live updates | Medium | High | Run a spike on every tool before choosing it (D-5) and keep an alternative (for polls: livepoll, see the polls strategy) |
-| R-3 | A whole class answering at once slows the app down | Low | Medium | Before the demo, load-test with the team's phones plus a script that simulates a full class |
-| R-4 | Scope creep: new feature ideas keep coming in | High | Medium | The out-of-scope list (section 3.2); a new idea enters only if the whole team agrees, otherwise it waits until after the demo |
-| R-5 | An external AI service (video summary, homework review) is paid, slow or unavailable | Medium | Medium | Put it behind an interface with a mocked answer; if no free tier works, the feature becomes design-only |
-| R-6 | Reused code limits us through its license, or its project is abandoned | Low | Medium | Use only CC0 or MIT code, copy the pieces into our repository instead of depending on the project, and record each source in app/README.md |
+| R-1 | The class Wi-Fi fails during the demo | Medium | High | Test on the class network beforehand; keep a phone hotspot and a backup video |
+| R-2 | A chosen tool lacks a needed feature | Medium | High | Spike every tool before choosing it; keep a fallback (for polls: livepoll) |
