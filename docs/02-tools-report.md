@@ -86,6 +86,39 @@ So the need is a face tool that:
 - Time spent
 -->
 
+### Spike: face tools for photo attendance (F1)
+
+- **Goal:** find out which tool finds more faces in a lecture-hall photo, and still recognises a person whose face is small (back rows).
+- **What we did:** we ran options 1, 2 and 2b from section 2.4 in a browser, the way the web app will run them (Edge on a laptop with Intel UHD graphics and 8 cores). The data came from public research datasets, with no client data. Code: [app/spikes/face-tools/](../app/spikes/face-tools/).
+  1. **Finding faces:** 81 crowd photos close to a lecture hall, with 2,546 labelled faces of 10 px or more. They come from WIDER FACE: students, meetings, fans in stands, press conferences, ceremonies and groups.
+  2. **Recognition at a distance:** 300 people with two different photos each, from Labeled Faces in the Wild. Photo 1 is the registration photo. Photo 2 is shrunk until the face is 114 down to 16 px tall. Each tool's match threshold is set so that two different people match 0.1% of the time.
+  3. **A whole class:** 500 simulated lessons, each with 40 present and 8 absent students, scored with our rules. One student per face; a face claimed by two students goes to the teacher.
+  4. **One full example:** a drawn lecture hall with 6 tiered rows (faces 26 to 84 px), 25 registered students, 3 guests, and 5 registered students who are absent.
+- **Result:**
+
+  | Measure | 1. OpenCV | 2. Human | 2b. Human + tiles |
+  |---------|-----------|----------|-------------------|
+  | Faces found in the crowd photos | 82.1% | 13.6% | 27.8% |
+  | Faces found, 20-30 px faces only | 90.9% | 3.1% | 26.1% |
+  | Person recognised, face 28 px | 88.3% | 0.0% | 17.3% |
+  | Person recognised, face 35 px | 97.0% | 1.7% | 58.3% |
+  | Class with faces 28-80 px: present students marked automatically | 94.9% | 20.6% | 57.7% |
+  | Class with faces 16-45 px: present students marked automatically | 78.7% | 1.8% | 31.0% |
+  | Class with faces 28-80 px: present students matched to someone else | 0.0% | 0.2% | 0.2% |
+  | Class with faces 28-80 px: absent students marked present | 0.1% | 0.2% | 0.5% |
+  | Time per face, finding plus face-print | 83 ms | 758 ms | 2,573 ms |
+
+  In the full example, option 1 found all 28 faces and marked 22 of the 25 present students automatically. The other 3 went to the teacher, and no one was matched to someone else's face. All 5 absent students were marked absent, and no student was matched to a guest.
+
+  **Limits we found:**
+  - With its default confidence of 0.9, YuNet finds only 23.6% of the crowd faces. At 0.5 it finds 82.1%, with 2.5 false finds per photo. No student claims a false find, so it ends as an unclaimed face.
+  - Recognition drops below 28 px (34.3% at 16 px). So the teacher's photo must be taken at full resolution.
+  - SFace inside OpenCV.js took about 1 s per face. The same model in ONNX Runtime Web takes 83 ms.
+  - The models and the runtime add up to about 64 MB: OpenCV.js 10 MB, SFace 39 MB, ONNX Runtime 15 MB and YuNet 0.2 MB.
+  - Distance was simulated by shrinking press photos. We still need a shoot in a real lecture hall with our team, and timing on phones, using the hands-on page in the spike folder.
+- **Evidence:** [the measured results](../app/spikes/face-tools/results/summary.md). The pictures (crowd photos with the found faces, the simulated hall) contain dataset photos that are for research use only, so they stay out of the repository. `make-examples.mjs` and `make-demo-set.mjs` rebuild them. The screenshot from the real-hall shoot will be added here.
+- **Time spent:** about 3.5 hours. The full run took 2 h 20 min: option 1 took 5 minutes, and option 2b took about 2 hours.
+
 ## 4. Comparison table
 
 | Need | Option | Cost / free tier | Simplicity | Works on phones | Spike result | Chosen? |
