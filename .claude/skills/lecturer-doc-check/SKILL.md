@@ -49,7 +49,7 @@ python .claude/skills/lecturer-doc-check/scripts/check_docs.py
 - use-case fields, user stories with Given / When / Then
 - test-case fields, and every test verifies a requirement or use case
 - the 8 EDD sections in every component EDD
-- SoW: the four short sections (why, what, when, how much) and vague deliverables
+- SoW: the three short sections (why, what, how much) and vague deliverables
 - Mermaid diagram type versus document (UML map)
 - demo rows tied to use cases / requirements
 - traceability gaps and requirement allocation to components

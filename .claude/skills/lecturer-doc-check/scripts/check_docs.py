@@ -43,10 +43,10 @@ REQUIRED_SECTIONS: dict[str, tuple[str, list[str]]] = {
         "## evaluation criteria", "## candidate tools", "## spikes",
         "## comparison table", "## decisions", "## technology risks",
     ]),
-    # Team decision (2026-11-06): the SoW answers only the lecturer's core questions,
-    # "What is delivered, when, at what cost?" (why, what, when, how much).
+    # Team decision (2026-11-06): the SoW answers only why, what is delivered
+    # and at what cost (no milestones section).
     "docs/03-SoW.md": ("02a slide 4, short form agreed by the team", [
-        "## objectives", "## deliverables", "## milestones", "## cost",
+        "## objectives", "## deliverables", "## cost",
     ]),
     "docs/04-SRS.md": ("02a slide 5", [
         "## introduction", "## overall description", "## specific requirements",

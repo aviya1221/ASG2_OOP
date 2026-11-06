@@ -57,11 +57,10 @@ A document that plans a Moodle integration, or depends on real student personal 
 
 ## Step 3: SoW
 
-(02a slides 3-4. Team decision, 2026-11-06: the SoW answers only the lecturer's core questions, "What is delivered, when, at what cost?", in four short sections.)
+(02a slides 3-4. Team decision, 2026-11-06: the SoW answers only why, what is delivered and at what cost, in three short sections. It is written as a company project for a client, not as a course assignment.)
 
 - **Why (objectives):** the problem and the goal, in a sentence or two.
 - **What (deliverables):** a table of deliverables with IDs (`D-n`), each one concrete. "A working system" is the lecturer's example of a vague deliverable.
-- **When (milestones):** dates, up to the demo.
 - **How much (cost):** money and effort.
 - Nothing promised in the SoW is missing from the SRS, and nothing in the SRS falls outside the SoW.
 
