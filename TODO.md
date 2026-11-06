@@ -68,7 +68,7 @@ The lecturer requires that we **actually test** every tool we suggest.
 
 The lecturer's 6 parts, in order. Avoid the 3 pitfalls: vague deliverables, no acceptance test, no out-of-scope list.
 
-- [ ] 1. Objectives: problem, goals and background
+- [x] 1. Objectives: problem, goals and background
 - [ ] 2. Deliverables table with IDs (`D-1`, `D-2`, ...), each one concrete (not "a working system")
 - [ ] 3. In scope + an explicit out-of-scope list
 - [ ] 4. Milestones with dates up to the demo (+ Gantt chart)

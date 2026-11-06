@@ -51,6 +51,17 @@ Mermaid supports `gantt` charts, which GitHub renders.
 
 ## 1. Objectives
 
+**Problem.** Today's online teaching tools don't serve a live class well. Each one is a separate service with its own login or room code, so attendance, polls and student feedback end up scattered across several tools.
+
+**Goals.**
+
+1. One web app for the classroom that students open in their phone's browser. Everything that happens in a lesson lives under that lesson.
+2. Attendance is the main feature: students mark their attendance from their phones, and the teacher gets a spreadsheet.
+3. A teacher can run a quick poll during a live lesson and see the answers as they come in.
+4. Show it working in a real 10-minute demo in this class.
+
+**Background.** This is Assignment 2 of Introduction to Software Engineering (OOP, OOD). It is a design challenge first. Reusing existing code is preferred over writing everything from scratch, and the design must stay simple (KISS).
+
 ## 2. Deliverables
 
 | ID | Deliverable | Description | Acceptance criterion |
