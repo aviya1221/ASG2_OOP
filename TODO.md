@@ -69,13 +69,14 @@ The lecturer requires that we **actually test** every tool we suggest.
 The lecturer's 6 parts, in order. Avoid the 3 pitfalls: vague deliverables, no acceptance test, no out-of-scope list.
 
 - [x] 1. Objectives: problem, goals and background
-- [ ] 2. Deliverables table with IDs (`D-1`, `D-2`, ...), each one concrete (not "a working system")
+- [x] 2. Deliverables table with IDs (`D-1`, `D-2`, ...), each one concrete (not "a working system")
 - [ ] 3. In scope + an explicit out-of-scope list
 - [ ] 4. Milestones with dates up to the demo (+ Gantt chart)
 - [ ] 5. Acceptance criteria for each deliverable
 - [ ] 6a. Assumptions, constraints and dependencies
 - [ ] 6b. Roles: RACI table (who is responsible / accountable / consulted / informed)
 - [ ] 6c. Risk register (ID, risk, probability, impact, mitigation)
+- [ ] Add comments, video summary and homework review to the SoW (deliverables, scope, acceptance criteria) once step 1 decides their scope
 
 ## Step 4: SRS (Software Requirements Specification) → [docs/04-SRS.md](docs/04-SRS.md)
 

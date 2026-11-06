@@ -66,6 +66,20 @@ Mermaid supports `gantt` charts, which GitHub renders.
 
 | ID | Deliverable | Description | Acceptance criterion |
 |----|-------------|-------------|----------------------|
+| D-1 | Attendance module (main feature) | Attendance tab in the lesson: students mark their attendance from their phones, and the teacher downloads the lesson's attendance spreadsheet | In the demo, students check in from at least 3 different phones, and the downloaded spreadsheet has one row per checked-in student, with the lesson and the check-in time |
+| D-2 | Polls module | Polls tab in the lesson: the teacher opens a multiple-choice poll during the lesson, the lesson's students answer inside the app, and results show live. Strategy: [F3-polls-strategy.md](features/F3-polls-strategy.md) | In the demo, at least 3 students answer from their phones without entering any code, the teacher's chart updates without reloading the page, and a student who answers twice is counted once |
+| D-3 | Timetable and roles | Admin, teacher and student views. The admin creates a course with its teacher, weekly hours and students, and each lesson page has one tab per feature | The admin creates a course with a teacher and 3 students; after logging in, the teacher and each of the students see that lesson with its tabs |
+| D-4 | Deployed web app | A public URL that opens in a phone browser with nothing to install, plus the README quick start | The URL opens on an Android phone and on an iPhone, and a teammate runs the app locally by following only the README quick start |
+| D-5 | Technical tools report | Candidate tools per need, a hands-on spike for each, a comparison table, decisions (ADRs) and risks: [02-tools-report.md](02-tools-report.md) | Every recommended tool has a spike with a screenshot, and every major choice has an ADR |
+| D-6 | SRS | Functional and non-functional requirements with a traceability matrix: [04-SRS.md](04-SRS.md) | Every requirement reads "The system shall...", has a priority and traces to a deliverable, and every non-functional requirement has a number and a unit |
+| D-7 | Use cases | Main use cases with a use-case diagram: [05-use-cases.md](05-use-cases.md) | Every use case has the lecturer's 6 fields, and every in-scope requirement is covered by a use case |
+| D-8 | SDD | System components, interfaces, data, deployment and rationale: [06-SDD.md](06-SDD.md) | Every requirement is allocated to a component |
+| D-9 | EDD per component | Class and sequence diagrams, one file per component: [07-EDD/](07-EDD/) | Every SDD component has an EDD file with the 8 sections, a class diagram and at least one sequence diagram |
+| D-10 | STP / STD | Test plan and test cases: [08-STP-STD.md](08-STP-STD.md) | Every EDD class has a planned test, and every in-scope requirement has at least one test case |
+| D-11 | Live demo in class | A 10-minute demo on real phones: [10-demo-plan.md](10-demo-plan.md) | It ends within 10 minutes, and every live step maps to a use case or a requirement |
+| D-12 | Conclusion | A short summary of the results: [11-conclusion.md](11-conclusion.md) | It compares every deliverable in this table with what was actually delivered |
+
+Comments and suggestions, the class video summary and the homework review get their deliverable IDs once step 1 decides whether each one is built for the demo or designed only.
 
 ## 3. Scope
 
