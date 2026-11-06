@@ -159,6 +159,8 @@ The testing strategy must address the classes from step 7. STP = how we will tes
 
 ## Step 9: Implement the demo web app (KISS) → [app/](app/)
 
+Lecturer's definition of done: **a feature is not done until its docs and tests are updated.** Build attendance end to end first (a "vertical slice").
+
 - [ ] Decide: vibe code vs. find and compose existing code; document the decision, sources and licenses
 - [ ] Project scaffold + `.gitignore`
 - [ ] Lecturer: create a class session (QR code / session code)
@@ -170,9 +172,13 @@ The testing strategy must address the classes from step 7. STP = how we will tes
 - [ ] Polls
 - [ ] Video summary (if in demo scope)
 - [ ] Homework review (if in demo scope)
-- [ ] Unit tests for the core classes (per step 8)
+- [ ] Unit tests for the core classes (per the STP, step 8)
+- [ ] Run the STD test cases and record Pass / Fail + update the traceability matrix status
 - [ ] Deploy to a public URL
-- [ ] Add run instructions and the URL to the README
+- [ ] README section 2: quick start (install and run, public URL)
+- [ ] README section 3: usage example
+- [ ] README section 4: configuration and environment
+- [ ] README section 5: how to run the tests
 
 ## Step 10: Demo in class (10 minutes) → [docs/10-demo-plan.md](docs/10-demo-plan.md)
 
