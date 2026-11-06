@@ -1,4 +1,4 @@
-# Step 3: Scope of Work (SoW)
+# Scope of Work (SoW)
 
 <!--
 LECTURER GUIDELINES: SCOPE OF WORK (lecture 02a, slides 3, 4, 22)
