@@ -38,6 +38,7 @@ The commit history is part of the grade, so commit small and often.
 - [ ] Add team members (names + GitHub usernames) to the README
 - [ ] Define the scope: in scope / out of scope (no Moodle, Zoom or personal-info integration)
 - [ ] Decide which of the 5 features are implemented in the demo and which are design-only
+- [x] Polls (F3): agreed build strategy and reused code sources → [docs/features/F3-polls-strategy.md](docs/features/F3-polls-strategy.md)
 - [x] Add a "Repository structure" section to the README
 - [x] Add a documentation guide with the lecturer's document chain and ID scheme
 - [x] Align the README with the lecturer's 8 README sections
