@@ -93,15 +93,19 @@ Every requirement is written as "The system shall..." and must be testable: unam
 
 ## Step 5: Main use cases (client stories) → [docs/05-use-cases.md](docs/05-use-cases.md)
 
+Each use case has the lecturer's 6 fields: name and ID, actor, preconditions, main success flow, alternative flows, postconditions (+ the `REQ-nn` it covers).
+
 - [ ] Actors list
-- [ ] Use-case diagram
-- [ ] UC-1: Student marks attendance
-- [ ] UC-2: Lecturer opens a class session and exports the attendance spreadsheet
-- [ ] UC-3: Student posts a comment / suggestion
-- [ ] UC-4: Lecturer creates a poll, students vote, results are shown
-- [ ] UC-5: Lecturer uploads a class video and gets a summary
-- [ ] UC-6: Student / teacher requests a homework review
-- [ ] User stories ("As a ... I want ... so that ...") with acceptance criteria
+- [ ] Use-case diagram (actors, system boundary, `<<include>>` / `<<extend>>`)
+- [ ] UC-01: Student marks attendance
+- [ ] UC-02: Lecturer opens a class session and exports the attendance spreadsheet
+- [ ] UC-03: Student posts a comment / suggestion
+- [ ] UC-04: Lecturer creates a poll, students vote, results are shown
+- [ ] UC-05: Lecturer uploads a class video and gets a summary
+- [ ] UC-06: Student / teacher requests a homework review
+- [ ] Activity diagram for UC-01 (the main feature)
+- [ ] User stories ("As a ... I want ... so that ...") with Given / When / Then acceptance criteria
+- [ ] Fill the "Use case" column of the SRS traceability matrix
 
 ## Step 6: Main software components (SDD) → [docs/06-SDD.md](docs/06-SDD.md)
 
