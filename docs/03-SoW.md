@@ -107,6 +107,11 @@ Comments and suggestions, the class video summary and the homework review are no
 
 ## 5. Acceptance criteria
 
+The lecturer is the client. A deliverable is accepted when its criterion in section 2 is met, and in addition:
+
+1. **Documents** (D-5 to D-12): the lecturer check (`.claude/skills/lecturer-doc-check`) reports no errors.
+2. **Software modules** (D-1 to D-4) meet the definition of done (lecture 02a, slide 21): the feature's documents and tests are updated in the same change, and its tests pass.
+
 ## 6. Assumptions and roles
 
 ### 6.1 Assumptions, constraints and dependencies

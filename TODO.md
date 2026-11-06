@@ -72,7 +72,7 @@ The lecturer's 6 parts, in order. Avoid the 3 pitfalls: vague deliverables, no a
 - [x] 2. Deliverables table with IDs (`D-1`, `D-2`, ...), each one concrete (not "a working system")
 - [x] 3. In scope + an explicit out-of-scope list
 - [ ] 4. Milestones with dates up to the demo (+ Gantt chart)
-- [ ] 5. Acceptance criteria for each deliverable
+- [x] 5. Acceptance criteria for each deliverable
 - [ ] 6a. Assumptions, constraints and dependencies
 - [ ] 6b. Roles: RACI table (who is responsible / accountable / consulted / informed)
 - [ ] 6c. Risk register (ID, risk, probability, impact, mitigation)
