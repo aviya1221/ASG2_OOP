@@ -1,5 +1,46 @@
 # Ex2: Vibe Coding & Deep Designing: Web-based Teaching Tool
 
+<!--
+LECTURER GUIDELINES: README (lecture 02a, slides 3, 20)
+(Hidden on GitHub, visible when editing.)
+
+"README: the front door of the repository."
+Answers: How do I install, run, contribute?
+Written by: maintainers. Read by: new developers, users.
+When: from the first commit.
+Cheat sheet: how to install, run and contribute in minutes.
+
+What goes in a README:
+1. What it is, in one sentence
+2. Quick start: install and run
+3. Usage example
+4. Configuration and environment
+5. How to run the tests
+6. Project structure
+7. How to contribute
+8. License and contact
+
+Lecturer's example:
+  # LibraryHub
+  Loan and catalogue system for small libraries.
+  ## Quick start
+  git clone https://github.com/org/libraryhub
+  cd libraryhub && docker compose up
+  open http://localhost:8080
+  ## Tests
+  npm test
+  ## Docs
+  SRS, SDD and API reference: see /docs
+  ## License
+  MIT
+
+FOR OUR PROJECT
+The assignment's step 1 also puts the problem definition and the scope here.
+Sections 2-5 are filled in step 9, once the app exists.
+-->
+
+_TODO: one sentence that says what this app is._
+
 Introduction to Software Engineering (OOP, OOD), Assignment 2.
 
 **Goal:** Design an end-to-end web application for teaching in class.
@@ -36,6 +77,22 @@ _TODO (step 1): define what is in scope and out of scope, and which features are
 
 _TODO: names and GitHub usernames._
 
+## Quick start
+
+_TODO (step 9): how to install and run the app, and the public URL._
+
+## Usage example
+
+_TODO (step 9): a short walkthrough, e.g. the lecturer opens a session and a student checks in from a phone._
+
+## Configuration and environment
+
+_TODO (step 9): environment variables, API keys and how to set them (never commit secrets)._
+
+## Running the tests
+
+_TODO (step 9): the command that runs the tests._
+
 ## Repository structure
 
 | Step | Deliverable | Location |
@@ -53,7 +110,16 @@ _TODO: names and GitHub usernames._
 | 11 | Conclusion | [docs/11-conclusion.md](docs/11-conclusion.md) |
 
 Images and screenshots go in [docs/assets/](docs/assets/).
+How the documents connect: [docs/README.md](docs/README.md).
+
+## How to contribute
+
+See the commit rules in [TODO.md](TODO.md#commit-rules): small commits, one task per commit, and every team member commits from their own account.
 
 ## Project progress
 
 See [TODO.md](TODO.md) for the roadmap, which follows the assignment's 11 steps.
+
+## License and contact
+
+_TODO: license (e.g. MIT) and the team's contact details._

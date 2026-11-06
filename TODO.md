@@ -37,6 +37,9 @@ The commit history is part of the grade, so commit small and often.
 - [ ] Decide which of the 5 features are implemented in the demo and which are design-only
 - [x] Add a "Repository structure" section to the README
 - [x] Add a documentation guide with the lecturer's document chain and ID scheme
+- [x] Align the README with the lecturer's 8 README sections
+- [ ] README section 1: what the app is, in one sentence
+- [ ] README section 8: license and contact
 
 ## Step 2: Technical tools report → [docs/02-tools-report.md](docs/02-tools-report.md)
 
