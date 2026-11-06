@@ -116,6 +116,26 @@ The lecturer is the client. A deliverable is accepted when its criterion in sect
 
 ### 6.1 Assumptions, constraints and dependencies
 
+**Assumptions**
+
+- Every student in the demo has a smartphone with a current browser and internet access in class.
+- The admin enters the courses, teachers and students before the lesson.
+- Teachers and students log in, so the app always knows who each user is and which lessons they belong to.
+
+**Constraints** (assignment brief)
+
+- KISS: students use a web app in their phone's browser, with nothing to install.
+- No integration with Moodle, Zoom or personal-information systems.
+- Design only what can be implemented. Reuse existing code where possible, but only code whose license allows it (such as CC0 or MIT), recorded in [app/README.md](../app/README.md).
+- The demo is live, in this class, and lasts 10 minutes.
+- No budget: every tool must have a free tier.
+
+**Dependencies**
+
+- The tool choice in the tools report (D-5): attendance and polls both need a database that pushes live updates, and a public hosting service.
+- The class network must let phones reach the public URL on demo day.
+- The polls module copies pieces of PollPosition (CC0); see [F3-polls-strategy.md](features/F3-polls-strategy.md).
+
 ### 6.2 Roles and responsibilities (RACI)
 
 | Activity | Member 1 | Member 2 | Member 3 |

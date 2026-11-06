@@ -73,7 +73,7 @@ The lecturer's 6 parts, in order. Avoid the 3 pitfalls: vague deliverables, no a
 - [x] 3. In scope + an explicit out-of-scope list
 - [ ] 4. Milestones with dates up to the demo (+ Gantt chart)
 - [x] 5. Acceptance criteria for each deliverable
-- [ ] 6a. Assumptions, constraints and dependencies
+- [x] 6a. Assumptions, constraints and dependencies
 - [ ] 6b. Roles: RACI table (who is responsible / accountable / consulted / informed)
 - [ ] 6c. Risk register (ID, risk, probability, impact, mitigation)
 - [ ] Add comments, video summary and homework review to the SoW (deliverables, scope, acceptance criteria) once step 1 decides their scope
