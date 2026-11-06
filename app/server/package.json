@@ -9,7 +9,7 @@
   },
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "test": "tsx --test \"test/**/*.test.ts\""
+    "test": "tsx --test --test-reporter=spec \"test/**/*.test.ts\""
   },
   "dependencies": {
     "@google/genai": "^2.32.0"
