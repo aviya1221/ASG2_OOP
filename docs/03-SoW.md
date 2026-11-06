@@ -57,16 +57,19 @@ Today's teaching tools are scattered, each with its own login or room code. We w
 
 A web app for live lessons: the admin builds the timetable, and each lesson has tabs (attendance, polls and more) that the teacher runs and the students use from their phone's browser.
 
-| ID | Deliverable |
-|----|-------------|
-| D-1 | Attendance module (main feature), with a spreadsheet export |
-| D-2 | Polls module ([strategy](features/F3-polls-strategy.md)) |
-| D-3 | Timetable and roles: admin, teacher and student |
-| D-4 | Design documents for steps 2 to 8 |
+The features, from the assignment:
+
+| ID | Feature |
+|----|---------|
+| D-1 | Attendance (main feature): students mark their attendance in class from their phones, and the teacher gets a spreadsheet with the details |
+| D-2 | Comments and suggestions: students comment and raise suggestions, live during the lesson or later |
+| D-3 | Polls: the teacher creates quick polls about the current material during the lesson ([strategy](features/F3-polls-strategy.md)) |
+| D-4 | Video summary: the teacher gets an automatic summary of a recorded lesson video |
+| D-5 | Homework review: students and teachers get an AI review of a homework, including a comparison with other students' work |
 
 ## 3. When (milestones)
 
-The design documents (D-4) by _TODO: date_; the app (D-1 to D-3) shown in the class demo on _TODO: date_.
+The design documents by _TODO: date_; the app shown in the class demo on _TODO: date_.
 
 ## 4. How much (cost)
 

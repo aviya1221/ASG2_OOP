@@ -73,7 +73,7 @@ The SoW answers only the lecturer's core questions: why, what is delivered, when
 - [x] 2. What: deliverables table with IDs (`D-1`, `D-2`, ...), each one concrete (not "a working system")
 - [ ] 3. When: milestone dates up to the demo
 - [x] 4. How much: cost in money and effort
-- [ ] Add comments, video summary and homework review to the deliverables once step 1 decides their scope
+- [x] The deliverables are the 5 assignment features (D-1 to D-5, same order as F1 to F5), not the work documents
 
 ## Step 4: SRS (Software Requirements Specification) → [docs/04-SRS.md](docs/04-SRS.md)
 
