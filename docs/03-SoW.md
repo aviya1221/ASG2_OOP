@@ -83,9 +83,23 @@ Comments and suggestions, the class video summary and the homework review get th
 
 ## 3. Scope
 
+Comments and suggestions, the class video summary and the homework review are not placed yet. Step 1 decides whether each one is built for the demo, designed only, or left out.
+
 ### 3.1 In scope
 
+- A web app that runs in the phone's browser, with three roles: admin, teacher and student (D-3, D-4).
+- A timetable built by the admin: courses, their teachers, weekly hours and students (D-3).
+- A lesson page with one tab per feature (D-3).
+- Attendance with a spreadsheet export, as the main feature (D-1).
+- Live multiple-choice polls inside the lesson (D-2).
+- The design documents of steps 2 to 8 (D-5 to D-10), the class demo (D-11) and the conclusion (D-12).
+
 ### 3.2 Out of scope
+
+- Integration with Moodle, Zoom or any personal-information system (assignment brief).
+- A native mobile app: students use the phone's browser.
+- Joining a lesson or a poll with a room code, or sending students to an outside poll site.
+- Poll types other than multiple choice, such as open text, word clouds or quiz scoring.
 
 ## 4. Milestones
 
