@@ -3,6 +3,10 @@
 This roadmap follows the 11 "To Do" steps from the assignment, in order.
 Each step is split into small tasks. **Every checkbox = at least one commit.**
 
+The tasks follow the lecturer's definition of each document (lectures 02a and 03a).
+The full definition sits in a hidden comment at the top of each document file. See also the
+[documentation guide](docs/README.md) for the document chain, the shared ID scheme (`D-n`, `REQ-nn`, `UC-nn`, `TC-nnn`...) and which UML diagram goes where.
+
 ## Commit rules
 
 The commit history is part of the grade, so commit small and often.
@@ -32,6 +36,7 @@ The commit history is part of the grade, so commit small and often.
 - [ ] Define the scope: in scope / out of scope (no Moodle, Zoom or personal-info integration)
 - [ ] Decide which of the 5 features are implemented in the demo and which are design-only
 - [x] Add a "Repository structure" section to the README
+- [x] Add a documentation guide with the lecturer's document chain and ID scheme
 
 ## Step 2: Technical tools report → [docs/02-tools-report.md](docs/02-tools-report.md)
 
