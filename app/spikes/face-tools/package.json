@@ -1,0 +1,16 @@
+{
+  "name": "face-tools-spike",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Spike for the tools report: compare face tools (OpenCV YuNet+SFace vs Human) on crowd photos and on faces shrunk to back-row size.",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@techstark/opencv-js": "^4.10.0-release.1",
+    "@vladmandic/human": "^3.3.6",
+    "onnxruntime-web": "^1.31.1",
+    "playwright-core": "^1.49.1"
+  }
+}

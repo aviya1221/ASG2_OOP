@@ -1,0 +1,9 @@
+# Research datasets and model files are downloaded locally (see README) and never committed:
+# their licenses allow research use only, and they are large.
+data/
+models/
+results/raw-*.json
+results/examples/
+results/demo-class/
+results/*-quick.*
+results/*.log

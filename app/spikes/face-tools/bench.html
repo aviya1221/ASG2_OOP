@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Face tools bench</title>
+</head>
+<body>
+<p>Driven by run-bench.mjs. Exposes window.Bench.</p>
+<script type="module">
+import { createOpenCV, createHuman, loadImage, toCanvas, drawShrunk } from './lab.js';
+
+const FACE = 114;            // face height in pixels inside an original 250x250 labelled-faces photo
+const r1 = (v) => Math.round(v * 10) / 10;
+const r3 = (v) => Math.round(v * 1000) / 1000;
+const arr = (emb) => Array.from(emb, (v) => Math.round(v * 1e5) / 1e5);
+let tool = null;
+
+window.Bench = {
+  async init(name, opts = {}) {
+    const t0 = performance.now();
+    if (name === 'opencv') tool = await createOpenCV();
+    else if (name === 'opencv-runner') tool = await createOpenCV({ printer: 'opencv' });
+    else if (name === 'human') tool = await createHuman({ backend: opts.backend });
+    else if (name === 'human-tiled') tool = await createHuman({ backend: opts.backend, tiles: opts.tiles || [256, 640] });
+    else throw new Error('unknown tool ' + name);
+    const c = document.createElement('canvas'); c.width = 320; c.height = 240;
+    await tool.detect(c, { embed: true }); // warm-up
+    const gl = document.createElement('canvas').getContext('webgl2');
+    const ext = gl && gl.getExtension('WEBGL_debug_renderer_info');
+    const gpu = ext ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) : 'none';
+    return { info: `${tool.info}; graphics: ${gpu}; isolated: ${self.crossOriginIsolated}; cores: ${navigator.hardwareConcurrency}`, ms: Math.round(performance.now() - t0) };
+  },
+
+  // Crowd photo: every face the tool finds (box + confidence) and the time it took.
+  async detectUrl(url, embed = false) {
+    const c = toCanvas(await loadImage(url));
+    const t0 = performance.now();
+    const faces = await tool.detect(c, { embed });
+    return { w: c.width, h: c.height, ms: Math.round(performance.now() - t0), faces: faces.map((f) => [r1(f.x), r1(f.y), r1(f.w), r1(f.h), r3(f.score)]) };
+  },
+
+  // "Registration": the face nearest the centre of a full-size photo.
+  async enroll(url) {
+    const c = toCanvas(await loadImage(url));
+    const faces = await tool.detectPlain(c, { embed: true });
+    let best = null, bd = Infinity;
+    for (const f of faces) {
+      if (!f.emb) continue;
+      const d = Math.hypot(f.x + f.w / 2 - c.width / 2, f.y + f.h / 2 - c.height / 2);
+      if (d < bd && d < c.width * 0.25) { bd = d; best = f; }
+    }
+    return best ? arr(best.emb) : null;
+  },
+
+  capacity(S, W = 1600, H = 1200) {
+    const patch = Math.max(8, Math.round((200 * S) / FACE));
+    const cell = Math.round(patch * 1.15);
+    const cols = Math.floor(W / cell), rows = Math.floor(H / cell);
+    return { patch, cell, cols, rows, n: Math.min(100, cols * rows) };
+  },
+
+  // "The class photo": second photos of many people, shrunk so each face is S pixels tall,
+  // laid out on one big picture. Returns the face-print found at each spot (or null).
+  async probe(urls, S, W = 1600, H = 1200) {
+    const { patch, cell, cols } = this.capacity(S, W, H);
+    const c = document.createElement('canvas'); c.width = W; c.height = H;
+    const ctx = c.getContext('2d'); ctx.fillStyle = '#7f7f7f'; ctx.fillRect(0, 0, W, H);
+    const spots = [];
+    for (let i = 0; i < urls.length; i++) {
+      const img = await loadImage(urls[i]);
+      const col = i % cols, row = Math.floor(i / cols);
+      const x0 = col * cell + Math.round((cell - patch) / 2), y0 = row * cell + Math.round((cell - patch) / 2);
+      drawShrunk(ctx, img, 25, 25, 200, 200, x0, y0, patch, patch);
+      spots.push({ cx: x0 + patch / 2, cy: y0 + patch / 2 });
+    }
+    const t0 = performance.now();
+    const faces = await tool.detect(c, { embed: true });
+    const ms = Math.round(performance.now() - t0);
+    const used = new Set();
+    const out = spots.map((s) => {
+      let best = -1, bd = Infinity;
+      faces.forEach((f, j) => {
+        if (used.has(j) || !f.emb) return;
+        const d = Math.hypot(f.x + f.w / 2 - s.cx, f.y + f.h / 2 - s.cy);
+        const size = Math.sqrt(f.w * f.h);
+        if (d <= 0.3 * patch && size >= 0.4 * S && size <= 2.8 * S && d < bd) { bd = d; best = j; }
+      });
+      if (best < 0) return null;
+      used.add(best);
+      return arr(faces[best].emb);
+    });
+    return { ms, out };
+  },
+};
+window.BenchReady = true;
+</script>
+</body>
+</html>

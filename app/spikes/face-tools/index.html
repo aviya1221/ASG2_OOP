@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>בדיקת זיהוי פנים</title>
+<style>
+:root{--bg:#F4F6F5;--card:#fff;--ink:#1C2637;--ink2:#56606F;--line:#D4DBE0;--pen:#2950C4;--ok:#1F7A49;--warn:#985F00;--bad:#BC3328}
+@media (prefers-color-scheme: dark){:root{--bg:#11161D;--card:#19202A;--ink:#E4E9F0;--ink2:#A3AEBD;--line:#2D3745;--pen:#8CA9FF;--ok:#5CC48B;--warn:#E6B04B;--bad:#FF7D70;color-scheme:dark}}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,"Segoe UI",Arial,sans-serif}
+main{max-width:1100px;margin:0 auto;padding:20px 16px 60px;display:grid;gap:16px}
+h1{font-size:1.6rem;margin:0}h2{font-size:1.15rem;margin:0 0 8px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px}
+.row{display:flex;flex-wrap:wrap;gap:16px;align-items:end}
+label{display:grid;gap:4px;font-weight:600;font-size:.95rem}
+small,.muted{color:var(--ink2);font-weight:400}
+select,input[type=number]{font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink)}
+button{font:inherit;font-weight:600;padding:8px 18px;border-radius:8px;border:1px solid var(--pen);background:var(--pen);color:#fff;cursor:pointer}
+button:disabled{opacity:.5}
+#status{color:var(--ink2)}
+canvas{max-width:100%;height:auto;border-radius:6px;display:block}
+table{width:100%;border-collapse:collapse;font-size:.92rem}
+th,td{text-align:start;padding:6px 8px;border-bottom:1px solid var(--line)}
+th{color:var(--ink2);font-weight:600}
+.ok{color:var(--ok);font-weight:600}.no{color:var(--warn);font-weight:600}
+.scroll{overflow-x:auto}
+</style>
+</head>
+<body>
+<main>
+  <h1>בדיקת זיהוי פנים</h1>
+  <p class="muted">הכול רץ בדפדפן של המכשיר הזה. התמונות לא נשלחות לשום מקום.</p>
+
+  <section class="card">
+    <div class="row">
+      <label>כלי
+        <select id="tool">
+          <option value="opencv">אפשרות 1: מוצא הפנים של OpenCV</option>
+          <option value="human-tiled">אפשרות 2: Human עם חלוקה לחלקים</option>
+          <option value="human">אפשרות 2: Human בלי חלוקה</option>
+        </select>
+      </label>
+      <label>תמונות כיתה <small>(אחת או יותר)</small><input id="photos" type="file" accept="image/*" multiple></label>
+      <label>סלפים <small>(שם הקובץ הוא שם האדם)</small><input id="selfies" type="file" accept="image/*" multiple></label>
+      <label>להקטין תמונה עד <small>(פיקסלים, 0 = בלי)</small><input id="maxSide" type="number" value="0" min="0" step="500" style="width:7em"></label>
+      <label>סף התאמה <input id="tau" type="number" step="0.01" style="width:6em"></label>
+      <button id="run" type="button">הרץ</button>
+    </div>
+    <p id="status">בחרו כלי, תמונות כיתה וסלפים.</p>
+  </section>
+
+  <section class="card" id="matchesCard" hidden>
+    <h2>מי זוהה</h2>
+    <div class="scroll"><table><thead><tr><th>שם</th><th>ההתאמה הכי טובה</th><th>ציון</th><th>תוצאה</th></tr></thead><tbody id="matches"></tbody></table></div>
+  </section>
+
+  <section id="out" style="display:grid;gap:16px"></section>
+</main>
+
+<script type="module">
+import { createOpenCV, createHuman, loadImage, toCanvas } from './lab.js';
+
+const $ = (s) => document.querySelector(s);
+const tools = {};
+// Thresholds from the benchmark (results/summary.json), so that two different people match about 0.1% of the time.
+let taus = {};
+try { const s = await (await fetch('/results/summary.json')).json(); for (const [k, v] of Object.entries(s)) taus[k] = v.recognition?.tau; } catch { /* no benchmark yet */ }
+const defaultTau = { opencv: 0.4, human: 0.5, 'human-tiled': 0.5 };
+const setTau = () => { const k = $('#tool').value; $('#tau').value = (taus[k] ?? defaultTau[k]).toFixed(3); };
+$('#tool').addEventListener('change', setTau); setTau();
+
+async function getTool(name) {
+  if (!tools[name]) {
+    $('#status').textContent = 'טוען את הכלי… (בפעם הראשונה זה לוקח כמה שניות)';
+    tools[name] = name === 'opencv' ? await createOpenCV() : await createHuman({ tiles: name === 'human-tiled' ? [256, 640] : [] });
+  }
+  return tools[name];
+}
+
+function fileCanvas(file, maxSide) {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    loadImage(url).then((img) => {
+      let c = toCanvas(img);
+      const m = Math.max(c.width, c.height);
+      if (maxSide > 0 && m > maxSide) {
+        const k = maxSide / m, d = document.createElement('canvas');
+        d.width = Math.round(c.width * k); d.height = Math.round(c.height * k);
+        const ctx = d.getContext('2d'); ctx.imageSmoothingQuality = 'high'; ctx.drawImage(c, 0, 0, d.width, d.height); c = d;
+      }
+      URL.revokeObjectURL(url); resolve(c);
+    }, reject);
+  });
+}
+const unit = (v) => { let s = 0; for (const x of v) s += x * x; s = Math.sqrt(s) || 1; return Float32Array.from(v, (x) => x / s); };
+const cos = (a, b) => { let s = 0; for (let i = 0; i < a.length; i++) s += a[i] * b[i]; return s; };
+
+$('#run').addEventListener('click', async () => {
+  const photos = [...$('#photos').files], selfies = [...$('#selfies').files];
+  if (!photos.length) { $('#status').textContent = 'צריך לבחור לפחות תמונת כיתה אחת.'; return; }
+  $('#run').disabled = true; $('#out').innerHTML = ''; $('#matches').innerHTML = '';
+  try {
+    const name = $('#tool').value, tau = parseFloat($('#tau').value), maxSide = parseInt($('#maxSide').value, 10) || 0;
+    const tool = await getTool(name);
+
+    $('#status').textContent = 'מחשב טביעות פנים מהסלפים…';
+    const people = [];
+    for (const f of selfies) {
+      const c = await fileCanvas(f, 1200);
+      const faces = await tool.detectPlain(c, { embed: true });
+      const big = faces.filter((x) => x.emb).sort((a, b) => b.w * b.h - a.w * a.h)[0];
+      people.push({ name: f.name.replace(/\.[^.]+$/, ''), emb: big ? unit(big.emb) : null });
+    }
+
+    const allFaces = [];
+    for (const [pi, f] of photos.entries()) {
+      $('#status').textContent = `מחפש פנים בתמונה ${pi + 1} מתוך ${photos.length}…`;
+      const c = await fileCanvas(f, maxSide);
+      const t0 = performance.now();
+      const found = await tool.detect(c, { embed: false });
+      const t1 = performance.now();
+      const faces = await tool.detect(c, { embed: true });
+      const t2 = performance.now();
+      faces.forEach((x, i) => allFaces.push({ photo: pi, idx: i + 1, ...x, emb: x.emb ? unit(x.emb) : null }));
+      const card = document.createElement('div'); card.className = 'card';
+      card.innerHTML = `<h2>תמונה ${pi + 1}: ${f.name}</h2><p class="muted">${c.width}×${c.height} פיקסלים · נמצאו ${faces.length} פנים · מציאת פנים ${((t1 - t0) / 1000).toFixed(1)} שנ' · כולל טביעות ${((t2 - t1) / 1000).toFixed(1)} שנ'</p>`;
+      const view = document.createElement('canvas'); view.width = c.width; view.height = c.height;
+      view.dataset.photo = pi; view.getContext('2d').drawImage(c, 0, 0);
+      card.appendChild(view); $('#out').appendChild(card);
+    }
+
+    // Each person -> best face; a face claimed by two people is a conflict.
+    const claims = {};
+    for (const p of people) {
+      p.best = null; p.score = -1;
+      if (!p.emb) continue;
+      for (const fc of allFaces) { if (!fc.emb) continue; const s = cos(p.emb, fc.emb); if (s > p.score) { p.score = s; p.best = fc; } }
+      if (p.best && p.score >= tau) (claims[p.best.photo + ':' + p.best.idx] ||= []).push(p.name);
+    }
+    const rows = people.map((p) => {
+      let res;
+      if (!p.emb) res = '<span class="no">לא נמצאו פנים בסלפי</span>';
+      else if (!p.best || p.score < tau) res = '<span class="no">לא זוהה</span>';
+      else if (claims[p.best.photo + ':' + p.best.idx].length > 1) res = '<span class="no">קונפליקט</span>';
+      else res = '<span class="ok">זוהה</span>';
+      return `<tr><td>${p.name}</td><td>${p.best ? `תמונה ${p.best.photo + 1}, פרצוף ${p.best.idx} (${Math.round(p.best.h)} פיקס')` : '—'}</td><td>${p.score > -1 ? p.score.toFixed(3) : '—'}</td><td>${res}</td></tr>`;
+    });
+    $('#matches').innerHTML = rows.join('');
+    $('#matchesCard').hidden = !people.length;
+
+    // Draw boxes: green = matched to someone, grey = nobody.
+    for (const view of document.querySelectorAll('#out canvas')) {
+      const pi = +view.dataset.photo, ctx = view.getContext('2d');
+      const lw = Math.max(2, view.width / 600);
+      ctx.font = `${Math.max(12, view.width / 90)}px system-ui`; ctx.lineWidth = lw;
+      for (const fc of allFaces.filter((x) => x.photo === pi)) {
+        const who = Object.entries(claims).find(([k]) => k === pi + ':' + fc.idx)?.[1];
+        ctx.strokeStyle = who ? (who.length > 1 ? '#E6B04B' : '#2FBF71') : '#9AA3B0';
+        ctx.strokeRect(fc.x, fc.y, fc.w, fc.h);
+        const label = `${fc.idx} · ${Math.round(fc.h)}px${who ? ' · ' + who.join('/') : ''}`;
+        ctx.fillStyle = 'rgba(0,0,0,.6)'; const tw = ctx.measureText(label).width;
+        ctx.fillRect(fc.x, fc.y - lw * 9, tw + 8, lw * 9); ctx.fillStyle = '#fff'; ctx.fillText(label, fc.x + 4, fc.y - lw * 2);
+      }
+    }
+    $('#status').textContent = `סיום. סף התאמה: ${tau}. ${tool.info}`;
+  } catch (e) {
+    $('#status').textContent = 'שגיאה: ' + e.message;
+  } finally { $('#run').disabled = false; }
+});
+</script>
+</body>
+</html>

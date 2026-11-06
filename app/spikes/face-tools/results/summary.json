@@ -1,0 +1,1034 @@
+{
+  "opencv": {
+    "info": "OpenCV.js 4.10.0, YuNet 2023mar + SFace 2021dec via ONNX Runtime Web 1.31.1 (4 threads); graphics: ANGLE (Intel, Intel(R) UHD Graphics (0x00009B41) Direct3D11 vs_5_0 ps_5_0, D3D11); isolated: true; cores: 8",
+    "sweep": [
+      {
+        "thr": 0.3,
+        "recall": 0.8939512961508248,
+        "byBucket": [
+          0.7809307604994324,
+          0.9486521181001284,
+          0.9623287671232876,
+          0.9606986899563319,
+          0.9178082191780822
+        ],
+        "counts": [
+          881,
+          779,
+          584,
+          229,
+          73
+        ],
+        "fpPerPhoto": 9.308641975308642,
+        "precision": 0.7511551155115511,
+        "msPerPhoto": 823.283950617284
+      },
+      {
+        "thr": 0.4,
+        "recall": 0.8589945011783189,
+        "byBucket": [
+          0.7150964812712827,
+          0.9293966623876765,
+          0.946917808219178,
+          0.9475982532751092,
+          0.863013698630137
+        ],
+        "counts": [
+          881,
+          779,
+          584,
+          229,
+          73
+        ],
+        "fpPerPhoto": 4.617283950617284,
+        "precision": 0.853963295587661,
+        "msPerPhoto": 823.283950617284
+      },
+      {
+        "thr": 0.5,
+        "recall": 0.8212882953652789,
+        "byBucket": [
+          0.6401816118047673,
+          0.9088575096277278,
+          0.9332191780821918,
+          0.9301310043668122,
+          0.8356164383561644
+        ],
+        "counts": [
+          881,
+          779,
+          584,
+          229,
+          73
+        ],
+        "fpPerPhoto": 2.5185185185185186,
+        "precision": 0.9111111111111111,
+        "msPerPhoto": 823.283950617284
+      },
+      {
+        "thr": 0.6,
+        "recall": 0.7710133542812254,
+        "byBucket": [
+          0.52894438138479,
+          0.8844672657252889,
+          0.922945205479452,
+          0.9082969432314411,
+          0.8356164383561644
+        ],
+        "counts": [
+          881,
+          779,
+          584,
+          229,
+          73
+        ],
+        "fpPerPhoto": 1.2345679012345678,
+        "precision": 0.9515269025690741,
+        "msPerPhoto": 823.283950617284
+      },
+      {
+        "thr": 0.7,
+        "recall": 0.6983503534956795,
+        "byBucket": [
+          0.3927355278093076,
+          0.8331193838254172,
+          0.8904109589041096,
+          0.8951965065502183,
+          0.7945205479452054
+        ],
+        "counts": [
+          881,
+          779,
+          584,
+          229,
+          73
+        ],
+        "fpPerPhoto": 0.4691358024691358,
+        "precision": 0.9790748898678414,
+        "msPerPhoto": 823.283950617284
+      },
+      {
+        "thr": 0.8,
+        "recall": 0.5581304006284368,
+        "byBucket": [
+          0.16572077185017026,
+          0.711168164313222,
+          0.8202054794520548,
+          0.8296943231441049,
+          0.7123287671232876
+        ],
+        "counts": [
+          881,
+          779,
+          584,
+          229,
+          73
+        ],
+        "fpPerPhoto": 0.07407407407407407,
+        "precision": 0.9957953749124037,
+        "msPerPhoto": 823.283950617284
+      },
+      {
+        "thr": 0.9,
+        "recall": 0.23605655930871955,
+        "byBucket": [
+          0.0011350737797956867,
+          0.16944801026957637,
+          0.5136986301369864,
+          0.5502183406113537,
+          0.5753424657534246
+        ],
+        "counts": [
+          881,
+          779,
+          584,
+          229,
+          73
+        ],
+        "fpPerPhoto": 0,
+        "precision": 1,
+        "msPerPhoto": 823.283950617284
+      }
+    ],
+    "recognition": {
+      "people": 300,
+      "tau": 0.3596066445242254,
+      "bySize": {
+        "16": {
+          "found": 1,
+          "tar": 0.3433333333333333,
+          "far": 0.0004793756967670011
+        },
+        "22": {
+          "found": 1,
+          "tar": 0.8133333333333334,
+          "far": 0.00042363433667781496
+        },
+        "28": {
+          "found": 1,
+          "tar": 0.8833333333333333,
+          "far": 0.0004459308807134894
+        },
+        "35": {
+          "found": 1,
+          "tar": 0.97,
+          "far": 0.000802675585284281
+        },
+        "45": {
+          "found": 1,
+          "tar": 0.98,
+          "far": 0.0009921962095875139
+        },
+        "60": {
+          "found": 1,
+          "tar": 0.9833333333333333,
+          "far": 0.0010813823857302118
+        },
+        "80": {
+          "found": 1,
+          "tar": 0.9833333333333333,
+          "far": 0.0011482720178372353
+        },
+        "114": {
+          "found": 1,
+          "tar": 0.9866666666666667,
+          "far": 0.001003344481605351
+        }
+      },
+      "halls": {
+        "lecture hall, full-resolution photo (faces 28-80 px)": {
+          "presentCorrect": 0.94865,
+          "presentReview": 0.05125,
+          "presentWrong": 0.0001,
+          "absentMarkedPresent": 0.0005,
+          "absentToReview": 0.0335
+        },
+        "large hall or reduced photo (faces 16-45 px)": {
+          "presentCorrect": 0.7873,
+          "presentReview": 0.21235,
+          "presentWrong": 0.00035,
+          "absentMarkedPresent": 0.003,
+          "absentToReview": 0.02225
+        }
+      },
+      "perSize": {
+        "16": {
+          "presentCorrect": 0.3332,
+          "presentReview": 0.6607,
+          "presentWrong": 0.0061,
+          "absentMarkedPresent": 0.01,
+          "absentToReview": 0.0075
+        },
+        "22": {
+          "presentCorrect": 0.8042,
+          "presentReview": 0.1958,
+          "presentWrong": 0,
+          "absentMarkedPresent": 0.001,
+          "absentToReview": 0.01825
+        },
+        "28": {
+          "presentCorrect": 0.8778,
+          "presentReview": 0.1222,
+          "presentWrong": 0,
+          "absentMarkedPresent": 0.002,
+          "absentToReview": 0.017
+        },
+        "35": {
+          "presentCorrect": 0.96275,
+          "presentReview": 0.03725,
+          "presentWrong": 0,
+          "absentMarkedPresent": 0.0005,
+          "absentToReview": 0.0295
+        },
+        "45": {
+          "presentCorrect": 0.97195,
+          "presentReview": 0.02745,
+          "presentWrong": 0.0006,
+          "absentMarkedPresent": 0,
+          "absentToReview": 0.04125
+        },
+        "60": {
+          "presentCorrect": 0.9708,
+          "presentReview": 0.0292,
+          "presentWrong": 0,
+          "absentMarkedPresent": 0,
+          "absentToReview": 0.046
+        },
+        "80": {
+          "presentCorrect": 0.97105,
+          "presentReview": 0.02895,
+          "presentWrong": 0,
+          "absentMarkedPresent": 0.0005,
+          "absentToReview": 0.0455
+        },
+        "114": {
+          "presentCorrect": 0.97775,
+          "presentReview": 0.02225,
+          "presentWrong": 0,
+          "absentMarkedPresent": 0.0005,
+          "absentToReview": 0.03525
+        }
+      }
+    },
+    "timing": {
+      "crowdPhotoFindMs": 823.283950617284,
+      "fullJobMsPerFace": 83.49812358217679,
+      "fullJobPhotos": [
+        {
+          "id": "29--Students_Schoolkids/29_Students_Schoolkids_Students_Schoolkids_29_524.jpg",
+          "ms": 1387,
+          "faces": 14,
+          "w": 1024,
+          "h": 683
+        },
+        {
+          "id": "29--Students_Schoolkids/29_Students_Schoolkids_Students_Schoolkids_29_311.jpg",
+          "ms": 1362,
+          "faces": 15,
+          "w": 1024,
+          "h": 683
+        },
+        {
+          "id": "29--Students_Schoolkids/29_Students_Schoolkids_Students_Schoolkids_29_251.jpg",
+          "ms": 1702,
+          "faces": 22,
+          "w": 1024,
+          "h": 768
+        },
+        {
+          "id": "29--Students_Schoolkids/29_Students_Schoolkids_Students_Schoolkids_29_494.jpg",
+          "ms": 1644,
+          "faces": 20,
+          "w": 1024,
+          "h": 768
+        },
+        {
+          "id": "29--Students_Schoolkids/29_Students_Schoolkids_Students_Schoolkids_29_358.jpg",
+          "ms": 1497,
+          "faces": 20,
+          "w": 1024,
+          "h": 621
+        },
+        {
+          "id": "29--Students_Schoolkids/29_Students_Schoolkids_Students_Schoolkids_29_66.jpg",
+          "ms": 1693,
+          "faces": 23,
+          "w": 1024,
+          "h": 684
+        },
+        {
+          "id": "29--Students_Schoolkids/29_Students_Schoolkids_Students_Schoolkids_29_489.jpg",
+          "ms": 1394,
+          "faces": 15,
+          "w": 1024,
+          "h": 683
+        },
+        {
+          "id": "29--Students_Schoolkids/29_Students_Schoolkids_Students_Schoolkids_29_624.jpg",
+          "ms": 1466,
+          "faces": 19,
+          "w": 1024,
+          "h": 644
+        }
+      ],
+      "probeMsPerFace": {
+        "16": 58.20666666666666,
+        "22": 58.446666666666665,
+        "28": 58.593333333333334,
+        "35": 60.78333333333333,
+        "45": 59.64,
+        "60": 60.50666666666667,
+        "80": 75.26666666666667,
+        "114": 111.81
+      }
+    }
+  },
+  "human": {
+    "info": "Human 3.3.6, backend webgl, BlazeFace + FaceRes; graphics: ANGLE (Intel, Intel(R) UHD Graphics (0x00009B41) Direct3D11 vs_5_0 ps_5_0, D3D11); isolated: true; cores: 8",
+    "sweep": [
+      {
+        "thr": 0.3,
+        "recall": 0.17124901806755696,
+        "byBucket": [
+          0.0022701475595913734,
+          0.057766367137355584,
+          0.375,
+          0.5240174672489083,
+          0.684931506849315
+        ],
+        "counts": [
+          881,
+          779,
+          584,
+          229,
+          73
+        ],
+        "fpPerPhoto": 1.0864197530864197,
+        "precision": 0.8320610687022901,
+        "msPerPhoto": 2273
+      },
+      {
+        "thr": 0.4,
+        "recall": 0.1661429693637078,
+        "byBucket": [
+          0.0022701475595913734,
+          0.05648267008985879,
+          0.363013698630137,
+          0.5065502183406113,
+          0.6712328767123288
+        ],
+        "counts": [
+          881,
+          779,
+          584,
+          229,
+          73
+        ],
+        "fpPerPhoto": 0.9135802469135802,
+        "precision": 0.8511066398390342,
+        "msPerPhoto": 2273
+      },
+      {
+        "thr": 0.5,
+        "recall": 0.16064414768263943,
+        "byBucket": [
+          0.0011350737797956867,
+          0.05006418485237484,
+          0.351027397260274,
+          0.5065502183406113,
+          0.6575342465753424
+        ],
+        "counts": [
+          881,
+          779,
+          584,
+          229,
+          73
+        ],
+        "fpPerPhoto": 0.8024691358024691,
+        "precision": 0.8628691983122363,
+        "msPerPhoto": 2273
+      },
+      {
+        "thr": 0.6,
+        "recall": 0.1563236449332286,
+        "byBucket": [
+          0.0011350737797956867,
+          0.04621309370988447,
+          0.3407534246575342,
+          0.5021834061135371,
+          0.6438356164383562
+        ],
+        "counts": [
+          881,
+          779,
+          584,
+          229,
+          73
+        ],
+        "fpPerPhoto": 0.7283950617283951,
+        "precision": 0.8708971553610503,
+        "msPerPhoto": 2273
+      },
+      {
+        "thr": 0.7,
+        "recall": 0.14925373134328357,
+        "byBucket": [
+          0,
+          0.04236200256739409,
+          0.3202054794520548,
+          0.4978165938864629,
+          0.6301369863013698
+        ],
+        "counts": [
+          881,
+          779,
+          584,
+          229,
+          73
+        ],
+        "fpPerPhoto": 0.6049382716049383,
+        "precision": 0.8857808857808858,
+        "msPerPhoto": 2273
+      },
+      {
+        "thr": 0.8,
+        "recall": 0.14375490966221524,
+        "byBucket": [
+          0,
+          0.03594351732991014,
+          0.3082191780821918,
+          0.49344978165938863,
+          0.6164383561643836
+        ],
+        "counts": [
+          881,
+          779,
+          584,
+          229,
+          73
+        ],
+        "fpPerPhoto": 0.5185185185185185,
+        "precision": 0.8970588235294118,
+        "msPerPhoto": 2273
+      },
+      {
+        "thr": 0.9,
+        "recall": 0.13629222309505107,
+        "byBucket": [
+          0,
+          0.03080872913992298,
+          0.2893835616438356,
+          0.48034934497816595,
+          0.6027397260273972
+        ],
+        "counts": [
+          881,
+          779,
+          584,
+          229,
+          73
+        ],
+        "fpPerPhoto": 0.3950617283950617,
+        "precision": 0.9155672823218998,
+        "msPerPhoto": 2273
+      }
+    ],
+    "recognition": {
+      "people": 300,
+      "tau": 0.632499779209936,
+      "bySize": {
+        "16": {
+          "found": 0,
+          "tar": 0,
+          "far": 0
+        },
+        "22": {
+          "found": 0,
+          "tar": 0,
+          "far": 0
+        },
+        "28": {
+          "found": 0.013333333333333334,
+          "tar": 0,
+          "far": 0
+        },
+        "35": {
+          "found": 0.18666666666666668,
+          "tar": 0.016666666666666666,
+          "far": 0
+        },
+        "45": {
+          "found": 0.48,
+          "tar": 0.07666666666666666,
+          "far": 0.00006967670011148272
+        },
+        "60": {
+          "found": 0.9233333333333333,
+          "tar": 0.35333333333333333,
+          "far": 0.0005071055141687695
+        },
+        "80": {
+          "found": 0.9933333333333333,
+          "tar": 0.6066666666666667,
+          "far": 0.0007631702992076496
+        },
+        "114": {
+          "found": 0.9966666666666667,
+          "tar": 0.7166666666666667,
+          "far": 0.0010067001487679109
+        }
+      },
+      "halls": {
+        "lecture hall, full-resolution photo (faces 28-80 px)": {
+          "presentCorrect": 0.20605,
+          "presentReview": 0.79205,
+          "presentWrong": 0.0019,
+          "absentMarkedPresent": 0.002,
+          "absentToReview": 0.009
+        },
+        "large hall or reduced photo (faces 16-45 px)": {
+          "presentCorrect": 0.0176,
+          "presentReview": 0.9821,
+          "presentWrong": 0.0003,
+          "absentMarkedPresent": 0.00025,
+          "absentToReview": 0
+        }
+      },
+      "perSize": {
+        "16": {
+          "presentCorrect": 0,
+          "presentReview": 1,
+          "presentWrong": 0,
+          "absentMarkedPresent": 0,
+          "absentToReview": 0
+        },
+        "22": {
+          "presentCorrect": 0,
+          "presentReview": 1,
+          "presentWrong": 0,
+          "absentMarkedPresent": 0,
+          "absentToReview": 0
+        },
+        "28": {
+          "presentCorrect": 0,
+          "presentReview": 1,
+          "presentWrong": 0,
+          "absentMarkedPresent": 0,
+          "absentToReview": 0
+        },
+        "35": {
+          "presentCorrect": 0.01625,
+          "presentReview": 0.98375,
+          "presentWrong": 0,
+          "absentMarkedPresent": 0,
+          "absentToReview": 0
+        },
+        "45": {
+          "presentCorrect": 0.08105,
+          "presentReview": 0.91795,
+          "presentWrong": 0.001,
+          "absentMarkedPresent": 0.00075,
+          "absentToReview": 0
+        },
+        "60": {
+          "presentCorrect": 0.3454,
+          "presentReview": 0.65095,
+          "presentWrong": 0.00365,
+          "absentMarkedPresent": 0.005,
+          "absentToReview": 0.01
+        },
+        "80": {
+          "presentCorrect": 0.59265,
+          "presentReview": 0.4054,
+          "presentWrong": 0.00195,
+          "absentMarkedPresent": 0.007,
+          "absentToReview": 0.025
+        },
+        "114": {
+          "presentCorrect": 0.70315,
+          "presentReview": 0.2939,
+          "presentWrong": 0.00295,
+          "absentMarkedPresent": 0.00675,
+          "absentToReview": 0.0325
+        }
+      }
+    },
+    "timing": {
+      "crowdPhotoFindMs": 2273,
+      "fullJobMsPerFace": 757.96875,
+      "fullJobPhotos": [
+        {
+          "id": "29--Students_Schoolkids/29_Students_Schoolkids_Students_Schoolkids_29_524.jpg",
+          "ms": 3026,
+          "faces": 2,
+          "w": 1024,
+          "h": 683
+        },
+        {
+          "id": "29--Students_Schoolkids/29_Students_Schoolkids_Students_Schoolkids_29_311.jpg",
+          "ms": 1468,
+          "faces": 0,
+          "w": 1024,
+          "h": 683
+        },
+        {
+          "id": "29--Students_Schoolkids/29_Students_Schoolkids_Students_Schoolkids_29_251.jpg",
+          "ms": 4881,
+          "faces": 20,
+          "w": 1024,
+          "h": 768
+        },
+        {
+          "id": "29--Students_Schoolkids/29_Students_Schoolkids_Students_Schoolkids_29_494.jpg",
+          "ms": 2310,
+          "faces": 3,
+          "w": 1024,
+          "h": 768
+        },
+        {
+          "id": "29--Students_Schoolkids/29_Students_Schoolkids_Students_Schoolkids_29_358.jpg",
+          "ms": 1098,
+          "faces": 2,
+          "w": 1024,
+          "h": 621
+        },
+        {
+          "id": "29--Students_Schoolkids/29_Students_Schoolkids_Students_Schoolkids_29_66.jpg",
+          "ms": 1866,
+          "faces": 5,
+          "w": 1024,
+          "h": 684
+        },
+        {
+          "id": "29--Students_Schoolkids/29_Students_Schoolkids_Students_Schoolkids_29_489.jpg",
+          "ms": 1512,
+          "faces": 4,
+          "w": 1024,
+          "h": 683
+        },
+        {
+          "id": "29--Students_Schoolkids/29_Students_Schoolkids_Students_Schoolkids_29_624.jpg",
+          "ms": 1537,
+          "faces": 2,
+          "w": 1024,
+          "h": 644
+        }
+      ],
+      "probeMsPerFace": {
+        "16": 1217,
+        "22": 4840,
+        "28": 2421.25,
+        "35": 366.9642857142857,
+        "45": 271.84722222222223,
+        "60": 193.64981949458485,
+        "80": 198.33892617449663,
+        "114": 189.67558528428094
+      }
+    }
+  },
+  "human-tiled": {
+    "info": "Human 3.3.6, backend webgl, BlazeFace + FaceRes, tiles 256/640px; graphics: ANGLE (Intel, Intel(R) UHD Graphics (0x00009B41) Direct3D11 vs_5_0 ps_5_0, D3D11); isolated: true; cores: 8",
+    "sweep": [
+      {
+        "thr": 0.3,
+        "recall": 0.3617439120188531,
+        "byBucket": [
+          0.07832009080590238,
+          0.36970474967907574,
+          0.6113013698630136,
+          0.6637554585152838,
+          0.7534246575342466
+        ],
+        "counts": [
+          881,
+          779,
+          584,
+          229,
+          73
+        ],
+        "fpPerPhoto": 6.234567901234568,
+        "precision": 0.6458625525946704,
+        "msPerPhoto": 29603.46913580247
+      },
+      {
+        "thr": 0.4,
+        "recall": 0.34603299293008644,
+        "byBucket": [
+          0.06469920544835414,
+          0.3465982028241335,
+          0.5941780821917808,
+          0.6637554585152838,
+          0.7534246575342466
+        ],
+        "counts": [
+          881,
+          779,
+          584,
+          229,
+          73
+        ],
+        "fpPerPhoto": 5.7407407407407405,
+        "precision": 0.6545319465081724,
+        "msPerPhoto": 29603.46913580247
+      },
+      {
+        "thr": 0.5,
+        "recall": 0.3354281225451689,
+        "byBucket": [
+          0.05902383654937571,
+          0.3324775353016688,
+          0.5787671232876712,
+          0.6550218340611353,
+          0.7534246575342466
+        ],
+        "counts": [
+          881,
+          779,
+          584,
+          229,
+          73
+        ],
+        "fpPerPhoto": 5.320987654320987,
+        "precision": 0.6645914396887159,
+        "msPerPhoto": 29603.46913580247
+      },
+      {
+        "thr": 0.6,
+        "recall": 0.32285938727415553,
+        "byBucket": [
+          0.0510783200908059,
+          0.3157894736842105,
+          0.5684931506849316,
+          0.6331877729257642,
+          0.7397260273972602
+        ],
+        "counts": [
+          881,
+          779,
+          584,
+          229,
+          73
+        ],
+        "fpPerPhoto": 4.987654320987654,
+        "precision": 0.6704730831973899,
+        "msPerPhoto": 29603.46913580247
+      },
+      {
+        "thr": 0.7,
+        "recall": 0.30832678711704636,
+        "byBucket": [
+          0.04426787741203178,
+          0.29653401797175866,
+          0.547945205479452,
+          0.6200873362445415,
+          0.726027397260274
+        ],
+        "counts": [
+          881,
+          779,
+          584,
+          229,
+          73
+        ],
+        "fpPerPhoto": 4.62962962962963,
+        "precision": 0.6767241379310345,
+        "msPerPhoto": 29603.46913580247
+      },
+      {
+        "thr": 0.8,
+        "recall": 0.295758051846033,
+        "byBucket": [
+          0.03745743473325766,
+          0.2862644415917843,
+          0.5222602739726028,
+          0.611353711790393,
+          0.7123287671232876
+        ],
+        "counts": [
+          881,
+          779,
+          584,
+          229,
+          73
+        ],
+        "fpPerPhoto": 4.209876543209877,
+        "precision": 0.6882998171846435,
+        "msPerPhoto": 29603.46913580247
+      },
+      {
+        "thr": 0.9,
+        "recall": 0.2784760408483896,
+        "byBucket": [
+          0.03178206583427923,
+          0.2605905006418485,
+          0.4931506849315068,
+          0.6069868995633187,
+          0.6986301369863014
+        ],
+        "counts": [
+          881,
+          779,
+          584,
+          229,
+          73
+        ],
+        "fpPerPhoto": 3.765432098765432,
+        "precision": 0.6992110453648915,
+        "msPerPhoto": 29603.46913580247
+      }
+    ],
+    "recognition": {
+      "people": 300,
+      "tau": 0.6335463736769659,
+      "bySize": {
+        "16": {
+          "found": 0.9366666666666666,
+          "tar": 0.006666666666666667,
+          "far": 0
+        },
+        "22": {
+          "found": 1,
+          "tar": 0.15333333333333332,
+          "far": 0.00008918617614269788
+        },
+        "28": {
+          "found": 0.9933333333333333,
+          "tar": 0.17333333333333334,
+          "far": 0.00012345401898947273
+        },
+        "35": {
+          "found": 1,
+          "tar": 0.5833333333333334,
+          "far": 0.0006688963210702341
+        },
+        "45": {
+          "found": 1,
+          "tar": 0.7033333333333334,
+          "far": 0.000802675585284281
+        },
+        "60": {
+          "found": 1,
+          "tar": 0.74,
+          "far": 0.0009698996655518394
+        },
+        "80": {
+          "found": 1,
+          "tar": 0.7566666666666667,
+          "far": 0.001003344481605351
+        },
+        "114": {
+          "found": 1,
+          "tar": 0.7433333333333333,
+          "far": 0.001003344481605351
+        }
+      },
+      "halls": {
+        "lecture hall, full-resolution photo (faces 28-80 px)": {
+          "presentCorrect": 0.5772,
+          "presentReview": 0.42125,
+          "presentWrong": 0.00155,
+          "absentMarkedPresent": 0.00525,
+          "absentToReview": 0.02325
+        },
+        "large hall or reduced photo (faces 16-45 px)": {
+          "presentCorrect": 0.31,
+          "presentReview": 0.68765,
+          "presentWrong": 0.00235,
+          "absentMarkedPresent": 0.00325,
+          "absentToReview": 0.0125
+        }
+      },
+      "perSize": {
+        "16": {
+          "presentCorrect": 0.00705,
+          "presentReview": 0.99295,
+          "presentWrong": 0,
+          "absentMarkedPresent": 0,
+          "absentToReview": 0
+        },
+        "22": {
+          "presentCorrect": 0.15115,
+          "presentReview": 0.8465,
+          "presentWrong": 0.00235,
+          "absentMarkedPresent": 0.00125,
+          "absentToReview": 0.00125
+        },
+        "28": {
+          "presentCorrect": 0.17365,
+          "presentReview": 0.8247,
+          "presentWrong": 0.00165,
+          "absentMarkedPresent": 0.00225,
+          "absentToReview": 0.00225
+        },
+        "35": {
+          "presentCorrect": 0.57185,
+          "presentReview": 0.42535,
+          "presentWrong": 0.0028,
+          "absentMarkedPresent": 0.01,
+          "absentToReview": 0.01825
+        },
+        "45": {
+          "presentCorrect": 0.6921,
+          "presentReview": 0.3075,
+          "presentWrong": 0.0004,
+          "absentMarkedPresent": 0.00325,
+          "absentToReview": 0.031
+        },
+        "60": {
+          "presentCorrect": 0.7225,
+          "presentReview": 0.27675,
+          "presentWrong": 0.00075,
+          "absentMarkedPresent": 0.00525,
+          "absentToReview": 0.03525
+        },
+        "80": {
+          "presentCorrect": 0.7416,
+          "presentReview": 0.2578,
+          "presentWrong": 0.0006,
+          "absentMarkedPresent": 0.00375,
+          "absentToReview": 0.03525
+        },
+        "114": {
+          "presentCorrect": 0.7325,
+          "presentReview": 0.2669,
+          "presentWrong": 0.0006,
+          "absentMarkedPresent": 0.00575,
+          "absentToReview": 0.03075
+        }
+      }
+    },
+    "timing": {
+      "crowdPhotoFindMs": 29603.46913580247,
+      "fullJobMsPerFace": 2573.391205357143,
+      "fullJobPhotos": [
+        {
+          "id": "29--Students_Schoolkids/29_Students_Schoolkids_Students_Schoolkids_29_524.jpg",
+          "ms": 14523,
+          "faces": 4,
+          "w": 1024,
+          "h": 683
+        },
+        {
+          "id": "29--Students_Schoolkids/29_Students_Schoolkids_Students_Schoolkids_29_311.jpg",
+          "ms": 31038,
+          "faces": 16,
+          "w": 1024,
+          "h": 683
+        },
+        {
+          "id": "29--Students_Schoolkids/29_Students_Schoolkids_Students_Schoolkids_29_251.jpg",
+          "ms": 28224,
+          "faces": 25,
+          "w": 1024,
+          "h": 768
+        },
+        {
+          "id": "29--Students_Schoolkids/29_Students_Schoolkids_Students_Schoolkids_29_494.jpg",
+          "ms": 21503,
+          "faces": 7,
+          "w": 1024,
+          "h": 768
+        },
+        {
+          "id": "29--Students_Schoolkids/29_Students_Schoolkids_Students_Schoolkids_29_358.jpg",
+          "ms": 13835,
+          "faces": 16,
+          "w": 1024,
+          "h": 621
+        },
+        {
+          "id": "29--Students_Schoolkids/29_Students_Schoolkids_Students_Schoolkids_29_66.jpg",
+          "ms": 20550,
+          "faces": 5,
+          "w": 1024,
+          "h": 684
+        },
+        {
+          "id": "29--Students_Schoolkids/29_Students_Schoolkids_Students_Schoolkids_29_489.jpg",
+          "ms": 15176,
+          "faces": 6,
+          "w": 1024,
+          "h": 683
+        },
+        {
+          "id": "29--Students_Schoolkids/29_Students_Schoolkids_Students_Schoolkids_29_624.jpg",
+          "ms": 19870,
+          "faces": 6,
+          "w": 1024,
+          "h": 644
+        }
+      ],
+      "probeMsPerFace": {
+        "16": 846.4092526690391,
+        "22": 919.8933333333333,
+        "28": 1070.7080536912752,
+        "35": 1493.3966666666668,
+        "45": 9155.746666666666,
+        "60": 922.2366666666667,
+        "80": 875.42,
+        "114": 1099.55
+      }
+    }
+  }
+}
