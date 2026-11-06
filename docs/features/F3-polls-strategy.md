@@ -14,7 +14,7 @@ A teacher, in the middle of a live lesson, asks a short question to check that t
    - The admin builds the timetable: the course, its teacher, its weekly hours and its list of students.
    - The teacher runs the lessons.
    - The student attends them.
-3. **A lesson has tabs**, one per feature: attendance, polls and assignments, with more to come. Polls is one of these tabs.
+3. **A lesson has tabs**, one per feature: attendance, polls and homework, with more to come. Polls is one of these tabs.
 4. **The student is already linked to the lesson** through the timetable and their login, so the app knows which lesson they are in and who they are.
 5. **The flow:**
    1. The teacher opens the lesson, goes to the polls tab, writes a question with a few answer options and opens the poll.
@@ -23,7 +23,7 @@ A teacher, in the middle of a live lesson, asks a short question to check that t
    4. The teacher closes the poll. The poll and its results are saved under the lesson, next to its attendance.
 6. **One answer per student.** Each answer is saved under the student's ID, so a second answer replaces the first one instead of being counted twice.
 7. **KISS:** one multiple-choice question per poll.
-8. **Storage:** the answers live in the same database as the rest of the app, which the tools report (step 2) chooses. There is no separate poll service.
+8. **Storage:** the answers live in the same database as the rest of the app, which the tools report chooses. There is no separate poll service.
 
 ## 3. Where the code comes from
 
@@ -58,12 +58,12 @@ The chart library inside those components is [Recharts](https://github.com/recha
 | [Claper](https://github.com/ClaperCo/Claper) | AGPL-3.0 | A full system with its own users and rooms, written in Elixir; its license would force us to publish all our code under it |
 | [ClassQuiz](https://github.com/mawoka-myblock/ClassQuiz) | MPL-2.0 | A Kahoot-style quiz game, not a quick poll; needs several servers |
 | [Razzia](https://github.com/Ralex91/Razzia) (formerly Rahoot) | MIT | A quiz game with a join code |
-| [livepoll](https://github.com/jutionck/livepoll) | MIT | A good fallback, but it asks the server for news every second instead of receiving updates. **Our plan B** if step 2 chooses a stack other than React with a live database |
+| [livepoll](https://github.com/jutionck/livepoll) | MIT | A good fallback, but it asks the server for news every second instead of receiving updates. **Our plan B** if the tools report chooses a stack other than React with a live database |
 | `react-polls`, `react-leaf-polls` (ready-made components) | MIT | Not maintained (last releases in 2018 and 2022) |
 
 ## 4. Still open
 
-- **Tech stack (step 2).** PollPosition uses React and Firebase. If we choose them, we copy the pieces almost as they are. If we choose something else, we keep the ideas and use livepoll as the reference.
+- **Tech stack (tools report).** PollPosition uses React and Firebase. If we choose them, we copy the pieces almost as they are. If we choose something else, we keep the ideas and use livepoll as the reference.
 - **Spike.** Run PollPosition locally, answer a poll from three phones, and record the result in the tools report (section 3).
 - **Reuse record.** When code is copied, add its source and license to the table in [app/README.md](../../app/README.md).
 - **Questions for the team:**
