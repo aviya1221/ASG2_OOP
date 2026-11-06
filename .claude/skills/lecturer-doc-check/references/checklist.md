@@ -57,17 +57,13 @@ A document that plans a Moodle integration, or depends on real student personal 
 
 ## Step 3: SoW
 
-(02a slides 3-4; 03a slides 11-14)
+(02a slides 3-4. Team decision, 2026-11-06: the SoW answers only the lecturer's core questions, "What is delivered, when, at what cost?", in four short sections.)
 
-- Objectives state the business problem, goals and background, not features.
-- **Deliverables are concrete** and each one can be accepted or rejected. "A working system" is the lecturer's example of a vague deliverable.
-- Every deliverable has an acceptance criterion that someone can actually judge, otherwise "delivery turns into an argument".
-- **The out-of-scope list is explicit.** The brief's exclusions (Moodle, Zoom, personal info) belong there, and so do the features that are design-only.
-- Milestones have dates, up to the demo.
-- Assumptions, constraints and dependencies are listed.
-- Roles say who does what (RACI).
-- The risk register has a mitigation for each risk.
-- Nothing promised in the SoW is missing from the SRS, and nothing in the SRS falls outside the SoW scope.
+- **Why (objectives):** the problem and the goal, in a sentence or two.
+- **What (deliverables):** a table of deliverables with IDs (`D-n`), each one concrete. "A working system" is the lecturer's example of a vague deliverable.
+- **When (milestones):** dates, up to the demo.
+- **How much (cost):** money and effort.
+- Nothing promised in the SoW is missing from the SRS, and nothing in the SRS falls outside the SoW.
 
 ## Step 4: SRS
 
