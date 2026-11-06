@@ -15,6 +15,9 @@ The commit history is part of the grade, so commit small and often.
 - Tick the checkbox (`[ ]` → `[x]`) in the same commit that finishes the task.
 - Every team member commits from their own GitHub account, so contributions show in the history.
 - Pull before you start working (`git pull`) to avoid conflicts.
+- Before committing a document change, run the lecturer check and fix every ERROR:
+  `python .claude/skills/lecturer-doc-check/scripts/check_docs.py`
+  (in Claude Code, the `lecturer-doc-check` skill runs it and also reviews the meaning).
 - Message format: `<type>(<area>): <what was done>`
   - Types: `docs`, `feat`, `test`, `fix`, `refactor`, `chore`
   - Areas: `readme`, `tools`, `sow`, `srs`, `usecases`, `sdd`, `edd`, `tests`, `app`, `demo`, `conclusion`
