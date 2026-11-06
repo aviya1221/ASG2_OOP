@@ -63,17 +63,11 @@ app/server/
       FakeLlmClient.ts      canned answers for tests and the offline demo
       parseJsonAnswer.ts    shared parse + validate step for JSON answers
       similarity.ts         cosine similarity, to compare homework
-    auth/                   sign-in layer, provider-neutral: what login routes import
-      IdentityVerifier.ts   the interface + VerifiedIdentity (who signed in)
-      AuthError.ts          why a sign-in was refused
     integrations/
       gemini/               the only folder that imports @google/genai
         GeminiLlmClient.ts  implements LlmClient (Interactions API, Files API, embeddings)
         GeminiConfig.ts     settings and default models
         toLlmError.ts       SDK errors -> LlmError
-      google-identity/      the only folder that imports google-auth-library
-        GoogleIdTokenVerifier.ts  checks the "Sign in with Google" token
-        GoogleSignInConfig.ts     client ID and optional allowed domain
   scripts/gemini-smoke.ts   real end-to-end call (evidence for the step 2 spike)
   test/                     same folders as src/
 ```
@@ -146,74 +140,6 @@ In unit tests the same class gets `new FakeLlmClient()`, so it is tested without
 - Embeddings: up to 8,192 tokens per text, so a very long submission must be split.
 - Gemini does not enforce every schema rule (e.g. `minLength`); features that rely on one pass a `validate` function.
 
-## Sign in with Google
-
-Google only proves **who** the person is. Their role (admin, teacher, student) and their lessons come from our own data, the timetable the admin builds. We ask Google for the basic scopes only (`openid`, `email`, `profile`): name, email address and picture, nothing else from the account.
-
-Based on Google's guides (checked 2026-11-06): [overview](https://developers.google.com/identity/gsi/web/guides/overview), [get a client ID](https://developers.google.com/identity/gsi/web/guides/get-google-api-clientid), [display the button](https://developers.google.com/identity/gsi/web/guides/display-button), [verify the ID token on the server](https://developers.google.com/identity/gsi/web/guides/verify-google-id-token).
-
-### How it works
-
-1. The phone page loads Google's script and shows the "Sign in with Google" button.
-2. The person picks a Google account. The page receives an **ID token** (a JWT signed by Google) in `response.credential`.
-3. The page sends the token to our server (route `POST /auth/google`, still to be built).
-4. `GoogleIdTokenVerifier.verify()` checks it and returns a `VerifiedIdentity`. Google's library checks the signature, that the token was issued to our client ID, the issuer and the expiry; we check a verified email and, if set, the allowed Workspace domain.
-5. The server finds the person by `subject` (Google's permanent account id). On the first sign-in it may match the email to a person the admin added, but only when `emailAuthoritative` is true. Then it starts **our own** session cookie (`HttpOnly`, `Secure`, `SameSite`). The Google token is not stored.
-
-### One-time setup in Google Cloud
-
-One team member does this once and adds the others to the project.
-
-1. **Project.** In the [Google Cloud console](https://console.cloud.google.com/), create or pick a project. Add teammates under *IAM* as Editors.
-2. **Branding** (*Google Auth Platform > Branding*). App name, user support email, developer contact email. Homepage, privacy policy and authorized domains are needed once we have a public domain: the links must be on an authorized domain.
-3. **Audience** (*Google Auth Platform > Audience*). User type **External**, because students sign in with their own Google accounts. While the app is in *Testing*, only listed test users (up to 100) can sign in, so add every teammate. For the demo, press *Publish app*. The basic scopes are not sensitive, so the security review for sensitive scopes does not apply.
-4. **Data access.** Keep only `openid`, `email` and `profile`.
-5. **Client** (*Google Auth Platform > Clients > Create client*). Type **Web application**.
-   - Authorized JavaScript origins: `http://localhost` **and** `http://localhost:<port>` for development, plus the public HTTPS address once deployed (scheme and host only, no path).
-   - Authorized redirect URIs: none (we use the popup flow).
-   - Copy the client ID (`...apps.googleusercontent.com`) into `GOOGLE_CLIENT_ID`. This flow needs **no client secret**: do not download or commit one.
-
-### Browser side (for the phone web app)
-
-```html
-<script src="https://accounts.google.com/gsi/client" async></script>
-<div id="google-button"></div>
-<script>
-  window.onload = () => {
-    google.accounts.id.initialize({
-      client_id: "YOUR_CLIENT_ID.apps.googleusercontent.com",
-      use_fedcm_for_button: true, // Google: enable FedCM for every new web app
-      callback: async ({ credential }) => {
-        const response = await fetch("/auth/google", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ credential }),
-        });
-        if (response.ok) location.assign("/"); // our session cookie is now set
-      },
-    });
-    google.accounts.id.renderButton(document.getElementById("google-button"), {
-      theme: "outline",
-      size: "large",
-    });
-  };
-</script>
-```
-
-Notes from Google's guides:
-
-- Load the script from `accounts.google.com`; self-hosting it is not supported.
-- When testing over plain `http://localhost`, send the header `Referrer-Policy: no-referrer-when-downgrade`.
-- If FedCM is off, send `Cross-Origin-Opener-Policy: same-origin-allow-popups`, or the popup may open blank.
-- One Tap (the automatic prompt) works only on HTTPS; the button also works on `localhost`.
-- In the popup flow our page sends the token itself as JSON. If we ever switch to the redirect flow, the login route must also compare the `g_csrf_token` cookie with the `g_csrf_token` field in the body and refuse a mismatch.
-
-### Still to build
-
-- The `POST /auth/google` route and our session cookie, once the web framework is chosen (step 2).
-- Linking a Google account to the person the admin added: by email on the first sign-in, then by `subject`.
-- `GOOGLE_ALLOWED_DOMAIN`, if the university gives students Google Workspace accounts.
-
 ## Settings (environment variables)
 
 Copy [server/.env.example](server/.env.example) to `server/.env`. The `.env` file is ignored by git.
@@ -225,15 +151,12 @@ Copy [server/.env.example](server/.env.example) to `server/.env`. The `.env` fil
 | `GEMINI_TEXT_MODEL` | no | `gemini-3.6-flash` | Model for text and JSON answers |
 | `GEMINI_EMBEDDING_MODEL` | no | `gemini-embedding-2` | Model for comparing texts |
 | `GEMINI_STORE_INTERACTIONS` | no | `false` | Let Google keep interactions |
-| `GOOGLE_CLIENT_ID` | for Google sign-in | | OAuth client ID (Web application); empty = Google sign-in off |
-| `GOOGLE_ALLOWED_DOMAIN` | no | | Only accept accounts of this Google Workspace domain |
 
 ## Reused code and licenses
 
 | Source | What we used | License |
 |--------|--------------|---------|
 | [@google/genai](https://github.com/googleapis/js-genai) | Google's official Gemini SDK | Apache-2.0 |
-| [google-auth-library](https://github.com/googleapis/google-auth-library-nodejs) | Checks "Sign in with Google" tokens | Apache-2.0 |
 | [tsx](https://github.com/privatenumber/tsx) | Runs TypeScript directly (dev tool) | MIT |
 | [TypeScript](https://github.com/microsoft/TypeScript) | Type checker (dev tool) | Apache-2.0 |
 | [@types/node](https://github.com/DefinitelyTyped/DefinitelyTyped) | Node.js type definitions (dev tool) | MIT |

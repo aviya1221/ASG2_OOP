@@ -13,8 +13,7 @@
     "smoke:gemini": "tsx --env-file-if-exists=.env scripts/gemini-smoke.ts"
   },
   "dependencies": {
-    "@google/genai": "^2.32.0",
-    "google-auth-library": "^11.3.1"
+    "@google/genai": "^2.32.0"
   },
   "devDependencies": {
     "@types/node": "^22.20.5",

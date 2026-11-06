@@ -43,30 +43,3 @@ describe("loadConfig: LLM settings", () => {
     });
   });
 });
-
-describe("loadConfig: Google sign-in settings", () => {
-  const base = { LLM_PROVIDER: "fake" };
-
-  it("is off when GOOGLE_CLIENT_ID is not set", () => {
-    assert.equal(loadConfig(base).googleSignIn, undefined);
-  });
-
-  it("reads the client ID and the optional allowed domain", () => {
-    const config = loadConfig({
-      ...base,
-      GOOGLE_CLIENT_ID: "1234-abc.apps.googleusercontent.com",
-      GOOGLE_ALLOWED_DOMAIN: "students.example.ac.il",
-    });
-    assert.deepEqual(config.googleSignIn, {
-      clientId: "1234-abc.apps.googleusercontent.com",
-      allowedDomain: "students.example.ac.il",
-    });
-  });
-
-  it("rejects something that is not an OAuth client ID (e.g. an API key pasted by mistake)", () => {
-    assert.throws(() => loadConfig({ ...base, GOOGLE_CLIENT_ID: "AIzaSyExample" }), {
-      name: "ConfigError",
-      message: /GOOGLE_CLIENT_ID/,
-    });
-  });
-});

@@ -1,5 +1,4 @@
 import { GEMINI_DEFAULTS, type GeminiConfig } from "../integrations/gemini/index.ts";
-import type { GoogleSignInConfig } from "../integrations/google-identity/index.ts";
 
 /**
  * All server settings, read once from environment variables at start-up.
@@ -9,8 +8,6 @@ import type { GoogleSignInConfig } from "../integrations/google-identity/index.t
  */
 export interface AppConfig {
   llm: LlmSettings;
-  /** Undefined until GOOGLE_CLIENT_ID is set: then "Sign in with Google" is off. */
-  googleSignIn: GoogleSignInConfig | undefined;
 }
 
 /** "gemini" makes real calls; "fake" gives canned answers with no key (tests, offline demo). */
@@ -26,18 +23,7 @@ export class ConfigError extends Error {
 type Env = Record<string, string | undefined>;
 
 export function loadConfig(env: Env = process.env): AppConfig {
-  return { llm: loadLlmSettings(env), googleSignIn: loadGoogleSignIn(env) };
-}
-
-function loadGoogleSignIn(env: Env): GoogleSignInConfig | undefined {
-  const clientId = read(env, "GOOGLE_CLIENT_ID");
-  if (!clientId) return undefined;
-  if (!clientId.endsWith(".apps.googleusercontent.com")) {
-    throw new ConfigError(
-      `GOOGLE_CLIENT_ID must be an OAuth client ID ending in .apps.googleusercontent.com, got "${clientId}"`,
-    );
-  }
-  return { clientId, allowedDomain: read(env, "GOOGLE_ALLOWED_DOMAIN") };
+  return { llm: loadLlmSettings(env) };
 }
 
 function loadLlmSettings(env: Env): LlmSettings {
