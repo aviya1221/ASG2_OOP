@@ -75,16 +75,21 @@ The lecturer's 6 parts, in order. Avoid the 3 pitfalls: vague deliverables, no a
 
 ## Step 4: SRS (Software Requirements Specification) → [docs/04-SRS.md](docs/04-SRS.md)
 
-- [ ] Introduction: purpose, scope, definitions, references
-- [ ] Overall description: user types (student, lecturer), operating environment (smartphone browser), constraints
-- [ ] Functional requirements with IDs (e.g. `FR-ATT-01`), one commit per feature:
-  - [ ] F1 Attendance + spreadsheet (main feature)
-  - [ ] F2 Comments and suggestions (realtime + offline)
-  - [ ] F3 Polls
-  - [ ] F4 Class video ML summary
-  - [ ] F5 LLM homework review and comparison
-- [ ] Non-functional requirements: usability (KISS), performance (whole class at once), security and privacy, availability
-- [ ] Data requirements (main entities, spreadsheet columns)
+Every requirement is written as "The system shall..." and must be testable: unambiguous, verifiable, complete, consistent, traceable, prioritised.
+
+- [ ] 1. Introduction: purpose, scope, definitions, references
+- [ ] 2. Overall description: product perspective, user classes (student, lecturer), operating environment (smartphone browser), constraints, assumptions
+- [ ] 3.1 Functional requirements with IDs + priority + source (`D-n`), one commit per feature:
+  - [ ] F1 Attendance + spreadsheet (main feature): `REQ-10` to `REQ-19`
+  - [ ] F2 Comments and suggestions (realtime + offline): `REQ-20` to `REQ-29`
+  - [ ] F3 Polls: `REQ-30` to `REQ-39`
+  - [ ] F4 Class video ML summary: `REQ-40` to `REQ-49`
+  - [ ] F5 LLM homework review and comparison: `REQ-50` to `REQ-59`
+- [ ] 3.2 External interfaces (LLM API, spreadsheet export, etc.)
+- [ ] 3.3 Non-functional requirements (`NFR-nn`), each one measurable: usability (KISS), performance (whole class at once), security and privacy, availability
+- [ ] Review pass: rewrite any weak requirement (not measurable, subjective, vague quantity, several in one)
+- [ ] Appendix B: data dictionary (main entities, spreadsheet columns)
+- [ ] Appendix C: traceability matrix (requirement column; filled further in steps 5-8)
 
 ## Step 5: Main use cases (client stories) → [docs/05-use-cases.md](docs/05-use-cases.md)
 
