@@ -67,17 +67,13 @@ The lecturer requires that we **actually test** every tool we suggest.
 
 ## Step 3: SoW (Statement of Work) → [docs/03-SoW.md](docs/03-SoW.md)
 
-The lecturer's 6 parts, in order. Avoid the 3 pitfalls: vague deliverables, no acceptance test, no out-of-scope list.
+The SoW answers only the lecturer's core questions: why, what is delivered, when, and at what cost.
 
-- [x] 1. Objectives: problem, goals and background
-- [x] 2. Deliverables table with IDs (`D-1`, `D-2`, ...), each one concrete (not "a working system")
-- [x] 3. In scope + an explicit out-of-scope list
-- [ ] 4. Milestones with dates up to the demo (+ Gantt chart)
-- [x] 5. Acceptance criteria for each deliverable
-- [x] 6a. Assumptions, constraints and dependencies
-- [ ] 6b. Roles: RACI table (who is responsible / accountable / consulted / informed)
-- [x] 6c. Risk register (ID, risk, probability, impact, mitigation)
-- [ ] Add comments, video summary and homework review to the SoW (deliverables, scope, acceptance criteria) once step 1 decides their scope
+- [x] 1. Why: the problem and the goal
+- [x] 2. What: deliverables table with IDs (`D-1`, `D-2`, ...), each one concrete (not "a working system")
+- [ ] 3. When: milestone dates up to the demo
+- [x] 4. How much: cost in money and effort
+- [ ] Add comments, video summary and homework review to the deliverables once step 1 decides their scope
 
 ## Step 4: SRS (Software Requirements Specification) → [docs/04-SRS.md](docs/04-SRS.md)
 

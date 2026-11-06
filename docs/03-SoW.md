@@ -49,54 +49,25 @@ There are no payments; milestones are dates and checkpoints up to the demo.
 Mermaid supports `gantt` charts, which GitHub renders.
 -->
 
+## 1. Why (objectives)
+
+Today's teaching tools are scattered, each with its own login or room code. We want one in-class app that holds everything a lesson needs (Assignment 2, Introduction to Software Engineering).
+
+## 2. What is delivered (deliverables)
+
 A web app for live lessons: the admin builds the timetable, and each lesson has tabs (attendance, polls and more) that the teacher runs and the students use from their phone's browser.
-We deliver it with attendance (including a spreadsheet export) and live polls working in a 10-minute class demo, plus the design documents of steps 2 to 8.
 
-## 1. Objectives
+| ID | Deliverable |
+|----|-------------|
+| D-1 | Attendance module (main feature), with a spreadsheet export |
+| D-2 | Polls module ([strategy](features/F3-polls-strategy.md)) |
+| D-3 | Timetable and roles: admin, teacher and student |
+| D-4 | Design documents for steps 2 to 8 |
 
-Today's teaching tools are scattered, each with its own login or room code. Our goal is one in-class app that holds everything a lesson needs, shown working live (Assignment 2: design first, reuse code, KISS).
+## 3. When (milestones)
 
-## 2. Deliverables
+The design documents (D-4) by _TODO: date_; the app (D-1 to D-3) shown in the class demo on _TODO: date_.
 
-| ID | Deliverable | Description | Acceptance criterion |
-|----|-------------|-------------|----------------------|
-| D-1 | Attendance module (main feature) | Students check in from their phones; the teacher downloads a spreadsheet | In the demo, 3 or more phones check in, and the spreadsheet has one row per checked-in student with the check-in time |
-| D-2 | Polls module | A multiple-choice poll inside the lesson, with live results ([strategy](features/F3-polls-strategy.md)) | In the demo, 3 or more students answer without entering a code, the chart updates without reloading, and a second answer counts once |
-| D-3 | Timetable and roles | Admin, teacher and student views; the admin creates courses | A course with a teacher and 3 students appears for each of them after they log in |
-| D-4 | Design documents | Steps 2 to 8: tools report, SRS, use cases, SDD, EDD, STP / STD | The lecturer check reports no errors |
+## 4. How much (cost)
 
-## 3. Scope
-
-### 3.1 In scope
-
-The three roles, the timetable, the attendance and polls tabs, and the design documents. Comments, video summary and homework review are still open (decided in step 1).
-
-### 3.2 Out of scope
-
-Integration with Moodle, Zoom or personal-information systems; a native app; room codes or outside poll sites.
-
-## 4. Milestones
-
-_TODO: the demo date and the checkpoints before it._
-
-## 5. Acceptance criteria
-
-The lecturer is the client. Each deliverable is accepted by its criterion in section 2.
-
-## 6. Assumptions and roles
-
-### 6.1 Assumptions, constraints and dependencies
-
-Students have a smartphone with internet in class. No budget, so every tool needs a free tier. Attendance and polls depend on the tool choice in step 2 offering live updates.
-
-### 6.2 Roles and responsibilities (RACI)
-
-| Activity | Member 1 | Member 2 | Member 3 |
-|----------|----------|----------|----------|
-
-### 6.3 Risk register
-
-| ID | Risk | Probability | Impact | Mitigation |
-|----|------|-------------|--------|------------|
-| R-1 | The class Wi-Fi fails during the demo | Medium | High | Test on the class network beforehand; keep a phone hotspot and a backup video |
-| R-2 | A chosen tool lacks a needed feature | Medium | High | Spike every tool before choosing it; keep a fallback (for polls: livepoll) |
+No money: every tool runs on a free tier. The effort is the team's own time until the demo.
