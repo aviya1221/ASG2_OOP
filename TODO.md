@@ -27,7 +27,7 @@ The commit history is part of the grade, so commit small and often.
 - [x] Create the GitHub repository
 - [x] Add an initial README with the problem statement and features
 - [x] Add this TODO roadmap
-- [ ] Add the folder structure for all deliverables (`docs/`, `app/`)
+- [x] Add the folder structure for all deliverables (`docs/`, `app/`)
 - [ ] Add team members (names + GitHub usernames) to the README
 - [ ] Define the scope: in scope / out of scope (no Moodle, Zoom or personal-info integration)
 - [ ] Decide which of the 5 features are implemented in the demo and which are design-only
