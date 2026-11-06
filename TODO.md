@@ -182,10 +182,15 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
 
 ## Step 10: Demo in class (10 minutes) → [docs/10-demo-plan.md](docs/10-demo-plan.md)
 
-- [ ] Minute-by-minute demo script
+Lecturer's golden rule: **demo the requirements, not the code.** Every minute maps to a requirement or a result.
+
+- [ ] Demo script: context → live scenario (use cases) → evidence (results vs. requirements and tests) → lessons → Q&A, each row tied to `UC-nn` / `REQ-nn`
+- [ ] Freeze a tagged release days before the demo (`git tag`)
+- [ ] Seed realistic demo data
 - [ ] Slide / screen with the QR code and link for the students
-- [ ] At least 2 rehearsals on real phones
-- [ ] Backup plan (screen recording, fallback if the network fails)
+- [ ] Rehearse twice with a timer, on real phones (log each rehearsal)
+- [ ] Record a backup video + plan B for network and hardware
+- [ ] List known issues to state openly
 - [ ] After the demo: save the results (attendance count, poll results) without personal student data
 
 ## Step 11: Conclusion → [docs/11-conclusion.md](docs/11-conclusion.md)
