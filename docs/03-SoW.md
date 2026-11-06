@@ -51,11 +51,11 @@ Mermaid supports `gantt` charts, which GitHub renders.
 
 ## 1. Why (objectives)
 
-Today's teaching tools are scattered, each with its own login or room code. We want one in-class app that holds everything a lesson needs.
+Our client, an academic college, runs its live lessons with scattered tools: one for attendance, another for polls, another for student feedback, each with its own login or room code. The college wants one in-class app that holds everything a lesson needs, so lecturers save time and every student can take part from their phone.
 
 ## 2. What is delivered (deliverables)
 
-A web app for live lessons: the admin builds the timetable, and each lesson has tabs (attendance, polls and more) that the teacher runs and the students use from their phone's browser.
+A web app for live lessons: the college's admin builds the timetable, and each lesson has tabs (attendance, polls and more) that the teacher runs and the students use from their phone's browser.
 
 The features:
 
@@ -70,4 +70,5 @@ The features:
 
 ## 3. How much (cost)
 
-No money: every tool runs on a free tier. The effort is the team's own time until the demo.
+- **Infrastructure:** no license or hosting cost during the pilot, because every service runs on a free tier.
+- **Development:** our team's time until the pilot in a live class.
