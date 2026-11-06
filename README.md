@@ -1,4 +1,4 @@
-# Ex2: Vibe Coding & Deep Designing: Web-based Teaching Tool
+# Web-based Teaching Tool
 
 <!--
 LECTURER GUIDELINES: README (lecture 02a, slides 3, 20)
@@ -41,16 +41,14 @@ Sections 2-5 are filled in step 9, once the app exists.
 
 _TODO: one sentence that says what this app is._
 
-Introduction to Software Engineering (OOP, OOD), Assignment 2.
-
-**Goal:** Design an end-to-end web application for teaching in class.
-The assignment is a design challenge first; the implementation is secondary, and reusing existing code is preferred.
+**Client:** an academic college.
+**Approach:** design first, and reuse existing open-source code wherever we can.
 
 ## Problem statement
 
-Today's online teaching tools don't work well enough. We need simpler, LLM-ready tools that support real learning in class.
+The college runs its live lessons with scattered tools, each with its own login or room code. Lecturers need one simple app, ready for AI features, that supports real learning in class.
 
-## Features (from the assignment)
+## Features
 
 1. **Attendance (main feature):** students mark their attendance in class automatically. The lecturer gets an online/offline spreadsheet with the details.
 2. **Comments & suggestions:** students can comment and raise suggestions, in real time or offline.
@@ -58,20 +56,20 @@ Today's online teaching tools don't work well enough. We need simpler, LLM-ready
 4. **Video summary:** lecturers can get an ML summary of their recorded class video (Zoom, Meet, Google Classroom).
 5. **Homework review:** students and teachers can get a deep LLM review of their homework, including comparisons to other students' work.
 
-## Requirements
+## Client requirements
 
-1. It must work in this class, shown in a real demo.
-2. KISS: students use a simple smartphone app (a web-based application).
+1. The app is proven in a pilot in a live class, presented to the client in 10 minutes.
+2. KISS: students use the app in their phone's browser, with nothing to install.
 
-## Guidelines
+## Constraints
 
-- No integration with Moodle, Zoom or personal information systems is needed.
+- No integration with Moodle, Zoom or personal-information systems.
 - Design only what can actually be implemented.
-- No need to write everything from scratch, but we must be able to build a web app and demo it in class (10 minutes).
+- Reuse existing code where possible instead of writing everything from scratch.
 
 ## Scope
 
-_TODO (step 1): define what is in scope and out of scope, and which features are implemented in the demo versus design-only._
+_TODO: define what is in scope and out of scope, and which features the pilot includes versus design-only._
 
 ## Team
 
@@ -79,35 +77,35 @@ _TODO: names and GitHub usernames._
 
 ## Quick start
 
-_TODO (step 9): how to install and run the app, and the public URL._
+_TODO: how to install and run the app, and the public URL._
 
 ## Usage example
 
-_TODO (step 9): a short walkthrough, e.g. the lecturer opens a session and a student checks in from a phone._
+_TODO: a short walkthrough, e.g. the lecturer opens a lesson and a student checks in from a phone._
 
 ## Configuration and environment
 
-_TODO (step 9): environment variables, API keys and how to set them (never commit secrets)._
+_TODO: environment variables, API keys and how to set them (never commit secrets)._
 
 ## Running the tests
 
-_TODO (step 9): the command that runs the tests._
+_TODO: the command that runs the tests._
 
 ## Repository structure
 
-| Step | Deliverable | Location |
-|------|-------------|----------|
-| 1 | Problem and scope | `README.md` (this file) |
-| 2 | Technical tools report | [docs/02-tools-report.md](docs/02-tools-report.md) |
-| 3 | Statement of Work (SoW) | [docs/03-SoW.md](docs/03-SoW.md) |
-| 4 | Software Requirements Spec (SRS) | [docs/04-SRS.md](docs/04-SRS.md) |
-| 5 | Use cases / client stories | [docs/05-use-cases.md](docs/05-use-cases.md) |
-| 6 | Main software components (SDD) | [docs/06-SDD.md](docs/06-SDD.md) |
-| 7 | Class and sequence diagrams (EDD) | [docs/07-EDD/](docs/07-EDD/) |
-| 8 | Testing strategy (STP / STD) | [docs/08-STP-STD.md](docs/08-STP-STD.md) |
-| 9 | Demo web application | [app/](app/) |
-| 10 | Demo in class | [docs/10-demo-plan.md](docs/10-demo-plan.md) |
-| 11 | Conclusion | [docs/11-conclusion.md](docs/11-conclusion.md) |
+| Document | Location |
+|----------|----------|
+| Problem and scope | `README.md` (this file) |
+| Technical tools report | [docs/02-tools-report.md](docs/02-tools-report.md) |
+| Statement of Work (SoW) | [docs/03-SoW.md](docs/03-SoW.md) |
+| Software Requirements Spec (SRS) | [docs/04-SRS.md](docs/04-SRS.md) |
+| Use cases / client stories | [docs/05-use-cases.md](docs/05-use-cases.md) |
+| Main software components (SDD) | [docs/06-SDD.md](docs/06-SDD.md) |
+| Class and sequence diagrams (EDD) | [docs/07-EDD/](docs/07-EDD/) |
+| Testing strategy (STP / STD) | [docs/08-STP-STD.md](docs/08-STP-STD.md) |
+| Web app | [app/](app/) |
+| Pilot presentation plan | [docs/10-demo-plan.md](docs/10-demo-plan.md) |
+| Project closure | [docs/11-conclusion.md](docs/11-conclusion.md) |
 
 Images and screenshots go in [docs/assets/](docs/assets/).
 How the documents connect: [docs/README.md](docs/README.md).
@@ -118,7 +116,7 @@ See the commit rules in [TODO.md](TODO.md#commit-rules): small commits, one task
 
 ## Project progress
 
-See [TODO.md](TODO.md) for the roadmap, which follows the assignment's 11 steps.
+See [TODO.md](TODO.md) for the roadmap.
 
 ## License and contact
 
