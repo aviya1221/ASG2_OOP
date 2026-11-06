@@ -39,6 +39,7 @@ The commit history is part of the grade, so commit small and often.
 - [ ] Define the scope: in scope / out of scope (no Moodle, Zoom or personal-info integration)
 - [ ] Decide which of the 5 features are implemented in the demo and which are design-only
 - [x] Polls (F3): agreed build strategy and reused code sources → [docs/features/F3-polls-strategy.md](docs/features/F3-polls-strategy.md)
+- [x] Attendance (F1): interactive mock of the agreed flow (Hebrew) → [docs/assets/F1-attendance-flow-demo.html](docs/assets/F1-attendance-flow-demo.html)
 - [x] Add a "Repository structure" section to the README
 - [x] Add a documentation guide with the lecturer's document chain and ID scheme
 - [x] Align the README with the lecturer's 8 README sections
@@ -174,7 +175,7 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
   - [x] Settings from environment variables + one place that builds the shared services
   - [x] Unit tests with a fake SDK (no network, no API key)
   - [x] Smoke script: one real call with our key (evidence for the step 2 spike)
-  - [ ] Document the LLM layer in `app/README.md` (structure, settings, reused libraries)
+  - [x] Document the LLM layer in `app/README.md` (structure, settings, reused libraries)
 - [ ] Sign in with Google (identity only; roles come from our own data):
   - [ ] Server-side check of the Google sign-in token
   - [ ] Setup guide: what to create in Google Cloud (consent screen, client ID, allowed origins)
