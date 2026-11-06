@@ -1,4 +1,4 @@
-# Step 2: Technical Tools Report
+# Technical Tools Report
 
 <!--
 LECTURER GUIDELINES: TOOLS REPORT
