@@ -145,3 +145,9 @@ The lecturer is the client. A deliverable is accepted when its criterion in sect
 
 | ID | Risk | Probability | Impact | Mitigation |
 |----|------|-------------|--------|------------|
+| R-1 | The class Wi-Fi blocks or drops the app during the demo | Medium | High | Test on the class network before demo day; keep a phone hotspot as plan B and a recorded backup video |
+| R-2 | A chosen tool lacks a needed feature, such as live updates | Medium | High | Run a spike on every tool before choosing it (D-5) and keep an alternative (for polls: livepoll, see the polls strategy) |
+| R-3 | A whole class answering at once slows the app down | Low | Medium | Before the demo, load-test with the team's phones plus a script that simulates a full class |
+| R-4 | Scope creep: new feature ideas keep coming in | High | Medium | The out-of-scope list (section 3.2); a new idea enters only if the whole team agrees, otherwise it waits until after the demo |
+| R-5 | An external AI service (video summary, homework review) is paid, slow or unavailable | Medium | Medium | Put it behind an interface with a mocked answer; if no free tier works, the feature becomes design-only |
+| R-6 | Reused code limits us through its license, or its project is abandoned | Low | Medium | Use only CC0 or MIT code, copy the pieces into our repository instead of depending on the project, and record each source in app/README.md |

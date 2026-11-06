@@ -75,7 +75,7 @@ The lecturer's 6 parts, in order. Avoid the 3 pitfalls: vague deliverables, no a
 - [x] 5. Acceptance criteria for each deliverable
 - [x] 6a. Assumptions, constraints and dependencies
 - [ ] 6b. Roles: RACI table (who is responsible / accountable / consulted / informed)
-- [ ] 6c. Risk register (ID, risk, probability, impact, mitigation)
+- [x] 6c. Risk register (ID, risk, probability, impact, mitigation)
 - [ ] Add comments, video summary and homework review to the SoW (deliverables, scope, acceptance criteria) once step 1 decides their scope
 
 ## Step 4: SRS (Software Requirements Specification) → [docs/04-SRS.md](docs/04-SRS.md)
