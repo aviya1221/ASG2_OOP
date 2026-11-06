@@ -63,11 +63,17 @@ app/server/
       FakeLlmClient.ts      canned answers for tests and the offline demo
       parseJsonAnswer.ts    shared parse + validate step for JSON answers
       similarity.ts         cosine similarity, to compare homework
+    auth/                   sign-in layer, provider-neutral: what login routes import
+      IdentityVerifier.ts   the interface + VerifiedIdentity (who signed in)
+      AuthError.ts          why a sign-in was refused
     integrations/
       gemini/               the only folder that imports @google/genai
         GeminiLlmClient.ts  implements LlmClient (Interactions API, Files API, embeddings)
         GeminiConfig.ts     settings and default models
         toLlmError.ts       SDK errors -> LlmError
+      google-identity/      the only folder that imports google-auth-library
+        GoogleIdTokenVerifier.ts  checks the "Sign in with Google" token
+        GoogleSignInConfig.ts     client ID and optional allowed domain
   scripts/gemini-smoke.ts   real end-to-end call (evidence for the step 2 spike)
   test/                     same folders as src/
 ```
@@ -157,6 +163,7 @@ Copy [server/.env.example](server/.env.example) to `server/.env`. The `.env` fil
 | Source | What we used | License |
 |--------|--------------|---------|
 | [@google/genai](https://github.com/googleapis/js-genai) | Google's official Gemini SDK | Apache-2.0 |
+| [google-auth-library](https://github.com/googleapis/google-auth-library-nodejs) | Checks "Sign in with Google" tokens | Apache-2.0 |
 | [tsx](https://github.com/privatenumber/tsx) | Runs TypeScript directly (dev tool) | MIT |
 | [TypeScript](https://github.com/microsoft/TypeScript) | Type checker (dev tool) | Apache-2.0 |
 | [@types/node](https://github.com/DefinitelyTyped/DefinitelyTyped) | Node.js type definitions (dev tool) | MIT |

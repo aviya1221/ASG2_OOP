@@ -1,5 +1,7 @@
+import type { IdentityVerifier } from "./auth/index.ts";
 import { loadConfig, type AppConfig, type LlmSettings } from "./config/env.ts";
 import { GeminiLlmClient } from "./integrations/gemini/index.ts";
+import { GoogleIdTokenVerifier } from "./integrations/google-identity/index.ts";
 import { FakeLlmClient, type LlmClient } from "./llm/index.ts";
 
 /**
@@ -9,10 +11,15 @@ import { FakeLlmClient, type LlmClient } from "./llm/index.ts";
  */
 export interface Services {
   llm: LlmClient;
+  /** Undefined when Google sign-in is not configured (no GOOGLE_CLIENT_ID). */
+  googleSignIn: IdentityVerifier | undefined;
 }
 
 export function createServices(config: AppConfig = loadConfig()): Services {
-  return { llm: createLlmClient(config.llm) };
+  return {
+    llm: createLlmClient(config.llm),
+    googleSignIn: config.googleSignIn ? new GoogleIdTokenVerifier(config.googleSignIn) : undefined,
+  };
 }
 
 function createLlmClient(settings: LlmSettings): LlmClient {
