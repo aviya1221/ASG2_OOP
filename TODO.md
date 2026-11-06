@@ -139,15 +139,23 @@ The EDD describes one component: "How is this part built?" One file per componen
 
 ## Step 8: Testing strategy (STP / STD) → [docs/08-STP-STD.md](docs/08-STP-STD.md)
 
-The testing strategy must address the classes from step 7.
+The testing strategy must address the classes from step 7. STP = how we will test; STD = the test cases themselves.
 
-- [ ] Test levels: unit, integration, end-to-end, manual demo rehearsal
-- [ ] Unit-test plan per class from step 7 (table: class → methods → test cases)
-- [ ] Integration tests (API + database)
-- [ ] End-to-end scenario: a full class flow on a smartphone
-- [ ] Non-functional tests: many students at once, different mobile browsers
-- [ ] Testing tools
-- [ ] Traceability table: requirement (SRS) → test
+**Part A: STP (test plan)**
+- [ ] A.1 Scope and items under test
+- [ ] A.2 Test levels: unit, integration, system, acceptance
+- [ ] A.3 Unit-test plan per class from step 7 (table: EDD → class → method → test cases)
+- [ ] A.4 Approach and tools
+- [ ] A.5 Environment and test data (phones, browsers, fake students, no real personal data)
+- [ ] A.6 Entry and exit criteria (when are we done?)
+- [ ] A.7 Schedule, roles and risks
+
+**Part B: STD (test cases)**, each one: ID, title, requirement it verifies, preconditions, steps, input data, expected result
+- [ ] Test cases for F1 Attendance (`TC-0xx`)
+- [ ] Test cases for the other features in demo scope (one commit per feature)
+- [ ] Test cases for state transitions (state machines from step 7)
+- [ ] Non-functional test cases: many students at once, different mobile browsers
+- [ ] Fill the "Test cases" column of the traceability matrix: no Gap for requirements in demo scope
 
 ## Step 9: Implement the demo web app (KISS) → [app/](app/)
 
