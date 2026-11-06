@@ -123,6 +123,9 @@ So the need is a face tool that:
 
 | Need | Option | Cost / free tier | Simplicity | Works on phones | Spike result | Chosen? |
 |------|--------|------------------|------------|-----------------|--------------|---------|
+| Attendance face tool | 1. OpenCV (YuNet + SFace) | Free, open source | Two models and about 100 lines of our code (loading, aligning each face) | Runs in the browser; download of about 64 MB; not yet timed on a phone (laptop: 83 ms per face) | Found 82.1% of crowd faces; recognised 97.0% at 35 px | Yes (ADR-1) |
+| Attendance face tool | 2. Human | Free, open source | One library with ready examples | Runs in the browser; laptop: 758 ms per face | Found 13.6%; recognised 1.7% at 35 px | No |
+| Attendance face tool | 2b. Human + tiles | Free, open source | One library plus our tiling code | Runs in the browser; laptop: 2,573 ms per face | Found 27.8%; recognised 58.3% at 35 px | No |
 
 ## 5. Decisions (ADRs)
 
