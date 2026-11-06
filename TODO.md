@@ -170,7 +170,7 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
 - [x] Project scaffold + `.gitignore`
 - [ ] LLM layer (used by the video summary and the homework review), behind one interface so the provider can be swapped or mocked (lecture 03a, risk R4):
   - [x] Provider-neutral contract: interface, request and result types, errors, a fake client for tests and an offline demo
-  - [ ] Gemini adapter: official Google Gen AI SDK, Interactions API, file upload, embeddings
+  - [x] Gemini adapter: official Google Gen AI SDK, Interactions API, file upload, embeddings
   - [ ] Settings from environment variables + one place that builds the shared services
   - [ ] Unit tests with a fake SDK (no network, no API key)
   - [ ] Smoke script: one real call with our key (evidence for the step 2 spike)
