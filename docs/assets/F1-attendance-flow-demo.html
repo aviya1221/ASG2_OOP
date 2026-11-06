@@ -1,0 +1,755 @@
+<!doctype html>
+<!-- F1 Attendance: interactive mock of the agreed flow (Hebrew). Open this file in a browser.
+     Online copy (private until shared): https://claude.ai/artifact/6zyxc6cKA71bRKNi8iA1yt -->
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>נוכחות מתמונת כיתה</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Hebrew:wght@400;500;600;700&family=Secular+One&display=swap">
+<style>
+/* Layout: a seating chart on graph paper. Explanation column beside a live classroom drawing; below it, the lane that shows what each side holds and sends. */
+:root{
+  --paper:#F3F6F5; --sheet:#FFFFFF; --ink:#1C2637; --ink-2:#4F5A6B; --line:#D3DBE0; --grid:#E4EAEC;
+  --pen:#2950C4; --pen-soft:#E4EAFA;
+  --ok:#1F7A49; --ok-soft:#DCF0E3; --warn:#985F00; --warn-soft:#FAEDD3; --bad:#BC3328; --bad-soft:#F8DFDB; --idle:#5F6875; --idle-soft:#EBEEF1;
+  --floor:#EDF1EC; --wall:#E0E6E2; --desk:#E7DCC8; --desk-edge:#B5A483; --head:#FFFFFF; --hair:#3A4252; --shirt:#D6DFEC;
+  --f-display:"Secular One","Arial Hebrew","Segoe UI",sans-serif;
+  --f-body:"IBM Plex Sans Hebrew","Arial Hebrew","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#11161D; --sheet:#19202A; --ink:#E4E9F0; --ink-2:#A3AEBD; --line:#2D3745; --grid:#171E27;
+    --pen:#8CA9FF; --pen-soft:#1E2A47;
+    --ok:#5CC48B; --ok-soft:#163225; --warn:#E6B04B; --warn-soft:#372A10; --bad:#FF7D70; --bad-soft:#3B1916; --idle:#9AA3B0; --idle-soft:#242B35;
+    --floor:#1A2129; --wall:#222A34; --desk:#4A4132; --desk-edge:#7E6F53; --head:#2B333F; --hair:#0D1117; --shirt:#33415A;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#11161D; --sheet:#19202A; --ink:#E4E9F0; --ink-2:#A3AEBD; --line:#2D3745; --grid:#171E27;
+  --pen:#8CA9FF; --pen-soft:#1E2A47;
+  --ok:#5CC48B; --ok-soft:#163225; --warn:#E6B04B; --warn-soft:#372A10; --bad:#FF7D70; --bad-soft:#3B1916; --idle:#9AA3B0; --idle-soft:#242B35;
+  --floor:#1A2129; --wall:#222A34; --desk:#4A4132; --desk-edge:#7E6F53; --head:#2B333F; --hair:#0D1117; --shirt:#33415A;
+  color-scheme:dark;
+}
+body{
+  background-color:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:28px 28px;
+  color:var(--ink); font-family:var(--f-body); font-size:16px; line-height:1.65;
+}
+.wrap{max-width:1200px;margin:0 auto;padding-block:32px 72px;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));display:grid;gap:44px}
+h1,h2{font-family:var(--f-display);font-weight:400;line-height:1.2;text-wrap:balance;margin:0}
+h1{font-size:clamp(2rem,1.3rem + 2.6vw,3rem)}
+h2{font-size:1.55rem}
+h3{font-size:1.02rem;margin:0;line-height:1.35}
+p{margin:0}
+.eyebrow{font-size:.8rem;font-weight:600;color:var(--pen);letter-spacing:.04em}
+.lede{max-width:66ch;color:var(--ink-2);font-size:1.05rem}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--pen);outline-offset:2px}
+
+/* header */
+.top{display:grid;gap:18px}
+.promises{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.promises li{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:grid;gap:4px;min-width:0}
+.promises strong{font-size:1rem}
+.promises span{color:var(--ink-2);font-size:.92rem}
+.terms{margin:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.terms div{border-top:2px solid var(--ink);padding-top:8px;min-width:0}
+.terms dt{font-weight:700}
+.terms dd{margin:2px 0 0;color:var(--ink-2);font-size:.92rem}
+@media (max-width:820px){.promises,.terms{grid-template-columns:minmax(0,1fr)}}
+
+/* stepper */
+.steps{overflow-x:auto;padding-bottom:4px}
+.steps ol{list-style:none;margin:0;padding:2px;display:flex;flex-wrap:wrap;gap:6px}
+@media (max-width:700px){.steps ol{flex-wrap:nowrap}}
+.steps button{display:flex;align-items:center;gap:8px;padding:6px 12px 6px 14px;border-radius:999px;border:1px solid var(--line);background:var(--sheet);white-space:nowrap;cursor:pointer;font-size:.92rem}
+.steps button:hover{border-color:var(--pen)}
+.steps .n{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--pen-soft);color:var(--pen);font-weight:700;font-size:.78rem;font-variant-numeric:tabular-nums}
+.steps .done .n{background:var(--pen);color:var(--sheet)}
+.steps button[aria-current="step"]{background:var(--ink);color:var(--sheet);border-color:var(--ink)}
+.steps button[aria-current="step"] .n{background:var(--sheet);color:var(--ink)}
+
+/* stage */
+.flow{display:grid;gap:16px}
+.stage{display:grid;grid-template-columns:minmax(0,370px) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:960px){.stage{grid-template-columns:minmax(0,1fr)}}
+.explain{background:var(--sheet);border:1px solid var(--line);border-radius:12px;padding:20px 22px;display:grid;gap:12px;min-width:0}
+.explain h2{font-size:1.45rem}
+.body{display:grid;gap:10px}
+.body ol{margin:0;padding-inline-start:1.3em;display:grid;gap:2px}
+.navbtns{display:flex;gap:8px;justify-content:space-between;padding-top:6px}
+.navbtns button{padding:8px 18px;border-radius:8px;border:1px solid var(--line);background:var(--paper);cursor:pointer;font-weight:600}
+.navbtns button.primary{background:var(--pen);border-color:var(--pen);color:var(--sheet)}
+.navbtns button:disabled{opacity:.4;cursor:default}
+.panel{border-top:1px solid var(--line);padding-top:12px;display:grid;gap:8px;min-width:0}
+.panel h3{font-size:.95rem}
+.list{list-style:none;margin:0;padding:0;display:grid;gap:4px;font-size:.9rem}
+.list li{display:grid;grid-template-columns:3.6em minmax(0,1fr) auto;gap:8px;align-items:center;padding:3px 0;border-bottom:1px dashed var(--line)}
+.list li b{font-weight:600}
+.list.res li{grid-template-columns:8.5em minmax(0,1fr)}
+.list.req li{grid-template-columns:3.2em minmax(0,1fr) auto}
+.list.req small{display:block;color:var(--ink-2);font-size:.8rem}
+.note{font-size:.85rem;color:var(--ink-2)}
+.scroll{overflow-x:auto}
+.sheet{width:100%;border-collapse:collapse;font-size:.85rem;min-width:300px}
+.sheet th,.sheet td{text-align:start;padding:5px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+.sheet th{color:var(--ink-2);font-weight:600;font-size:.78rem}
+.picker{display:flex;gap:8px;align-items:stretch}
+.picker .win{writing-mode:vertical-rl;font-size:.75rem;color:var(--ink-2);background:var(--pen-soft);border-radius:4px;padding:6px 2px;text-align:center}
+.picker .grid{display:grid;grid-template-columns:repeat(4,38px) auto;gap:4px;font-size:.75rem;align-items:center}
+.picker .board{grid-column:1 / -1;background:var(--ink);color:var(--sheet);text-align:center;border-radius:4px;font-weight:600;padding:1px 0}
+.picker .hd{text-align:center;color:var(--ink-2)}
+.picker .cell{height:30px;border:1px solid var(--line);border-radius:5px;background:var(--paper);display:grid;place-items:center;font-weight:600}
+.picker .cell.on{background:var(--pen);border-color:var(--pen);color:var(--sheet)}
+.picker .rl{color:var(--ink-2);padding-inline-start:4px;white-space:nowrap}
+
+.scene{margin:0;background:var(--sheet);border:1px solid var(--line);border-radius:12px;padding:14px;display:grid;gap:12px;min-width:0}
+.svgwrap{overflow-x:auto}
+#room{display:block;width:100%;min-width:540px;height:auto}
+.legend{font-size:.82rem;color:var(--ink-2)}
+.roster{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:14px}
+@media (max-width:600px){.roster{grid-template-columns:minmax(0,1fr)}}
+.roster h3{font-size:.85rem;color:var(--ink-2);font-weight:600;display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.roster h3 svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8}
+.roster ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+#rosterIn{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (max-width:600px){#rosterHome{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.who{width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:5px 10px;border:1px solid var(--line);border-radius:8px;background:var(--paper);cursor:pointer;text-align:start;font-size:.9rem;min-height:44px}
+.who small{display:block;color:var(--ink-2);font-size:.72rem;line-height:1.2}
+.who.is-sel{border-color:var(--pen);box-shadow:0 0 0 2px var(--pen-soft)}
+
+/* lane */
+.lane{display:grid;gap:12px}
+.lane-h{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px}
+.lane-h h2{font-size:1.25rem}
+.actors{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:760px){.actors{grid-template-columns:minmax(0,1fr)}}
+.actor{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:grid;gap:8px;align-content:start;min-width:0;transition:border-color .2s, box-shadow .2s}
+.actor.is-on{border-color:var(--pen);box-shadow:0 0 0 3px var(--pen-soft)}
+.actor h3{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.actor .role{font-size:.75rem;color:var(--pen);font-weight:600}
+.holds{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.holds li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 8px;font-size:.9rem;padding:6px 8px;border-radius:6px;background:var(--paper)}
+.holds .dur{grid-column:1 / -1;font-size:.76rem;color:var(--ink-2)}
+.holds li.is-gone .it{text-decoration:line-through;color:var(--ink-2)}
+.holds li.is-new{box-shadow:inset 0 0 0 1px var(--pen)}
+.holds .none{color:var(--ink-2);font-size:.88rem;background:none;padding:2px 0}
+.msgs{display:grid;gap:10px}
+.msg{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:grid;gap:8px}
+.route{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-weight:700}
+.route .arrow{color:var(--pen);font-size:1.2rem;line-height:1}
+.mrow{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.mrow .k{font-size:.78rem;color:var(--ink-2);min-width:4.5em;font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.mnote{font-size:.88rem;color:var(--ink-2)}
+
+/* chips */
+.chip{display:inline-flex;align-items:center;padding:1px 9px;border-radius:999px;font-size:.76rem;font-weight:600;line-height:1.65;white-space:nowrap}
+.chip.t-ok{background:var(--ok-soft);color:var(--ok)}
+.chip.t-warn{background:var(--warn-soft);color:var(--warn)}
+.chip.t-bad{background:var(--bad-soft);color:var(--bad)}
+.chip.t-idle{background:var(--idle-soft);color:var(--idle)}
+.chip.t-pen{background:var(--pen-soft);color:var(--pen)}
+.chip.strike{text-decoration:line-through}
+
+/* svg */
+#room text{font-family:var(--f-body);direction:rtl}
+#room .wall{fill:var(--wall)}
+#room .floor{fill:var(--floor);stroke:var(--line);stroke-width:1.5}
+#room .fixture rect{fill:var(--pen-soft);stroke:var(--ink-2);stroke-width:1.2}
+#room .fixture line{stroke:var(--ink-2);stroke-width:1.2}
+#room .fixture circle{fill:var(--ink-2)}
+#room .lbl{fill:var(--ink-2);font-size:12px;text-anchor:middle}
+#room .lbl-pen{fill:var(--pen);font-size:12px;font-weight:600;text-anchor:middle}
+#room .board{fill:var(--ink)}
+#room .board-t{fill:var(--sheet);font-size:12px;font-weight:600;text-anchor:middle;dominant-baseline:central}
+#room .shirt{fill:var(--shirt);stroke:var(--ink);stroke-width:1.1}
+#room .head{fill:var(--head);stroke:var(--ink);stroke-width:1.1}
+#room .hair{fill:var(--hair)}
+#room .eye{fill:var(--ink)}
+#room .desk{fill:var(--desk);stroke:var(--desk-edge);stroke-width:1}
+#room .desk-front{fill:var(--desk-edge)}
+#room .empty{opacity:.55}
+#room .nm{fill:var(--ink-2);text-anchor:middle;font-weight:500}
+#room .person{cursor:pointer}
+#room .fbox{fill:none;stroke-width:1.8}
+#room .fbox.t-pen{stroke:var(--pen)} #room .fbox.t-ok{stroke:var(--ok)} #room .fbox.t-bad{stroke:var(--bad)} #room .fbox.t-idle{stroke:var(--idle);stroke-dasharray:4 3} #room .fbox.t-warn{stroke:var(--warn)}
+#room .schip text{font-size:12px;font-weight:600;text-anchor:middle;dominant-baseline:central}
+#room .schip rect{stroke-width:1}
+#room .schip.t-pen rect{fill:var(--pen-soft);stroke:var(--pen)} #room .schip.t-pen text{fill:var(--pen)}
+#room .schip.t-ok rect{fill:var(--ok-soft);stroke:var(--ok)} #room .schip.t-ok text{fill:var(--ok)}
+#room .schip.t-bad rect{fill:var(--bad-soft);stroke:var(--bad)} #room .schip.t-bad text{fill:var(--bad)}
+#room .schip.t-idle rect{fill:var(--idle-soft);stroke:var(--idle)} #room .schip.t-idle text{fill:var(--idle)}
+#room .schip.cap rect{fill:var(--ink);stroke:none} #room .schip.cap text{fill:var(--sheet);font-size:13px}
+#room .guide{stroke:var(--pen);stroke-width:1.2;stroke-dasharray:4 5;opacity:.6}
+#room .tile{stroke:var(--pen);stroke-width:1.6;stroke-dasharray:9 6;fill:none}
+#room .vf{fill:none;stroke:var(--ink);stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round}
+#room .flash{fill:var(--sheet);opacity:0;animation:flash .9s ease-out 1}
+#room .bell circle.b{fill:var(--pen)}
+#room .bell path,#room .bell .clap{fill:var(--sheet)}
+#room .claim circle{fill:none;stroke:var(--bad);stroke-width:2;stroke-dasharray:4 3}
+#room .claim line{stroke:var(--bad);stroke-width:2;stroke-linecap:round}
+#room .ring{fill:none;stroke:var(--pen);stroke-width:2.5;animation:pulse 1.6s ease-in-out infinite}
+#room .stamp rect{fill:var(--bad-soft);stroke:var(--bad);stroke-width:2}
+#room .stamp text{fill:var(--bad);font-family:var(--f-display);font-size:22px;text-anchor:middle;dominant-baseline:central}
+@keyframes flash{0%{opacity:.95}100%{opacity:0}}
+@keyframes pulse{0%,100%{stroke-opacity:1}50%{stroke-opacity:.35}}
+@media (prefers-reduced-motion: reduce){#room .flash{animation:none}#room .ring{animation:none}.actor{transition:none}}
+
+/* cases */
+.sec-h{display:grid;gap:6px;margin-bottom:14px}
+.sec-h p{color:var(--ink-2);max-width:66ch}
+.cases{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+@media (max-width:1100px){.cases{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:600px){.cases{grid-template-columns:minmax(0,1fr)}}
+.case{background:var(--sheet);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.case.is-sel{border-color:var(--pen);box-shadow:0 0 0 3px var(--pen-soft)}
+.case .tag{font-size:.78rem;color:var(--ink-2);font-weight:600}
+.case .story{font-size:.92rem}
+.case .rule{font-size:.86rem;color:var(--ink-2)}
+.case .rule b{color:var(--ink)}
+.case .foot{margin-top:auto;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;padding-top:6px}
+.case .show{border:1px solid var(--pen);color:var(--pen);background:transparent;border-radius:8px;padding:5px 12px;font-size:.85rem;font-weight:600;cursor:pointer}
+.case .show:hover{background:var(--pen-soft)}
+
+/* contract */
+.contract{display:grid;gap:26px}
+.contract h3{font-size:1.1rem;margin-bottom:10px}
+.ctable-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--sheet)}
+.ctable{width:100%;border-collapse:collapse;min-width:680px;font-size:.92rem}
+.ctable th,.ctable td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:start;vertical-align:top}
+.ctable tr:last-child td{border-bottom:none}
+.ctable th{font-size:.8rem;color:var(--ink-2);font-weight:600;background:var(--paper)}
+.ctable td:first-child{font-weight:600;white-space:nowrap}
+.ctable .chips{gap:4px}
+.keep{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:860px){.keep{grid-template-columns:minmax(0,1fr)}}
+.keep .actor{gap:8px}
+.rules-wrap{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px}
+@media (max-width:860px){.rules-wrap{grid-template-columns:minmax(0,1fr)}}
+.rules{margin:0;padding:14px 16px 14px 16px;padding-inline-start:2.2em;background:var(--sheet);border:1px solid var(--line);border-radius:10px;display:grid;gap:8px}
+.rules.plain{list-style:disc}
+.rules p.h{font-weight:700;margin-inline-start:-1.2em}
+.foot-note{font-size:.85rem;color:var(--ink-2);border-top:1px solid var(--line);padding-top:14px}
+</style>
+</head>
+<body>
+
+<div class="wrap" dir="rtl" lang="he">
+
+  <header class="top">
+    <p class="eyebrow">פיצ'ר הנוכחות · הדגמה מדומה</p>
+    <h1>נוכחות מתמונת כיתה</h1>
+    <p class="lede">כך זה יעבוד בקורס עם 14 תלמידים: 10 יושבים בכיתה ו־4 בבית. עוברים שלב אחרי שלב, ובכל שלב רואים מה כל צד מחזיק ומה עובר ביניהם. כל השמות בדויים, ואין כאן שמות של שירותים.</p>
+    <ul class="promises">
+      <li><strong>המורה לא רואה טביעות פנים</strong><span>הוא מקבל רק שמות ותוצאות.</span></li>
+      <li><strong>תלמידים לא רואים פנים של אחרים</strong><span>אף תמונה לא נשלחת לתלמידים.</span></li>
+      <li><strong>השרת לא רואה תמונות</strong><span>טביעת הפנים של תלמיד נמחקת מיד אחרי ההשוואה.</span></li>
+    </ul>
+    <dl class="terms">
+      <div><dt>טביעת פנים</dt><dd>רשימת מספרים שמחושבת מתמונה של פנים. פנים דומות נותנות מספרים דומים. זו לא תמונה.</dd></div>
+      <div><dt>חותמת</dt><dd>קוד קצר שמחושב מטביעת הפנים. אי אפשר לשחזר ממנו פנים, אבל כל החלפה של התמונה משנה אותו.</dd></div>
+      <div><dt>סף</dt><dd>הציון שממנו מחליטים "זה הוא". בהדגמה הוא 60%. את הסף האמיתי נקבע לפי עמוד הבדיקה.</dd></div>
+    </dl>
+  </header>
+
+  <section class="flow" id="stage" aria-label="הזרימה שלב אחרי שלב">
+    <nav class="steps" aria-label="שלבים"><ol id="steps"></ol></nav>
+
+    <div class="stage">
+      <div class="explain" aria-live="polite">
+        <p class="eyebrow" id="stepNo"></p>
+        <h2 id="stepTitle"></h2>
+        <div class="body" id="stepBody"></div>
+        <div id="stepExtra"></div>
+        <div class="navbtns">
+          <button type="button" id="prev">הקודם</button>
+          <button type="button" id="next" class="primary">הבא</button>
+        </div>
+      </div>
+
+      <figure class="scene">
+        <div class="svgwrap"><svg id="room" viewBox="0 0 680 492" role="img" aria-label="ציור של הכיתה"></svg></div>
+        <figcaption class="legend">הציור מראה את הכיתה מנקודת המבט של המורה: השורה האחורית למעלה, הלוח למטה. השם על יד כל שולחן הוא מי שבאמת יושב שם. התווית מעל הראש היא מה שהמערכת יודעת. אפשר ללחוץ על תלמיד כדי לסמן אותו.</figcaption>
+        <div class="roster">
+          <div>
+            <h3>בכיתה</h3>
+            <ul id="rosterIn"></ul>
+          </div>
+          <div>
+            <h3><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8 8 2.5 14 8M3.5 6.8V13.5h9V6.8"/></svg>בבית</h3>
+            <ul id="rosterHome"></ul>
+          </div>
+        </div>
+      </figure>
+    </div>
+
+    <div class="lane">
+      <div class="lane-h">
+        <h2>מה כל צד מחזיק, ומה עובר ביניהם</h2>
+        <span class="chip t-pen">מסגרת כחולה: הצד שמשתתף בשלב הזה</span>
+      </div>
+      <div class="actors">
+        <div class="actor" data-k="teacher"><h3>הטלפון של המורה</h3><ul class="holds"></ul></div>
+        <div class="actor" data-k="server"><h3>השרת</h3><ul class="holds"></ul></div>
+        <div class="actor" data-k="students"><h3>הטלפונים של התלמידים</h3><ul class="holds"></ul></div>
+      </div>
+      <div class="msgs" id="msgs"></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="casesH">
+    <div class="sec-h">
+      <h2 id="casesH">התרחישים ואיך הם נפתרים</h2>
+      <p>כל כרטיס הוא מקרה אחד. הכפתור מעביר לציור, לשלב שבו המקרה מוכרע, ומסמן את התלמיד.</p>
+    </div>
+    <div class="cases" id="cases"></div>
+  </section>
+
+  <section class="contract" aria-labelledby="contractH">
+    <div class="sec-h">
+      <h2 id="contractH">החוזה</h2>
+      <p>שלושה חלקים: מה נשלח בכל שלב, מי מחזיק מה ולכמה זמן, ואיך השרת מחליט. על זה יתבססו מסמך הדרישות ותרשימי הרצף.</p>
+    </div>
+
+    <div>
+      <h3>מה נשלח בכל שלב</h3>
+      <div class="ctable-wrap">
+        <table class="ctable">
+          <thead><tr><th>שלב</th><th>מאיפה ולאן</th><th>מה נשלח</th><th>מה לא נשלח</th></tr></thead>
+          <tbody>
+            <tr><td>הרשמה</td><td>טלפון התלמיד ← השרת</td><td>מספר תלמיד, חותמת</td><td><div class="chips"><span class="chip t-idle strike">תמונות</span><span class="chip t-idle strike">טביעת פנים</span></div></td></tr>
+            <tr><td>החלפת תמונה</td><td>טלפון התלמיד ← השרת ← טלפון המורה</td><td>בקשה. אחרי אישור המורה: חותמת חדשה</td><td><div class="chips"><span class="chip t-idle strike">תמונות</span><span class="chip t-idle strike">טביעת פנים</span></div></td></tr>
+            <tr><td>צילום</td><td>טלפון המורה ← השרת</td><td>לכל פרצוף: מספר, מיקום בתמונה וטביעת פנים</td><td><div class="chips"><span class="chip t-idle strike">התמונה</span></div></td></tr>
+            <tr><td>בקשת נוכחות</td><td>השרת ← טלפוני התלמידים</td><td>מספר השיעור, תוקף של שעה</td><td><div class="chips"><span class="chip t-idle strike">טביעות פנים</span><span class="chip t-idle strike">תמונות</span></div></td></tr>
+            <tr><td>תגובה</td><td>טלפון התלמיד ← השרת</td><td>מספר תלמיד, טביעת פנים, חותמת</td><td><div class="chips"><span class="chip t-idle strike">תמונות</span></div></td></tr>
+            <tr><td>סיכום</td><td>השרת ← טלפון המורה</td><td>מספר פרצוף ושם, קונפליקטים, לא נמצאו, לא הגיבו</td><td><div class="chips"><span class="chip t-idle strike">טביעות פנים</span></div></td></tr>
+            <tr><td>בירור</td><td>טלפון התלמיד ← השרת ← טלפון המורה</td><td>שורה ומקום</td><td><div class="chips"><span class="chip t-idle strike">תמונות</span><span class="chip t-idle strike">טביעות פנים</span></div></td></tr>
+            <tr><td>החלטה</td><td>טלפון המורה ← השרת</td><td>אישור או דחייה לכל בקשה</td><td>אין</td></tr>
+            <tr><td>גיליון</td><td>השרת ← טלפון המורה</td><td>שם, נוכחות, איך נקבעה</td><td><div class="chips"><span class="chip t-idle strike">טביעות פנים</span><span class="chip t-idle strike">תמונות</span></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div>
+      <h3>מי מחזיק מה, ולכמה זמן</h3>
+      <div class="keep">
+        <div class="actor"><h3>הטלפון של התלמיד</h3><ul class="holds">
+          <li><span class="it">שלוש התמונות מההרשמה</span><span class="dur">כל השנה, רק אצלו</span></li>
+          <li><span class="it">טביעת הפנים שלו</span><span class="dur">כל השנה, רק אצלו</span></li>
+        </ul></div>
+        <div class="actor"><h3>השרת</h3><ul class="holds">
+          <li><span class="it">חותמת לכל תלמיד</span><span class="dur">כל השנה</span></li>
+          <li><span class="it">טביעות פנים מתמונת הכיתה</span><span class="dur">שעה אחת</span></li>
+          <li><span class="it">טביעת פנים של תלמיד</span><span class="dur">אפס זמן: נמחקת מיד אחרי ההשוואה</span></li>
+          <li><span class="it">רישומי התאמה ובקשות בירור</span><span class="dur">עד סוף הבירור</span></li>
+          <li><span class="it">גיליון נוכחות</span><span class="dur">כל השנה</span></li>
+        </ul></div>
+        <div class="actor"><h3>הטלפון של המורה</h3><ul class="holds">
+          <li><span class="it">תמונת הכיתה</span><span class="dur">עד סוף הבירור, ואז נמחקת</span></li>
+          <li><span class="it">מיקומי הפרצופים בתמונה</span><span class="dur">עד סוף הבירור</span></li>
+          <li><span class="it">גיליון נוכחות</span><span class="dur">אחרי ההורדה</span></li>
+        </ul></div>
+      </div>
+    </div>
+
+    <div class="rules-wrap">
+      <div>
+        <h3>איך השרת מחליט, לפי הסדר</h3>
+        <ol class="rules">
+          <li><b>החותמת לא תואמת</b> ← בירור. לא משווים בכלל.</li>
+          <li>לכל תלמיד מוצאים את הפרצוף הכי דומה. <b>מתחת לסף</b> ← לא נמצא.</li>
+          <li><b>מעל הסף</b>, ואף תלמיד אחר לא עבר את הסף על אותו פרצוף ← נוכח.</li>
+          <li><b>שני תלמידים או יותר</b> עברו את הסף על אותו פרצוף ← קונפליקט. המערכת לא בוחרת ביניהם.</li>
+          <li><b>לא נשלחה טביעה</b> תוך שעה ← לא הגיב.</li>
+        </ol>
+      </div>
+      <div>
+        <h3>כללים נוספים</h3>
+        <ul class="rules plain">
+          <li>כל מי שלא סומן נוכח יכול לבקש <b>בירור לפי שורה ומקום</b>. רק המורה מאשר.</li>
+          <li>שורה 1 היא הקרובה ללוח. <b>מקום 1 הוא ליד החלון.</b> סופרים מהחלון, כי בתמונה של המורה ימין ושמאל הפוכים.</li>
+          <li>כל בקשת בירור נרשמת. מי שנדחה, או מבקש הרבה, <b>מסומן</b> לתשומת לב.</li>
+          <li><b>החלפת תמונה</b> רק באישור המורה.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <p class="foot-note">הדגמה מדומה לצורך תכנון. השמות, הציונים והמספרים בדויים.</p>
+</div>
+
+<script>
+(function(){
+  var f = function(v){ return Math.round(v*10)/10; };
+
+  var NAME = { teacher:'הטלפון של המורה', server:'השרת', students:'הטלפונים של התלמידים' };
+
+  var PEOPLE = [
+    {id:'dana',  n:'דנה',  row:1, seat:1, face:1},
+    {id:'omer',  n:'עומר', row:1, seat:2, face:2},
+    {id:'shira', n:'שירה', row:1, seat:4, face:3},
+    {id:'yoav',  n:'יואב', row:2, seat:1, face:4},
+    {id:'noa',   n:'נועה', row:2, seat:2, face:5},
+    {id:'maya',  n:'מאיה', row:2, seat:3, face:6},
+    {id:'itai',  n:'איתי', row:3, seat:2, face:7},
+    {id:'ben',   n:'בן',   row:3, seat:3, face:8},
+    {id:'hila',  n:'הילה', row:4, seat:1, face:9},
+    {id:'tamar', n:'תמר',  row:4, seat:2, face:10, tilt:true},
+    {id:'ron',   n:'רון',  home:true},
+    {id:'gal',   n:'גל',   home:true},
+    {id:'adi',   n:'עדי',  home:true},
+    {id:'asaf',  n:'אסף',  home:true}
+  ];
+  var BY = {}; PEOPLE.forEach(function(p){ BY[p.id] = p; });
+
+  var ROW = { 4:{y:120,s:.64}, 3:{y:206,s:.76}, 2:{y:302,s:.88}, 1:{y:408,s:1} };
+  function edge(y){ var t=(y-44)/411; return { l:130-124*t, r:490+124*t }; }
+  function seatPos(r, s){ var R=ROW[r], e=edge(R.y); return { x:e.l+(e.r-e.l)*(s-.5)/4, y:R.y, s:R.s }; }
+
+  // status chips per person, per step (index 0..8)
+  var R_=['רשום','pen'], NOF=['בלי זיהוי פנים','idle'], Q=['הודעה','pen'], SENT=['נשלח','pen'], NOP=['לא נפתח','idle'],
+      P=['נוכח','ok'], CONF=['קונפליקט','bad'], NF=['לא נמצא','warn'], SEAL=['חותמת שונה','warn'], NR=['לא הגיב','idle'],
+      SEATQ=['שורה ומקום','pen'], APP=['אושר','ok'], REJ=['נדחה','bad'], NOREQ=['אין בקשה','idle'], ABS=['חסר','bad'];
+  var REG = [R_,0,0,0,Q,SENT,P,P,P];
+  var ST = {
+    dana:REG, omer:REG, noa:REG, maya:REG, itai:REG, ben:REG, hila:REG,
+    shira:[NOF,0,0,0,Q,NOF,SEATQ,APP,P],
+    yoav:[R_,0,0,0,Q,SENT,CONF,APP,P],
+    tamar:[R_,0,0,0,Q,SENT,NF,APP,P],
+    ron:[R_,0,0,0,Q,SENT,CONF,REJ,ABS],
+    gal:[R_,0,0,0,Q,SENT,NF,NOREQ,ABS],
+    adi:[R_,0,0,0,Q,SENT,SEAL,NOREQ,ABS],
+    asaf:[R_,0,0,0,Q,NOP,NR,NOREQ,ABS]
+  };
+
+  var TAG6 = {1:['דנה','ok'],2:['עומר','ok'],3:['בלי שם','idle'],4:['יואב / רון','bad'],5:['נועה','ok'],6:['מאיה','ok'],7:['איתי','ok'],8:['בן','ok'],9:['הילה','ok'],10:['בלי שם','idle']};
+  var TAG7 = {}; Object.keys(TAG6).forEach(function(k){ TAG7[k]=TAG6[k]; });
+  TAG7[3]=['שירה','ok']; TAG7[4]=['יואב','ok']; TAG7[10]=['תמר','ok'];
+
+  var SP = ['3 תמונות','רק אצל כל תלמיד'], SF = ['טביעת פנים','רק אצל כל תלמיד'];
+  var SEALS = ['חותמת לכל תלמיד','כל השנה'];
+  var PHOTO = ['תמונת הכיתה','עד סוף הבירור'];
+  var POS = ['מיקומי הפרצופים בתמונה','עד סוף הבירור'];
+  var CP = ['10 טביעות פנים מהתמונה','שעה אחת'];
+  function st(item, state){ return [item[0], item[1], state]; }
+
+  var STEPS = [
+    { short:'הרשמה', title:'הרשמה בתחילת השנה', cap:'תחילת השנה: כל תלמיד נרשם מהטלפון שלו',
+      body:'<p>כל תלמיד מצלם שלוש תמונות: מקרוב, משני מטרים ומזווית קלה. הטלפון שלו מחשב מהן <b>טביעת פנים</b>. התמונות והטביעה נשארות רק בטלפון של התלמיד.</p><p>לשרת נשלחת רק <b>חותמת</b>. אם מישהו מחליף את התמונה, החותמת כבר לא תתאים. החלפת תמונה אפשרית רק באישור המורה.</p><p>שירה לא מסכימה לזיהוי פנים, ולכן אין לה טביעה ואין לה חותמת.</p>',
+      msgs:[{from:'students',to:'server',send:['מספר תלמיד','חותמת'],never:['תמונות','טביעת פנים']}],
+      hold:{teacher:[], server:[st(SEALS,'new')], students:[st(SP,'new'),st(SF,'new')]} },
+
+    { short:'צילום', title:'המורה מצלם בזמן אקראי', cap:'המורה מצלם מכאן',
+      body:'<p>באמצע השיעור, ברגע שאף אחד לא יודע מראש, המורה מצלם את הכיתה. באולם גדול אפשר לצלם עד שלוש תמונות. כאן יש תמונה אחת.</p><p>התמונה נשארת בטלפון של המורה. עוד לא נשלח כלום.</p>',
+      msgs:[], none:'עוד לא נשלח כלום. התמונה נשארת בטלפון של המורה.',
+      hold:{teacher:[st(PHOTO,'new')], server:[SEALS], students:[SP,SF]} },
+
+    { short:'מציאת פנים', title:'הטלפון של המורה מוצא את הפרצופים', cap:'מחפשים פנים בכל חלק של התמונה בנפרד',
+      body:'<p>הטלפון מחלק את התמונה לחלקים ומחפש פנים בכל חלק בנפרד. כך לא מפספסים פנים קטנות בשורות האחוריות.</p><p>כל פרצוף שנמצא מקבל מספר וטביעת פנים. בכיתה הזו נמצאו 10 פרצופים. בשלב הזה אף אחד לא יודע של מי כל פרצוף.</p>',
+      msgs:[], none:'הכול קורה בתוך הטלפון של המורה.',
+      hold:{teacher:[PHOTO,['10 טביעות פנים מהתמונה','עד השליחה','new'],st(POS,'new')], server:[SEALS], students:[SP,SF]} },
+
+    { short:'שליחה לשרת', title:'לשרת נשלחות רק טביעות הפנים', cap:'רק מספרים יוצאים מהטלפון של המורה',
+      body:'<p>הטלפון של המורה שולח לשרת רשימה: לכל פרצוף את המספר שלו, את המיקום שלו בתמונה ואת טביעת הפנים. <b>התמונה עצמה לא נשלחת.</b></p><p>אחרי השליחה הטלפון של המורה מוחק את טביעות הפנים, ושומר רק את המיקומים כדי לצייר שמות בהמשך. השרת שומר את הרשימה שעה אחת בלבד.</p>',
+      msgs:[{from:'teacher',to:'server',send:['מספר השיעור','לכל פרצוף: מספר, מיקום בתמונה וטביעת פנים'],never:['התמונה']}],
+      hold:{teacher:[PHOTO,['10 טביעות פנים מהתמונה','נמחקו אחרי השליחה','gone'],POS], server:[SEALS,st(CP,'new')], students:[SP,SF]} },
+
+    { short:'הודעה לתלמידים', title:'בקשת נוכחות לכל הקורס', cap:'כל הקורס מקבל הודעה, גם מי שבבית',
+      body:'<p>כל תלמידי הקורס מקבלים הודעה, גם מי שנמצא בבית. ההודעה לא מגלה מי נמצא בתמונה.</p><p>מי שהאפליקציה פתוחה אצלו בשיעור, בשביל סקרים או שאלות, לא צריך לעשות כלום. מי שהיא סגורה אצלו לוחץ פעם אחת על ההודעה, ויש לו שעה לעשות את זה.</p>',
+      msgs:[{from:'server',to:'students',send:['מספר השיעור','תוקף: שעה'],never:['טביעות פנים','תמונות']}],
+      hold:{teacher:[PHOTO,POS], server:[SEALS,CP], students:[SP,SF,['בקשת נוכחות','שעה לפתוח את האפליקציה','new']]} },
+
+    { short:'השוואה', title:'כל טלפון שולח את הטביעה של התלמיד', cap:'כל טלפון שולח את טביעת הפנים של התלמיד שלו',
+      body:'<p>אם האפליקציה פתוחה, הטלפון שולח מיד. אם היא סגורה, הוא שולח ברגע שהתלמיד לוחץ על ההודעה. הטלפון שולח לשרת את טביעת הפנים ואת החותמת, והשרת לא יכול לקרוא אותן מהטלפון בעצמו.</p><p>השרת עושה שלושה דברים, בסדר הזה:</p><ol><li>בודק שהחותמת לא השתנתה.</li><li>משווה את הטביעה לעשרת הפרצופים ורושם את ההתאמה הכי טובה.</li><li>מוחק את הטביעה של התלמיד.</li></ol>',
+      msgs:[{from:'students',to:'server',send:['מספר תלמיד','טביעת פנים','חותמת'],never:['תמונות'],note:'השרת בודק את החותמת, משווה, ומוחק את הטביעה מיד.'}],
+      hold:{teacher:[PHOTO,POS], server:[SEALS,CP,['טביעת פנים של כל תלמיד','נמחקת מיד אחרי ההשוואה','gone'],['רישום: תלמיד, פרצוף, ציון','עד סוף הבירור','new']], students:[SP,SF]} },
+
+    { short:'סיכום אחרי שעה', title:'אחרי שעה: השרת מסכם', cap:'המורה רואה שמות, לא טביעות',
+      body:'<p>השרת מוחק את טביעות הפנים מהתמונה ומחליט לפי הכללים.</p><p>פרצוף 4 התאים לשני תלמידים, יואב ורון. זה <b>קונפליקט</b>, והמערכת לא בוחרת ביניהם.</p><p>המורה מקבל רק מספרי פרצופים ושמות, והטלפון שלו מצייר את השמות על התמונה שנמצאת אצלו.</p>',
+      msgs:[{from:'server',to:'teacher',send:['מספר פרצוף ושם','קונפליקטים','לא נמצאו','לא הגיבו'],never:['טביעות פנים']}],
+      hold:{teacher:[PHOTO,POS,['שמות על הפרצופים','עד סוף הבירור','new']], server:[SEALS,['10 טביעות פנים מהתמונה','נמחקו אחרי שעה','gone'],['רישומי התאמה','עד סוף הבירור'],['תוצאות','עד סוף הבירור','new']], students:[SP,SF]} },
+
+    { short:'בירור', title:'בירור לפי שורה ומקום', cap:'שורה 1 ליד הלוח, מקום 1 ליד החלון',
+      body:'<p>כל מי שלא סומן נוכח יכול לבחור באפליקציה שורה ומקום. שורה 1 היא הקרובה ללוח, ו<b>מקום 1 הוא ליד החלון</b>. סופרים מהחלון כי בתמונה של המורה ימין ושמאל הפוכים.</p><p>גם שני הצדדים בקונפליקט מתבקשים לומר איפה ישבו. המורה רואה כל בקשה ליד התמונה, ומאשר או דוחה.</p>',
+      msgs:[
+        {from:'students',to:'server',send:['שורה','מקום'],never:['תמונות','טביעות פנים']},
+        {from:'server',to:'teacher',send:['שם, שורה ומקום של כל בקשה'],never:['טביעות פנים']},
+        {from:'teacher',to:'server',send:['אישור או דחייה לכל בקשה'],never:[]}
+      ],
+      hold:{teacher:[PHOTO,POS,['שמות על הפרצופים','עד סוף הבירור']], server:[SEALS,['רישומי התאמה','עד סוף הבירור'],['תוצאות','עד סוף הבירור'],['בקשות בירור','עד סוף הבירור','new']], students:[SP,SF]} },
+
+    { short:'גיליון', title:'גיליון נוכחות, ומחיקה', cap:'בסוף נשאר רק הגיליון',
+      body:'<p>המורה מוריד את הגיליון. ליד כל שם רשום איך הנוכחות נקבעה.</p><p>בסוף הבירור התמונה נמחקת מהטלפון של המורה. במערכת נשארים רק החותמות והגיליון.</p>',
+      msgs:[{from:'server',to:'teacher',send:['גיליון: שם, נוכחות, איך נקבעה'],never:['טביעות פנים','תמונות']}],
+      hold:{teacher:[['תמונת הכיתה','נמחקה בסוף הבירור','gone'],['מיקומי הפרצופים','נמחקו','gone'],['גיליון נוכחות','אחרי ההורדה','new']], server:[SEALS,['רישומי התאמה ובקשות','נמחקו','gone'],['גיליון נוכחות','כל השנה','new']], students:[SP,SF]} }
+  ];
+
+  function chipHTML(t, tone, cls){ return '<span class="chip t-'+tone+(cls?' '+cls:'')+'">'+t+'</span>'; }
+
+  var EXTRA = {
+    5: function(){
+      var rows = [
+        ['דנה','פרצוף 1 · 91%','מעל הסף','pen'],['עומר','פרצוף 2 · 88%','מעל הסף','pen'],['יואב','פרצוף 4 · 86%','מעל הסף','pen'],
+        ['נועה','פרצוף 5 · 90%','מעל הסף','pen'],['מאיה','פרצוף 6 · 84%','מעל הסף','pen'],['איתי','פרצוף 7 · 79%','מעל הסף','pen'],
+        ['בן','פרצוף 8 · 82%','מעל הסף','pen'],['הילה','פרצוף 9 · 71%','מעל הסף','pen'],['תמר','הכי קרוב: פרצוף 10 · 38%','מתחת לסף','warn'],
+        ['רון','פרצוף 4 · 83%','מעל הסף','pen'],['גל','הכי קרוב: פרצוף 6 · 22%','מתחת לסף','warn'],['עדי','החותמת לא תואמת','לא הושווה','warn']
+      ];
+      return '<div class="panel"><h3>מה השרת רשם</h3><ul class="list">'+rows.map(function(r){ return '<li><b>'+r[0]+'</b><span>'+r[1]+'</span>'+chipHTML(r[2],r[3])+'</li>'; }).join('')+'</ul><p class="note">בכל שורה הטביעה של התלמיד כבר נמחקה. אסף לא פתח את האפליקציה, ולשירה אין טביעה. יואב ורון התאימו שניהם לפרצוף 4.</p></div>';
+    },
+    6: function(){
+      var rows = [
+        ['זוהו','דנה, עומר, נועה, מאיה, איתי, בן, הילה','ok'],['קונפליקט','פרצוף 4: יואב ורון','bad'],['לא נמצאו','תמר, גל','warn'],
+        ['חותמת לא תואמת','עדי','warn'],['לא הגיבו','אסף','idle'],['בלי זיהוי פנים','שירה','idle'],['פרצופים בלי שם','פרצוף 3, פרצוף 10','idle']
+      ];
+      return '<div class="panel"><h3>מה המורה מקבל</h3><ul class="list res">'+rows.map(function(r){ return '<li>'+chipHTML(r[0],r[2])+'<span>'+r[1]+'</span></li>'; }).join('')+'</ul><p class="note">שבעה תלמידים סומנו נוכחים אוטומטית. כל השאר יכולים לבקש בירור.</p></div>';
+    },
+    7: function(){
+      var rows = [
+        ['תמר','שורה 4, מקום 2','בתמונה יש שם פרצוף בלי שם','אושר','ok'],
+        ['שירה','שורה 1, מקום 4','בתמונה יש שם פרצוף בלי שם','אושר','ok'],
+        ['יואב','שורה 2, מקום 1','זה המקום של פרצוף 4','אושר','ok'],
+        ['רון','שורה 3, מקום 4','המקום ריק בתמונה','נדחה','bad']
+      ];
+      var cells = '';
+      cells += '<div class="board">לוח</div>';
+      cells += '<div class="hd">1</div><div class="hd">2</div><div class="hd">3</div><div class="hd">4</div><div></div>';
+      for (var r=1; r<=4; r++){
+        for (var s=1; s<=4; s++){ var on = (r===4 && s===2); cells += '<div class="cell'+(on?' on':'')+'">'+(on?'תמר':'')+'</div>'; }
+        cells += '<div class="rl">שורה '+r+'</div>';
+      }
+      return '<div class="panel"><h3>הבקשות, ומה המורה רואה</h3><ul class="list req">'+rows.map(function(x){ return '<li><b>'+x[0]+'</b><span>'+x[1]+'<small>'+x[2]+'</small></span>'+chipHTML(x[3],x[4])+'</li>'; }).join('')+'</ul><p class="note">גל, עדי ואסף לא ביקשו בירור.</p></div>'+
+             '<div class="panel"><h3>מה תמר רואה בטלפון</h3><div class="picker"><div class="win">חלון</div><div class="grid">'+cells+'</div></div><p class="note">מספרי המקומות למעלה. מקום 1 ליד החלון.</p></div>';
+    },
+    8: function(){
+      var rows = [
+        ['דנה','נוכח','אוטומטי',''],['עומר','נוכח','אוטומטי',''],['יואב','נוכח','קונפליקט, ואז שורה ומקום',''],['נועה','נוכח','אוטומטי',''],
+        ['מאיה','נוכח','אוטומטי',''],['איתי','נוכח','אוטומטי',''],['בן','נוכח','אוטומטי',''],['הילה','נוכח','אוטומטי',''],
+        ['תמר','נוכח','שורה ומקום',''],['שירה','נוכח','שורה ומקום, בלי זיהוי פנים',''],['רון','חסר','קונפליקט, הבירור נדחה','מסומן'],
+        ['גל','חסר','לא נמצא בתמונה',''],['עדי','חסר','חותמת לא תואמת','מסומן'],['אסף','חסר','לא הגיב','']
+      ];
+      return '<div class="panel"><h3>גיליון הנוכחות</h3><div class="scroll"><table class="sheet"><thead><tr><th>שם</th><th>נוכחות</th><th>איך נקבעה</th><th>הערה</th></tr></thead><tbody>'+
+        rows.map(function(r){ return '<tr><td>'+r[0]+'</td><td>'+chipHTML(r[1], r[1]==='נוכח'?'ok':'bad')+'</td><td>'+r[2]+'</td><td>'+(r[3]?chipHTML(r[3],'warn'):'')+'</td></tr>'; }).join('')+
+        '</tbody></table></div></div>';
+    }
+  };
+
+  var CASES = [
+    {id:'dana', step:6, where:'בכיתה', title:'זוהה כרגיל', story:'דנה ישבה בשורה 1 ופתחה את האפליקציה. הטביעה שלה התאימה לפרצוף 1, ואף תלמיד אחר לא התאים לפרצוף הזה.', rule:'התאמה מעל הסף, ואין תלמיד נוסף על אותו פרצוף.', out:['נוכח, אוטומטית','ok']},
+    {id:'gal', step:6, where:'בבית', title:'לא הגיע', story:'גל היה בבית ופתח את האפליקציה. הטביעה שלו לא התאימה לאף פרצוף בתמונה.', rule:'התאמה מתחת לסף.', out:['לא נמצא, ובסוף חסר','bad']},
+    {id:'asaf', step:6, where:'בבית', title:'לא פתח את האפליקציה', story:'אסף לא פתח את האפליקציה במשך השעה, ולכן הטלפון שלו לא שלח כלום. הוא עדיין יכול לבקש בירור, אבל לא ביקש.', rule:'לא נשלחה טביעה תוך שעה.', out:['לא הגיב, ובסוף חסר','bad']},
+    {id:'ron', step:7, where:'בבית', title:'שלח טביעה של חבר', story:'רון ישב בבית ושלח טביעת פנים שחישב מתמונה של יואב. גם יואב שלח את שלו, ושניהם התאימו לפרצוף 4. בבירור יואב בחר את המקום הנכון, ורון בחר מקום ריק.', rule:'שני תלמידים על אותו פרצוף הם קונפליקט. המערכת לא בוחרת ביניהם.', out:['יואב נוכח, רון חסר ומסומן','bad']},
+    {id:'adi', step:5, where:'בבית', title:'החליפה תמונה בלי אישור', story:'עדי ישבה בבית והחליפה בטלפון את התמונה שלה בתמונה של מאיה. החותמת כבר לא תאמה, ולכן השרת לא השווה בכלל.', rule:'חותמת לא תואמת עוצרת את ההשוואה.', out:['חסר ומסומן','bad']},
+    {id:'tamar', step:7, where:'בכיתה', title:'ישבה בכיתה ולא זוהתה', story:'תמר ישבה בשורה האחורית והסתכלה למטה. ההתאמה הכי טובה הייתה 38%, מתחת לסף. אחרי שעה בחרה שורה 4, מקום 2, ושם יש בתמונה פרצוף בלי שם.', rule:'מי שלא סומן נוכח יכול לבקש בירור לפי שורה ומקום.', out:['נוכח, באישור המורה','ok']},
+    {id:'shira', step:7, where:'בכיתה', title:'לא מסכימה לזיהוי פנים', story:'לשירה אין טביעה ואין חותמת, והיא תמיד עוברת בבירור לפי שורה ומקום. הפרצוף שלה מופיע בתמונה, אבל לשרת אין למי לשייך אותו, והוא נמחק אחרי שעה.', rule:'מסלול קבוע של שורה ומקום, באישור המורה.', out:['נוכח, באישור המורה','ok']},
+    {id:'hila', step:0, where:'לפני השיעור', title:'החליפה טלפון', story:'הילה קנתה טלפון חדש, והתמונות הישנות לא עברו אליו. היא מצלמת שלוש תמונות חדשות ושולחת בקשה. המורה מאשר בלחיצה, ובשרת נשמרת חותמת חדשה.', rule:'החלפת תמונה רק באישור המורה.', out:['נרשמה מחדש','pen']}
+  ];
+
+  var step = 0, sel = null;
+  var svg = document.getElementById('room');
+
+  function schip(x, cy, txt, tone, extra){
+    var w = txt.length*6.6 + 16;
+    return '<g class="schip t-'+tone+(extra?' '+extra:'')+'" data-cx="'+f(x)+'"><rect x="'+f(x-w/2)+'" y="'+f(cy-9.5)+'" width="'+f(w)+'" height="19" rx="9.5"/><text x="'+f(x)+'" y="'+f(cy)+'">'+txt+'</text></g>';
+  }
+
+  function desk(x, y, s){
+    return '<polygon class="desk" points="'+f(x-30*s)+','+f(y-8*s)+' '+f(x+30*s)+','+f(y-8*s)+' '+f(x+34*s)+','+f(y+2*s)+' '+f(x-34*s)+','+f(y+2*s)+'"/>'+
+           '<rect class="desk-front" x="'+f(x-34*s)+'" y="'+f(y+2*s)+'" width="'+f(68*s)+'" height="'+f(7*s)+'"/>';
+  }
+
+  function person(p, pos){
+    var x=pos.x, y=pos.y, s=pos.s, hx=x, hy=y-38*s, r=12.5*s;
+    var g = '<g class="person" data-id="'+p.id+'">';
+    g += '<path class="shirt" d="M'+f(x-22*s)+','+f(y-4*s)+' Q'+f(x-22*s)+','+f(y-26*s)+' '+f(x)+','+f(y-27*s)+' Q'+f(x+22*s)+','+f(y-26*s)+' '+f(x+22*s)+','+f(y-4*s)+' Z"/>';
+    g += '<g'+(p.tilt?' transform="rotate(-26 '+f(hx)+' '+f(hy)+')"':'')+'>';
+    g += '<circle class="head" cx="'+f(hx)+'" cy="'+f(hy)+'" r="'+f(r)+'"/>';
+    g += '<path class="hair" d="M'+f(hx-r)+','+f(hy)+' A'+f(r)+','+f(r)+' 0 0 1 '+f(hx+r)+','+f(hy)+' Q'+f(hx)+','+f(hy-r*.45)+' '+f(hx-r)+','+f(hy)+' Z"/>';
+    if (!p.tilt){
+      g += '<circle class="eye" cx="'+f(hx-4.2*s)+'" cy="'+f(hy+2.5*s)+'" r="'+f(1.4*s)+'"/><circle class="eye" cx="'+f(hx+4.2*s)+'" cy="'+f(hy+2.5*s)+'" r="'+f(1.4*s)+'"/>';
+    }
+    g += '</g>';
+    g += desk(x, y, s);
+    g += '<text class="nm" x="'+f(x)+'" y="'+f(y+24*s)+'" font-size="'+f(11+3*s)+'">'+p.n+'</text>';
+    return g + '</g>';
+  }
+
+  function renderScene(){
+    var h = '';
+    h += '<rect class="wall" x="130" y="4" width="360" height="40" rx="2"/>';
+    h += '<polygon class="floor" points="130,44 490,44 614,455 6,455"/>';
+    h += '<g class="fixture"><rect x="28" y="172" width="34" height="46" rx="2"/><line x1="45" y1="172" x2="45" y2="218"/><line x1="28" y1="195" x2="62" y2="195"/></g><text class="lbl" x="45" y="238">חלון</text>';
+    h += '<g class="fixture"><rect x="560" y="160" width="30" height="58" rx="2"/><circle cx="567" cy="190" r="2.2"/></g><text class="lbl" x="575" y="238">דלת</text>';
+    h += '<rect class="board" x="190" y="468" width="240" height="20" rx="3"/><text class="board-t" x="310" y="478.5">לוח</text>';
+
+    if (step === 7){
+      for (var i=1; i<=4; i++){
+        var x0 = 130+360*(i-.5)/4, x1 = 6+608*(i-.5)/4;
+        h += '<line class="guide" x1="'+f(x0)+'" y1="44" x2="'+f(x1)+'" y2="455"/>';
+        h += '<text class="lbl-pen" x="'+f(x0)+'" y="28">מקום '+i+'</text>';
+      }
+      [4,3,2,1].forEach(function(r){ h += '<text class="lbl-pen" x="650" y="'+f(ROW[r].y-16*ROW[r].s)+'">שורה '+r+'</text>'; });
+    }
+    if (step === 2){
+      h += '<line class="tile" x1="310" y1="8" x2="310" y2="458"/><line class="tile" x1="8" y1="236" x2="612" y2="236"/>';
+    }
+
+    [4,3,2,1].forEach(function(r){
+      for (var s=1; s<=4; s++){
+        var pos = seatPos(r, s);
+        var p = null;
+        for (var k=0; k<PEOPLE.length; k++){ if (PEOPLE[k].row===r && PEOPLE[k].seat===s){ p = PEOPLE[k]; break; } }
+        h += p ? person(p, pos) : '<g class="empty">'+desk(pos.x, pos.y, pos.s)+'</g>';
+      }
+    });
+
+    if (step >= 2 && step <= 7){
+      PEOPLE.forEach(function(p){
+        if (p.home) return;
+        var pos = seatPos(p.row, p.seat), x=pos.x, y=pos.y, s=pos.s, txt, tone;
+        if (step <= 5){ txt = String(p.face); tone = 'pen'; }
+        else { var m = (step===6 ? TAG6 : TAG7)[p.face]; txt = p.face+' · '+m[0]; tone = m[1]; }
+        h += '<rect class="fbox t-'+tone+'" x="'+f(x-18*s)+'" y="'+f(y-57*s)+'" width="'+f(36*s)+'" height="'+f(38*s)+'" rx="4"/>';
+        h += schip(x, y-57*s-13, txt, tone);
+      });
+    }
+
+    if (step === 4){
+      PEOPLE.forEach(function(p){
+        if (p.home) return;
+        var pos = seatPos(p.row, p.seat), bx = pos.x+17*pos.s, by = pos.y-52*pos.s;
+        h += '<g class="bell"><circle class="b" cx="'+f(bx)+'" cy="'+f(by)+'" r="8.5"/>'+
+             '<path d="M'+f(bx-3.6)+','+f(by+2.6)+' L'+f(bx-3.6)+','+f(by-.8)+' Q'+f(bx-3.6)+','+f(by-4.6)+' '+f(bx)+','+f(by-4.6)+' Q'+f(bx+3.6)+','+f(by-4.6)+' '+f(bx+3.6)+','+f(by-.8)+' L'+f(bx+3.6)+','+f(by+2.6)+' Z"/>'+
+             '<circle class="clap" cx="'+f(bx)+'" cy="'+f(by+4.3)+'" r="1.4"/></g>';
+      });
+    }
+
+    if (step === 7){
+      var c = seatPos(3,4), cx=c.x, cy=c.y-38*c.s, cs=c.s;
+      h += '<g class="claim"><circle cx="'+f(cx)+'" cy="'+f(cy)+'" r="'+f(15*cs)+'"/><line x1="'+f(cx-6*cs)+'" y1="'+f(cy-6*cs)+'" x2="'+f(cx+6*cs)+'" y2="'+f(cy+6*cs)+'"/><line x1="'+f(cx+6*cs)+'" y1="'+f(cy-6*cs)+'" x2="'+f(cx-6*cs)+'" y2="'+f(cy+6*cs)+'"/></g>';
+      h += schip(cx, c.y-57*cs-13, 'רון בחר מקום ריק', 'bad');
+    }
+
+    if (step === 1){
+      h += '<path class="vf" d="M12,42 L12,12 L42,12"/><path class="vf" d="M578,12 L608,12 L608,42"/><path class="vf" d="M12,424 L12,454 L42,454"/><path class="vf" d="M578,454 L608,454 L608,424"/>';
+      h += '<rect class="flash" x="0" y="0" width="620" height="462"/>';
+    }
+
+    if (step === 8){
+      h += '<g class="stamp" transform="rotate(-5 310 254)"><rect x="196" y="230" width="228" height="48" rx="6"/><text x="310" y="254">התמונה נמחקה</text></g>';
+    }
+
+    if (sel && BY[sel] && !BY[sel].home){
+      var sp = seatPos(BY[sel].row, BY[sel].seat);
+      h += '<circle class="ring" cx="'+f(sp.x)+'" cy="'+f(sp.y-38*sp.s)+'" r="'+f(22*sp.s)+'"/>';
+    }
+
+    h += schip(310, 452, STEPS[step].cap, 'cap', 'cap');
+    svg.innerHTML = h;
+    svg.setAttribute('aria-label', 'ציור הכיתה, שלב '+(step+1)+': '+STEPS[step].title);
+    fit();
+  }
+
+  function fit(){
+    var gs = svg.querySelectorAll('.schip');
+    for (var i=0; i<gs.length; i++){
+      var g = gs[i], t = g.querySelector('text'), r = g.querySelector('rect'), w = 0;
+      try { w = t.getComputedTextLength(); } catch(e) { w = 0; }
+      if (!w) continue;
+      var pad = g.classList.contains('cap') ? 26 : 16, cx = parseFloat(g.getAttribute('data-cx'));
+      r.setAttribute('x', f(cx-(w+pad)/2)); r.setAttribute('width', f(w+pad));
+    }
+  }
+
+  function renderRoster(){
+    function mk(p){
+      var s = ST[p.id][step];
+      return '<li><button type="button" class="who'+(sel===p.id?' is-sel':'')+'" data-id="'+p.id+'" aria-pressed="'+(sel===p.id)+'"><span>'+p.n+(p.home?'':'<small>שורה '+p.row+' · מקום '+p.seat+'</small>')+'</span>'+(s?chipHTML(s[0],s[1]):'')+'</button></li>';
+    }
+    document.getElementById('rosterIn').innerHTML = PEOPLE.filter(function(p){return !p.home;}).map(mk).join('');
+    document.getElementById('rosterHome').innerHTML = PEOPLE.filter(function(p){return p.home;}).map(mk).join('');
+  }
+
+  function renderLane(){
+    var S = STEPS[step], on = {};
+    S.msgs.forEach(function(m){ on[m.from]=1; on[m.to]=1; });
+    if (step===1 || step===2) on.teacher = 1;
+    var actors = document.querySelectorAll('.lane .actor');
+    for (var i=0; i<actors.length; i++){
+      var a = actors[i], k = a.getAttribute('data-k'), items = S.hold[k];
+      a.classList.toggle('is-on', !!on[k]);
+      a.querySelector('.holds').innerHTML = items.length ? items.map(function(it){
+        var state = it[2] || '';
+        return '<li class="'+(state?'is-'+state:'')+'"><span class="it">'+it[0]+'</span>'+(state==='new'?chipHTML('חדש','pen'):'')+(state==='gone'?chipHTML('נמחק','idle'):'')+'<span class="dur">'+it[1]+'</span></li>';
+      }).join('') : '<li class="none">לא מחזיק כלום</li>';
+    }
+    var box = document.getElementById('msgs');
+    if (!S.msgs.length){ box.innerHTML = '<div class="msg"><p class="mnote">'+S.none+'</p></div>'; return; }
+    box.innerHTML = S.msgs.map(function(m){
+      return '<div class="msg"><p class="route"><span>'+NAME[m.from]+'</span><span class="arrow" aria-label="אל">←</span><span>'+NAME[m.to]+'</span></p>'+
+        '<div class="mrow"><span class="k">נשלח</span><div class="chips">'+m.send.map(function(x){return chipHTML(x,'pen');}).join('')+'</div></div>'+
+        (m.never.length ? '<div class="mrow"><span class="k">לא נשלח</span><div class="chips">'+m.never.map(function(x){return chipHTML(x,'idle','strike');}).join('')+'</div></div>' : '')+
+        (m.note ? '<p class="mnote">'+m.note+'</p>' : '')+'</div>';
+    }).join('');
+  }
+
+  function renderSteps(){
+    document.getElementById('steps').innerHTML = STEPS.map(function(s, i){
+      return '<li><button type="button" data-step="'+i+'" class="'+(i<step?'done':'')+'"'+(i===step?' aria-current="step"':'')+'><span class="n">'+(i+1)+'</span>'+s.short+'</button></li>';
+    }).join('');
+  }
+
+  function renderExplain(){
+    var S = STEPS[step];
+    document.getElementById('stepNo').textContent = 'שלב '+(step+1)+' מתוך '+STEPS.length;
+    document.getElementById('stepTitle').textContent = S.title;
+    document.getElementById('stepBody').innerHTML = S.body;
+    document.getElementById('stepExtra').innerHTML = EXTRA[step] ? EXTRA[step]() : '';
+    document.getElementById('prev').disabled = step === 0;
+    var nx = document.getElementById('next');
+    nx.disabled = step === STEPS.length-1;
+  }
+
+  function renderCases(){
+    document.getElementById('cases').innerHTML = CASES.map(function(c){
+      return '<article class="case'+(sel===c.id?' is-sel':'')+'"><p class="tag">'+BY[c.id].n+' · '+c.where+'</p><h3>'+c.title+'</h3><p class="story">'+c.story+'</p><p class="rule"><b>הכלל:</b> '+c.rule+'</p>'+
+        '<div class="foot">'+chipHTML(c.out[0], c.out[1])+'<button type="button" class="show" data-case="'+c.id+'" data-step="'+c.step+'">הראו בציור</button></div></article>';
+    }).join('');
+  }
+
+  function render(){ renderSteps(); renderExplain(); renderScene(); renderRoster(); renderLane(); renderCases(); }
+  function go(i){ step = Math.max(0, Math.min(STEPS.length-1, i)); render(); }
+  function pick(id){ sel = (sel === id) ? null : id; render(); }
+
+  document.getElementById('steps').addEventListener('click', function(e){ var b = e.target.closest('button[data-step]'); if (b) go(+b.getAttribute('data-step')); });
+  document.getElementById('prev').addEventListener('click', function(){ go(step-1); });
+  document.getElementById('next').addEventListener('click', function(){ go(step+1); });
+  document.querySelector('.roster').addEventListener('click', function(e){ var b = e.target.closest('button[data-id]'); if (b) pick(b.getAttribute('data-id')); });
+  svg.addEventListener('click', function(e){ var g = e.target.closest('.person'); if (g) pick(g.getAttribute('data-id')); });
+  document.getElementById('cases').addEventListener('click', function(e){
+    var b = e.target.closest('button[data-case]'); if (!b) return;
+    sel = b.getAttribute('data-case'); step = +b.getAttribute('data-step'); render();
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    document.getElementById('stage').scrollIntoView({behavior: reduce ? 'auto' : 'smooth', block:'start'});
+  });
+  document.addEventListener('keydown', function(e){
+    var tag = (e.target && e.target.tagName) || '';
+    if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+    if (e.key === 'ArrowLeft') go(step+1);
+    if (e.key === 'ArrowRight') go(step-1);
+  });
+
+  render();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+})();
+</script>
+</body>
+</html>
