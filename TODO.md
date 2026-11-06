@@ -69,6 +69,7 @@ The lecturer requires that we **actually test** every tool we suggest.
 - [ ] Decisions as ADRs: what we chose, alternatives rejected and why (one commit per decision)
   - [x] ADR-1: face tool for photo attendance (F1)
 - [ ] Technology risk register with mitigations (keep a fallback for risky tools)
+  - [x] Face tools for photo attendance (F1): R1 to R3
 
 ## Step 3: SoW (Statement of Work) → [docs/03-SoW.md](docs/03-SoW.md)
 

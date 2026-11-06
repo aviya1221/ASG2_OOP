@@ -160,3 +160,6 @@ So the need is a face tool that:
 
 | ID | Risk | Probability | Impact | Mitigation |
 |----|------|-------------|--------|------------|
+| R1 | Photos of a real lecture hall give worse results than the simulation, which used shrunk press photos | Medium | High | Shoot in a real hall with our team before the design is final; students who are not matched use the row-and-seat step |
+| R2 | Finding the faces in a full-resolution photo takes too long on the teacher's phone | Medium | Medium | Time it on phones with the hands-on page; if it is too slow, shrink the photo only while the back-row faces stay at 28 px or more |
+| R3 | The 64 MB first download is slow on a weak network | Medium | Low | Download the models before the lesson (students at registration, the teacher on the first visit) and keep them in the browser; test the 10 MB version of SFace (not tested yet) |
