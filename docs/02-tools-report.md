@@ -134,6 +134,25 @@ So the need is a face tool that:
 - Consequences: what this means for the design
 -->
 
+### ADR-1: Face tool for photo attendance
+
+- **Context:** photo attendance needs a face tool that runs inside the web page on the teacher's phone and on the student's phone. It has to find the back-row faces and recognise them. The server never receives photos (section 2.4).
+- **Decision:** option 1.
+  - OpenCV.js 4.10 runs the YuNet face finder on the full-resolution photo, with a confidence of 0.5.
+  - Each face is aligned to 112 × 112 px by its 5 face points. ONNX Runtime Web then runs SFace on it, which gives a face-print of 128 numbers.
+  - Two face-prints match when their cosine similarity is 0.36 or more. At that threshold two different people match 0.1% of the time.
+  - The same code makes the registration face-print on the student's phone and the face-prints of the class photo on the teacher's phone.
+- **Alternatives rejected:**
+  - Human (option 2) found 13.6% of the crowd faces and recognised 1.7% of the people at 35 px.
+  - Human with tiles (option 2b) found 27.8% and recognised 58.3%, and took 2.6 s per face.
+  - The tools rejected without a spike are listed in section 2.4.
+- **Consequences:**
+  - The teacher's page takes the photo with the phone's camera at full resolution, not from a video preview. The back-row faces have to stay at 28 px or more.
+  - The page downloads about 64 MB of models once, and the browser keeps them.
+  - The server needs only the cosine comparison it already has ([similarity.ts](../app/server/src/llm/similarity.ts)).
+  - In a hall where faces are 28-80 px, about 5% of the present students go to the teacher. In a larger hall (16-45 px) it is about 21%. The row-and-seat step handles them.
+  - Every phone must use the same model version. Changing the model means every student registers again.
+
 ## 6. Technology risks
 
 | ID | Risk | Probability | Impact | Mitigation |
