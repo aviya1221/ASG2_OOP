@@ -45,9 +45,9 @@ _TODO: names and GitHub usernames._
 | 3 | Statement of Work (SoW) | [docs/03-SoW.md](docs/03-SoW.md) |
 | 4 | Software Requirements Spec (SRS) | [docs/04-SRS.md](docs/04-SRS.md) |
 | 5 | Use cases / client stories | [docs/05-use-cases.md](docs/05-use-cases.md) |
-| 6 | Main software components | [docs/06-components.md](docs/06-components.md) |
-| 7 | Class and sequence diagrams | [docs/07-design/](docs/07-design/) |
-| 8 | Testing strategy | [docs/08-testing-strategy.md](docs/08-testing-strategy.md) |
+| 6 | Main software components (SDD) | [docs/06-SDD.md](docs/06-SDD.md) |
+| 7 | Class and sequence diagrams (EDD) | [docs/07-EDD/](docs/07-EDD/) |
+| 8 | Testing strategy (STP / STD) | [docs/08-STP-STD.md](docs/08-STP-STD.md) |
 | 9 | Demo web application | [app/](app/) |
 | 10 | Demo in class | [docs/10-demo-plan.md](docs/10-demo-plan.md) |
 | 11 | Conclusion | [docs/11-conclusion.md](docs/11-conclusion.md) |

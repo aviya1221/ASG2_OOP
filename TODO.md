@@ -13,10 +13,10 @@ The commit history is part of the grade, so commit small and often.
 - Pull before you start working (`git pull`) to avoid conflicts.
 - Message format: `<type>(<area>): <what was done>`
   - Types: `docs`, `feat`, `test`, `fix`, `refactor`, `chore`
-  - Areas: `readme`, `tools`, `sow`, `srs`, `usecases`, `components`, `design`, `testing`, `app`, `demo`, `conclusion`
+  - Areas: `readme`, `tools`, `sow`, `srs`, `usecases`, `sdd`, `edd`, `tests`, `app`, `demo`, `conclusion`
   - Examples:
     - `docs(srs): add functional requirements for attendance`
-    - `docs(design): add sequence diagram for poll voting`
+    - `docs(edd): add sequence diagram for poll voting`
     - `feat(app): add QR check-in page for students`
     - `test(app): add unit tests for AttendanceService`
 
@@ -86,14 +86,14 @@ The lecturer requires that we **actually test** every tool we suggest.
 - [ ] UC-6: Student / teacher requests a homework review
 - [ ] User stories ("As a ... I want ... so that ...") with acceptance criteria
 
-## Step 6: Main software components → [docs/06-components.md](docs/06-components.md)
+## Step 6: Main software components (SDD) → [docs/06-SDD.md](docs/06-SDD.md)
 
 - [ ] High-level architecture diagram (client / server / database / external APIs)
 - [ ] Component list and responsibilities (sessions, attendance, comments, polls, export, video summary, homework review)
 - [ ] Interfaces between components (API endpoints / realtime events)
 - [ ] Deployment diagram
 
-## Step 7: Class diagrams and sequence diagrams → [docs/07-design/](docs/07-design/)
+## Step 7: Class diagrams and sequence diagrams (EDD) → [docs/07-EDD/](docs/07-EDD/)
 
 Use Mermaid or PlantUML so the diagrams live in the repo as text (easy to review and commit).
 
@@ -106,7 +106,7 @@ Use Mermaid or PlantUML so the diagrams live in the repo as text (easy to review
 - [ ] Sequence diagram: video summary
 - [ ] Sequence diagram: homework review
 
-## Step 8: Testing strategy → [docs/08-testing-strategy.md](docs/08-testing-strategy.md)
+## Step 8: Testing strategy (STP / STD) → [docs/08-STP-STD.md](docs/08-STP-STD.md)
 
 The testing strategy must address the classes from step 7.
 
