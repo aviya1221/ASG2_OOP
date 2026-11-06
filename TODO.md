@@ -195,11 +195,14 @@ Lecturer's golden rule: **demo the requirements, not the code.** Every minute ma
 
 ## Step 11: Conclusion → [docs/11-conclusion.md](docs/11-conclusion.md)
 
-- [ ] What was achieved vs. planned, per feature
+Short, per the assignment. Lecturer's closing: accept, hand over, learn.
+
+- [ ] Results summary
+- [ ] Plan vs. actual per deliverable (`D-n`), against the SoW acceptance criteria; also time and effort
 - [ ] Demo results
-- [ ] Lessons learned (vibe coding vs. deep design)
+- [ ] Retrospective: keep / stop / start (incl. vibe coding vs. deep design)
 - [ ] Future work
-- [ ] Final README pass with links to all documents
+- [ ] Handover check: repository, README, documents and deployment notes are all up to date
 
 ---
 
