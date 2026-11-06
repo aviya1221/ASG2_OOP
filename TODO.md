@@ -173,7 +173,7 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
   - [x] Gemini adapter: official Google Gen AI SDK, Interactions API, file upload, embeddings
   - [x] Settings from environment variables + one place that builds the shared services
   - [x] Unit tests with a fake SDK (no network, no API key)
-  - [ ] Smoke script: one real call with our key (evidence for the step 2 spike)
+  - [x] Smoke script: one real call with our key (evidence for the step 2 spike)
   - [ ] Document the LLM layer in `app/README.md` (structure, settings, reused libraries)
 - [ ] Sign in with Google (identity only; roles come from our own data):
   - [ ] Server-side check of the Google sign-in token
