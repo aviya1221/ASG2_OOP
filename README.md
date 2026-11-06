@@ -36,6 +36,24 @@ _TODO (step 1): define what is in scope and out of scope, and which features are
 
 _TODO: names and GitHub usernames._
 
+## Repository structure
+
+| Step | Deliverable | Location |
+|------|-------------|----------|
+| 1 | Problem and scope | `README.md` (this file) |
+| 2 | Technical tools report | [docs/02-tools-report.md](docs/02-tools-report.md) |
+| 3 | Statement of Work (SoW) | [docs/03-SoW.md](docs/03-SoW.md) |
+| 4 | Software Requirements Spec (SRS) | [docs/04-SRS.md](docs/04-SRS.md) |
+| 5 | Use cases / client stories | [docs/05-use-cases.md](docs/05-use-cases.md) |
+| 6 | Main software components | [docs/06-components.md](docs/06-components.md) |
+| 7 | Class and sequence diagrams | [docs/07-design/](docs/07-design/) |
+| 8 | Testing strategy | [docs/08-testing-strategy.md](docs/08-testing-strategy.md) |
+| 9 | Demo web application | [app/](app/) |
+| 10 | Demo in class | [docs/10-demo-plan.md](docs/10-demo-plan.md) |
+| 11 | Conclusion | [docs/11-conclusion.md](docs/11-conclusion.md) |
+
+Images and screenshots go in [docs/assets/](docs/assets/).
+
 ## Project progress
 
 See [TODO.md](TODO.md) for the roadmap, which follows the assignment's 11 steps.

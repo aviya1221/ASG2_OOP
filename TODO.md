@@ -31,7 +31,7 @@ The commit history is part of the grade, so commit small and often.
 - [ ] Add team members (names + GitHub usernames) to the README
 - [ ] Define the scope: in scope / out of scope (no Moodle, Zoom or personal-info integration)
 - [ ] Decide which of the 5 features are implemented in the demo and which are design-only
-- [ ] Add a "Repository structure" section to the README
+- [x] Add a "Repository structure" section to the README
 
 ## Step 2: Technical tools report → [docs/02-tools-report.md](docs/02-tools-report.md)
 
