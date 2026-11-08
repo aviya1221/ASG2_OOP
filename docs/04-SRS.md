@@ -1,4 +1,4 @@
-# Step 4: Software Requirements Specification (SRS)
+# Software Requirements Specification (SRS)
 
 <!--
 LECTURER GUIDELINES: SRS (lecture 02a, slides 3, 5, 6, 19, 22)
