@@ -106,7 +106,7 @@ Every requirement is written as "The system shall..." and must be testable: unam
 - [x] 3.2 External interfaces (LLM API, spreadsheet export, etc.)
 - [x] 3.3 Non-functional requirements (`NFR-nn`), each one measurable: usability (KISS), performance (whole class at once), security and privacy, availability
 - [ ] Review pass: rewrite any weak requirement (not measurable, subjective, vague quantity, several in one)
-- [ ] Appendix B: data dictionary (main entities, spreadsheet columns)
+- [x] Appendix B: data dictionary (main entities, spreadsheet columns)
 - [ ] Appendix C: traceability matrix (requirement column; filled further in steps 5-8)
 
 ## Step 5: Main use cases (client stories) → [docs/05-use-cases.md](docs/05-use-cases.md)

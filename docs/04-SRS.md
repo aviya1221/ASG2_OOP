@@ -291,6 +291,20 @@ See [05-use-cases.md](05-use-cases.md).
 
 | Entity / field | Type | Description |
 |----------------|------|-------------|
+| User | Entity | ID number, name, role (admin, teacher or student) |
+| Course | Entity | Course number, name, teacher, weekly hours, students |
+| Lesson | Entity | Course, date, lecture number, lecture topic |
+| Face registration | Entity | Student, hash, whether the student opted out |
+| Attendance result | Entity | Student, lesson, result, how it was decided |
+| Row-and-seat request | Entity | Student, lesson, row, seat, the teacher's decision |
+| Forum message | Entity | Lesson, writer, text, whether the class sees the name, the message it replies to, time |
+| Poll | Entity | Lesson, question, answer options, open or closed, whether another answer is allowed |
+| Form | Entity | Lesson, questions and their types, open or closed, whether another answer is allowed |
+| Answer | Entity | The poll or form, student, the answer |
+| Lesson summary | Entity | Lesson, the four parts of the summary page |
+| Homework | Entity | Lesson, PDF file, review guide (questions, sections, requirements, review instructions) |
+| Homework check | Entity | Homework, student, check number, time, section scores, overall score, report |
+| Attendance sheet | Spreadsheet columns | Name, attendance, how it was decided, note for flagged students |
 
 ### C. Traceability matrix
 
