@@ -69,7 +69,15 @@ This document states what the product must do. Developers build from it, testers
 
 ### 1.2 Scope
 
-The product is a general system for managing in-person lessons, with a supporting web app that every student has on their phone. Each lesson has one tab per feature (D-1 to D-5 in the [SoW](03-SoW.md)). The product does not connect to Moodle, Zoom or personal-information systems.
+The product is a general system for managing in-person lessons, with a supporting web app that every student has on their phone. The product does not connect to Moodle, Zoom or personal-information systems.
+
+Each lesson has three tabs, and each tab can hold further tabs or processes of its own:
+
+| Tab | What it holds | Deliverables in the [SoW](03-SoW.md) |
+|-----|---------------|---------------------|
+| Attendance | Photo attendance, row-and-seat requests and the attendance sheet | D-1 |
+| Forum | Messages, polls, forms and the button to the lesson summary | D-2, D-3, D-4 |
+| Homework | Published homework, feedback before submitting and the class chart | D-5 |
 
 ### 1.3 Definitions
 
