@@ -1,0 +1,7 @@
+# The recording is downloaded locally, and the outputs hold the words of real students.
+# Only the numbers in results/ are committed.
+venv/
+downloads/
+media/
+out/
+__pycache__/

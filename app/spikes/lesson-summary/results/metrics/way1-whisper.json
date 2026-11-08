@@ -1,0 +1,18 @@
+{
+  "model": "large-v3-turbo",
+  "clip_minutes": 20.0,
+  "model_load_seconds": 7.0,
+  "transcribe_seconds": 1359.2,
+  "realtime_factor": 1.13,
+  "segments": 577,
+  "gemini_model": "gemini-3.5-flash",
+  "gemini_seconds": 22.2,
+  "tokens_in": 8675,
+  "tokens_out": 1895,
+  "gemini_failed_attempts": [
+    "gemini-3.8-flash try 1: 503",
+    "gemini-3.8-flash try 2: 503",
+    "gemini-3.8-flash try 3: 503",
+    "gemini-3.5-flash try 1: 503"
+  ]
+}

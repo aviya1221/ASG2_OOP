@@ -1,0 +1,16 @@
+{
+  "clip_minutes": 20.0,
+  "transcribe_model": "gemini-3.5-flash",
+  "upload_seconds": 7.7,
+  "transcribe_seconds": 79.9,
+  "transcribe_tokens_in": 30120,
+  "transcribe_tokens_out": 7209,
+  "finish_reason": "FinishReason.STOP",
+  "transcribe_failed_attempts": [],
+  "gemini_model": "gemini-3.5-flash",
+  "gemini_seconds": 33.8,
+  "tokens_in": 5484,
+  "tokens_out": 1432,
+  "gemini_failed_attempts": [],
+  "total_seconds": 126.7
+}

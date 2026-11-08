@@ -1,0 +1,22 @@
+{
+  "requested_model": "gemini-3.6-flash",
+  "transcribe_model": "gemini-3.6-flash",
+  "analyse_model": "gemini-3.6-flash",
+  "upload_seconds": 6.526,
+  "transcribe_seconds": 76.162,
+  "analyse_seconds": 46.189,
+  "processing_seconds_without_pauses": 128.877,
+  "transcribe_usage": {
+    "inputTokens": 15270,
+    "outputTokens": 4016,
+    "totalTokens": 25479
+  },
+  "analyse_usage": {
+    "inputTokens": 3050,
+    "outputTokens": 1216,
+    "totalTokens": 6538
+  },
+  "utterances": 51,
+  "student_lines": 14,
+  "on_screen_items": 0
+}

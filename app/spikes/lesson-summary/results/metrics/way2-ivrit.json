@@ -1,0 +1,13 @@
+{
+  "model": "ivrit-ai/whisper-large-v3-turbo-ct2",
+  "clip_minutes": 20.0,
+  "model_load_seconds": 91.0,
+  "transcribe_seconds": 1068.4,
+  "realtime_factor": 0.89,
+  "segments": 291,
+  "gemini_model": "gemini-3.5-flash",
+  "gemini_seconds": 21.4,
+  "tokens_in": 6785,
+  "tokens_out": 1658,
+  "gemini_failed_attempts": []
+}
