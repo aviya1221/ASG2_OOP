@@ -52,6 +52,7 @@ Requirement number ranges per feature:
 
 | Feature | Requirement IDs |
 |---------|-----------------|
+| F0 Accounts, timetable and lesson page (shared by all features) | REQ-01 to REQ-09 |
 | F1 Attendance + spreadsheet (main) | REQ-10 to REQ-19 |
 | F2 Comments and suggestions | REQ-20 to REQ-29 |
 | F3 Polls | REQ-30 to REQ-39 |

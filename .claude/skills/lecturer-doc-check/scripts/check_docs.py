@@ -491,8 +491,8 @@ def check_srs(doc: Doc, f: Findings):
         row_text = " ".join(c[1:])
 
         if m.group(1) == "REQ":
-            if not 10 <= n <= 59:
-                f.add("WARN", doc.rel, i + 1, f"{rid} is outside the feature ranges REQ-10..59 "
+            if not 1 <= n <= 59:
+                f.add("WARN", doc.rel, i + 1, f"{rid} is outside the feature ranges REQ-01..59 "
                       "(docs/README.md)", TRACE_SRC)
             elif feature and n // 10 != feature:
                 f.add("WARN", doc.rel, i + 1, f"{rid} sits under F{feature} but its number belongs "
