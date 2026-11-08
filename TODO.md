@@ -95,7 +95,7 @@ Every requirement is written as "The system shall..." and must be testable: unam
   - [x] F1 Attendance + spreadsheet (main feature): `REQ-10` to `REQ-19`
   - [x] F2 Comments and suggestions (realtime + offline): `REQ-20` to `REQ-29`
   - [x] F3 Polls: `REQ-30` to `REQ-39`
-  - [ ] F4 Class video ML summary: `REQ-40` to `REQ-49`
+  - [x] F4 Class video ML summary: `REQ-40` to `REQ-49`
   - [ ] F5 LLM homework review and comparison: `REQ-50` to `REQ-59`
   - [x] F6 Forms: `REQ-60` to `REQ-69`
 - [ ] 3.2 External interfaces (LLM API, spreadsheet export, etc.)
