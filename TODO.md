@@ -125,7 +125,7 @@ Each use case has the lecturer's 6 fields: name and ID, actor, preconditions, ma
 - [x] UC-08: Sign in and reach a lesson page
 - [ ] Activity diagram for UC-01 (the main feature)
 - [ ] User stories ("As a ... I want ... so that ...") with Given / When / Then acceptance criteria
-- [ ] Fill the "Use case" column of the SRS traceability matrix
+- [x] Fill the "Use case" column of the SRS traceability matrix
 
 ## Step 6: Main software components (SDD) → [docs/06-SDD.md](docs/06-SDD.md)
 
