@@ -72,6 +72,7 @@ The lecturer requires that we **actually test** every tool we suggest.
   - [x] Lesson summary (F4): write the spike in the report
 - [ ] Comparison table
   - [x] Face tools for photo attendance (F1)
+  - [x] Lesson summary (F4)
 - [ ] Decisions as ADRs: what we chose, alternatives rejected and why (one commit per decision)
   - [x] ADR-1: face tool for photo attendance (F1)
 - [ ] Technology risk register with mitigations (keep a fallback for risky tools)

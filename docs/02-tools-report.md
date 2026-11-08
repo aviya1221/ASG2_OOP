@@ -190,6 +190,12 @@ No ready project does all of this, so we compose existing parts.
 | Attendance face tool | 1. OpenCV (YuNet + SFace) | Free, open source | Two models and about 100 lines of our code (loading, aligning each face) | Runs in the browser; download of about 64 MB; not yet timed on a phone (laptop: 83 ms per face) | Found 82.1% of crowd faces; recognised 97.0% at 35 px | Yes (ADR-1) |
 | Attendance face tool | 2. Human | Free, open source | One library with ready examples | Runs in the browser; laptop: 758 ms per face | Found 13.6%; recognised 1.7% at 35 px | No |
 | Attendance face tool | 2b. Human + tiles | Free, open source | One library plus our tiling code | Runs in the browser; laptop: 2,573 ms per face | Found 27.8%; recognised 58.3% at 35 px | No |
+| Lesson summary | 1. Whisper + Gemini | Transcription free and open source; Gemini on the free tier | A Python service and a model to host, next to our server | Runs on the server; the teacher only uploads a file | 23.1 min for 20 min; wrong terms, invented words, no speaker labels | No |
+| Lesson summary | 2. ivrit.ai + Gemini | Transcription free and open source; Gemini on the free tier | A Python service and a model to host, next to our server | Runs on the server; the teacher only uploads a file | 19.7 min for 20 min; correct terms, no speaker labels | No |
+| Lesson summary | 3. Sound to Flash | Free tier | One call through our LLM layer | Runs on the server; the teacher only uploads a file | 127 s for 20 min; cleanest Hebrew, speaker labels; model no longer listed by Google | No |
+| Lesson summary | 4. Sound to Flash-Lite | Free tier | One call through our LLM layer | Runs on the server; the teacher only uploads a file | 45 s for 20 min; missed student questions | No |
+| Lesson summary | 5. Sound, current model | Free tier | One call through our LLM layer, plus extracting the sound | Runs on the server; the teacher only uploads a file | 129 s and 32,017 tokens for 10 min; 3 student questions; no board | As the fallback (ADR-2) |
+| Lesson summary | 6. Full video | Free tier | One call through our LLM layer | Runs on the server; the teacher only uploads a file | 141 s and 75,530 tokens for 10 min; the same 3 questions; board list; better speaker labels | Yes (ADR-2) |
 
 ## 5. Decisions (ADRs)
 
