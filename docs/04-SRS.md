@@ -141,7 +141,7 @@ The product runs in a web browser on a phone or a computer. The teacher's phone 
 | REQ-04 | The system shall show each teacher and each student only the lessons of their own courses. | Must | D-1 to D-5 |
 | REQ-05 | The system shall give each student access to their lessons with no room code or join step. | Must | D-1 to D-5 |
 | REQ-06 | The system shall show each lesson as one page with three tabs: attendance, forum and homework. | Must | D-1 to D-5 |
-| REQ-07 | The system shall let a student register their face once, from 3 photos taken on their own phone: one close, one from 2 meters and one at a slight angle. | Must | D-1 |
+| REQ-07 | The system shall let a student register their face once, from 1 photo taken on their own phone. | Must | D-1 |
 | REQ-08 | The system shall let a student opt out of face recognition. | Must | D-1 |
 | REQ-09 | The system shall require approval from a teacher of one of the student's courses before the student replaces their registered face. | Should | D-1 |
 
