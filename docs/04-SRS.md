@@ -176,7 +176,7 @@ Rules for REQ-13, checked in this order. Only the result "Present" marks the stu
 
 | ID | Requirement | Priority | Source |
 |----|-------------|----------|--------|
-| REQ-30 | The system shall let the teacher publish, during the lesson, a quick poll in the forum of that lesson date: one multiple-choice question with at least 2 answer options. | Must | D-3 |
+| REQ-30 | The system shall let the teacher publish, during the lesson, a poll in the forum of that lesson date: one multiple-choice question with at least 2 answer options. | Must | D-3 |
 | REQ-31 | The system shall show a published poll in the forum to every student of that lesson. | Must | D-3 |
 | REQ-32 | The system shall let a student choose one answer to a poll only while the poll is open. | Must | D-3 |
 | REQ-33 | The system shall refuse a student's second answer to a poll unless the teacher allowed another answer when creating it. | Must | D-3 |
