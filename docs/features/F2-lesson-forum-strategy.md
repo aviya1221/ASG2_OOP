@@ -30,9 +30,3 @@ Every date of a lesson has its own forum: one running conversation, in the spiri
 11. **Closing.** The teacher chooses when to close a quick poll or a form. A quick poll that is still open closes at the end of the lesson.
 12. **One answer per student.** A student cannot answer again unless the teacher allowed it when creating the poll or form. When it is allowed, the new answer replaces the earlier one.
 13. **Form builder code.** We reuse existing code if the tools report finds something suitable, and otherwise write it ourselves.
-
-## 3. What this changes in existing documents
-
-- [F3 polls strategy](F3-polls-strategy.md) describes a separate polls tab and one question per poll. The tab is replaced by the forum, and forms are added. The reused pieces for quick polls still apply.
-- The polls requirements in the SRS (REQ-30 to REQ-38) were written for that separate tab.
-- Both let a student always change their answer. Under decision 12 that needs the teacher's permission.

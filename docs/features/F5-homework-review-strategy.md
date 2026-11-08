@@ -71,6 +71,5 @@ Still to be built: users, lessons, the database, the phone screens and the chart
 
 ## 7. Still open
 
-- **SoW wording.** D-5 says "students and teachers" get a review. Under decision 4 only students get the review and the teacher can view the chart, so the SoW needs updating.
 - **Spike results** from section 3.
 - **Build order** relative to the attendance feature and the shared base of users and lessons.

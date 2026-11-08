@@ -47,6 +47,5 @@ Full video also listed the formulas on the board. Checked against frames from th
 
 ## 4. Still open
 
-- **SoW wording.** D-4 says the teacher gets the summary. Under decision 1 everyone linked to the lesson can open it, so the SoW needs updating.
 - **A fallback model.** `gemini-3.8-flash` was overloaded on all six tries in the first test, so the feature needs retries and a second model.
 - **Length.** The target for the pilot is a recording of about 10 minutes. A full lesson was not tested.
