@@ -103,7 +103,7 @@ Each lesson has three tabs, and each tab can hold further tabs or processes of i
 
 ### 2.1 Product perspective
 
-The product is standalone: every feature runs inside it, with no outside poll or attendance site. It calls outside services only for AI processing (section 3.2).
+The product is standalone: every feature runs inside it, with no outside poll or attendance site. It calls outside services only for AI processing and phone notifications (section 3.2).
 
 ### 2.2 User classes
 
@@ -255,6 +255,13 @@ Rules for REQ-13, checked in this order. Only the result "Present" marks the stu
 | REQ-69 | The system shall keep a form and its answers in the forum of its lesson date. | Must | D-3 |
 
 ### 3.2 External interfaces
+
+| Interface | What passes through it |
+|-----------|------------------------|
+| Google Gemini (AI service) | The server sends homework files, solutions and lesson recordings, and receives answers in a fixed structure. The service key stays on the server. |
+| Phone notifications | The server notifies students through the browser's notification mechanism after the teacher has photographed the class. |
+| Phone camera | The website uses the camera through the browser, for face registration and for photographing the class. |
+| Files | Homework and solutions are uploaded as PDF files, and recordings as video files. The attendance sheet is downloaded as a spreadsheet file, in the format chosen in the [tools report](02-tools-report.md). |
 
 ### 3.3 Non-functional requirements
 
