@@ -16,7 +16,7 @@ Every date of a lesson has its own forum: one running conversation, in the spiri
 3. **Who reads it.** Everyone linked to the lesson.
 4. **Who writes.** Everyone linked to the lesson can open a new message and reply to a message.
 5. **Names.** For each message, the student chooses whether the class sees their name. The teacher always sees who wrote it.
-6. **Always open.** The forum of every date stays open for writing, with no closing rule. Forums are listed in order of lecture number, each titled with the course name, the lecture number and the lecture topic.
+6. **Always open.** The forum of every date stays open for writing, with no closing rule. Forums are listed in order of lecture number, each titled with the course name, the lecture number and the lecture topic. The teacher can enter the topic before or during the lecture. If they do not, it is taken from the lesson summary, and until then the title shows only the course name and the lecture number.
 7. **Messages are text only** and may contain links.
 8. **No editing.** Only the teacher can delete a message.
 
