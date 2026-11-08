@@ -64,7 +64,7 @@ The features:
 | D-1 | Attendance (main feature): students mark their attendance in class from their phones, and the teacher gets a spreadsheet with the details |
 | D-2 | Comments and suggestions: each lesson has its own forum, where students comment and raise suggestions, during the lesson or after it |
 | D-3 | Polls and forms: the teacher publishes quick polls during the lesson, and forms with more than one question, in the forum ([strategy](features/F3-polls-strategy.md)) |
-| D-4 | Video summary: the teacher gets an automatic summary of a recorded lesson video |
+| D-4 | Lesson summary: the teacher uploads a recording of the lesson, and everyone linked to the lesson gets an automatic summary |
 | D-5 | Homework review: students and teachers get an AI review of a homework, including a comparison with other students' work |
 
 
