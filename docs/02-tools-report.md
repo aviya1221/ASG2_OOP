@@ -115,8 +115,14 @@ So the need is a face tool that:
   - Recognition drops below 28 px (34.3% at 16 px). So the teacher's photo must be taken at full resolution.
   - SFace inside OpenCV.js took about 1 s per face. The same model in ONNX Runtime Web takes 83 ms.
   - The models and the runtime add up to about 64 MB: OpenCV.js 10 MB, SFace 39 MB, ONNX Runtime 15 MB and YuNet 0.2 MB.
-  - Distance was simulated by shrinking press photos. We still need a shoot in a real lecture hall with our team, and timing on phones, using the hands-on page in the spike folder.
-- **Evidence:** [the measured results](../app/spikes/face-tools/results/summary.md). The pictures (crowd photos with the found faces, the simulated hall) contain dataset photos that are for research use only, so they stay out of the repository. `make-examples.mjs` and `make-demo-set.mjs` rebuild them. The screenshot from the real-hall shoot will be added here.
+  - In the benchmark, distance was simulated by shrinking press photos. The first check on real photos is below. We still need camera originals, registration photos and timing on phones, using the hands-on page in the spike folder.
+
+  **First check in a real lecture hall (option 1):** 3 photos from the lecturer's desk, taken with the wide lens. The copies we checked were 2000 × 1500 px and compressed, not the camera originals. Each pair count below is small, so these numbers are an indication, not a measurement.
+  - **Finding faces:** it found 34, 38 and 25 faces, nearly every face that was visible. Faces were 14-25 px in the back rows, 25-40 px in the middle rows and 45-75 px in the front rows.
+  - **Same person in two photos:** two of the photos show the same seating. Faces of 25 px or more that looked at the camera matched 7 of 7. A head bent down did not match. Faces of 15-24 px matched 0 of 3.
+  - **Different people:** two faces from the same photo passed the threshold in 1.2% of the pairs (19 of 1,564), against 0.1% in the benchmark. At a threshold of 0.45 it was 0.2%.
+  - **Photo size:** OpenCV.js worked on a 4000 × 3000 photo and failed on 4080 × 3072, so its limit is about 12 MP.
+- **Evidence:** [the measured results](../app/spikes/face-tools/results/summary.md). The pictures (crowd photos with the found faces, the simulated hall) contain dataset photos that are for research use only, so they stay out of the repository. `make-examples.mjs` and `make-demo-set.mjs` rebuild them. The real-hall photos show real students, so they were deleted after the check and only the numbers are recorded.
 - **Time spent:** about 3.5 hours. The full run took 2 h 20 min: option 1 took 5 minutes, and option 2b took about 2 hours.
 
 ## 4. Comparison table

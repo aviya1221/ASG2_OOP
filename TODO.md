@@ -63,7 +63,8 @@ The lecturer requires that we **actually test** every tool we suggest.
 - [ ] Spike (hands-on test) of each shortlisted tool: goal, what we did, result, screenshot (one commit per tool)
   - [x] Face tools for photo attendance (F1): benchmark code and hands-on page → [app/spikes/face-tools/](app/spikes/face-tools/)
   - [x] Face tools for photo attendance (F1): write the spike in the report
-  - [ ] Face tools for photo attendance (F1): shoot in a real lecture hall with the team, and time it on phones
+  - [x] Face tools for photo attendance (F1): first check on compressed photos of a real lecture hall
+  - [ ] Face tools for photo attendance (F1): check camera originals with registration photos from volunteers, and time it on phones
 - [ ] Comparison table
   - [x] Face tools for photo attendance (F1)
 - [ ] Decisions as ADRs: what we chose, alternatives rejected and why (one commit per decision)
