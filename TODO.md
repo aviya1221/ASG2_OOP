@@ -118,7 +118,7 @@ Each use case has the lecturer's 6 fields: name and ID, actor, preconditions, ma
 - [x] UC-01: Take attendance in a lesson
 - [x] UC-02: Post a message in the forum
 - [x] UC-03: Publish a poll or form and answer it
-- [ ] UC-04: Get a lesson summary
+- [x] UC-04: Get a lesson summary
 - [ ] UC-05: Publish a homework and get feedback on it
 - [ ] UC-06: Register a face
 - [ ] UC-07: Build the timetable

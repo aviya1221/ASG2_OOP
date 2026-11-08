@@ -151,6 +151,22 @@ traceability matrix can fill its "Use case" column.
 - Covers: REQ-30 to REQ-39, REQ-60 to REQ-69, NFR-02
 
 ### UC-04: Get a lesson summary
+
+- Actor: Teacher. Google Gemini also takes part.
+- Preconditions: The lesson has ended, and the teacher has a recording of it.
+- Main success flow:
+  1. The teacher uploads the recording.
+  2. The system sends the full video to Google Gemini and receives a transcript with speaker labels and a list of what was on the board.
+  3. The system writes the four parts of the summary, and corrects spelling mistakes and garbled copying against the transcript and the board list.
+  4. The system deletes the recording and opens the summary page. If the teacher did not enter a topic, the forum title takes it from the summary.
+  5. Everyone linked to the lesson opens the summary from the button in the forum.
+- Alternative flows:
+  - 2a. The file is too large or a usage limit is reached: the system sends the sound alone.
+  - 2b. The service does not answer: the teacher gets a message and can upload again.
+  - 4a. The teacher edits the text of the summary, or uploads a new recording that creates a new summary.
+- Postconditions: The summary page is open, and the recording has been deleted.
+- Covers: REQ-40 to REQ-49, NFR-05
+
 ### UC-05: Publish a homework and get feedback on it
 ### UC-06: Register a face
 ### UC-07: Build the timetable
