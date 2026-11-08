@@ -133,6 +133,23 @@ traceability matrix can fill its "Use case" column.
 - Covers: REQ-20, REQ-21, REQ-23 to REQ-29, NFR-02
 
 ### UC-03: Publish a poll or form and answer it
+
+- Actor: Teacher. Students also take part.
+- Preconditions: The teacher is in the forum of the lesson. For a poll, the lesson is in progress.
+- Main success flow:
+  1. The teacher writes a question with at least 2 answer options and publishes a poll in the forum.
+  2. The system shows the poll to every student of the lesson.
+  3. A student chooses an answer.
+  4. Everyone linked to the lesson sees a chart that updates without reloading the page, and the teacher also sees who gave each answer.
+  5. The teacher closes the poll, and it stays in the forum.
+- Alternative flows:
+  - 1a. Form: the teacher builds a form of one or more questions of the four types, before or during the lesson, and publishes it in the forum. A student answers it in a window over the forum, and only the teacher sees the answers.
+  - 3a. The student answers again: the answer is refused, unless the teacher allowed another answer when creating the poll or form, and then it replaces the earlier one.
+  - 3b. The poll or form is closed: the answer is refused.
+  - 5a. A poll that is still open at the end of the lesson closes automatically.
+- Postconditions: The poll or form and its results stay in the forum of the lesson.
+- Covers: REQ-30 to REQ-39, REQ-60 to REQ-69, NFR-02
+
 ### UC-04: Get a lesson summary
 ### UC-05: Publish a homework and get feedback on it
 ### UC-06: Register a face
