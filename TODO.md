@@ -115,7 +115,7 @@ Each use case has the lecturer's 6 fields: name and ID, actor, preconditions, ma
 
 - [x] Actors list
 - [ ] Use-case diagram (actors, system boundary, `<<include>>` / `<<extend>>`)
-- [ ] UC-01: Take attendance in a lesson
+- [x] UC-01: Take attendance in a lesson
 - [ ] UC-02: Post a message in the forum
 - [ ] UC-03: Publish a poll or form and answer it
 - [ ] UC-04: Get a lesson summary

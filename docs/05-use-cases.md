@@ -94,6 +94,28 @@ traceability matrix can fill its "Use case" column.
 -->
 
 ### UC-01: Take attendance in a lesson
+
+- Actor: Teacher. Students also take part.
+- Preconditions: The teacher is on the lesson page, and every student of the course has registered a face or opted out.
+- Main success flow:
+  1. The teacher opens the attendance tab and takes 1 to 3 photos of the class.
+  2. The teacher's phone finds the faces and sends the server only the face-prints and their positions, never the photo.
+  3. The system notifies every student of the course.
+  4. A student opens the app within 1 hour.
+  5. The student's phone sends the student's face-print and hash, with no further action by the student.
+  6. The system checks the hash, compares the face-print with those from the photo, deletes the student's face-print and records a result.
+  7. The teacher's attendance sheet updates with each result.
+  8. The teacher downloads the sheet.
+- Alternative flows:
+  - 4a. The student does not open the app within 1 hour: the result is No response.
+  - 5a. The student opted out of face recognition: the student goes straight to a row-and-seat request (7a).
+  - 6a. The face-print does not fit the hash: the result is Review, with no comparison.
+  - 6b. The best score is below the match threshold: the result is Not found.
+  - 6c. Two or more students matched the same face: the result is Conflict, and the case passes to the teacher for follow-up.
+  - 7a. A student who is not marked present after the hour enters a row and seat, and the teacher approves or rejects the request. Every request is recorded, and a student with a rejected request or 3 or more requests in the course is flagged.
+- Postconditions: Every student of the course has one attendance result, and the server has deleted the face-prints from the photo within 1 hour.
+- Covers: REQ-10 to REQ-19, NFR-03, NFR-04, NFR-09, NFR-10
+
 ### UC-02: Post a message in the forum
 ### UC-03: Publish a poll or form and answer it
 ### UC-04: Get a lesson summary
