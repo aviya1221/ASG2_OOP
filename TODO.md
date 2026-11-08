@@ -69,6 +69,7 @@ The lecturer requires that we **actually test** every tool we suggest.
   - [x] Face tools for photo attendance (F1): first check on compressed photos of a real lecture hall
   - [ ] Face tools for photo attendance (F1): check camera originals with registration photos from volunteers, and time it on phones
   - [x] Lesson summary (F4): scripts and measured results → [app/spikes/lesson-summary/](app/spikes/lesson-summary/)
+  - [x] Lesson summary (F4): write the spike in the report
 - [ ] Comparison table
   - [x] Face tools for photo attendance (F1)
 - [ ] Decisions as ADRs: what we chose, alternatives rejected and why (one commit per decision)

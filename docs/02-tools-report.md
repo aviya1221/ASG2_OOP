@@ -144,6 +144,45 @@ No ready project does all of this, so we compose existing parts.
 - **Evidence:** [the measured results](../app/spikes/face-tools/results/summary.md). The pictures (crowd photos with the found faces, the simulated hall) contain dataset photos that are for research use only, so they stay out of the repository. `make-examples.mjs` and `make-demo-set.mjs` rebuild them. The real-hall photos show real students, so they were deleted after the check and only the numbers are recorded.
 - **Time spent:** about 3.5 hours. The full run took 2 h 20 min: option 1 took 5 minutes, and option 2b took about 2 hours.
 
+### Spike: lesson summary from a recorded video (F4)
+
+- **Goal:** find the way that turns a recorded lesson in Hebrew into a transcript that tells the teacher from the students, and find out whether sending the picture adds anything over sound alone.
+- **What we did:** we used a public recording of a probability tutorial in Hebrew, with a noisy start and real student questions. In every way, Gemini then analysed the transcript into a summary, topics, the teacher's points and the students' questions. Code: [app/spikes/lesson-summary/](../app/spikes/lesson-summary/).
+  1. **Ways of working from sound (2026-11-06):** options 1 to 4 from section 2.7, on minutes 0 to 20. Whisper ran on a laptop CPU with 8 threads and no graphics card.
+  2. **Sound against full video (2026-11-08):** options 5 and 6, on minutes 5 to 15, through the product's own LLM layer on the free tier, with a minute between requests. In option 6 the model also listed what was on the board, and we compared that list with frames from the video.
+- **Result:**
+
+  | Measure, minutes 0 to 20 | 1. Whisper + Gemini | 2. ivrit.ai + Gemini | 3. Sound to Flash | 4. Sound to Flash-Lite |
+  |---------|-----------|----------|-------------------|-------------------|
+  | Total time | 23.1 min | 19.7 min | 127 s | 45 s |
+  | The word for "events" written correctly | 0 of 6 | 7 of 7 | 7 of 7 | 7 of 7 |
+  | Invented foreign words | 6 | 0 | 0 | 0 |
+  | Speaker labels | None | None | Teacher and student, 17 student lines | Teacher and student, 3 student lines |
+  | Student questions found | 4 | 3 | 3 | 3, missing those at 07:31 and 13:08 |
+
+  | Measure, minutes 5 to 15 | 5. Sound | 6. Full video, 720p |
+  |---------|-----------|----------|
+  | Total time, without pauses | 129 s | 141 s |
+  | Total tokens | 32,017 | 75,530 |
+  | Student lines | 14 | 16 |
+  | Student questions found | 3 | The same 3 |
+  | Items listed from the board | Not available | 8 |
+
+  **Limits we found:**
+  - Text quality was judged by reading it. Nobody compared the transcripts with the recording.
+  - Two frames from the video confirmed the 8 board items, except for one line that merged later writing and dropped a term.
+  - The written summaries of options 5 and 6 came out almost the same, because the analysis step hardly used the board list. So the board gets its own part on the summary page.
+  - Option 5 gave one student's sentence to the teacher, and option 6 labeled it correctly.
+  - In the noisy first two minutes, option 3 marked every line as the teacher.
+  - Options 5 and 6 both misheard the term "inclusion-exclusion".
+  - One question appears at 13:37 in option 3's transcript and at 13:08 in options 1 and 2, so Gemini's timestamps can be off by about 30 s.
+  - A plain-text request for a transcript returned one line ("Transcribed as requested."). A JSON schema of the utterances fixed it.
+  - `gemini-3.8-flash` returned error 503 on all six tries, over two runs, and `gemini-3.5-flash` returned it once.
+  - `gemini-3.5-flash` is no longer listed on Google's pricing page, so we repeated option 3 as option 5 on the current model.
+  - A full lesson was not tested. The target for the pilot is a recording of about 10 minutes.
+- **Evidence:** [the measured results](../app/spikes/lesson-summary/results/summary.md). The transcripts hold the words of real students, so they stay out of the repository and only the numbers are recorded.
+- **Time spent:** about an hour of run time over all the runs.
+
 ## 4. Comparison table
 
 | Need | Option | Cost / free tier | Simplicity | Works on phones | Spike result | Chosen? |
