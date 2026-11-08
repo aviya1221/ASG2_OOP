@@ -93,12 +93,14 @@ traceability matrix can fill its "Use case" column.
 - Covers: REQ-nn, REQ-nn
 -->
 
-### UC-01: Mark attendance
-### UC-02: Open a class session and export the attendance spreadsheet
-### UC-03: Post a comment or suggestion
-### UC-04: Create a poll and vote
-### UC-05: Get a class video summary
-### UC-06: Request a homework review
+### UC-01: Take attendance in a lesson
+### UC-02: Post a message in the forum
+### UC-03: Publish a poll or form and answer it
+### UC-04: Get a lesson summary
+### UC-05: Publish a homework and get feedback on it
+### UC-06: Register a face
+### UC-07: Build the timetable
+### UC-08: Sign in and reach a lesson page
 
 ## 4. Activity diagrams
 

@@ -115,12 +115,14 @@ Each use case has the lecturer's 6 fields: name and ID, actor, preconditions, ma
 
 - [x] Actors list
 - [ ] Use-case diagram (actors, system boundary, `<<include>>` / `<<extend>>`)
-- [ ] UC-01: Student marks attendance
-- [ ] UC-02: Lecturer opens a class session and exports the attendance spreadsheet
-- [ ] UC-03: Student posts a comment / suggestion
-- [ ] UC-04: Lecturer creates a poll, students vote, results are shown
-- [ ] UC-05: Lecturer uploads a class video and gets a summary
-- [ ] UC-06: Student / teacher requests a homework review
+- [ ] UC-01: Take attendance in a lesson
+- [ ] UC-02: Post a message in the forum
+- [ ] UC-03: Publish a poll or form and answer it
+- [ ] UC-04: Get a lesson summary
+- [ ] UC-05: Publish a homework and get feedback on it
+- [ ] UC-06: Register a face
+- [ ] UC-07: Build the timetable
+- [ ] UC-08: Sign in and reach a lesson page
 - [ ] Activity diagram for UC-01 (the main feature)
 - [ ] User stories ("As a ... I want ... so that ...") with Given / When / Then acceptance criteria
 - [ ] Fill the "Use case" column of the SRS traceability matrix
