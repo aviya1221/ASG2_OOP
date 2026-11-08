@@ -270,6 +270,11 @@ Rules for REQ-13, checked in this order. Only the result "Present" marks the stu
 | ID | Category | Requirement | Priority |
 |----|----------|-------------|----------|
 | NFR-01 | Security | Text in a student's file that addresses the reviewer, visible or hidden, shall change the score of a section by no more than 10 points compared with the same file without that text. | Must |
+| NFR-02 | Performance | With 50 students connected, a new forum message or poll result shall appear for everyone within 2 s in 95% of cases. | Must |
+| NFR-03 | Performance | With 50 students responding in the same minute, the server shall process a student's attendance response within 2 s in 95% of cases. | Must |
+| NFR-04 | Performance | The teacher's phone shall find the faces in a class photo with 50 faces within 2 minutes per photo. | Must |
+| NFR-05 | Performance | The summary of a 10-minute recording shall be ready within 5 minutes of the end of the upload. | Must |
+| NFR-06 | Performance | The report on a solution of up to 20 pages shall be ready within 3 minutes. | Must |
 
 ## 4. Appendices
 
