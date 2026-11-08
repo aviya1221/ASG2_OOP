@@ -24,7 +24,7 @@ After a lesson, the teacher uploads its recording. The app creates a summary aut
 
 ## 3. What the tests showed
 
-All tests used a recorded lesson in Hebrew with real student questions. Text quality was judged by reading it, not by comparing it with the recording.
+All tests used a recorded lesson in Hebrew with real student questions. Text quality was judged by reading it, not by comparing it with the recording. The full results are in the [tools report](../02-tools-report.md).
 
 **Ways of working from sound, 20 minutes, 2026-11-06:**
 
@@ -47,7 +47,6 @@ Full video also listed the formulas on the board. Checked against frames from th
 
 ## 4. Still open
 
-- **Tools report.** The results above and the scripts behind them are in a temporary folder and still need to go into the tools report.
 - **SoW wording.** D-4 says the teacher gets the summary. Under decision 1 everyone linked to the lesson can open it, so the SoW needs updating.
 - **A fallback model.** `gemini-3.8-flash` was overloaded on all six tries in the first test, so the feature needs retries and a second model.
 - **Length.** The target for the pilot is a recording of about 10 minutes. A full lesson was not tested.
