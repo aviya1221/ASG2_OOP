@@ -53,7 +53,7 @@ The commit history is part of the grade, so commit small and often.
 
 The lecturer requires that we **actually test** every tool we suggest.
 
-- [ ] Define evaluation criteria (cost / free tier, simplicity, works on smartphones, time to set up)
+- [x] Define evaluation criteria (cost / free tier, simplicity, works on smartphones, time to set up)
 - [ ] List candidate tools per need:
   - [ ] Frontend / web framework
   - [ ] Backend / BaaS + realtime database

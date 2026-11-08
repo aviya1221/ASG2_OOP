@@ -39,6 +39,15 @@ others were rejected. Keep a fallback for risky choices (LLM / video APIs).
 
 ## 1. Evaluation criteria
 
+| Criterion | What we check |
+|-----------|---------------|
+| Cost | Works on a free tier during the pilot |
+| Simplicity | How much code and maintenance it needs from us |
+| Works on phones | Works from the phone's browser, with no installation |
+| Time to set up | How long it takes to reach a first working version |
+
+Every tool also records the result of a hands-on spike. We prefer existing tools and code that meet these criteria, and write something ourselves only when no alternative exists.
+
 ## 2. Candidate tools by need
 
 ### 2.1 Frontend / web framework
