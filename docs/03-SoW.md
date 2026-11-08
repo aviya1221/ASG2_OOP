@@ -69,6 +69,4 @@ The features:
 
 
 ## 3. How much (cost)
-
-- **Infrastructure:** no license or hosting cost during the pilot, because every service runs on a free tier.
-- **Development:** our team's time until the pilot in a live class.
+No license or hosting cost during the pilot, because every service runs on a free tier.
