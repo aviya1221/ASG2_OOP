@@ -130,6 +130,20 @@ The product runs in a web browser on a phone or a computer. The teacher's phone 
 | REQ-11 | The system shall ... | Must | D-1 |
 -->
 
+#### F0: Accounts, timetable and lesson page, REQ-01 to REQ-09
+
+| ID | Requirement | Priority | Source |
+|----|-------------|----------|--------|
+| REQ-01 | The system shall require a user to sign in before showing any lesson. | Must | D-1 to D-5 |
+| REQ-02 | The system shall let the admin create a course with its teacher, weekly hours and list of students. | Must | D-1 to D-5 |
+| REQ-03 | The system shall allow only the admin to change the timetable. | Must | D-1 to D-5 |
+| REQ-04 | The system shall show each teacher and each student only the lessons of their own courses. | Must | D-1 to D-5 |
+| REQ-05 | The system shall give each student access to their lessons with no room code or join step. | Must | D-1 to D-5 |
+| REQ-06 | The system shall show each lesson as one page with one tab per feature. | Must | D-1 to D-5 |
+| REQ-07 | The system shall let a student register their face once, from 3 photos taken on their own phone: one close, one from 2 meters and one at a slight angle. | Must | D-1 |
+| REQ-08 | The system shall let a student opt out of face recognition. | Must | D-1 |
+| REQ-09 | The system shall require approval from a teacher of one of the student's courses before the student replaces their registered face. | Should | D-1 |
+
 #### F1: Attendance and spreadsheet (main feature), REQ-10 to REQ-19
 #### F2: Comments and suggestions, REQ-20 to REQ-29
 #### F3: Polls, REQ-30 to REQ-39
