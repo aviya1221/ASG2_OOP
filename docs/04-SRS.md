@@ -168,7 +168,7 @@ Face registration and opting out are REQ-07 to REQ-09.
 | REQ-16 | The system shall keep a record of every row-and-seat request. | Should | D-1 |
 | REQ-17 | The system shall flag a student who has a rejected request, or who has made 3 or more requests in the same course. | Should | D-1 |
 | REQ-18 | The system shall show the teacher the lesson's attendance sheet inside the app, updated with each new result. | Must | D-1 |
-| REQ-19 | The system shall let the teacher download a lesson's attendance sheet as a spreadsheet file with one row per student: name, attendance, how it was decided and a note for flagged students. | Must | D-1 |
+| REQ-19 | The system shall let the teacher download a lesson's attendance sheet as a spreadsheet file with one row per student: ID number, name, attendance, how it was decided and a note for flagged students. | Must | D-1 |
 
 Rules for REQ-13, checked in this order. Only the result "Present" marks the student present.
 
@@ -304,7 +304,7 @@ See [05-use-cases.md](05-use-cases.md).
 | Lesson summary | Entity | Lesson, the four parts of the summary page |
 | Homework | Entity | Lesson, PDF file, review guide (questions, sections, requirements, review instructions) |
 | Homework check | Entity | Homework, student, check number, time, section scores, overall score, report |
-| Attendance sheet | Spreadsheet columns | Name, attendance, how it was decided, note for flagged students |
+| Attendance sheet | Spreadsheet columns | ID number, name, attendance, how it was decided, note for flagged students |
 
 ### C. Traceability matrix
 
