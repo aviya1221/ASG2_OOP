@@ -276,6 +276,9 @@ Rules for REQ-13, checked in this order. Only the result "Present" marks the stu
 | NFR-05 | Performance | The summary of a 10-minute recording shall be ready within 5 minutes of the end of the upload. | Must |
 | NFR-06 | Performance | The report on a solution of up to 20 pages shall be ready within 3 minutes. | Must |
 | NFR-07 | Usability | The website shall work with no installation in the last 2 versions of Chrome on Android and of Safari on iPhone. | Must |
+| NFR-08 | Security | The service key of the AI service shall appear in 0 of the server's responses to a browser. | Must |
+| NFR-09 | Security | The server shall delete a student's face-print within 1 s of the comparison. | Must |
+| NFR-10 | Security | The server shall delete the face-prints from a class photo within 1 hour. | Must |
 
 ## 4. Appendices
 
