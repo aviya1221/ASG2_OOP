@@ -227,6 +227,25 @@ No ready project does all of this, so we compose existing parts.
   - In a hall where faces are 28-80 px, about 5% of the present students go to the teacher. In a larger hall (16-45 px) it is about 21%. The row-and-seat step handles them.
   - Every phone must use the same model version. Changing the model means every student registers again.
 
+### ADR-2: Source and service for the lesson summary
+
+- **Context:** the lesson summary needs a transcript that tells the teacher from the students, and the content of the board ([decisions](features/F4-lesson-summary-strategy.md)). The target for the pilot is a recording of about 10 minutes.
+- **Decision:** option 6, with option 5 as the fallback.
+  - The server uploads the full video through the LLM layer and asks `gemini-3.6-flash` for the transcript, the speaker labels and the board list, as JSON by a schema.
+  - A second request writes the four parts of the summary page from them, and a third checks them against the transcript and the board list.
+  - If the file is over the size limit or a usage limit is reached, the server sends only the sound.
+- **Alternatives rejected:**
+  - Options 1 and 2 (open Whisper models) took 19 to 23 minutes for 20 minutes of sound on our CPU, and gave no speaker labels.
+  - Option 3 uses a model that Google no longer lists, and option 5 replaces it.
+  - Option 4 missed student questions.
+  - The tools rejected without a spike are listed in section 2.7.
+- **Consequences:**
+  - The feature depends on an outside service and is not open source. It stays behind the `LlmClient` interface, so the provider can be replaced and the pilot can fall back to `FakeLlmClient`.
+  - The transcript and the summary of a 10-minute recording take about 76,000 tokens, and the review adds to that.
+  - The server has to extract the sound from the video for the fallback.
+  - The Gemini SDK already retries overload errors, but the feature still needs a second model for when Gemini stays overloaded (R7).
+  - The server deletes the recording, here and at Google, once the summary is ready.
+
 ## 6. Technology risks
 
 | ID | Risk | Probability | Impact | Mitigation |
