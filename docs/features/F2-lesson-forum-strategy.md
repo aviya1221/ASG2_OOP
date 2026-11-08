@@ -23,7 +23,7 @@ Every date of a lesson has its own forum: one running conversation, in the spiri
 ### Polls and forms
 
 9. **Quick poll.** The teacher publishes it in the forum during the lesson. Everyone linked to the lesson sees the results, and the teacher also sees who answered what.
-10. **Form.** A more complex survey with several questions, which the teacher builds inside the app and publishes in the forum.
+10. **Form.** A more complex survey with several questions, which the teacher builds inside the app, before or during the lesson, and publishes in the forum.
     - Its questions can be single choice, multiple choice, a rating on a scale, or free text.
     - It opens in a window over the forum, so students answer without leaving it.
     - Only the teacher sees the results, including who answered what.
