@@ -13,7 +13,7 @@ After a lesson, the teacher uploads its recording. The app creates a summary aut
 2. **When the page opens.** Only after the lesson, and only after the teacher has uploaded the recording.
 3. **The source.** The model works from the full video, picture and sound. Sound alone is the fallback when the file is too large or a usage limit is reached.
 4. **The page has four parts:**
-   - a short summary of the lesson;
+   - a summary of the lesson of up to 300 words;
    - the topics in order, each with the time it started;
    - the students' questions with the teacher's answers;
    - the formulas and other content from the board.

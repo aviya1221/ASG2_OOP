@@ -218,7 +218,7 @@ Rules for REQ-13, checked in this order. Only the result "Present" marks the stu
 | REQ-42 | The system shall let the teacher upload a recording of a lesson, and create a new summary from each upload. | Must | D-4 |
 | REQ-43 | The system shall create the summary automatically from the full video, picture and sound. | Must | D-4 |
 | REQ-44 | The system shall create the summary from the sound alone when the file exceeds the AI service's file size limit or a usage limit is reached. | Must | D-4 |
-| REQ-45 | The system shall show four parts on the summary page: a short summary of the lesson, the topics in order with their start times, the students' questions with the teacher's answers, and the content from the board. | Must | D-4 |
+| REQ-45 | The system shall show four parts on the summary page: a summary of the lesson of up to 300 words, the topics in order with their start times, the students' questions with the teacher's answers, and the content from the board. | Must | D-4 |
 | REQ-46 | The system shall correct any spelling mistake or garbled copying in the summary by comparing it with the transcript and the list of board content, without adding new content. | Must | D-4 |
 | REQ-47 | The system shall let the teacher edit the text of the summary by hand. | Must | D-4 |
 | REQ-48 | The system shall delete the recording once the summary is ready. | Must | D-4 |
