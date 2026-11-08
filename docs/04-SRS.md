@@ -64,9 +64,31 @@ Each requirement row also cites the SoW deliverable it comes from (D-n).
 ## 1. Introduction
 
 ### 1.1 Purpose
+
+This document states what the live-lesson web app must do. Developers build from it, testers test against it, and the client accepts the product against it.
+
 ### 1.2 Scope
+
+The product is the web app described in the [SoW](03-SoW.md): the college's admin builds the timetable, and each lesson has one tab per feature (D-1 to D-5). The product does not connect to Moodle, Zoom or the college's personal-information systems.
+
 ### 1.3 Definitions
+
+| Term | Meaning |
+|------|---------|
+| Lesson | One scheduled meeting of a course in the timetable |
+| Face-print | A list of numbers that describes a face, used to compare two faces |
+| Hash | A one-way code made from a face-print at registration, used to detect a changed face-print |
+| Match threshold | The score at or above which two face-prints count as the same person ([ADR-1](02-tools-report.md#adr-1-face-tool-for-photo-attendance)) |
+| Row and seat | A place in the hall: row 1 is nearest the board, seat 1 is next to the window |
+| Pilot | The first use of the product in a live class |
+
 ### 1.4 References
+
+- [Statement of Work](03-SoW.md)
+- [Technical tools report](02-tools-report.md)
+- [Use cases](05-use-cases.md)
+- [Polls build strategy](features/F3-polls-strategy.md)
+- [Attendance flow mock](assets/F1-attendance-flow-demo.html)
 
 ## 2. Overall description
 
