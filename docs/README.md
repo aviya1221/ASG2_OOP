@@ -58,6 +58,7 @@ Requirement number ranges per feature:
 | F3 Polls | REQ-30 to REQ-39 |
 | F4 Class video summary | REQ-40 to REQ-49 |
 | F5 Homework review | REQ-50 to REQ-59 |
+| F6 Forms (surveys with more than one question, published in the forum) | REQ-60 to REQ-69 |
 
 The **traceability matrix** lives in the SRS appendix and grows with each step:
 
