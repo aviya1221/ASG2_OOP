@@ -123,7 +123,7 @@ Each use case has the lecturer's 6 fields: name and ID, actor, preconditions, ma
 - [x] UC-06: Register a face
 - [x] UC-07: Build the timetable
 - [x] UC-08: Sign in and reach a lesson page
-- [ ] Activity diagram for UC-01 (the main feature)
+- [x] Activity diagram for UC-01 (the main feature)
 - [ ] User stories ("As a ... I want ... so that ...") with Given / When / Then acceptance criteria
 - [x] Fill the "Use case" column of the SRS traceability matrix
 

@@ -271,6 +271,43 @@ flowchart LR
 
 ## 4. Activity diagrams
 
+UC-01, the main feature:
+
+```mermaid
+flowchart TD
+  start((" ")) --> photo("Teacher takes 1 to 3 photos of the class")
+  photo --> send("Teacher's phone sends the server the face-prints and positions")
+  send --> notify("System notifies every student of the course")
+  notify --> opted{"Student opted out of face recognition?"}
+  opted -->|"[yes]"| ask{"Student requests attendance by row and seat?"}
+  opted -->|"[no]"| opened{"Student opened the app within 1 hour?"}
+  opened -->|"[no]"| noresp("Result: No response")
+  opened -->|"[yes]"| response("Student's phone sends the face-print and hash")
+  response --> hash{"Does the face-print fit the hash?"}
+  hash -->|"[no]"| review("Result: Review")
+  hash -->|"[yes]"| compare("System compares, then deletes the student's face-print")
+  compare --> score{"Best score at or above the threshold?"}
+  score -->|"[no]"| notfound("Result: Not found")
+  score -->|"[yes]"| other{"Another student matched the same face?"}
+  other -->|"[yes]"| conflict("Result: Conflict, passed to the teacher")
+  other -->|"[no]"| present("Result: Present")
+  noresp --> ask
+  review --> ask
+  notfound --> ask
+  conflict --> ask
+  ask -->|"[yes]"| decide{"Teacher approves the request?"}
+  ask -->|"[no]"| sheet("Attendance sheet shows the result")
+  decide -->|"[yes]"| approved("Result: Present")
+  decide -->|"[no]"| flagged("Request rejected, student flagged")
+  present --> sheet
+  approved --> sheet
+  flagged --> sheet
+  sheet --> download("Teacher downloads the sheet")
+  download --> stop((("&nbsp;")))
+  classDef dot fill:#222222,stroke:#222222
+  class start,stop dot
+```
+
 ## 5. User stories
 
 <!-- As a <role>, I want <goal> so that <benefit>.
