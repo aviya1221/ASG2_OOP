@@ -76,6 +76,7 @@ The product is the web app described in the [SoW](03-SoW.md): the college's admi
 | Term | Meaning |
 |------|---------|
 | Lesson | One scheduled meeting of a course in the timetable |
+| Linked to a lesson | The teacher of the lesson and the students of its course |
 | Face-print | A list of numbers that describes a face, used to compare two faces |
 | Hash | A one-way code made from a face-print at registration, used to detect a changed face-print |
 | Match threshold | The score at or above which two face-prints count as the same person ([ADR-1](02-tools-report.md#adr-1-face-tool-for-photo-attendance)) |
