@@ -176,15 +176,16 @@ Rules for REQ-13, checked in this order. Only the result "Present" marks the stu
 
 | ID | Requirement | Priority | Source |
 |----|-------------|----------|--------|
-| REQ-30 | The system shall let the teacher of a lesson write a poll in the lesson's polls tab: one multiple-choice question with at least 2 answer options. | Must | D-3 |
-| REQ-31 | The system shall let the teacher open a poll during the lesson. | Must | D-3 |
-| REQ-32 | The system shall show an open poll, marked as new, to every student of that lesson. | Must | D-3 |
-| REQ-33 | The system shall let a student choose one answer in an open poll. | Must | D-3 |
-| REQ-34 | The system shall keep one answer per student, so that a second answer replaces the first. | Must | D-3 |
-| REQ-35 | The system shall show the teacher a chart of the answers that updates without reloading the page. | Must | D-3 |
-| REQ-36 | The system shall let the teacher close an open poll. | Must | D-3 |
-| REQ-37 | The system shall refuse answers to a closed poll. | Must | D-3 |
-| REQ-38 | The system shall save a closed poll with its results under its lesson. | Must | D-3 |
+| REQ-30 | The system shall let the teacher publish, during the lesson, a quick poll in the forum of that lesson date: one multiple-choice question with at least 2 answer options. | Must | D-3 |
+| REQ-31 | The system shall show a published poll in the forum to every student of that lesson. | Must | D-3 |
+| REQ-32 | The system shall let a student choose one answer to a poll only while the poll is open. | Must | D-3 |
+| REQ-33 | The system shall refuse a student's second answer to a poll unless the teacher allowed another answer when creating it. | Must | D-3 |
+| REQ-34 | The system shall let the teacher allow another answer when creating a poll, in which case the new answer replaces the student's earlier one. | Must | D-3 |
+| REQ-35 | The system shall show everyone linked to the lesson a chart of a poll's answers that updates without reloading the page. | Must | D-3 |
+| REQ-36 | The system shall show the teacher who gave each answer to a poll. | Must | D-3 |
+| REQ-37 | The system shall let the teacher close an open poll at any time. | Must | D-3 |
+| REQ-38 | The system shall close a poll that is still open at the end of the lesson. | Must | D-3 |
+| REQ-39 | The system shall keep a poll and its results in the forum of its lesson date. | Must | D-3 |
 #### F4: Class video ML summary, REQ-40 to REQ-49
 #### F5: LLM homework review, REQ-50 to REQ-59
 
