@@ -65,11 +65,11 @@ Each requirement row also cites the SoW deliverable it comes from (D-n).
 
 ### 1.1 Purpose
 
-This document states what the live-lesson web app must do. Developers build from it, testers test against it, and the client accepts the product against it.
+This document states what the product must do. Developers build from it, testers test against it, and the product is accepted against it.
 
 ### 1.2 Scope
 
-The product is the web app described in the [SoW](03-SoW.md): the college's admin builds the timetable, and each lesson has one tab per feature (D-1 to D-5). The product does not connect to Moodle, Zoom or the college's personal-information systems.
+The product is a general system for managing in-person lessons, with a supporting web app that every student has on their phone. Each lesson has one tab per feature (D-1 to D-5 in the [SoW](03-SoW.md)). The product does not connect to Moodle, Zoom or personal-information systems.
 
 ### 1.3 Definitions
 
