@@ -72,6 +72,10 @@ traceability matrix can fill its "Use case" column.
 
 | Actor | Description |
 |-------|-------------|
+| Admin | Builds the timetable: courses, their teachers, weekly hours and students |
+| Teacher | Runs the lessons of their courses |
+| Student | Takes part in the lessons of their courses from a phone |
+| Google Gemini | An outside AI service that writes the lesson summary and reviews homework |
 
 ## 2. Use-case diagram
 
