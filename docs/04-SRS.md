@@ -275,6 +275,7 @@ Rules for REQ-13, checked in this order. Only the result "Present" marks the stu
 | NFR-04 | Performance | The teacher's phone shall find the faces in a class photo with 50 faces within 2 minutes per photo. | Must |
 | NFR-05 | Performance | The summary of a 10-minute recording shall be ready within 5 minutes of the end of the upload. | Must |
 | NFR-06 | Performance | The report on a solution of up to 20 pages shall be ready within 3 minutes. | Must |
+| NFR-07 | Usability | The website shall work with no installation in the last 2 versions of Chrome on Android and of Safari on iPhone. | Must |
 
 ## 4. Appendices
 
