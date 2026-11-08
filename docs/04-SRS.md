@@ -122,7 +122,7 @@ The product runs in a web browser on a phone or a computer. The teacher's phone 
 - Nothing is installed on a phone: the product is a website.
 - The product does not connect to Moodle, Zoom or personal-information systems.
 - Every service runs on a free tier during the pilot.
-- The server never receives a photo of a face.
+- The server never receives a photo taken for attendance.
 
 ### 2.5 Assumptions
 
