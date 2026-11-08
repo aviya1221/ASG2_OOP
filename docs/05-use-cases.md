@@ -214,6 +214,19 @@ traceability matrix can fill its "Use case" column.
 
 ### UC-08: Sign in and reach a lesson page
 
+- Actor: Teacher or student.
+- Preconditions: The user has an account.
+- Main success flow:
+  1. The user signs in.
+  2. The system shows only the lessons of the user's courses, with no room code or join step.
+  3. The user chooses a lesson.
+  4. The system shows the lesson page with its three tabs.
+- Alternative flows:
+  - 1a. The sign-in details are wrong: the system refuses, and the user can try again.
+  - 4a. The teacher enters the lecture topic, before or during the lecture, and it appears in the forum title.
+- Postconditions: The user is on the page of a lesson from their own courses.
+- Covers: REQ-01, REQ-04 to REQ-06, REQ-22
+
 ## 4. Activity diagrams
 
 ## 5. User stories
