@@ -157,6 +157,7 @@ So the need is a face tool that:
   - The tools rejected without a spike are listed in section 2.4.
 - **Consequences:**
   - The teacher's page takes the photo with the phone's camera at full resolution, not from a video preview. The back-row faces have to stay at 28 px or more.
+  - OpenCV.js handles photos of up to about 12 MP. The page shrinks a larger photo to that size, or splits it into two overlapping halves.
   - The page downloads about 64 MB of models once, and the browser keeps them.
   - The server needs only the cosine comparison it already has ([similarity.ts](../app/server/src/llm/similarity.ts)).
   - In a hall where faces are 28-80 px, about 5% of the present students go to the teacher. In a larger hall (16-45 px) it is about 21%. The row-and-seat step handles them.
