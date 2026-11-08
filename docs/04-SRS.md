@@ -253,6 +253,7 @@ Rules for REQ-13, checked in this order. Only the result "Present" marks the stu
 
 | ID | Category | Requirement | Priority |
 |----|----------|-------------|----------|
+| NFR-01 | Security | Text in a student's file that addresses the reviewer, visible or hidden, shall change the score of a section by no more than 10 points compared with the same file without that text. | Must |
 
 ## 4. Appendices
 
