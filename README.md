@@ -39,14 +39,13 @@ The assignment's step 1 also puts the problem definition and the scope here.
 Sections 2-5 are filled in step 9, once the app exists.
 -->
 
-A web app for live lessons, where everything a lesson needs (attendance, polls, comments, video summaries and homework reviews) sits under the lesson and opens from the student's phone.
+A general system for managing in-person lessons, where everything a lesson needs (attendance, polls, comments, video summaries and homework reviews) sits under the lesson and opens from a supporting web app on every student's phone.
 
-**Client:** an academic college.
 **Approach:** design first, and reuse existing open-source code wherever we can.
 
 ## Problem statement
 
-The college runs its live lessons with scattered tools, each with its own login or room code. Lecturers need one simple app, ready for AI features, that supports real learning in class.
+In-person lessons run on scattered tools, each with its own login or room code. Teachers need one simple app, ready for AI features, that supports real learning in class.
 
 ## Features
 
@@ -56,9 +55,9 @@ The college runs its live lessons with scattered tools, each with its own login 
 4. **Video summary:** lecturers can get an ML summary of their recorded class video (Zoom, Meet, Google Classroom).
 5. **Homework review:** students and teachers can get a deep LLM review of their homework, including comparisons to other students' work.
 
-## Client requirements
+## Product requirements
 
-1. The app is proven in a pilot in a live class, presented to the client in 10 minutes.
+1. The product is proven in a pilot in a live class, presented in 10 minutes.
 2. KISS: students use the app in their phone's browser, with nothing to install.
 
 ## Constraints
