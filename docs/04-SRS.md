@@ -145,6 +145,32 @@ The product runs in a web browser on a phone or a computer. The teacher's phone 
 | REQ-09 | The system shall require approval from a teacher of one of the student's courses before the student replaces their registered face. | Should | D-1 |
 
 #### F1: Attendance and spreadsheet (main feature), REQ-10 to REQ-19
+
+Face registration and opting out are REQ-07 to REQ-09.
+
+| ID | Requirement | Priority | Source |
+|----|-------------|----------|--------|
+| REQ-10 | The system shall let the teacher of a lesson take 1 to 3 photos of the class during that lesson. | Must | D-1 |
+| REQ-11 | The system shall notify every student of the course after the teacher has taken the photos. | Must | D-1 |
+| REQ-12 | The system shall collect a student's response when the student opens the app at any time in the 1 hour after the photos, with no further action by the student. | Must | D-1 |
+| REQ-13 | The system shall give each student one attendance result, by the rules in the table below. | Must | D-1 |
+| REQ-14 | The system shall let a student who is not marked present after that hour, or who opted out, request attendance by entering their row and seat. | Must | D-1 |
+| REQ-15 | The system shall let the teacher approve or reject each row-and-seat request. | Must | D-1 |
+| REQ-16 | The system shall keep a record of every row-and-seat request. | Should | D-1 |
+| REQ-17 | The system shall flag a student who has a rejected request, or who has made 3 or more requests in the same course. | Should | D-1 |
+| REQ-18 | The system shall show the teacher the lesson's attendance sheet inside the app, updated with each new result. | Must | D-1 |
+| REQ-19 | The system shall let the teacher download a lesson's attendance sheet as a spreadsheet file with one row per student: name, attendance, how it was decided and a note for flagged students. | Must | D-1 |
+
+Rules for REQ-13, checked in this order. Only the result "Present" marks the student present.
+
+| Order | Condition | Result |
+|-------|-----------|--------|
+| 1 | The student's face-print does not fit the hash saved at registration | Review |
+| 2 | The student's best score is below the match threshold | Not found |
+| 3 | The score is at or above the match threshold, and no other student matched the same face | Present |
+| 4 | Two or more students matched the same face | Conflict: the system does not choose among them |
+| 5 | The student sent nothing within the hour | No response |
+
 #### F2: Comments and suggestions, REQ-20 to REQ-29
 #### F3: Polls, REQ-30 to REQ-39
 #### F4: Class video ML summary, REQ-40 to REQ-49
