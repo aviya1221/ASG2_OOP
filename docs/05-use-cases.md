@@ -200,6 +200,18 @@ traceability matrix can fill its "Use case" column.
 - Covers: REQ-07 to REQ-09
 
 ### UC-07: Build the timetable
+
+- Actor: Admin.
+- Preconditions: The admin has signed in and has the list of students of the course.
+- Main success flow:
+  1. The admin creates a course with its course number, name, teacher, weekly hours and students.
+  2. The system saves the course and adds its lessons to the timetable.
+- Alternative flows:
+  - 1a. A detail is missing or the course number already exists: the system does not save and shows what to fix.
+  - 1b. Someone who is not the admin tries to change the timetable: the system refuses.
+- Postconditions: The course and its lessons are in the timetable.
+- Covers: REQ-02, REQ-03
+
 ### UC-08: Sign in and reach a lesson page
 
 ## 4. Activity diagrams
