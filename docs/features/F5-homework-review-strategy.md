@@ -61,7 +61,7 @@ Small differences between runs are acceptable, but we try to avoid them:
 
 - A check that fails for a technical reason does not use up one of the three.
 - Students with the same score share a place in the chart.
-- The student's PDF is deleted after the check. We keep only the scores, the report, the check number and the time. The file is sent inside the request and is not stored at Google.
+- The student's PDF is deleted within 1 minute of the end of the check. We keep only the scores, the report, the check number and the time. The file is sent inside the request and is not stored at Google.
 
 ## 6. What we reuse
 

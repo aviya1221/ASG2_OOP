@@ -237,7 +237,7 @@ Rules for REQ-13, checked in this order. Only the result "Present" marks the stu
 | REQ-56 | The system shall allow a student up to 3 checks per homework, counting only checks that did not fail for a technical reason, with each check replacing the previous result in the chart and the third one final. | Must | D-5 |
 | REQ-57 | The system shall show everyone linked to the lesson a chart of every checked student's name and position, highlighting the viewing student's place, with equal scores sharing a place, that can be filtered by overall score, question or section. | Must | D-5 |
 | REQ-58 | The system shall never reveal in a report the answer, working code, a final result or a rewritten passage of the homework. | Must | D-5 |
-| REQ-59 | The system shall delete a student's solution file after the check, keeping only the scores, the report, the check number and the time. | Must | D-5 |
+| REQ-59 | The system shall delete a student's solution file within 1 minute of the end of the check, keeping only the scores, the report, the check number and the time. | Must | D-5 |
 
 #### F6: Forms, REQ-60 to REQ-69
 
