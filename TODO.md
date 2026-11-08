@@ -86,7 +86,7 @@ The SoW answers only why, what is delivered and at what cost.
 Every requirement is written as "The system shall..." and must be testable: unambiguous, verifiable, complete, consistent, traceable, prioritised.
 
 - [x] 1. Introduction: purpose, scope, definitions, references
-- [ ] 2. Overall description: product perspective, user classes (student, lecturer), operating environment (smartphone browser), constraints, assumptions
+- [x] 2. Overall description: product perspective, user classes (admin, teacher, student), operating environment (smartphone browser), constraints, assumptions
 - [ ] 3.1 Functional requirements with IDs + priority + source (`D-n`), one commit per feature:
   - [ ] F1 Attendance + spreadsheet (main feature): `REQ-10` to `REQ-19`
   - [ ] F2 Comments and suggestions (realtime + offline): `REQ-20` to `REQ-29`

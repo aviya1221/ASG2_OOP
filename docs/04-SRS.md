@@ -93,10 +93,33 @@ The product is the web app described in the [SoW](03-SoW.md): the college's admi
 ## 2. Overall description
 
 ### 2.1 Product perspective
+
+The product is standalone: every feature runs inside it, with no outside poll or attendance site. It calls outside services only for AI processing (section 3.2).
+
 ### 2.2 User classes
+
+| Class | What they do |
+|-------|--------------|
+| Admin | Builds the timetable: courses, their teachers, weekly hours and students |
+| Teacher | Runs the lessons of their courses |
+| Student | Takes part in the lessons of their courses from a phone |
+
 ### 2.3 Operating environment
+
+The product runs in a web browser on a phone or a computer. The teacher's phone and each student's phone need a camera for attendance, and every user needs a network connection.
+
 ### 2.4 Constraints
+
+- Nothing is installed on a phone: the product is a website.
+- The product does not connect to Moodle, Zoom or personal-information systems.
+- Every service runs on a free tier during the pilot.
+- The server never receives a photo of a face.
+
 ### 2.5 Assumptions
+
+- The admin has the list of students for each course.
+- Every student has a phone with a camera and a browser.
+- The teacher's phone takes photos in which the back-row faces are at least 28 px high ([ADR-1](02-tools-report.md#adr-1-face-tool-for-photo-attendance)).
 
 ## 3. Specific requirements
 
