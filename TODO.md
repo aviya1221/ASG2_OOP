@@ -90,13 +90,13 @@ Every requirement is written as "The system shall..." and must be testable: unam
 
 - [x] 1. Introduction: purpose, scope, definitions, references
 - [x] 2. Overall description: product perspective, user classes (admin, teacher, student), operating environment (smartphone browser), constraints, assumptions
-- [ ] 3.1 Functional requirements with IDs + priority + source (`D-n`), one commit per feature:
+- [x] 3.1 Functional requirements with IDs + priority + source (`D-n`), one commit per feature:
   - [x] F0 Accounts, timetable and lesson page: `REQ-01` to `REQ-09`
   - [x] F1 Attendance + spreadsheet (main feature): `REQ-10` to `REQ-19`
   - [x] F2 Comments and suggestions (realtime + offline): `REQ-20` to `REQ-29`
   - [x] F3 Polls: `REQ-30` to `REQ-39`
   - [x] F4 Class video ML summary: `REQ-40` to `REQ-49`
-  - [ ] F5 LLM homework review and comparison: `REQ-50` to `REQ-59`
+  - [x] F5 LLM homework review and comparison: `REQ-50` to `REQ-59`
   - [x] F6 Forms: `REQ-60` to `REQ-69`
 - [ ] 3.2 External interfaces (LLM API, spreadsheet export, etc.)
 - [ ] 3.3 Non-functional requirements (`NFR-nn`), each one measurable: usability (KISS), performance (whole class at once), security and privacy, availability
