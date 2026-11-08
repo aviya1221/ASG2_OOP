@@ -173,6 +173,18 @@ Rules for REQ-13, checked in this order. Only the result "Present" marks the stu
 
 #### F2: Comments and suggestions, REQ-20 to REQ-29
 #### F3: Polls, REQ-30 to REQ-39
+
+| ID | Requirement | Priority | Source |
+|----|-------------|----------|--------|
+| REQ-30 | The system shall let the teacher of a lesson write a poll in the lesson's polls tab: one multiple-choice question with at least 2 answer options. | Must | D-3 |
+| REQ-31 | The system shall let the teacher open a poll during the lesson. | Must | D-3 |
+| REQ-32 | The system shall show an open poll, marked as new, to every student of that lesson. | Must | D-3 |
+| REQ-33 | The system shall let a student choose one answer in an open poll. | Must | D-3 |
+| REQ-34 | The system shall keep one answer per student, so that a second answer replaces the first. | Must | D-3 |
+| REQ-35 | The system shall show the teacher a chart of the answers that updates without reloading the page. | Must | D-3 |
+| REQ-36 | The system shall let the teacher close an open poll. | Must | D-3 |
+| REQ-37 | The system shall refuse answers to a closed poll. | Must | D-3 |
+| REQ-38 | The system shall save a closed poll with its results under its lesson. | Must | D-3 |
 #### F4: Class video ML summary, REQ-40 to REQ-49
 #### F5: LLM homework review, REQ-50 to REQ-59
 
