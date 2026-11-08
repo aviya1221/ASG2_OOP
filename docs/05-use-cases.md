@@ -117,6 +117,21 @@ traceability matrix can fill its "Use case" column.
 - Covers: REQ-10 to REQ-19, NFR-03, NFR-04, NFR-09, NFR-10
 
 ### UC-02: Post a message in the forum
+
+- Actor: Anyone linked to the lesson.
+- Preconditions: The user is on the forum tab of the lesson.
+- Main success flow:
+  1. The user chooses a forum from the list, by lecture number.
+  2. The user writes a new message or a reply to a message.
+  3. The system saves the message in the forum of that lesson.
+  4. The message appears for everyone linked to the lesson without reloading the page.
+- Alternative flows:
+  - 2a. A student chooses to hide their name from the class: the class sees the message with no name, and the teacher sees who wrote it.
+  - 3a. There is no network: the message is not sent, and the user can try again.
+  - 4a. The teacher deletes a message: it disappears for everyone.
+- Postconditions: The message is saved in the forum of the lesson and cannot be edited.
+- Covers: REQ-20, REQ-21, REQ-23 to REQ-29, NFR-02
+
 ### UC-03: Publish a poll or form and answer it
 ### UC-04: Get a lesson summary
 ### UC-05: Publish a homework and get feedback on it
