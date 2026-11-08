@@ -168,6 +168,22 @@ traceability matrix can fill its "Use case" column.
 - Covers: REQ-40 to REQ-49, NFR-05
 
 ### UC-05: Publish a homework and get feedback on it
+
+- Actor: Teacher. Students and Google Gemini also take part.
+- Preconditions: The teacher is on the homework tab of the lesson.
+- Main success flow:
+  1. The teacher publishes a homework as a PDF file, and the system generates and saves its review guide.
+  2. A student presses the button next to the homework and uploads a solution as a PDF file.
+  3. The system reviews the solution against the guide and shows the student a report: for each section, the score, what meets the requirements, what is missing and a direction for improvement.
+  4. The system deletes the solution file and updates the chart.
+  5. The students of the lesson and the teacher see the chart, and can filter it by overall score, question or section.
+- Alternative flows:
+  - 2a. The student has already made 3 checks: the system allows no further check.
+  - 3a. A section was not answered: it gets 0 and is pointed out at the top of the report.
+  - 3b. The check fails for a technical reason: it does not count, and the student can try again.
+- Postconditions: The new result replaces the previous one in the chart, the third check is final, and the report does not give the solution.
+- Covers: REQ-50 to REQ-59, NFR-01, NFR-06
+
 ### UC-06: Register a face
 ### UC-07: Build the timetable
 ### UC-08: Sign in and reach a lesson page
