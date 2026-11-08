@@ -55,7 +55,7 @@ In-person lessons run today on scattered tools: one for attendance, another for 
 
 ## 2. What is delivered (deliverables)
 
-A general system for managing in-person lessons, with a supporting web app that every student has on their phone. Each lesson has tabs (attendance, polls and more) that the teacher runs and the students use from their phone's browser.
+A general system for managing in-person lessons, with a supporting web app that every student has on their phone. Each lesson has three tabs that the teacher runs and the students use from their phone's browser: attendance, forum and homework. Each tab can hold further tabs or processes of its own.
 
 The features:
 
