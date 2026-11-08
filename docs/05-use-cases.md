@@ -79,6 +79,48 @@ traceability matrix can fill its "Use case" column.
 
 ## 2. Use-case diagram
 
+```mermaid
+flowchart LR
+  admin["Admin"]
+  teacher["Teacher"]
+  student["Student"]
+  gemini["Google Gemini"]
+
+  subgraph product["Lesson management system"]
+    uc1(["UC-01 Take attendance in a lesson"])
+    uc2(["UC-02 Post a message in the forum"])
+    uc3(["UC-03 Publish a poll or form and answer it"])
+    uc4(["UC-04 Get a lesson summary"])
+    uc5(["UC-05 Publish a homework and get feedback on it"])
+    uc6(["UC-06 Register a face"])
+    uc7(["UC-07 Build the timetable"])
+    uc8(["UC-08 Sign in and reach a lesson page"])
+  end
+
+  admin --- uc7
+  teacher --- uc1
+  teacher --- uc2
+  teacher --- uc3
+  teacher --- uc4
+  teacher --- uc5
+  teacher --- uc8
+  student --- uc1
+  student --- uc2
+  student --- uc3
+  student --- uc4
+  student --- uc5
+  student --- uc6
+  student --- uc8
+  uc4 --- gemini
+  uc5 --- gemini
+
+  uc1 -. "«include»" .-> uc8
+  uc2 -. "«include»" .-> uc8
+  uc3 -. "«include»" .-> uc8
+  uc4 -. "«include»" .-> uc8
+  uc5 -. "«include»" .-> uc8
+```
+
 ## 3. Use cases
 
 <!-- Template for each use case:

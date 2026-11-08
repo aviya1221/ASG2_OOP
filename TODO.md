@@ -114,7 +114,7 @@ Every requirement is written as "The system shall..." and must be testable: unam
 Each use case has the lecturer's 6 fields: name and ID, actor, preconditions, main success flow, alternative flows, postconditions (+ the `REQ-nn` it covers).
 
 - [x] Actors list
-- [ ] Use-case diagram (actors, system boundary, `<<include>>` / `<<extend>>`)
+- [x] Use-case diagram (actors, system boundary, `<<include>>` / `<<extend>>`)
 - [x] UC-01: Take attendance in a lesson
 - [x] UC-02: Post a message in the forum
 - [x] UC-03: Publish a poll or form and answer it
