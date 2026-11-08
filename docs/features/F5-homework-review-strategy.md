@@ -57,7 +57,7 @@ Small differences between runs are acceptable, but we try to avoid them:
 
 **Test set.** The test cases include solutions with hidden white text, instructions in several languages and direct requests for the answer. A protected run must score the same as the same file without the added text, within the tolerance in section 3, and must not reveal an answer.
 
-## 5. Proposed details, not yet discussed
+## 5. Further details
 
 - A check that fails for a technical reason does not use up one of the three.
 - Students with the same score share a place in the chart.
