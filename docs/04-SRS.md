@@ -172,6 +172,20 @@ Rules for REQ-13, checked in this order. Only the result "Present" marks the stu
 | 5 | The student sent nothing within the hour | No response |
 
 #### F2: Comments and suggestions, REQ-20 to REQ-29
+
+| ID | Requirement | Priority | Source |
+|----|-------------|----------|--------|
+| REQ-20 | The system shall open a separate forum for each lesson. | Must | D-2 |
+| REQ-21 | The system shall list a course's forums in order of lecture number, each titled with the course name, the lecture number and the lecture topic. | Must | D-2 |
+| REQ-22 | The system shall keep the forum of each lesson with all its messages, open for writing with no closing date. | Must | D-2 |
+| REQ-23 | The system shall show a forum's messages to everyone linked to the lesson, with new messages appearing without reloading the page. | Must | D-2 |
+| REQ-24 | The system shall let everyone linked to the lesson write a new message or reply to a message. | Must | D-2 |
+| REQ-25 | The system shall let a student choose, for each message, whether the class sees their name. | Must | D-2 |
+| REQ-26 | The system shall always show the teacher who wrote each message. | Must | D-2 |
+| REQ-27 | The system shall limit a message to text, which can include links. | Must | D-2 |
+| REQ-28 | The system shall not allow a published message to be edited. | Must | D-2 |
+| REQ-29 | The system shall allow only the teacher to delete a message. | Must | D-2 |
+
 #### F3: Polls, REQ-30 to REQ-39
 
 | ID | Requirement | Priority | Source |
