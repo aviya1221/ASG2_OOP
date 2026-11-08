@@ -315,3 +315,36 @@ flowchart TD
        When ...
        Then ...
 -->
+
+- As a teacher, I want to take attendance from a photo of the class so that I do not waste lesson time.
+  - Given the students have registered their faces
+  - When I take the photo and they respond within 1 hour
+  - Then the sheet shows a result for every student
+- As a student, I want to ask a question in the forum without showing my name to the class so that I am not embarrassed to ask.
+  - Given I am in the forum of the lesson
+  - When I write a message and choose to hide my name
+  - Then the class sees it with no name and the teacher sees who wrote it
+- As a teacher, I want to publish a quick poll during the lesson so that I can check that the class understood.
+  - Given the lesson is in progress
+  - When I publish a poll and a student answers
+  - Then the chart updates for everyone without reloading the page
+- As a student, I want to read a summary of the lesson so that I can go over the material.
+  - Given the lesson has ended and the teacher has uploaded a recording
+  - When I press the button in the forum
+  - Then a page opens with the four parts of the summary
+- As a student, I want feedback on my homework before submitting it so that I can fix what is missing.
+  - Given the homework is published and I have checks left
+  - When I upload a solution
+  - Then a report opens with a score and what is missing for each section, without the solution
+- As a student, I want to register my face once so that my attendance is marked automatically.
+  - Given I have not registered yet
+  - When I take one photo
+  - Then the server keeps only a hash
+- As an admin, I want to create a course with its students so that everyone reaches the lessons with no code.
+  - Given I have the list of students
+  - When I create a course
+  - Then its lessons appear for the teacher and the students
+- As a student, I want to see only my own lessons so that I reach the right lesson quickly.
+  - Given I have an account
+  - When I sign in
+  - Then I see only the lessons of my courses
