@@ -1,7 +1,7 @@
 # F3 Polls: build strategy
 
 What the team agreed about polls, and where the code comes from.
-Agreed on 2026-11-06. This note feeds the SoW (polls deliverable), the polls requirements in the SRS (F3), the polls use case and the polls EDD.
+Agreed on 2026-11-06 and updated on 2026-11-08 to match the [lesson forum decisions](F2-lesson-forum-strategy.md). This note feeds the SoW (polls deliverable), the polls requirements in the SRS (F3), the polls use case and the polls EDD.
 
 ## 1. The idea
 
@@ -14,16 +14,17 @@ A teacher, in the middle of a live lesson, asks a short question to check that t
    - The admin builds the timetable: the course, its teacher, its weekly hours and its list of students.
    - The teacher runs the lessons.
    - The student attends them.
-3. **A lesson has tabs**, one per feature: attendance, polls and homework, with more to come. Polls is one of these tabs.
+3. **A lesson has tabs**, one per feature: attendance, forum and homework, with more to come. Polls are published in the forum of each lesson date.
 4. **The student is already linked to the lesson** through the timetable and their login, so the app knows which lesson they are in and who they are.
 5. **The flow:**
-   1. The teacher opens the lesson, goes to the polls tab, writes a question with a few answer options and opens the poll.
-   2. Every student of that lesson sees the open poll in their own polls tab, marked as new, and taps an answer.
-   3. The teacher sees a results chart that updates without reloading the page.
-   4. The teacher closes the poll. The poll and its results are saved under the lesson, next to its attendance.
-6. **One answer per student.** Each answer is saved under the student's ID, so a second answer replaces the first one instead of being counted twice.
-7. **KISS:** one multiple-choice question per poll.
-8. **Storage:** the answers live in the same database as the rest of the app, which the tools report chooses. There is no separate poll service.
+   1. The teacher opens the forum of the lesson date, writes a question with a few answer options and publishes the poll.
+   2. Every student of that lesson sees the poll in the forum and taps an answer.
+   3. Everyone linked to the lesson sees a results chart that updates without reloading the page, and the teacher also sees who answered what.
+   4. The teacher chooses when to close the poll, and a poll that is still open closes at the end of the lesson. The poll and its results stay in the forum of that date.
+6. **One answer per student.** Each answer is saved under the student's ID. A student cannot answer again unless the teacher allowed it when creating the poll, and then the new answer replaces the earlier one.
+7. **KISS:** a quick poll has one multiple-choice question. Surveys with several questions are forms, which are described in the forum decisions.
+8. **No preparing in advance.** The teacher creates a quick poll during the lesson and cannot prepare it before.
+9. **Storage:** the answers live in the same database as the rest of the app, which the tools report chooses. There is no separate poll service.
 
 ## 3. Where the code comes from
 
@@ -37,7 +38,7 @@ Source: [PollPosition](https://github.com/siemsene/PollPosition), a small classr
 |--------------|--------------------|---------------|
 | Poll and answer data types | `src/types/poll.ts` | The starting point for our question and answer data (we drop the room fields) |
 | Question editor | `src/components/QuestionEditor.tsx` | The screen where the teacher writes the question and its answers |
-| Live results chart | `src/components/ResultsPanel.tsx` | The bar chart the teacher sees; it receives the answers as input, so it doesn't care where they come from |
+| Live results chart | `src/components/ResultsPanel.tsx` | The bar chart everyone sees in the forum; it receives the answers as input, so it doesn't care where they come from |
 | One-answer-per-student rule | `firestore.rules` (responses) | The answer is stored under the student's ID, and a student can write only their own answer |
 
 What we leave out: room codes and the QR join, the public results page, AI summaries of open answers, the word cloud, and the teacher sign-up and approval flow (our admin handles users).
@@ -46,10 +47,10 @@ The chart library inside those components is [Recharts](https://github.com/recha
 
 ### 3.2 What we write ourselves
 
-- The link between a poll and a lesson in the timetable.
-- The polls tab on the lesson page, for the teacher and for the student.
-- The "new poll" mark on the student's tab.
-- Saving the poll and its results under the lesson.
+- The link between a poll and the forum of a lesson date.
+- Publishing and answering a poll inside the forum, for the teacher and for the student.
+- Saving the poll and its results in the forum of that date.
+- Closing a poll that is still open at the end of the lesson.
 
 ### 3.3 Alternatives we checked and rejected
 
@@ -66,6 +67,3 @@ The chart library inside those components is [Recharts](https://github.com/recha
 - **Tech stack (tools report).** PollPosition uses React and Firebase. If we choose them, we copy the pieces almost as they are. If we choose something else, we keep the ideas and use livepoll as the reference.
 - **Spike.** Run PollPosition locally, answer a poll from three phones, and record the result in the tools report (section 3).
 - **Reuse record.** When code is copied, add its source and license to the table in [app/README.md](../../app/README.md).
-- **Questions for the team:**
-  - Do students see the results after the poll closes?
-  - Can a teacher prepare polls before the lesson?
