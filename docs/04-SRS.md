@@ -169,7 +169,7 @@ Rules for REQ-13, checked in this order. Only the result "Present" marks the stu
 | 1 | The student's face-print does not fit the hash saved at registration | Review |
 | 2 | The student's best score is below the match threshold | Not found |
 | 3 | The score is at or above the match threshold, and no other student matched the same face | Present |
-| 4 | Two or more students matched the same face | Conflict: the system does not choose among them |
+| 4 | Two or more students matched the same face | Conflict: the system does not choose among them and passes the case to the teacher for follow-up |
 | 5 | The student sent nothing within the hour | No response |
 
 #### F2: Comments and suggestions, REQ-20 to REQ-29
