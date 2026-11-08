@@ -279,6 +279,7 @@ Rules for REQ-13, checked in this order. Only the result "Present" marks the stu
 | NFR-08 | Security | The service key of the AI service shall appear in 0 of the server's responses to a browser. | Must |
 | NFR-09 | Security | The server shall delete a student's face-print within 1 s of the comparison. | Must |
 | NFR-10 | Security | The server shall delete the face-prints from a class photo within 1 hour. | Must |
+| NFR-11 | Availability | The product shall be available for 99% of lesson time during the pilot. | Must |
 
 ## 4. Appendices
 
