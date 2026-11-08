@@ -61,7 +61,7 @@ The lecturer requires that we **actually test** every tool we suggest.
   - [x] Attendance check-in method (QR code, session code, location, etc.)
   - [ ] Hosting / deployment (public URL that works from phones)
   - [ ] LLM API (homework review)
-  - [ ] Speech-to-text / video summarization (class video summary)
+  - [x] Speech-to-text / video summarization (class video summary)
   - [ ] Vibe-coding tools (AI coding assistants, app generators)
 - [ ] Spike (hands-on test) of each shortlisted tool: goal, what we did, result, screenshot (one commit per tool)
   - [x] Face tools for photo attendance (F1): benchmark code and hands-on page → [app/spikes/face-tools/](app/spikes/face-tools/)

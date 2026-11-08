@@ -73,6 +73,25 @@ So the need is a face tool that:
 ### 2.5 Hosting / deployment
 ### 2.6 LLM API (homework review)
 ### 2.7 Speech-to-text / video summarization
+
+The need comes from the [lesson summary decisions](features/F4-lesson-summary-strategy.md). A tool has to:
+- turn a recorded lesson in Hebrew into a transcript;
+- tell the teacher's words from the students' questions;
+- give a result within minutes for a recording of about 10 minutes, on a free tier.
+
+No ready project does all of this, so we compose existing parts.
+
+| Option | What it is | License | Status |
+|--------|------------|---------|--------|
+| 1. Whisper + Gemini | Whisper large-v3-turbo, run by faster-whisper 1.2.1 on our own CPU; Gemini then analyses the transcript | MIT | Spike |
+| 2. ivrit.ai + Gemini | The same model retrained on Hebrew (whisper-large-v3-turbo-ct2); Gemini then analyses the transcript | Apache-2.0 | Spike |
+| 3. Sound to Gemini Flash | The sound goes directly to `gemini-3.5-flash`, which transcribes it and labels the speakers | Google service, free tier | Spike |
+| 4. Sound to Gemini Flash-Lite | Option 3 with `gemini-3.5-flash-lite` | Google service, free tier | Spike |
+| 5. Sound, current model | Option 3 with `gemini-3.6-flash`, through our own LLM layer | Google service, free tier | Spike |
+| 6. Full video | Picture and sound go to `gemini-3.6-flash` through our own LLM layer, which also lists what is on the board | Google service, free tier | Spike |
+| WhisperX | Whisper with speaker labels by voice | BSD-2-Clause | Rejected without a spike: a classroom microphone picks up students weakly, and option 3 labeled the speakers without it |
+| Noter, LectureSummarizer, lecsum, vidscribe | Small open projects that transcribe and summarise lectures, mostly in English | Not checked | Rejected without a spike: none of them separates the students from the teacher |
+
 ### 2.8 Vibe-coding tools
 
 ## 3. Spikes (hands-on tests)
