@@ -185,6 +185,20 @@ traceability matrix can fill its "Use case" column.
 - Covers: REQ-50 to REQ-59, NFR-01, NFR-06
 
 ### UC-06: Register a face
+
+- Actor: Student.
+- Preconditions: The student has signed in and has not registered a face yet.
+- Main success flow:
+  1. The student takes 1 photo of themselves on their phone.
+  2. The phone calculates the face-print, and keeps it and the photo on the phone only.
+  3. The phone sends the server only the hash, and the system saves it.
+- Alternative flows:
+  - 1a. The student opts out of face recognition: there is no face-print or hash, and the student's attendance is always by row and seat.
+  - 2a. No face is found in the photo: the student is asked to take another one.
+  - 3a. Replacing the photo: the new hash is saved only with approval from a teacher of one of the student's courses.
+- Postconditions: The server holds only the hash, and the photo and the face-print stay on the phone.
+- Covers: REQ-07 to REQ-09
+
 ### UC-07: Build the timetable
 ### UC-08: Sign in and reach a lesson page
 
