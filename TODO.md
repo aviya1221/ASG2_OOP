@@ -78,6 +78,7 @@ The lecturer requires that we **actually test** every tool we suggest.
   - [x] ADR-2: source and service for the lesson summary (F4)
 - [ ] Technology risk register with mitigations (keep a fallback for risky tools)
   - [x] Face tools for photo attendance (F1): R1 to R6
+  - [x] Lesson summary (F4): R7 to R10
 
 ## Step 3: SoW (Statement of Work) → [docs/03-SoW.md](docs/03-SoW.md)
 
