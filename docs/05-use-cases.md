@@ -1,4 +1,4 @@
-# Step 5: Main Use Cases (Client Stories)
+# Use cases
 
 <!--
 LECTURER GUIDELINES: USE CASES (lecture 02a, slides 3, 7, 8, 9, 10, 11, 22)
