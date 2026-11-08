@@ -97,6 +97,7 @@ Every requirement is written as "The system shall..." and must be testable: unam
   - [x] F3 Polls: `REQ-30` to `REQ-39`
   - [ ] F4 Class video ML summary: `REQ-40` to `REQ-49`
   - [ ] F5 LLM homework review and comparison: `REQ-50` to `REQ-59`
+  - [x] F6 Forms: `REQ-60` to `REQ-69`
 - [ ] 3.2 External interfaces (LLM API, spreadsheet export, etc.)
 - [ ] 3.3 Non-functional requirements (`NFR-nn`), each one measurable: usability (KISS), performance (whole class at once), security and privacy, availability
 - [ ] Review pass: rewrite any weak requirement (not measurable, subjective, vague quantity, several in one)

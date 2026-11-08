@@ -188,6 +188,20 @@ Rules for REQ-13, checked in this order. Only the result "Present" marks the stu
 | REQ-39 | The system shall keep a poll and its results in the forum of its lesson date. | Must | D-3 |
 #### F4: Class video ML summary, REQ-40 to REQ-49
 #### F5: LLM homework review, REQ-50 to REQ-59
+#### F6: Forms, REQ-60 to REQ-69
+
+| ID | Requirement | Priority | Source |
+|----|-------------|----------|--------|
+| REQ-60 | The system shall let the teacher build a form of one or more questions inside the product, before or during the lesson. | Must | D-3 |
+| REQ-61 | The system shall offer four question types in a form: single choice, multiple choice, rating on a scale and free text. | Must | D-3 |
+| REQ-62 | The system shall let the teacher publish a form in the forum of a lesson date. | Must | D-3 |
+| REQ-63 | The system shall open a form in a window over the forum, so that a student answers it without leaving the forum. | Must | D-3 |
+| REQ-64 | The system shall accept a student's answers to a form only while the form is open. | Must | D-3 |
+| REQ-65 | The system shall refuse a student's second answer to a form unless the teacher allowed another answer when creating it. | Must | D-3 |
+| REQ-66 | The system shall let the teacher allow another answer when creating a form, in which case the new answer replaces the student's earlier one. | Must | D-3 |
+| REQ-67 | The system shall show a form's answers, including who gave each one, only to the teacher. | Must | D-3 |
+| REQ-68 | The system shall let the teacher close an open form at any time. | Must | D-3 |
+| REQ-69 | The system shall keep a form and its answers in the forum of its lesson date. | Must | D-3 |
 
 ### 3.2 External interfaces
 
