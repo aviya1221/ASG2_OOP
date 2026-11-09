@@ -50,4 +50,4 @@ Last updated: 2026-11-09.
 | 19 | Delete the Render test service and the `render-test` repository | The hosting spike is over | The account owner | Nothing to record | Open |
 | 20 | Keep the Supabase project awake (R12) | It pauses after 1 week without activity | Opening it before any use | Nothing to record | Ongoing |
 | 21 | Add the ID number to the interactive attendance mock | The sheet in the mock has no ID column, unlike REQ-19 | Nothing | [The mock](assets/F1-attendance-flow-demo.html) and its published copy | Open |
-| 22 | Remove "Step N" from the document titles | They should read as product documents | Done as each document is written | STP / STD, demo plan, conclusion and the app README | Open |
+| 22 | Remove "Step N" from the document titles | They should read as product documents | Done as each document is written | Demo plan, conclusion and the app README | Open |

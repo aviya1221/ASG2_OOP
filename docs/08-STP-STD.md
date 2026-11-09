@@ -1,4 +1,4 @@
-# Step 8: Testing Strategy (STP / STD)
+# Testing Strategy (STP / STD)
 
 <!--
 LECTURER GUIDELINES: STP AND STD (lecture 02a, slides 3, 9, 18, 19, 22)
@@ -61,6 +61,12 @@ has a unit-test table per EDD class (A.3). Test case IDs: TC-001, TC-002, ...
 ## Part A: Test plan (STP)
 
 ### A.1 Scope and items under test
+
+**Under test:** the web client, our server, and the database functions, access rules and jobs in Supabase, for the classes of the EDDs.
+
+**Not under test:** Google Gemini, Supabase, Netlify and Render themselves. Fakes replace the AI service and the notification services in automated runs.
+
+**Not yet covered:** the homework review. Its classes and test cases are added together with its design.
 
 ### A.2 Test levels
 
