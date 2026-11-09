@@ -82,6 +82,7 @@ The lecturer requires that we **actually test** every tool we suggest.
   - [x] Lesson summary (F4)
   - [x] Database and live updates (Supabase)
   - [x] React client
+  - [x] Server hosting (Render)
 - [ ] Decisions as ADRs: what we chose, alternatives rejected and why (one commit per decision)
   - [x] ADR-1: face tool for photo attendance (F1)
   - [x] ADR-2: source and service for the lesson summary (F4)
