@@ -41,9 +41,16 @@ export function LessonsPage({ person }: { person: Person }) {
             <h1>השיעורים שלי</h1>
             <p className="band-note">{person.name}</p>
           </div>
-          <button className="band-button" onClick={() => void supabase.auth.signOut()}>
-            יציאה
-          </button>
+          <div className="band-actions">
+            {person.role === "student" && (
+              <Link className="band-button" to="/face">
+                רישום פנים
+              </Link>
+            )}
+            <button className="band-button" onClick={() => void supabase.auth.signOut()}>
+              יציאה
+            </button>
+          </div>
         </div>
       </header>
       <main className="content">

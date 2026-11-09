@@ -7,6 +7,10 @@ node_modules/
 .env.*
 !.env.example
 
+# Face tools, copied or downloaded when the client is built
+app/client/public/vendor/
+app/client/public/models/
+
 # Build output, test reports and logs
 dist/
 coverage/
