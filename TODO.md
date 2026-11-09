@@ -198,7 +198,7 @@ The testing strategy must address the classes from step 7. STP = how we will tes
 
 **Part A: STP (test plan)**
 - [x] A.1 Scope and items under test
-- [ ] A.2 Test levels: unit, integration, system, acceptance
+- [x] A.2 Test levels: unit, integration, system, acceptance
 - [ ] A.3 Unit-test plan per class from step 7 (table: EDD → class → method → test cases)
 - [ ] A.4 Approach and tools
 - [ ] A.5 Environment and test data (phones, browsers, fake students, no real personal data)

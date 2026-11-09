@@ -72,10 +72,10 @@ has a unit-test table per EDD class (A.3). Test case IDs: TC-001, TC-002, ...
 
 | Level | What is tested | Tool | Who |
 |-------|----------------|------|-----|
-| Unit | | | |
-| Integration | | | |
-| System | | | |
-| Acceptance | | | |
+| Unit | One class at a time, with its neighbours replaced by fakes | `node:test` on the server, Vitest with Testing Library in the client | Automatic, on every push |
+| Integration | The server calls, database functions, access rules and jobs against a real local Supabase, signed in as each role | `node:test` with the Supabase client library, on the Supabase CLI in Docker | Automatic, on every push |
+| System | Whole flows with several users at once, in Chromium with a phone profile and WebKit with an iPhone profile | Playwright | Automatic, on every push |
+| Acceptance | The flows on real phones in a real hall, the real AI service and the load targets | The manual test cases in Part B and the load scripts | The team, before each release |
 
 ### A.3 Unit tests per class (from step 7)
 
