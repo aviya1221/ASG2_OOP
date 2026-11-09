@@ -118,3 +118,50 @@ has a unit-test table per EDD class (A.3). Test case IDs: TC-001, TC-002, ...
 - Expected result:
 - Result: Pass / Fail, tester, date
 -->
+
+### Accounts and timetable
+
+### TC-001: Refuse a lesson without signing in
+
+- Verifies: REQ-01, UC-08
+- Preconditions: Nobody is signed in.
+- Steps: 1. Open the address of `L1`. 2. Read the table `lessons` with only the public key. 3. Sign in as `S1` with a wrong password.
+- Input data: A wrong password.
+- Expected result: The page shows the sign-in screen, the read returns 0 rows, and the wrong password is refused.
+- Automation: Browser, Integration
+
+### TC-002: The admin creates a course
+
+- Verifies: REQ-02, UC-07
+- Preconditions: `A1` is signed in, and course number 101 does not exist.
+- Steps: 1. Fill in the form for a new course and save. 2. Save the same number again.
+- Input data: Number 101, a name, teacher `T1`, weekly hours and 3 students.
+- Expected result: The course and its lessons appear in the timetable. The second save is refused and shows what to fix.
+- Automation: Browser
+
+### TC-003: Only the admin changes the timetable
+
+- Verifies: REQ-03, UC-07
+- Preconditions: Each role is signed in, in turn.
+- Steps: 1. As `T1`, add a course. 2. As `S1`, change a course. 3. As `A1`, change a course.
+- Input data: Course A.
+- Expected result: The first two are refused, and the third is saved.
+- Automation: Integration
+
+### TC-004: Users see only their own lessons
+
+- Verifies: REQ-04, UC-08
+- Preconditions: `S51` is only in course B, and `T2` teaches only course B.
+- Steps: 1. As `S51`, read the lessons. 2. As `T2`, read the lessons.
+- Input data: None.
+- Expected result: Each gets only the lessons of course B.
+- Automation: Integration
+
+### TC-005: Reach a lesson with no code, on one page with three tabs
+
+- Verifies: REQ-05, REQ-06, UC-08
+- Preconditions: `S1` is signed in.
+- Steps: 1. Choose `L1` from the list. 2. Press each tab.
+- Input data: None.
+- Expected result: The lesson page opens with no code or join step, with the tabs attendance, forum and homework.
+- Automation: Browser
