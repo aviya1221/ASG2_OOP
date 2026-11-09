@@ -99,6 +99,7 @@ The lecturer requires that we **actually test** every tool we suggest.
   - [x] ADR-5: hosting the server
   - [x] ADR-6: attendance sheet file
   - [x] ADR-7: form builder
+  - [x] ADR-8: way of building
 - [ ] Technology risk register with mitigations (keep a fallback for risky tools)
   - [x] Face tools for photo attendance (F1): R1 to R6
   - [x] Lesson summary (F4): R7 to R10
@@ -210,7 +211,7 @@ The testing strategy must address the classes from step 7. STP = how we will tes
 
 Lecturer's definition of done: **a feature is not done until its docs and tests are updated.** Build attendance end to end first (a "vertical slice").
 
-- [ ] Decide: vibe code vs. find and compose existing code; document the decision, sources and licenses
+- [x] Decide: vibe code vs. find and compose existing code; document the decision, sources and licenses
 - [x] Project scaffold + `.gitignore`
 - [ ] LLM layer (used by the video summary and the homework review), behind one interface so the provider can be swapped or mocked (lecture 03a, risk R4):
   - [x] Provider-neutral contract: interface, request and result types, errors, a fake client for tests and an offline demo

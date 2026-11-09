@@ -544,6 +544,15 @@ The need comes from the [forum decisions](features/F2-lesson-forum-strategy.md) 
   - A form is kept as plain data: a list of questions with their types and options.
   - The styling of the builder and the window is still to be written.
 
+### ADR-8: Way of building
+
+- **Context:** the team has limited time, and the product combines many parts. We prefer existing tools and code that meet the criteria in section 1.
+- **Decision:** we use existing tools and code wherever they meet the criteria (ADR-1 to ADR-6), and Claude Code writes what is left, such as the form builder (ADR-7). The team reviews each result, and the document check runs before every commit.
+- **Alternatives rejected:** the tools rejected without a spike are listed in section 2.8.
+- **Consequences:**
+  - Development needs a paid plan of the assistant. The product itself does not depend on it.
+  - Any claim about a test has to be checked against the results in the repository.
+
 ## 6. Technology risks
 
 | ID | Risk | Probability | Impact | Mitigation |
