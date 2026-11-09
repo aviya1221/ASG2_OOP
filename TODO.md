@@ -184,7 +184,7 @@ The EDD describes one component: "How is this part built?" One file per componen
   - [x] Sequence diagram: student marks attendance
   - [x] Sequence diagram: lecturer exports the spreadsheet
   - [x] Data format: spreadsheet columns, database schema
-  - [ ] Error handling and edge cases (duplicate check-in, session closed, no network)
+  - [x] Error handling and edge cases (duplicate check-in, session closed, no network)
 - [ ] EDD-Comments: class design + sequence diagram (comment in real time)
 - [ ] EDD-Polls: class design + sequence diagram (create poll + vote) + state machine (poll lifecycle)
 - [ ] EDD-VideoSummary: class design + sequence diagram

@@ -198,6 +198,15 @@ sequenceDiagram
 
 ## 5. Error handling and edge cases
 
+| Case | What happens |
+|------|--------------|
+| No face in the registration photo (UC-06, 2a) | The page asks for another photo |
+| The student opted out (UC-01, 5a) | The phone sends nothing, and the student can request row and seat at once |
+| The student sent nothing within the hour (UC-01, 4a) | The result is `no_response`, and a response after the hour is refused with `round_closed` |
+| The hash does not fit, no match, or two students on one face (UC-01, 6a to 6c) | By the order in section 2 |
+| A second response, or no network | A second response returns the saved result. With no network, the page tries again the next time it opens within the hour |
+| A row-and-seat request (UC-01, 7a) | One request per student per lesson, and a rejected request stays rejected |
+
 ## 6. Configuration and performance budget
 
 ## 7. Alternatives considered and trade-offs
