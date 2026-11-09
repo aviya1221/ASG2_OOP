@@ -228,7 +228,7 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
 - [ ] Only if we find we need it: Sign in with Google. Removed for now to keep the product simple; the server check and the Google Cloud setup guide can be restored from commits `173a8e6` and `3222230`.
 - [ ] Base of the product
   - [x] Local database (Supabase in Docker)
-  - [ ] Database: accounts and timetable, with access rules
+  - [x] Database: accounts and timetable, with access rules
   - [ ] Test data: made-up users and lessons
   - [ ] Server: Express, health check, sign-in check, allowed callers
   - [ ] Integration tests of accounts and the timetable
