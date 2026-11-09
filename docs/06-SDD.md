@@ -324,3 +324,85 @@ The choice of each tool, with its alternatives, is in the ADRs of the [tools rep
 
 | Requirement | Component (SDD §) |
 |-------------|-------------------|
+| NFR-01 | §2.8 Homework review |
+| NFR-02 | §2.11 Data and live updates |
+| NFR-03 | §2.4 Attendance |
+| NFR-04 | §2.3 Face tools |
+| NFR-05 | §2.7 Lesson summary |
+| NFR-06 | §2.8 Homework review |
+| NFR-07 | §2.1 Web client |
+| NFR-08 | §2.10 LLM layer |
+| NFR-09 | §2.4 Attendance |
+| NFR-10 | §2.4 Attendance |
+| NFR-11 | §5 Deployment |
+| NFR-12 | §2.1 Web client |
+| REQ-01 | §2.2 Accounts and timetable |
+| REQ-02 | §2.2 Accounts and timetable |
+| REQ-03 | §2.2 Accounts and timetable |
+| REQ-04 | §2.2 Accounts and timetable |
+| REQ-05 | §2.2 Accounts and timetable |
+| REQ-06 | §2.1 Web client |
+| REQ-07 | §2.3 Face tools |
+| REQ-08 | §2.3 Face tools |
+| REQ-09 | §2.3 Face tools |
+| REQ-10 | §2.3 Face tools |
+| REQ-11 | §2.9 Notifications |
+| REQ-12 | §2.4 Attendance |
+| REQ-13 | §2.4 Attendance |
+| REQ-14 | §2.4 Attendance |
+| REQ-15 | §2.4 Attendance |
+| REQ-16 | §2.4 Attendance |
+| REQ-17 | §2.4 Attendance |
+| REQ-18 | §2.4 Attendance |
+| REQ-19 | §2.4 Attendance |
+| REQ-20 | §2.5 Forum |
+| REQ-21 | §2.5 Forum |
+| REQ-22 | §2.5 Forum |
+| REQ-23 | §2.5 Forum |
+| REQ-24 | §2.5 Forum |
+| REQ-25 | §2.5 Forum |
+| REQ-26 | §2.5 Forum |
+| REQ-27 | §2.5 Forum |
+| REQ-28 | §2.5 Forum |
+| REQ-29 | §2.5 Forum |
+| REQ-30 | §2.6 Polls and forms |
+| REQ-31 | §2.6 Polls and forms |
+| REQ-32 | §2.6 Polls and forms |
+| REQ-33 | §2.6 Polls and forms |
+| REQ-34 | §2.6 Polls and forms |
+| REQ-35 | §2.6 Polls and forms |
+| REQ-36 | §2.6 Polls and forms |
+| REQ-37 | §2.6 Polls and forms |
+| REQ-38 | §2.6 Polls and forms |
+| REQ-39 | §2.6 Polls and forms |
+| REQ-40 | §2.7 Lesson summary |
+| REQ-41 | §2.7 Lesson summary |
+| REQ-42 | §2.7 Lesson summary |
+| REQ-43 | §2.7 Lesson summary |
+| REQ-44 | §2.7 Lesson summary |
+| REQ-45 | §2.7 Lesson summary |
+| REQ-46 | §2.7 Lesson summary |
+| REQ-47 | §2.7 Lesson summary |
+| REQ-48 | §2.7 Lesson summary |
+| REQ-49 | §2.7 Lesson summary |
+| REQ-50 | §2.8 Homework review |
+| REQ-51 | §2.8 Homework review |
+| REQ-52 | §2.8 Homework review |
+| REQ-53 | §2.8 Homework review |
+| REQ-54 | §2.8 Homework review |
+| REQ-55 | §2.8 Homework review |
+| REQ-56 | §2.8 Homework review |
+| REQ-57 | §2.8 Homework review |
+| REQ-58 | §2.8 Homework review |
+| REQ-59 | §2.8 Homework review |
+| REQ-60 | §2.6 Polls and forms |
+| REQ-61 | §2.6 Polls and forms |
+| REQ-62 | §2.6 Polls and forms |
+| REQ-63 | §2.6 Polls and forms |
+| REQ-64 | §2.6 Polls and forms |
+| REQ-65 | §2.6 Polls and forms |
+| REQ-66 | §2.6 Polls and forms |
+| REQ-67 | §2.6 Polls and forms |
+| REQ-68 | §2.6 Polls and forms |
+| REQ-69 | §2.6 Polls and forms |
+| REQ-70 | §2.5 Forum |

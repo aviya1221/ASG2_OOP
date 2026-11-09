@@ -172,7 +172,7 @@ The SDD describes the whole system: "What are the parts?"
 - [x] 4. Data: main entities and storage
 - [x] 5. Deployment diagram (phones, lecturer laptop, server, external APIs)
 - [x] 6. Rationale: alternatives and why this one (link to the ADRs from step 2)
-- [ ] 7. Requirement allocation: every `REQ-nn` assigned to a component + fill the "Design" column of the traceability matrix
+- [x] 7. Requirement allocation: every `REQ-nn` assigned to a component + fill the "Design" column of the traceability matrix
 
 ## Step 7: Class diagrams and sequence diagrams (EDD) → [docs/07-EDD/](docs/07-EDD/)
 

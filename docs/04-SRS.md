@@ -312,85 +312,85 @@ See [05-use-cases.md](05-use-cases.md).
 
 | Requirement | Use case | Design | Test cases | Status |
 |-------------|----------|--------|------------|--------|
-| REQ-01 Sign in before any lesson | UC-08 | | None yet | Gap |
-| REQ-02 Admin creates a course | UC-07 | | None yet | Gap |
-| REQ-03 Only the admin changes the timetable | UC-07 | | None yet | Gap |
-| REQ-04 Users see only their own lessons | UC-08 | | None yet | Gap |
-| REQ-05 No room code or join step | UC-08 | | None yet | Gap |
-| REQ-06 Lesson page with three tabs | UC-08 | | None yet | Gap |
-| REQ-07 Register a face from one photo | UC-06 | | None yet | Gap |
-| REQ-08 Opt out of face recognition | UC-06 | | None yet | Gap |
-| REQ-09 Teacher approves replacing a face | UC-06 | | None yet | Gap |
-| REQ-10 Teacher photographs the class | UC-01 | | None yet | Gap |
-| REQ-11 Notify the students | UC-01 | | None yet | Gap |
-| REQ-12 Collect the student's response | UC-01 | | None yet | Gap |
-| REQ-13 One attendance result per student | UC-01 | | None yet | Gap |
-| REQ-14 Row-and-seat request | UC-01 | | None yet | Gap |
-| REQ-15 Teacher decides row-and-seat requests | UC-01 | | None yet | Gap |
-| REQ-16 Keep a record of requests | UC-01 | | None yet | Gap |
-| REQ-17 Flag students | UC-01 | | None yet | Gap |
-| REQ-18 Attendance sheet in the app | UC-01 | | None yet | Gap |
-| REQ-19 Download the attendance sheet | UC-01 | | None yet | Gap |
-| REQ-20 Separate forum per lesson | UC-02 | | None yet | Gap |
-| REQ-21 List forums by lecture number | UC-02 | | None yet | Gap |
-| REQ-22 Teacher enters the lecture topic | UC-08 | | None yet | Gap |
-| REQ-23 Forums stay open with no closing date | UC-02 | | None yet | Gap |
-| REQ-24 Show messages without reloading | UC-02 | | None yet | Gap |
-| REQ-25 Write a message or reply | UC-02 | | None yet | Gap |
-| REQ-26 Who sees the writer's name | UC-02 | | None yet | Gap |
-| REQ-27 Text-only messages with links | UC-02 | | None yet | Gap |
-| REQ-28 No editing of messages | UC-02 | | None yet | Gap |
-| REQ-29 Only the teacher deletes messages | UC-02 | | None yet | Gap |
-| REQ-30 Publish a poll in the forum | UC-03 | | None yet | Gap |
-| REQ-31 Show a published poll | UC-03 | | None yet | Gap |
-| REQ-32 Answer a poll only while open | UC-03 | | None yet | Gap |
-| REQ-33 Refuse a second poll answer | UC-03 | | None yet | Gap |
-| REQ-34 Allow another poll answer | UC-03 | | None yet | Gap |
-| REQ-35 Live chart of poll answers | UC-03 | | None yet | Gap |
-| REQ-36 Teacher sees who answered a poll | UC-03 | | None yet | Gap |
-| REQ-37 Teacher closes a poll | UC-03 | | None yet | Gap |
-| REQ-38 Poll closes at the end of the lesson | UC-03 | | None yet | Gap |
-| REQ-39 Keep the poll in the forum | UC-03 | | None yet | Gap |
-| REQ-40 Summary button in the forum | UC-04 | | None yet | Gap |
-| REQ-41 When the summary page opens | UC-04 | | None yet | Gap |
-| REQ-42 Upload a recording | UC-04 | | None yet | Gap |
-| REQ-43 Summary from the full video | UC-04 | | None yet | Gap |
-| REQ-44 Fall back to sound alone | UC-04 | | None yet | Gap |
-| REQ-45 Four parts of the summary page | UC-04 | | None yet | Gap |
-| REQ-46 Second review of the summary | UC-04 | | None yet | Gap |
-| REQ-47 Teacher edits the summary | UC-04 | | None yet | Gap |
-| REQ-48 Delete the recording | UC-04 | | None yet | Gap |
-| REQ-49 Forum topic from the summary | UC-04 | | None yet | Gap |
-| REQ-50 Publish a homework PDF | UC-05 | | None yet | Gap |
-| REQ-51 Generate the review guide | UC-05 | | None yet | Gap |
-| REQ-52 Upload a solution for feedback | UC-05 | | None yet | Gap |
-| REQ-53 Report for the student only | UC-05 | | None yet | Gap |
-| REQ-54 Section scores from 0 to 100 | UC-05 | | None yet | Gap |
-| REQ-55 Question and overall scores | UC-05 | | None yet | Gap |
-| REQ-56 Three checks per homework | UC-05 | | None yet | Gap |
-| REQ-57 Class chart with filter | UC-05 | | None yet | Gap |
-| REQ-58 Report never reveals the answer | UC-05 | | None yet | Gap |
-| REQ-59 Delete the solution file | UC-05 | | None yet | Gap |
-| REQ-60 Build a form | UC-03 | | None yet | Gap |
-| REQ-61 Four question types | UC-03 | | None yet | Gap |
-| REQ-62 Publish a form in the forum | UC-03 | | None yet | Gap |
-| REQ-63 Form opens over the forum | UC-03 | | None yet | Gap |
-| REQ-64 Answer a form only while open | UC-03 | | None yet | Gap |
-| REQ-65 Refuse a second form answer | UC-03 | | None yet | Gap |
-| REQ-66 Allow another form answer | UC-03 | | None yet | Gap |
-| REQ-67 Only the teacher sees form answers | UC-03 | | None yet | Gap |
-| REQ-68 Teacher closes a form | UC-03 | | None yet | Gap |
-| REQ-69 Keep the form in the forum | UC-03 | | None yet | Gap |
-| REQ-70 Expanded forum window | UC-02 | | None yet | Gap |
-| NFR-01 Hidden instructions do not change the score | UC-05 | | None yet | Gap |
-| NFR-02 Forum and poll updates within 2 s | UC-02, UC-03 | | None yet | Gap |
-| NFR-03 Attendance response within 2 s | UC-01 | | None yet | Gap |
-| NFR-04 Find faces within 2 minutes per photo | UC-01 | | None yet | Gap |
-| NFR-05 Summary within 5 minutes | UC-04 | | None yet | Gap |
-| NFR-06 Report within 3 minutes | UC-05 | | None yet | Gap |
-| NFR-07 Supported browsers | All | | None yet | Gap |
-| NFR-08 Service key stays on the server | All | | None yet | Gap |
-| NFR-09 Student face-print deleted within 1 s | UC-01 | | None yet | Gap |
-| NFR-10 Class face-prints deleted within 1 hour | UC-01 | | None yet | Gap |
-| NFR-11 99% availability in the pilot | All | | None yet | Gap |
-| NFR-12 Fits every screen width | All | | None yet | Gap |
+| REQ-01 Sign in before any lesson | UC-08 | SDD §2.2 | None yet | Gap |
+| REQ-02 Admin creates a course | UC-07 | SDD §2.2 | None yet | Gap |
+| REQ-03 Only the admin changes the timetable | UC-07 | SDD §2.2 | None yet | Gap |
+| REQ-04 Users see only their own lessons | UC-08 | SDD §2.2 | None yet | Gap |
+| REQ-05 No room code or join step | UC-08 | SDD §2.2 | None yet | Gap |
+| REQ-06 Lesson page with three tabs | UC-08 | SDD §2.1 | None yet | Gap |
+| REQ-07 Register a face from one photo | UC-06 | SDD §2.3 | None yet | Gap |
+| REQ-08 Opt out of face recognition | UC-06 | SDD §2.3 | None yet | Gap |
+| REQ-09 Teacher approves replacing a face | UC-06 | SDD §2.3 | None yet | Gap |
+| REQ-10 Teacher photographs the class | UC-01 | SDD §2.3 | None yet | Gap |
+| REQ-11 Notify the students | UC-01 | SDD §2.9 | None yet | Gap |
+| REQ-12 Collect the student's response | UC-01 | SDD §2.4 | None yet | Gap |
+| REQ-13 One attendance result per student | UC-01 | SDD §2.4 | None yet | Gap |
+| REQ-14 Row-and-seat request | UC-01 | SDD §2.4 | None yet | Gap |
+| REQ-15 Teacher decides row-and-seat requests | UC-01 | SDD §2.4 | None yet | Gap |
+| REQ-16 Keep a record of requests | UC-01 | SDD §2.4 | None yet | Gap |
+| REQ-17 Flag students | UC-01 | SDD §2.4 | None yet | Gap |
+| REQ-18 Attendance sheet in the app | UC-01 | SDD §2.4 | None yet | Gap |
+| REQ-19 Download the attendance sheet | UC-01 | SDD §2.4 | None yet | Gap |
+| REQ-20 Separate forum per lesson | UC-02 | SDD §2.5 | None yet | Gap |
+| REQ-21 List forums by lecture number | UC-02 | SDD §2.5 | None yet | Gap |
+| REQ-22 Teacher enters the lecture topic | UC-08 | SDD §2.5 | None yet | Gap |
+| REQ-23 Forums stay open with no closing date | UC-02 | SDD §2.5 | None yet | Gap |
+| REQ-24 Show messages without reloading | UC-02 | SDD §2.5 | None yet | Gap |
+| REQ-25 Write a message or reply | UC-02 | SDD §2.5 | None yet | Gap |
+| REQ-26 Who sees the writer's name | UC-02 | SDD §2.5 | None yet | Gap |
+| REQ-27 Text-only messages with links | UC-02 | SDD §2.5 | None yet | Gap |
+| REQ-28 No editing of messages | UC-02 | SDD §2.5 | None yet | Gap |
+| REQ-29 Only the teacher deletes messages | UC-02 | SDD §2.5 | None yet | Gap |
+| REQ-30 Publish a poll in the forum | UC-03 | SDD §2.6 | None yet | Gap |
+| REQ-31 Show a published poll | UC-03 | SDD §2.6 | None yet | Gap |
+| REQ-32 Answer a poll only while open | UC-03 | SDD §2.6 | None yet | Gap |
+| REQ-33 Refuse a second poll answer | UC-03 | SDD §2.6 | None yet | Gap |
+| REQ-34 Allow another poll answer | UC-03 | SDD §2.6 | None yet | Gap |
+| REQ-35 Live chart of poll answers | UC-03 | SDD §2.6 | None yet | Gap |
+| REQ-36 Teacher sees who answered a poll | UC-03 | SDD §2.6 | None yet | Gap |
+| REQ-37 Teacher closes a poll | UC-03 | SDD §2.6 | None yet | Gap |
+| REQ-38 Poll closes at the end of the lesson | UC-03 | SDD §2.6 | None yet | Gap |
+| REQ-39 Keep the poll in the forum | UC-03 | SDD §2.6 | None yet | Gap |
+| REQ-40 Summary button in the forum | UC-04 | SDD §2.7 | None yet | Gap |
+| REQ-41 When the summary page opens | UC-04 | SDD §2.7 | None yet | Gap |
+| REQ-42 Upload a recording | UC-04 | SDD §2.7 | None yet | Gap |
+| REQ-43 Summary from the full video | UC-04 | SDD §2.7 | None yet | Gap |
+| REQ-44 Fall back to sound alone | UC-04 | SDD §2.7 | None yet | Gap |
+| REQ-45 Four parts of the summary page | UC-04 | SDD §2.7 | None yet | Gap |
+| REQ-46 Second review of the summary | UC-04 | SDD §2.7 | None yet | Gap |
+| REQ-47 Teacher edits the summary | UC-04 | SDD §2.7 | None yet | Gap |
+| REQ-48 Delete the recording | UC-04 | SDD §2.7 | None yet | Gap |
+| REQ-49 Forum topic from the summary | UC-04 | SDD §2.7 | None yet | Gap |
+| REQ-50 Publish a homework PDF | UC-05 | SDD §2.8 | None yet | Gap |
+| REQ-51 Generate the review guide | UC-05 | SDD §2.8 | None yet | Gap |
+| REQ-52 Upload a solution for feedback | UC-05 | SDD §2.8 | None yet | Gap |
+| REQ-53 Report for the student only | UC-05 | SDD §2.8 | None yet | Gap |
+| REQ-54 Section scores from 0 to 100 | UC-05 | SDD §2.8 | None yet | Gap |
+| REQ-55 Question and overall scores | UC-05 | SDD §2.8 | None yet | Gap |
+| REQ-56 Three checks per homework | UC-05 | SDD §2.8 | None yet | Gap |
+| REQ-57 Class chart with filter | UC-05 | SDD §2.8 | None yet | Gap |
+| REQ-58 Report never reveals the answer | UC-05 | SDD §2.8 | None yet | Gap |
+| REQ-59 Delete the solution file | UC-05 | SDD §2.8 | None yet | Gap |
+| REQ-60 Build a form | UC-03 | SDD §2.6 | None yet | Gap |
+| REQ-61 Four question types | UC-03 | SDD §2.6 | None yet | Gap |
+| REQ-62 Publish a form in the forum | UC-03 | SDD §2.6 | None yet | Gap |
+| REQ-63 Form opens over the forum | UC-03 | SDD §2.6 | None yet | Gap |
+| REQ-64 Answer a form only while open | UC-03 | SDD §2.6 | None yet | Gap |
+| REQ-65 Refuse a second form answer | UC-03 | SDD §2.6 | None yet | Gap |
+| REQ-66 Allow another form answer | UC-03 | SDD §2.6 | None yet | Gap |
+| REQ-67 Only the teacher sees form answers | UC-03 | SDD §2.6 | None yet | Gap |
+| REQ-68 Teacher closes a form | UC-03 | SDD §2.6 | None yet | Gap |
+| REQ-69 Keep the form in the forum | UC-03 | SDD §2.6 | None yet | Gap |
+| REQ-70 Expanded forum window | UC-02 | SDD §2.5 | None yet | Gap |
+| NFR-01 Hidden instructions do not change the score | UC-05 | SDD §2.8 | None yet | Gap |
+| NFR-02 Forum and poll updates within 2 s | UC-02, UC-03 | SDD §2.11 | None yet | Gap |
+| NFR-03 Attendance response within 2 s | UC-01 | SDD §2.4 | None yet | Gap |
+| NFR-04 Find faces within 2 minutes per photo | UC-01 | SDD §2.3 | None yet | Gap |
+| NFR-05 Summary within 5 minutes | UC-04 | SDD §2.7 | None yet | Gap |
+| NFR-06 Report within 3 minutes | UC-05 | SDD §2.8 | None yet | Gap |
+| NFR-07 Supported browsers | All | SDD §2.1 | None yet | Gap |
+| NFR-08 Service key stays on the server | All | SDD §2.10 | None yet | Gap |
+| NFR-09 Student face-print deleted within 1 s | UC-01 | SDD §2.4 | None yet | Gap |
+| NFR-10 Class face-prints deleted within 1 hour | UC-01 | SDD §2.4 | None yet | Gap |
+| NFR-11 99% availability in the pilot | All | SDD §5 | None yet | Gap |
+| NFR-12 Fits every screen width | All | SDD §2.1 | None yet | Gap |
