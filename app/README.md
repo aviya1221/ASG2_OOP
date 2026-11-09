@@ -56,6 +56,8 @@ Sign in with the ID number `100000001` (admin), `200000001` (teacher) or `300000
 
 To call Gemini, copy `server/.env.example` to `server/.env`, add a key from <https://aistudio.google.com/apikey> and run `npm --prefix server run smoke:gemini`.
 
+Attendance also needs the server: copy `server/.env.example` to `server/.env`, add the values from `npx supabase status`, and run `npm --prefix server run dev`.
+
 The product is not deployed yet.
 
 ## Tests
@@ -191,6 +193,7 @@ Copy [server/.env.example](server/.env.example) to `server/.env`. The `.env` fil
 | `WEB_ORIGIN` | to run the server | | The addresses of the web client, separated by commas |
 | `SUPABASE_URL` | to run the server | | The address of the Supabase project |
 | `SUPABASE_SECRET_KEY` | to run the server | | The secret key of the Supabase project, kept on the server only |
+| `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT` | no | | Keys for phone notifications. Without them the server sends none |
 
 ## Reused code and licenses
 
@@ -209,3 +212,9 @@ Copy [server/.env.example](server/.env.example) to `server/.env`. The `.env` fil
 | [React Router](https://github.com/remix-run/react-router) | Addresses of the web client | MIT |
 | [Supabase CLI](https://github.com/supabase/cli) | Local database (dev tool) | MIT |
 | [Vitest](https://github.com/vitest-dev/vitest), [Testing Library](https://github.com/testing-library) and [jsdom](https://github.com/jsdom/jsdom) | Unit tests of the client (dev tools) | MIT |
+| [OpenCV.js](https://github.com/TechStark/opencv-js), [YuNet and SFace](https://github.com/opencv/opencv_zoo) | Finds faces and makes face-prints in the browser | Apache-2.0 / MIT |
+| [ONNX Runtime Web](https://github.com/microsoft/onnxruntime) | Runs the face-print model in the browser | MIT |
+| [write-excel-file](https://gitlab.com/catamphetamine/write-excel-file) | Writes the attendance sheet | MIT |
+| [web-push](https://github.com/web-push-libs/web-push) | Sends phone notifications | MPL-2.0 |
+| [ExcelJS](https://github.com/exceljs/exceljs) | Reads the attendance sheet in a browser test (dev tool) | MIT |
+| [Test photos](e2e/photos/README.md) | Generated pictures of people who do not exist | Public domain |
