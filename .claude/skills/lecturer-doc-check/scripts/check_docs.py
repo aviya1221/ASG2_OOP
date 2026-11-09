@@ -107,6 +107,9 @@ ID_HOME = {
 EDD_REF_RE = re.compile(r"\bEDD-([A-Z][A-Za-z]*)\b")
 TRACE_SRC = "02a slide 19, traceability"
 
+# Requirements numbered outside the tens of their feature, because its range is full.
+EXTRA_REQ_FEATURE = {70: 2}
+
 WEAK_WORDS = [
     "fast", "quick", "quickly", "user-friendly", "user friendly", "easy", "easily",
     "intuitive", "simple", "simply", "many", "several", "a lot", "lots of", "etc",
@@ -491,12 +494,13 @@ def check_srs(doc: Doc, f: Findings):
         row_text = " ".join(c[1:])
 
         if m.group(1) == "REQ":
-            if not 1 <= n <= 69:
-                f.add("WARN", doc.rel, i + 1, f"{rid} is outside the feature ranges REQ-01..69 "
+            owner = EXTRA_REQ_FEATURE.get(n, n // 10)
+            if not 1 <= n <= 69 and n not in EXTRA_REQ_FEATURE:
+                f.add("WARN", doc.rel, i + 1, f"{rid} is outside the feature ranges "
                       "(docs/README.md)", TRACE_SRC)
-            elif feature and n // 10 != feature:
+            elif feature and owner != feature:
                 f.add("WARN", doc.rel, i + 1, f"{rid} sits under F{feature} but its number belongs "
-                      f"to F{n // 10} (ID ranges in docs/README.md)", TRACE_SRC)
+                      f"to F{owner} (ID ranges in docs/README.md)", TRACE_SRC)
             if not re.search(r"\bshall\b", text, re.I):
                 f.add("ERROR", doc.rel, i + 1, f'{rid} is not written as "The system shall ..."',
                       "02a slide 5; 03a slide 5")
