@@ -70,6 +70,7 @@ The lecturer requires that we **actually test** every tool we suggest.
   - [ ] Face tools for photo attendance (F1): check camera originals with registration photos from volunteers, and time it on phones
   - [x] Lesson summary (F4): scripts and measured results → [app/spikes/lesson-summary/](app/spikes/lesson-summary/)
   - [x] Lesson summary (F4): write the spike in the report
+  - [x] Database and live updates (Supabase): test script and measured results → [app/spikes/backend-realtime/](app/spikes/backend-realtime/)
 - [ ] Comparison table
   - [x] Face tools for photo attendance (F1)
   - [x] Lesson summary (F4)

@@ -1,0 +1,47 @@
+{
+  "started": "2026-11-09T09:58:49.736Z",
+  "clients": 50,
+  "database_changes": {
+    "mode": "database-changes",
+    "clients": 50,
+    "connected": 50,
+    "connect_seconds": 1.893,
+    "messages": 30,
+    "expected": 1500,
+    "delivered": 1500,
+    "send_failures": 0,
+    "first_failure": null,
+    "samples": 1500,
+    "p50_ms": 456,
+    "p95_ms": 677,
+    "max_ms": 862
+  },
+  "broadcast": {
+    "mode": "broadcast",
+    "clients": 50,
+    "connected": 50,
+    "connect_seconds": 0.632,
+    "messages": 30,
+    "expected": 1500,
+    "delivered": 1500,
+    "send_failures": 0,
+    "first_failure": null,
+    "samples": 1500,
+    "p50_ms": 68,
+    "p95_ms": 87,
+    "max_ms": 361
+  },
+  "sign_in": {
+    "attempts": 5,
+    "samples": 5,
+    "p50_ms": 177,
+    "p95_ms": 314,
+    "max_ms": 314
+  },
+  "storage": {
+    "file_mb": 5,
+    "upload_ms": 2485,
+    "download_ms": 2234,
+    "same_bytes": true
+  }
+}

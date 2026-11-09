@@ -1,0 +1,8 @@
+{
+  "name": "spike-backend-realtime",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": { "start": "node --env-file=.env run.mjs" },
+  "dependencies": { "@supabase/supabase-js": "2.119.0" }
+}
