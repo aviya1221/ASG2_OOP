@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, useParams } from "react-router";
+import { AttendanceTab } from "../attendance/AttendanceTab.tsx";
 import { supabase } from "../lib/supabase.ts";
 import { lectureTitle } from "./lessons.ts";
 
@@ -74,8 +75,14 @@ export function LessonPage() {
         </div>
       </header>
       <main className="content">
-        <h2>{TABS.find((item) => item.id === openTab)?.label}</h2>
-        <p className="muted">הלשונית הזאת עדיין בבנייה.</p>
+        {openTab === "attendance" ? (
+          <AttendanceTab lessonId={lessonId} />
+        ) : (
+          <>
+            <h2>{TABS.find((item) => item.id === openTab)?.label}</h2>
+            <p className="muted">הלשונית הזאת עדיין בבנייה.</p>
+          </>
+        )}
       </main>
     </>
   );

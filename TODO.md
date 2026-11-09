@@ -242,11 +242,11 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
   - [x] Logic and calls of the server
   - [x] Integration tests of attendance
 - [x] Attendance: face tools and face registration in the browser
-- [ ] Teacher: photograph the class and start the hour of responses
+- [x] Teacher: photograph the class and start the hour of responses
 - [x] Student: register a face, and respond from a phone
-- [ ] One result per student per lesson
-- [ ] Teacher: live attendance sheet
-- [ ] Teacher: download the attendance sheet
+- [x] One result per student per lesson
+- [x] Teacher: live attendance sheet
+- [x] Teacher: download the attendance sheet
 - [ ] Comments and suggestions
 - [ ] Polls
 - [ ] Video summary (if in demo scope)
