@@ -312,7 +312,7 @@ See [05-use-cases.md](05-use-cases.md).
 
 | Requirement | Use case | Design | Test cases | Status |
 |-------------|----------|--------|------------|--------|
-| REQ-01 Sign in before any lesson | UC-08 | SDD §2.2 | TC-001 | Passed |
+| REQ-01 Sign in before any lesson | UC-08 | SDD §2.2 | TC-001, TC-006 | Passed |
 | REQ-02 Admin creates a course | UC-07 | SDD §2.2 | TC-002 | Passed |
 | REQ-03 Only the admin changes the timetable | UC-07 | SDD §2.2 | TC-003 | Passed |
 | REQ-04 Users see only their own lessons | UC-08 | SDD §2.2 | TC-004 | Passed |

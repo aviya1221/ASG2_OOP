@@ -112,7 +112,7 @@ has a unit-test table per EDD class (A.3). Test case IDs: TC-001, TC-002, ...
 
 ### A.4 Approach and tools
 
-Everything that can run without a real phone or a limited service is automated. Of the 73 test cases in Part B, 67 run automatically on every push, 2 are load scripts that run before each release, and 4 are manual.
+Everything that can run without a real phone or a limited service is automated. Of the 74 test cases in Part B, 68 run automatically on every push, 2 are load scripts that run before each release, and 4 are manual.
 
 - **On every push:** GitHub Actions runs the type check and then the unit, integration and browser tests. A failed run is fixed before new work starts.
 - **One ID from requirement to report:** the name of each automated test starts with its test case ID, for example `TC-018`. A script reads the test reports and writes Passed or Failed into the Status column of the traceability matrix.
@@ -213,6 +213,15 @@ Everything that can run without a real phone or a limited service is automated. 
 - Input data: None.
 - Expected result: The lesson page opens with no code or join step, with the tabs attendance, forum and homework.
 - Automation: Browser
+
+### TC-006: A first sign-in works only for someone on the list, and only once
+
+- Verifies: REQ-01, UC-08
+- Preconditions: One person is on the list with no account, and another is not on the list.
+- Steps: 1. The first person chooses a password. 2. The first person chooses a password again. 3. The second person chooses a password.
+- Input data: Two ID numbers and a password.
+- Expected result: The account is created and linked to the person. Steps 2 and 3 are refused.
+- Automation: Integration
 
 ### Attendance
 

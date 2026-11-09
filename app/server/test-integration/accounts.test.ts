@@ -100,7 +100,7 @@ describe("accounts and timetable", () => {
     assert.deepEqual(seen?.map((p) => p.id_number), [ID.T2, ID.S51]);
   });
 
-  it("UC-08 a first sign-in works only for someone on the list, and only once", async () => {
+  it("TC-006 a first sign-in works only for someone on the list, and only once", async () => {
     const number = freshNumber();
     const secret = secretClient();
     assert.equal((await secret.from("people").insert({ id_number: number, name: "חדש", role: "student" })).error, null);
