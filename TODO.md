@@ -99,6 +99,7 @@ The lecturer requires that we **actually test** every tool we suggest.
   - [x] Database and live updates (Supabase): R11 to R13
   - [x] React client: R14
   - [x] Server hosting (Render): R15 and R16
+  - [x] Attendance sheet export: R17
 
 ## Step 3: SoW (Statement of Work) → [docs/03-SoW.md](docs/03-SoW.md)
 
