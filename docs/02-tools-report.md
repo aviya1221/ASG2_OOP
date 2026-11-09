@@ -77,6 +77,20 @@ The need comes from the [forum](features/F2-lesson-forum-strategy.md) and the [p
 | Postgres on Render, with our own code | A free database next to our server | Open source; hosted service, free tier | Rejected without a spike: the free database expires after 30 days, and we would write sign-in, files and live updates ourselves |
 
 ### 2.3 Spreadsheet export
+
+The need comes from the attendance sheet that the teacher downloads (REQ-19). A tool has to:
+- write a file that opens correctly in Excel, in Hebrew and from right to left;
+- keep ID numbers as they are, including leading zeros;
+- never turn a student's text into a formula.
+
+| Option | What it is | License | Status |
+|--------|------------|---------|--------|
+| 1. `write-excel-file` | A small library that writes `.xlsx` files, version 4.1.1, 70.8 KB minified | MIT | Spike |
+| 2. ExcelJS | A full library for reading and writing `.xlsx` files, version 4.4.0, 947.7 KB minified | MIT | Spike |
+| 3. CSV | Plain text with commas, written by our own code | None needed | Spike |
+| SheetJS | A full spreadsheet library | Apache-2.0 | Rejected without a spike: its version on npm (0.18.5) is out of date, and current versions come only from its own server |
+| Google Sheets | A sheet in the teacher's Google account | Google service, free tier | Rejected without a spike: the teacher would have to connect a Google account, and the need is only a file to download |
+
 ### 2.4 Attendance check-in method
 
 The method is photo attendance ([interactive mock of the flow](assets/F1-attendance-flow-demo.html)):

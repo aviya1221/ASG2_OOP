@@ -58,7 +58,7 @@ The lecturer requires that we **actually test** every tool we suggest.
 - [ ] List candidate tools per need:
   - [x] Frontend / web framework
   - [x] Backend / BaaS + realtime database
-  - [ ] Spreadsheet export (CSV / Excel / Google Sheets)
+  - [x] Spreadsheet export (CSV / Excel / Google Sheets)
   - [x] Attendance check-in method (QR code, session code, location, etc.)
   - [x] Hosting / deployment (public URL that works from phones)
   - [ ] LLM API (homework review)
