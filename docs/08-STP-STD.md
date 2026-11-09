@@ -457,3 +457,131 @@ has a unit-test table per EDD class (A.3). Test case IDs: TC-001, TC-002, ...
 - Input data: A short text.
 - Expected result: The first send fails and the text stays in the box. The second saves the message exactly once.
 - Automation: Browser
+
+### Polls and forms
+
+### TC-060: Publish a poll only during the lesson
+
+- Verifies: REQ-30, UC-03
+- Preconditions: `T1` is signed in.
+- Steps: 1. Publish a poll in `L1`. 2. Publish a poll in `L2`, which has ended. 3. Publish a poll with 1 option.
+- Input data: A question with 2 options.
+- Expected result: Accepted, refused, refused.
+- Automation: Integration
+
+### TC-061: Show a poll to the students of the lesson
+
+- Verifies: REQ-31, UC-03
+- Preconditions: `S1` and `S51` are signed in.
+- Steps: 1. `T1` publishes a poll in `L1`.
+- Input data: A question with 2 options.
+- Expected result: `S1` sees it in the forum with no reload, and `S51` cannot reach it.
+- Automation: Browser
+
+### TC-062: Accept an answer only while open
+
+- Verifies: REQ-32, REQ-64, UC-03
+- Preconditions: An open and a closed survey of each kind.
+- Steps: 1. `S1` answers each of them.
+- Input data: A valid answer.
+- Expected result: The open ones are saved, and the closed ones are refused.
+- Automation: Integration
+
+### TC-063: Refuse a second answer
+
+- Verifies: REQ-33, REQ-65, UC-03
+- Preconditions: A poll and a form with `allow_change` off, and `S1` has answered both.
+- Steps: 1. `S1` answers each again.
+- Input data: Another answer.
+- Expected result: Both are refused, and the first answers stay.
+- Automation: Integration
+
+### TC-064: An allowed second answer replaces the first
+
+- Verifies: REQ-34, REQ-66, UC-03
+- Preconditions: A poll and a form with `allow_change` on, and `S1` chose option A.
+- Steps: 1. `S1` answers with option B.
+- Input data: Option B.
+- Expected result: One answer remains, with B. `poll_totals` shows A at 0 and B at 1.
+- Automation: Integration
+
+### TC-065: The chart updates for everyone
+
+- Verifies: REQ-35, UC-03
+- Preconditions: `T1` and `S1` have an open poll on screen.
+- Steps: 1. `S2`, `S3` and `S4` answer.
+- Input data: One option each.
+- Expected result: The chart shows 3 answers on both screens within 2 s, with no reload.
+- Automation: Browser
+
+### TC-066: Only the teacher sees who answered a poll
+
+- Verifies: REQ-36, UC-03
+- Preconditions: `S1` and `S2` answered the poll.
+- Steps: 1. As `S2`, read `answers` and `poll_totals`. 2. As `T1`, read `answers`.
+- Input data: None.
+- Expected result: `S2` gets only the answer of `S2` and the totals, and `T1` gets both answers.
+- Automation: Integration
+
+### TC-067: The teacher closes a poll or a form
+
+- Verifies: REQ-37, REQ-68, UC-03
+- Preconditions: An open poll and an open form.
+- Steps: 1. `S1` tries to close them. 2. `T1` closes them.
+- Input data: None.
+- Expected result: `S1` is refused, and after `T1` both are closed.
+- Automation: Integration
+
+### TC-068: A poll closes at the end of the lesson
+
+- Verifies: REQ-38, UC-03
+- Preconditions: An open poll and an open form in a lesson that has just ended.
+- Steps: 1. Run the database job.
+- Input data: None.
+- Expected result: The poll is closed, and the form stays open.
+- Automation: Integration
+
+### TC-069: A poll or form stays in the forum
+
+- Verifies: REQ-39, REQ-69, UC-03
+- Preconditions: A closed poll and a closed form in `L1`.
+- Steps: 1. Reload the forum.
+- Input data: None.
+- Expected result: Both are in their place, and the poll shows its results.
+- Automation: Browser
+
+### TC-070: Build a form and publish it in the forum
+
+- Verifies: REQ-60, REQ-62, UC-03
+- Preconditions: `T1` is signed in, and a future lesson exists.
+- Steps: 1. Build a form with one question of each type. 2. Save it before the lesson. 3. Publish it in the forum of that lesson.
+- Input data: Four questions.
+- Expected result: The draft is visible only to `T1`, and the published form appears in the forum.
+- Automation: Browser
+
+### TC-071: Four types of question
+
+- Verifies: REQ-61, UC-03
+- Preconditions: `FormBuilder` and `FormWindow`.
+- Steps: 1. Build and answer one question of each type.
+- Input data: Single choice, multiple choice, rating and free text.
+- Expected result: Each type shows its own control, and each answer is saved in its own form.
+- Automation: Unit
+
+### TC-072: Answer a form in a window over the forum
+
+- Verifies: REQ-63, UC-03
+- Preconditions: A published form, and `S1` is in the forum.
+- Steps: 1. Open the form. 2. Submit with one question unanswered. 3. Answer it and submit.
+- Input data: Answers to all the questions but one.
+- Expected result: The form opens over the forum. The first submit marks the question and sends nothing, and the second saves the answers.
+- Automation: Browser
+
+### TC-073: Only the teacher sees the answers of a form
+
+- Verifies: REQ-67, UC-03
+- Preconditions: `S1` answered a form.
+- Steps: 1. As `S2`, read the answers of `S1`. 2. As `T1`, read them.
+- Input data: None.
+- Expected result: `S2` gets 0 rows, and `T1` gets the answers with who gave them.
+- Automation: Integration
