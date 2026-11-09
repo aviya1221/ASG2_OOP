@@ -211,6 +211,31 @@ flowchart TB
 
 <!-- How the components communicate: REST endpoints, realtime events, external APIs. -->
 
+| From | To | How | What passes |
+|------|----|-----|-------------|
+| Web client | Data and live updates | HTTPS through the Supabase client library, with the public key and the user's sign-in token | Reading and writing the data that the access rules allow |
+| Data and live updates | Web client | A WebSocket connection | New forum messages, poll answers and attendance results, as database changes |
+| Web client | Our server | HTTPS with JSON or a file, and the user's sign-in token | The calls in the table below |
+| Our server | Data and live updates | HTTPS with the secret key | Results, and the tables closed to the page |
+| LLM layer | Google Gemini | HTTPS through the Google SDK, with the service key | Files and prompts, and answers in a fixed structure |
+| Notifications | Browser notification services | Web Push | A notification to each subscribed student |
+| Face tools | Phone camera | The browser's camera interface | Photos, which stay on the phone |
+
+The calls to our server:
+
+| Call | Caller | Purpose |
+|------|--------|---------|
+| `GET /health` | Web client | Wakes the server when the teacher opens the lesson |
+| `POST /faces/register` | Student | Saves the hash of a new face-print |
+| `POST /attendance/class` | Teacher | Sends the face-prints and positions from the class photos and starts the hour |
+| `POST /attendance/response` | Student | Sends the student's face-print and hash, and returns the result |
+| `POST /notifications/subscribe` | Student | Saves the browser's subscription |
+| `POST /summaries` | Teacher | Uploads a recording and starts the summary |
+| `POST /homework` | Teacher | Publishes a homework PDF and generates its review guide |
+| `POST /homework/{id}/checks` | Student | Uploads a solution and returns the report |
+
+The server checks the sign-in token on every call. The page waits for the answer of every call except one. A lesson summary takes minutes, so `POST /summaries` answers as soon as the upload ends, before it calls the AI service, and its answer says only that the work has started. The server then creates the summary in the background and writes its status (in progress, ready or failed) and its text to the database. The page receives the change as a live update, or reads it when it is opened again. If the server stops in the middle, for example because it went to sleep 15 minutes after its last incoming request, the status stays in progress. After 15 minutes the page shows that the summary failed and lets the teacher upload the recording again. The requests and responses of each call are in the EDD of its component.
+
 ## 4. Data
 
 <!-- Main entities and where they are stored. -->
