@@ -403,6 +403,9 @@ The need comes from the [forum decisions](features/F2-lesson-forum-strategy.md) 
 | Attendance sheet | 1. `write-excel-file` | Free, open source | One call; a library of 70.8 KB | Runs in the browser or on a server, with nothing to install; the browser was not tested | In Excel: 5 of 5 ID numbers correct, 0 of 5 notes run as formulas, right to left | Yes (ADR-6) |
 | Attendance sheet | 2. ExcelJS | Free, open source | One call; a library of 947.7 KB | Runs in the browser or on a server, with nothing to install; the browser was not tested | In Excel: 5 of 5 ID numbers correct, 0 of 5 notes run as formulas, right to left | No |
 | Attendance sheet | 3. CSV | Free, no library | A few lines of our own code | A plain text file | In Excel: 0 of 5 ID numbers correct, 3 of 5 notes run as formulas | No |
+| Form builder | 1. Our own code | Free | 85 lines to write and maintain | Runs in the browser, with nothing to install; not yet tried on a phone | Adds 1.1 KB compressed; rendered all four question types from right to left; found every unanswered question | Yes (ADR-7) |
+| Form builder | 2. SurveyJS form library | The form library is free; the builder is paid | One library for the answer window; the builder would still be ours or paid | Not tested | Adds 498.7 KB compressed | No |
+| Form builder | 3. Form.io | Free, open source | One library with a builder and a renderer | Not tested | Adds 509.2 KB compressed | No |
 
 ## 5. Decisions (ADRs)
 

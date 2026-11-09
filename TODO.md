@@ -89,6 +89,7 @@ The lecturer requires that we **actually test** every tool we suggest.
   - [x] React client
   - [x] Server hosting (Render)
   - [x] Attendance sheet export
+  - [x] Form builder
 - [ ] Decisions as ADRs: what we chose, alternatives rejected and why (one commit per decision)
   - [x] ADR-1: face tool for photo attendance (F1)
   - [x] ADR-2: source and service for the lesson summary (F4)
