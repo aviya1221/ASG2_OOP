@@ -75,6 +75,7 @@ The lecturer requires that we **actually test** every tool we suggest.
   - [x] Database and live updates (Supabase): write the spike in the report
   - [x] React client: test page and measured results → [app/spikes/client-react/](app/spikes/client-react/)
   - [x] React client: write the spike in the report
+  - [x] Server hosting (Render): test server and measured results → [app/spikes/hosting/](app/spikes/hosting/)
 - [ ] Comparison table
   - [x] Face tools for photo attendance (F1)
   - [x] Lesson summary (F4)

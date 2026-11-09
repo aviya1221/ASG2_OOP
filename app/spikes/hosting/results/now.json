@@ -1,0 +1,48 @@
+{
+  "started": "2026-11-09T12:14:42.875Z",
+  "phase": "now",
+  "attendance": [
+    {
+      "window_s": 60,
+      "responses": 50,
+      "answered": 50,
+      "within_target_pct": 100,
+      "samples": 50,
+      "p50_ms": 137,
+      "p95_ms": 182,
+      "max_ms": 413
+    },
+    {
+      "window_s": 1,
+      "responses": 50,
+      "answered": 50,
+      "within_target_pct": 100,
+      "samples": 50,
+      "p50_ms": 144,
+      "p95_ms": 249,
+      "max_ms": 295
+    }
+  ],
+  "uploads": [
+    {
+      "file_mb": 40,
+      "status": 200,
+      "total_s": 11.8,
+      "same_bytes": true,
+      "server_memory_mb": 72
+    },
+    {
+      "file_mb": 200,
+      "status": 200,
+      "total_s": 60.3,
+      "same_bytes": true,
+      "server_memory_mb": 74
+    }
+  ],
+  "long_wait": {
+    "asked_s": 330,
+    "status": 200,
+    "total_s": 330.1,
+    "answered": true
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "started": "2026-11-09T12:22:39.530Z",
+  "phase": "wake",
+  "wake": [
+    {
+      "wake_s": 92.3,
+      "restarted": true,
+      "started_at": "2026-11-09T12:40:04.822Z",
+      "statuses": [
+        200
+      ],
+      "warm_ms": 170
+    },
+    {
+      "wake_s": 22.3,
+      "restarted": true,
+      "started_at": "2026-11-09T12:56:23.567Z",
+      "statuses": [
+        200
+      ],
+      "warm_ms": 129
+    },
+    {
+      "wake_s": 12.3,
+      "restarted": true,
+      "started_at": "2026-11-09T13:12:45.249Z",
+      "statuses": [
+        200
+      ],
+      "warm_ms": 135
+    }
+  ]
+}
