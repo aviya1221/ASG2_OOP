@@ -233,7 +233,7 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
   - [x] Server: Express, health check, sign-in check, allowed callers
   - [x] Integration tests of accounts and the timetable
   - [x] Web client: sign-in and first sign-in
-  - [ ] Web client: the user's lessons, and the lesson page with three tabs
+  - [x] Web client: the user's lessons, and the lesson page with three tabs
   - [ ] Web client: the admin's timetable and a form for a new course
   - [ ] Browser tests of accounts and the timetable
 - [ ] Teacher: photograph the class and start the hour of responses
