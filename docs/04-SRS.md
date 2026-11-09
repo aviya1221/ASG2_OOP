@@ -144,7 +144,7 @@ The product runs in a web browser on a phone or a computer. The teacher's phone 
 | ID | Requirement | Priority | Source |
 |----|-------------|----------|--------|
 | REQ-01 | The system shall require a user to sign in before showing any lesson. | Must | D-1 to D-5 |
-| REQ-02 | The system shall let the admin create a course with its number, name, teacher, weekly hours and list of students. | Must | D-1 to D-5 |
+| REQ-02 | The system shall let the admin create a course with its number, name, teacher, weekly hours, first date, number of weeks and list of students. | Must | D-1 to D-5 |
 | REQ-03 | The system shall allow only the admin to change the timetable. | Must | D-1 to D-5 |
 | REQ-04 | The system shall show each teacher and each student only the lessons of their own courses. | Must | D-1 to D-5 |
 | REQ-05 | The system shall give each student access to their lessons with no room code or join step. | Must | D-1 to D-5 |

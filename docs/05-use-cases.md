@@ -247,7 +247,7 @@ flowchart LR
 - Actor: Admin.
 - Preconditions: The admin has signed in and has the list of students of the course.
 - Main success flow:
-  1. The admin creates a course with its course number, name, teacher, weekly hours and students.
+  1. The admin creates a course with its course number, name, teacher, weekly hours, first date, number of weeks and students.
   2. The system saves the course and adds its lessons to the timetable.
 - Alternative flows:
   - 1a. A detail is missing or the course number already exists: the system does not save and shows what to fix.

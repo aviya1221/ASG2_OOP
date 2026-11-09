@@ -183,7 +183,7 @@ Everything that can run without a real phone or a limited service is automated. 
 - Verifies: REQ-02, UC-07
 - Preconditions: `A1` is signed in, and course number 101 does not exist.
 - Steps: 1. Fill in the form for a new course and save. 2. Save the same number again.
-- Input data: Number 101, a name, teacher `T1`, weekly hours and 3 students.
+- Input data: Number 101, a name, teacher `T1`, weekly hours, a first date, 13 weeks and 3 students.
 - Expected result: The course and its lessons appear in the timetable. The second save is refused and shows what to fix.
 - Automation: Browser
 
