@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { loadConfig } from "../../src/config/env.ts";
+import { loadConfig, loadServerConfig } from "../../src/config/env.ts";
 import { GEMINI_DEFAULTS } from "../../src/integrations/gemini/index.ts";
 
 describe("loadConfig: LLM settings", () => {
@@ -41,5 +41,28 @@ describe("loadConfig: LLM settings", () => {
       name: "ConfigError",
       message: /GEMINI_STORE_INTERACTIONS/,
     });
+  });
+});
+
+describe("loadServerConfig", () => {
+  const VALID = { WEB_ORIGIN: "https://a.example, https://b.example", SUPABASE_URL: "https://x.supabase.co", SUPABASE_SECRET_KEY: "secret" };
+
+  it("reads the settings, and splits the web addresses", () => {
+    assert.deepEqual(loadServerConfig({ ...VALID, PORT: "9000" }), {
+      port: 9000,
+      webOrigins: ["https://a.example", "https://b.example"],
+      supabaseUrl: "https://x.supabase.co",
+      supabaseSecretKey: "secret",
+    });
+  });
+
+  it("uses the default port when none is set", () => {
+    assert.equal(loadServerConfig(VALID).port, 8787);
+  });
+
+  it("stops with a clear message when a setting is missing or wrong", () => {
+    assert.throws(() => loadServerConfig({ ...VALID, SUPABASE_SECRET_KEY: "" }), { name: "ConfigError", message: /SUPABASE_SECRET_KEY/ });
+    assert.throws(() => loadServerConfig({ ...VALID, WEB_ORIGIN: undefined }), { name: "ConfigError", message: /WEB_ORIGIN/ });
+    assert.throws(() => loadServerConfig({ ...VALID, PORT: "many" }), { name: "ConfigError", message: /PORT/ });
   });
 });

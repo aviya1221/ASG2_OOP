@@ -26,6 +26,35 @@ export function loadConfig(env: Env = process.env): AppConfig {
   return { llm: loadLlmSettings(env) };
 }
 
+/** What the running web server needs, on top of `AppConfig`. Scripts that only call the LLM do not need it. */
+export interface ServerConfig {
+  port: number;
+  webOrigins: string[];
+  supabaseUrl: string;
+  supabaseSecretKey: string;
+}
+
+const DEFAULT_PORT = 8787;
+
+export function loadServerConfig(env: Env = process.env): ServerConfig {
+  const port = Number(read(env, "PORT") ?? DEFAULT_PORT);
+  if (!Number.isInteger(port) || port < 0 || port > 65535) {
+    throw new ConfigError(`PORT must be a port number, got "${env.PORT}"`);
+  }
+  return {
+    port,
+    webOrigins: required(env, "WEB_ORIGIN").split(",").map((origin) => origin.trim()),
+    supabaseUrl: required(env, "SUPABASE_URL"),
+    supabaseSecretKey: required(env, "SUPABASE_SECRET_KEY"),
+  };
+}
+
+function required(env: Env, name: string): string {
+  const value = read(env, name);
+  if (!value) throw new ConfigError(`${name} is missing`);
+  return value;
+}
+
 function loadLlmSettings(env: Env): LlmSettings {
   const provider = read(env, "LLM_PROVIDER") ?? "gemini";
   if (provider === "fake") return { provider: "fake" };
