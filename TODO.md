@@ -226,7 +226,7 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
   - [x] Smoke script: one real call with our key (evidence for the step 2 spike)
   - [x] Document the LLM layer in `app/README.md` (structure, settings, reused libraries)
 - [ ] Only if we find we need it: Sign in with Google. Removed for now to keep the product simple; the server check and the Google Cloud setup guide can be restored from commits `173a8e6` and `3222230`.
-- [ ] Base of the product
+- [x] Base of the product
   - [x] Local database (Supabase in Docker)
   - [x] Database: accounts and timetable, with access rules
   - [x] Test data: made-up users and lessons

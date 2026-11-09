@@ -1,4 +1,4 @@
-# Step 9: Demo Web App
+# Web App
 
 <!--
 LECTURER GUIDELINES: IMPLEMENTATION
@@ -30,34 +30,66 @@ licenses of any code we reuse below.
 
 ## Tech stack
 
-- **Server:** Node.js 22 + TypeScript, run directly with `tsx` (no build step).
-- **Tests:** Node's built-in test runner (`node:test`).
+- **Server:** Node.js 22 + TypeScript, run directly with `tsx` (no build step), with Express for the routes.
+- **Tests:** `node:test` on the server, Vitest in the client and Playwright in real browser engines ([test plan](../docs/08-STP-STD.md)).
 - **LLM:** Google Gemini through Google's official SDK, `@google/genai`.
-- **Web client:** React 19 and Vite 8, in TypeScript, with plain CSS ([ADR-4](../docs/02-tools-report.md#adr-4-web-client), [screens and look](../docs/features/UI-strategy.md)). The client is not built yet; the chosen tools were checked on a [test page](spikes/client-react/).
+- **Web client:** React 19 and Vite 8, in TypeScript, with plain CSS ([ADR-4](../docs/02-tools-report.md#adr-4-web-client), [screens and look](../docs/features/UI-strategy.md)). The chosen tools were checked on a [test page](spikes/client-react/).
 - **Database, sign-in, files and live updates:** Supabase ([ADR-3](../docs/02-tools-report.md#adr-3-database-sign-in-files-and-live-updates)).
-- **Hosting:** _TODO (steps 2 and 9)._
+- **Hosting:** the web client on Netlify and the server on Render ([ADR-4](../docs/02-tools-report.md#adr-4-web-client), [ADR-5](../docs/02-tools-report.md#adr-5-hosting-the-server)).
 
 ## Run locally
 
+You need Node.js 22 and Docker.
+
 ```bash
-cd app/server
+cd app
 npm install
-cp .env.example .env     # then put your Gemini API key in .env
-npm test                 # unit tests: no key, no network
-npm run typecheck
-npm run smoke:gemini     # a few real calls to Gemini with your key
+npm --prefix server install
+npm --prefix client install
+npm run db:start                          # the database, in Docker
+npm run db:users                          # made-up accounts, with the password local-test-password
+cp client/.env.example client/.env.local  # then add the public key from: npx supabase status
+npm --prefix client run dev
 ```
 
-Get a Gemini API key at <https://aistudio.google.com/apikey>.
-Public URL: _TODO (step 9)._
+Sign in with the ID number `100000001` (admin), `200000001` (teacher) or `300000001` (student). The made-up data is in [supabase/seed.sql](supabase/seed.sql).
+
+To call Gemini, copy `server/.env.example` to `server/.env`, add a key from <https://aistudio.google.com/apikey> and run `npm --prefix server run smoke:gemini`.
+
+The product is not deployed yet.
+
+## Tests
+
+| Command, in `app/` | What runs | What it needs |
+|--------------------|-----------|---------------|
+| `npm --prefix server test` | Unit tests of the server | Nothing |
+| `npm --prefix client test` | Unit tests of the client | Nothing |
+| `npm run test:integration` | Access rules, database functions and server calls | The local database |
+| `npm run test:browser` | Whole flows, in a phone profile and an iPhone profile | The local database, and once: `npx playwright install chromium webkit` |
+| `npm run matrix` | Writes the results into the traceability matrix | The reports of the runs above |
+
+Every push runs them all through [GitHub Actions](../.github/workflows/tests.yml). `npm run db:reset` starts again from clean data.
+
+## Folders
+
+| Folder | What is in it |
+|--------|---------------|
+| `client/` | The web client |
+| `server/` | Our server |
+| `supabase/` | The database: tables, access rules and made-up data |
+| `e2e/` | Browser tests |
+| `scripts/` | Test accounts and the traceability matrix |
+| `spikes/` | Hands-on tool checks, reported in the [tools report](../docs/02-tools-report.md) |
 
 ## Server structure
 
 ```text
 app/server/
   src/
+    index.ts                starts the web server
     config/env.ts           settings from environment variables, checked at start-up
     container.ts            builds the shared services once (composition root)
+    http/                   the web server: routes, sign-in check and the error format
     llm/                    LLM layer, provider-neutral: the only thing features import
       LlmClient.ts          the interface: text, JSON by schema, file upload, embeddings
       types.ts              request and result types
@@ -66,12 +98,14 @@ app/server/
       parseJsonAnswer.ts    shared parse + validate step for JSON answers
       similarity.ts         cosine similarity, to compare homework
     integrations/
+      supabase/             checks sign-in tokens with Supabase
       gemini/               the only folder that imports @google/genai
         GeminiLlmClient.ts  implements LlmClient (Interactions API, Files API, embeddings)
         GeminiConfig.ts     settings and default models
         toLlmError.ts       SDK errors -> LlmError
   scripts/gemini-smoke.ts   real end-to-end call (evidence for the step 2 spike)
   test/                     same folders as src/
+  test-integration/         against the real local database
 ```
 
 **Dependency rule:** features depend on the `LlmClient` interface only. `container.ts` is the one place that picks the implementation, and `integrations/gemini/` is the one place that knows Google's SDK. This is the mitigation the lecturer gives for an external-API risk (lecture 03a, R4: "mock the API; integrate behind an interface"), and it lets the demo switch to `FakeLlmClient` (plan B) by changing one setting.
@@ -153,6 +187,10 @@ Copy [server/.env.example](server/.env.example) to `server/.env`. The `.env` fil
 | `GEMINI_TEXT_MODEL` | no | `gemini-3.6-flash` | Model for text and JSON answers |
 | `GEMINI_EMBEDDING_MODEL` | no | `gemini-embedding-2` | Model for comparing texts |
 | `GEMINI_STORE_INTERACTIONS` | no | `false` | Let Google keep interactions |
+| `PORT` | no | `8787` | The port of the web server |
+| `WEB_ORIGIN` | to run the server | | The addresses of the web client, separated by commas |
+| `SUPABASE_URL` | to run the server | | The address of the Supabase project |
+| `SUPABASE_SECRET_KEY` | to run the server | | The secret key of the Supabase project, kept on the server only |
 
 ## Reused code and licenses
 
@@ -166,4 +204,8 @@ Copy [server/.env.example](server/.env.example) to `server/.env`. The `.env` fil
 | [Vite](https://github.com/vitejs/vite) and [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react) | Builds the web client (dev tool) | MIT |
 | [@types/react](https://github.com/DefinitelyTyped/DefinitelyTyped) | React type definitions (dev tool) | MIT |
 | [@supabase/supabase-js](https://github.com/supabase/supabase-js) | Supabase client library | MIT |
-| [Playwright](https://github.com/microsoft/playwright) | Measures the client test page (test page only) | Apache-2.0 |
+| [Playwright](https://github.com/microsoft/playwright) | Browser tests | Apache-2.0 |
+| [Express](https://github.com/expressjs/express) and [cors](https://github.com/expressjs/cors) | Routes of the server | MIT |
+| [React Router](https://github.com/remix-run/react-router) | Addresses of the web client | MIT |
+| [Supabase CLI](https://github.com/supabase/cli) | Local database (dev tool) | MIT |
+| [Vitest](https://github.com/vitest-dev/vitest), [Testing Library](https://github.com/testing-library) and [jsdom](https://github.com/jsdom/jsdom) | Unit tests of the client (dev tools) | MIT |
