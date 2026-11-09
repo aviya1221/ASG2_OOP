@@ -347,3 +347,113 @@ has a unit-test table per EDD class (A.3). Test case IDs: TC-001, TC-002, ...
 - Input data: A generated face-print.
 - Expected result: Within 1 s the buffer is all zeros, and no table or log holds the numbers.
 - Automation: Unit, Integration
+
+### Forum
+
+### TC-040: Each lesson has its own forum
+
+- Verifies: REQ-20, UC-02
+- Preconditions: `S1` is in course A.
+- Steps: 1. Post a message in `L1`. 2. Read the messages of `L2`.
+- Input data: A short text.
+- Expected result: The message appears in `L1` only.
+- Automation: Integration
+
+### TC-041: List the forums by lecture number
+
+- Verifies: REQ-21, UC-02
+- Preconditions: Lessons with lecture numbers 3, 1 and 2, and a topic only on number 1.
+- Steps: 1. Open the list of forums.
+- Input data: None.
+- Expected result: The order is 1, 2, 3. Number 1 shows the course, the number and the topic, and the others show the course and the number.
+- Automation: Browser
+
+### TC-042: The teacher enters the topic
+
+- Verifies: REQ-22, UC-08
+- Preconditions: `L1` has no topic.
+- Steps: 1. `T1` saves a topic. 2. `S1` tries to save one.
+- Input data: A topic.
+- Expected result: The title shows the topic, and `S1` is refused.
+- Automation: Integration
+
+### TC-043: A forum never closes
+
+- Verifies: REQ-23, UC-02
+- Preconditions: `L2` ended long ago and has messages.
+- Steps: 1. Read its messages. 2. Post a new one.
+- Input data: A short text.
+- Expected result: All the old messages are there, and the new one is saved.
+- Automation: Integration
+
+### TC-044: A new message appears with no reload
+
+- Verifies: REQ-24, UC-02
+- Preconditions: `S1`, `S2` and `T1` have the forum of `L1` open.
+- Steps: 1. `S1` posts a message.
+- Input data: A short text.
+- Expected result: It appears for `S2` and `T1` within 2 s, with no reload.
+- Automation: Browser
+
+### TC-045: Write a message and a reply
+
+- Verifies: REQ-25, UC-02
+- Preconditions: `S1` and `S2` are in `L1`, and `S51` is not linked to it.
+- Steps: 1. `S1` posts a message. 2. `S2` replies to it. 3. `S51` tries to post.
+- Input data: Short texts.
+- Expected result: The reply appears under the message, and `S51` is refused.
+- Automation: Browser, Integration
+
+### TC-046: A hidden name stays hidden from the class
+
+- Verifies: REQ-26, UC-02
+- Preconditions: `S1` is in the forum of `L1`.
+- Steps: 1. `S1` posts and hides the name. 2. As `S2`, read the message and its writer. 3. As `T1`, read the writer.
+- Input data: A short text.
+- Expected result: `S2` gets an empty name and 0 rows of the writer, and `T1` gets `S1`.
+- Automation: Integration
+
+### TC-047: Messages are text, and links work
+
+- Verifies: REQ-27, UC-02
+- Preconditions: `S1` is in the forum of `L1`.
+- Steps: 1. Post the text.
+- Input data: `<img src=x onerror=alert(1)> https://example.com`
+- Expected result: The tag appears as text, no script runs, and only the address is a link.
+- Automation: Unit, Browser
+
+### TC-048: Nobody can edit a message
+
+- Verifies: REQ-28, UC-02
+- Preconditions: `S1` has a message.
+- Steps: 1. `S1` tries to update it. 2. `T1` tries to update it.
+- Input data: A new text.
+- Expected result: Both are refused, and the text does not change.
+- Automation: Integration
+
+### TC-049: Only the teacher deletes a message
+
+- Verifies: REQ-29, UC-02
+- Preconditions: `S1` has a message with a reply, and `S2` has the forum open.
+- Steps: 1. `S1` tries to delete it. 2. `T1` deletes it.
+- Input data: None.
+- Expected result: `S1` is refused. After `T1`, the text and the name are empty for everyone, the reply stays and the open page updates.
+- Automation: Integration, Browser
+
+### TC-050: Write in the expanded window
+
+- Verifies: REQ-70, UC-02
+- Preconditions: A phone profile, with the forum of `L1` open.
+- Steps: 1. Press expand. 2. Write a message.
+- Input data: A short text.
+- Expected result: The window fills the screen, the message is saved, and a poll appears in it as one line.
+- Automation: Browser
+
+### TC-051: A message with no network stays in the box
+
+- Verifies: REQ-25, UC-02
+- Preconditions: `S1` is in the forum of `L1`.
+- Steps: 1. Cut the network and send. 2. Restore the network and send again.
+- Input data: A short text.
+- Expected result: The first send fails and the text stays in the box. The second saves the message exactly once.
+- Automation: Browser
