@@ -382,3 +382,4 @@ No ready project does all of this, so we compose existing parts.
 | R11 | A class stays above the free plan's 100 events per second for longer than we tested, and connections are dropped | Low | Medium | Send poll results as one combined update per second |
 | R12 | The free project is paused after 1 week without activity | Medium | High | Open and check the project before every use |
 | R13 | Real phones and real access rules are slower than in the spike | Medium | Low | Measure again in the system tests; switch to direct broadcast if needed |
+| R14 | Real phones load the page more slowly than the emulated phones, and feature code makes it heavier | Medium | Medium | Time the page on real phones before the pilot; load each tab's code on demand if it is too slow |
