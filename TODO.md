@@ -187,7 +187,7 @@ The EDD describes one component: "How is this part built?" One file per componen
   - [x] Error handling and edge cases (duplicate check-in, session closed, no network)
 - [x] EDD-Forum: class design + sequence diagram (comment in real time)
 - [x] EDD-Polls: class design + sequence diagram (create poll + vote) + state machine (poll lifecycle)
-- [ ] EDD-VideoSummary: class design + sequence diagram
+- [x] EDD-LessonSummary: class design + sequence diagram
 - [ ] EDD-HomeworkReview: class design + sequence diagram
 - [ ] API docs: endpoints, requests / responses, errors, examples
 - [ ] Fill the "Design" column of the traceability matrix with the EDD names

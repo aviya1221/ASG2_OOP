@@ -219,6 +219,7 @@ classDiagram
 | EDD-Attendance | §2.3 Face tools, §2.4 Attendance, §2.9 Notifications | [attendance.md](attendance.md) |
 | EDD-Forum | §2.5 Forum | [forum.md](forum.md) |
 | EDD-Polls | §2.6 Polls and forms | [polls-and-forms.md](polls-and-forms.md) |
+| EDD-LessonSummary | §2.7 Lesson summary | [lesson-summary.md](lesson-summary.md) |
 
 <!-- To add one: copy _template.md to <component>.md and fill it in. -->
 
