@@ -109,6 +109,61 @@ stateDiagram-v2
 
 ## 4. Sequence diagrams for key flows
 
+The teacher photographs the class:
+
+```mermaid
+sequenceDiagram
+    actor Teacher
+    participant Engine as FaceEngine
+    participant Routes as AttendanceRoutes
+    participant Service as AttendanceService
+    participant Repo as AttendanceRepository
+    participant Notify as NotificationService
+    Teacher->>+Engine: findFaces(photo) and makePrint(photo, face)
+    Engine-->>-Teacher: faces and face-prints
+    Teacher->>+Routes: POST /attendance/class
+    Routes->>+Service: startRound(lessonId, teacherId, photos)
+    Service->>+Repo: saveRound(lessonId, photos, expiresAt)
+    Repo-->>-Service: round
+    Service-)Notify: notifyCourse(lessonId)
+    Service-->>-Routes: round
+    Routes-->>-Teacher: 201, expiresAt
+```
+
+A student responds, with no further action:
+
+```mermaid
+sequenceDiagram
+    actor Student
+    participant Responder as AttendanceResponder
+    participant Store as FaceStore
+    participant Routes as AttendanceRoutes
+    participant Service as AttendanceService
+    participant Cache as ClassFaceCache
+    participant Matcher as FaceMatcher
+    participant Rules as AttendanceRules
+    participant Repo as AttendanceRepository
+    Student->>+Responder: opens the site
+    Responder->>+Store: load()
+    Store-->>-Responder: face-print and hash
+    Responder->>+Routes: POST /attendance/response
+    Routes->>+Service: respond(lessonId, studentId, print, hash)
+    Service->>+Repo: findHash(studentId)
+    Repo-->>-Service: saved hash
+    Service->>+Cache: get(lessonId)
+    Cache-->>-Service: class faces
+    Service->>+Matcher: best(print, faces)
+    Matcher-->>-Service: match
+    Service->>+Rules: decide(hashFits, score, threshold)
+    Rules-->>-Service: matched
+    Service->>+Repo: recordMatch(lessonId, studentId, match)
+    Repo-->>-Service: present or conflict
+    Note over Service: overwrites the face-print with zeros
+    Service-->>-Routes: result
+    Routes-->>-Responder: 200, result
+    Responder-->>-Student: shows the result
+```
+
 ## 5. Error handling and edge cases
 
 ## 6. Configuration and performance budget

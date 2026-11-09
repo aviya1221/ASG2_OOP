@@ -181,7 +181,7 @@ The EDD describes one component: "How is this part built?" One file per componen
 - [x] Class diagram: domain model (e.g. User, Student, Lecturer, Course, ClassSession, AttendanceRecord, Comment, Poll, Vote, VideoSummary, Homework, Review)
 - [ ] EDD-Attendance (main feature), one commit per section:
   - [x] Class design (class diagram, incl. services / controllers)
-  - [ ] Sequence diagram: student marks attendance
+  - [x] Sequence diagram: student marks attendance
   - [ ] Sequence diagram: lecturer exports the spreadsheet
   - [ ] Data format: spreadsheet columns, database schema
   - [ ] Error handling and edge cases (duplicate check-in, session closed, no network)
