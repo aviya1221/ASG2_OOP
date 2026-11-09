@@ -324,6 +324,30 @@ No ready project does all of this, so we compose existing parts.
 - **Evidence:** [the measured results](../app/spikes/hosting/results/summary.md).
 - **Time spent:** the runs took about an hour, most of it waiting for the server to fall asleep.
 
+### Spike: attendance sheet export
+
+- **Goal:** find the format and the tool that give a Hebrew attendance sheet that opens correctly in Excel (REQ-19).
+- **What we did (2026-11-09):** we wrote the sheet of a made-up class of 50 in each of the three ways on Node 22, and read each file in real Excel. Five rows hold hard cases: ID numbers that start with zeros, names with an apostrophe, a comma or quotation marks, and notes that look like formulas. Code: [app/spikes/spreadsheet-export/](../app/spikes/spreadsheet-export/).
+- **Result:**
+
+  | Measure | 1. `write-excel-file` | 2. ExcelJS | 3. CSV |
+  |---------|-----------------------|------------|--------|
+  | Rows in Excel | 51 of 51 | 51 of 51 | 51 of 51 |
+  | ID numbers shown correctly | 5 of 5 | 5 of 5 | 0 of 5 |
+  | Names shown correctly | 5 of 5 | 5 of 5 | 5 of 5 |
+  | Notes kept as written | 5 of 5 | 5 of 5 | 1 of 5 |
+  | Notes run as formulas | 0 of 5 | 0 of 5 | 3 of 5 |
+  | The file sets right to left | Yes | Yes | Not possible in CSV |
+  | File size | 4.6 KB | 8.4 KB | 3.5 KB |
+  | Time to write | 10 ms | 15 ms | Under 1 ms |
+
+  **Limits we found:**
+  - In the CSV file Excel showed the ID number 012345678 as 12345678 and 123456782 as 1.23E+08, and it ran `=1+1` as a formula.
+  - Only Excel on Windows was checked.
+  - The libraries ran on a server, not in a browser.
+- **Evidence:** [the measured results](../app/spikes/spreadsheet-export/results/summary.md).
+- **Time spent:** about 15 minutes.
+
 ## 4. Comparison table
 
 | Need | Option | Cost / free tier | Simplicity | Works on phones | Spike result | Chosen? |
