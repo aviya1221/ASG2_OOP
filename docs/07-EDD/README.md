@@ -216,6 +216,7 @@ classDiagram
 
 | EDD | Component (SDD §) | File |
 |-----|-------------------|------|
+| EDD-Attendance | §2.3 Face tools, §2.4 Attendance, §2.9 Notifications | [attendance.md](attendance.md) |
 
 <!-- To add one: copy _template.md to <component>.md and fill it in. -->
 
