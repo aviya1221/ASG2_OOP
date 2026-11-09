@@ -96,6 +96,7 @@ The lecturer requires that we **actually test** every tool we suggest.
   - [x] ADR-4: web client
   - [x] ADR-5: hosting the server
   - [x] ADR-6: attendance sheet file
+  - [x] ADR-7: form builder
 - [ ] Technology risk register with mitigations (keep a fallback for risky tools)
   - [x] Face tools for photo attendance (F1): R1 to R6
   - [x] Lesson summary (F4): R7 to R10

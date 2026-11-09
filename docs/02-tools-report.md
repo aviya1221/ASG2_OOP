@@ -505,6 +505,18 @@ The need comes from the [forum decisions](features/F2-lesson-forum-strategy.md) 
   - A student's text cannot run as a formula in the teacher's Excel.
   - ID numbers stay text, so they cannot be used for calculations in the sheet.
 
+### ADR-7: Form builder
+
+- **Context:** the teacher builds forms of four question types inside the product, and students answer them in a window over the forum (REQ-60 to REQ-69).
+- **Decision:** option 1 from section 2.9: we write the builder and the answer window ourselves, in React.
+- **Alternatives rejected:**
+  - The SurveyJS form library adds 498.7 KB compressed, and its builder needs a paid license.
+  - Form.io adds 509.2 KB compressed, about 4 times the size of the whole page.
+  - The tools rejected without a spike are listed in section 2.9.
+- **Consequences:**
+  - A form is kept as plain data: a list of questions with their types and options.
+  - The styling of the builder and the window is still to be written.
+
 ## 6. Technology risks
 
 | ID | Risk | Probability | Impact | Mitigation |
