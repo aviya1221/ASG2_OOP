@@ -395,6 +395,19 @@ The need comes from the [forum decisions](features/F2-lesson-forum-strategy.md) 
 - **Evidence:** [the measured results](../app/spikes/form-builder/results/summary.md).
 - **Time spent:** about 20 minutes.
 
+### Spike: AI coding assistant
+
+- **Goal:** find out whether an AI coding assistant can carry the work on a product like ours, and where the team still has to check it.
+- **What we did:** we used Claude Code for the project's documents, for the server's LLM layer and for the spikes in [app/spikes/](../app/spikes/). We counted its share in the commit history and noted where it went wrong.
+- **Result:** on 2026-11-09, all 172 commits carried its co-author line, and it had written 8 spikes.
+
+  **Limits we found:**
+  - The co-author line shows that the assistant took part in a commit, not how much of it the assistant wrote.
+  - It can be wrong about earlier work: it once said that a test did not exist, and once overstated what a test had shown. The team caught both.
+  - It needs a paid plan.
+- **Evidence:** the commit history of this repository.
+- **Time spent:** not measured.
+
 ## 4. Comparison table
 
 | Need | Option | Cost / free tier | Simplicity | Works on phones | Spike result | Chosen? |

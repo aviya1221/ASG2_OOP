@@ -82,6 +82,7 @@ The lecturer requires that we **actually test** every tool we suggest.
   - [x] Attendance sheet export: write the spike in the report
   - [x] Form builder (F6): test code and measured results → [app/spikes/form-builder/](app/spikes/form-builder/)
   - [x] Form builder (F6): write the spike in the report
+  - [x] AI coding assistant: write the spike in the report
 - [ ] Comparison table
   - [x] Face tools for photo attendance (F1)
   - [x] Lesson summary (F4)
