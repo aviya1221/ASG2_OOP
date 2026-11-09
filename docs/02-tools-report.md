@@ -324,3 +324,6 @@ No ready project does all of this, so we compose existing parts.
 | R8 | Mistakes in the transcript or the board list reach the summary page | High | Medium | The second review against the transcript and the board list; the teacher can edit the text or upload again |
 | R9 | A full lesson behaves differently from the 10-minute clip we tested, in limits, time or quality | Medium | Medium | Keep the pilot to recordings of about 10 minutes; test a full lesson before allowing longer ones |
 | R10 | Google retires or changes the model we tested | Medium | Low | The model is a setting (`GEMINI_TEXT_MODEL`); repeat the spike after any change |
+| R11 | A class stays above the free plan's 100 events per second for longer than we tested, and connections are dropped | Low | Medium | Send poll results as one combined update per second |
+| R12 | The free project is paused after 1 week without activity | Medium | High | Open and check the project before every use |
+| R13 | Real phones and real access rules are slower than in the spike | Medium | Low | Measure again in the system tests; switch to direct broadcast if needed |

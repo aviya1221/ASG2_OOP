@@ -83,6 +83,7 @@ The lecturer requires that we **actually test** every tool we suggest.
 - [ ] Technology risk register with mitigations (keep a fallback for risky tools)
   - [x] Face tools for photo attendance (F1): R1 to R6
   - [x] Lesson summary (F4): R7 to R10
+  - [x] Database and live updates (Supabase): R11 to R13
 
 ## Step 3: SoW (Statement of Work) → [docs/03-SoW.md](docs/03-SoW.md)
 
