@@ -94,6 +94,16 @@ has a unit-test table per EDD class (A.3). Test case IDs: TC-001, TC-002, ...
 
 ### A.6 Entry and exit criteria
 
+**Entry:** the type check passes, the test data loads and the classes of the feature exist.
+
+**Exit, for a release:**
+
+- Every automated test passes on the commit of the release.
+- Every manual test in Part B has been run, and its result recorded.
+- Every requirement has a test case, and none has the status Gap or Failed.
+- Line coverage is at least 80% on the server and in the client logic, and 100% in `AttendanceRules` and `FaceMatcher`.
+- No open defect remains against a requirement of priority Must.
+
 ### A.7 Schedule, roles and risks
 
 ## Part B: Test cases (STD)
