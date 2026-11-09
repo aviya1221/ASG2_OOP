@@ -165,3 +165,185 @@ has a unit-test table per EDD class (A.3). Test case IDs: TC-001, TC-002, ...
 - Input data: None.
 - Expected result: The lesson page opens with no code or join step, with the tabs attendance, forum and homework.
 - Automation: Browser
+
+### Attendance
+
+### TC-010: Register a face from one photo
+
+- Verifies: REQ-07, UC-06
+- Preconditions: `S1` has no registered face.
+- Steps: 1. Give the page the photo. 2. Record every request that leaves the browser.
+- Input data: A generated photo of one face.
+- Expected result: The server receives only a hash of 64 hexadecimal characters. No request carries the photo or the face-print, and `my_face_status` shows that the student is registered.
+- Automation: Browser
+
+### TC-011: Ask for another photo when no face is found
+
+- Verifies: REQ-07, UC-06
+- Preconditions: `S1` has no registered face.
+- Steps: 1. Give the page the photo.
+- Input data: A photo with no face.
+- Expected result: The page asks for another photo, and nothing is sent.
+- Automation: Browser
+
+### TC-012: Opt out of face recognition
+
+- Verifies: REQ-08, UC-06
+- Preconditions: `S1` has no registered face.
+- Steps: 1. Press the opt-out button. 2. Start a round in `L1`. 3. Open the site as `S1`.
+- Input data: None.
+- Expected result: `my_face_status` shows the opt-out, no hash exists, and no attendance response is sent.
+- Automation: Browser
+
+### TC-013: Replacing a face needs a teacher's approval
+
+- Verifies: REQ-09, UC-06
+- Preconditions: `S1` is registered.
+- Steps: 1. `S1` registers a new hash. 2. `T2` tries to approve it. 3. `T1` approves it.
+- Input data: A new hash.
+- Expected result: Step 1 answers 202, and the saved hash stays the same until step 3. Step 2 is refused, and after step 3 the new hash is saved.
+- Automation: Integration
+
+### TC-014: Send the class photos with no photo leaving the phone
+
+- Verifies: REQ-10, UC-01
+- Preconditions: `L1` is in progress, and `T1` is signed in.
+- Steps: 1. Give the page 3 photos. 2. Record the request to `POST /attendance/class`.
+- Input data: 3 generated photos of a class.
+- Expected result: The request holds only boxes and face-prints of 128 numbers, with no image data. A round opens that ends 60 minutes later.
+- Automation: Browser
+
+### TC-015: Refuse a round outside the lesson, or a second round
+
+- Verifies: REQ-10, UC-01
+- Preconditions: `T1` is signed in.
+- Steps: 1. Send photos for `L2`, which has ended. 2. Send photos for `L1`. 3. Send photos for `L1` again.
+- Input data: Generated face-prints.
+- Expected result: `outside_lesson`, then 201, then `round_exists`.
+- Automation: Integration
+
+### TC-016: Notify every student of the course
+
+- Verifies: REQ-11, UC-01
+- Preconditions: 3 students of course A and `S51` are subscribed, and one subscription answers 410.
+- Steps: 1. Start a round in `L1`, with a fake sender.
+- Input data: Fake subscriptions.
+- Expected result: The sender is called once for each subscription of course A and never for `S51`, and the one that answered 410 is removed.
+- Automation: Unit
+
+### TC-017: Collect a response when the student opens the site
+
+- Verifies: REQ-12, UC-01
+- Preconditions: A round is open in `L1`, and `S1` is registered in this browser.
+- Steps: 1. `S1` opens the site and touches nothing.
+- Input data: None.
+- Expected result: Exactly one response is sent, and the attendance tab shows the result.
+- Automation: Browser
+
+### TC-018: Decide the result in the agreed order
+
+- Verifies: REQ-13, UC-01
+- Preconditions: A round of generated face-prints.
+- Steps: 1. Respond with each input in turn.
+- Input data: A face-print that does not fit the hash, a best score of 0.3599 and a best score of 0.36.
+- Expected result: `review` with no comparison, then `not_found`, then `present`.
+- Automation: Unit
+
+### TC-019: Two students on one face get Conflict
+
+- Verifies: REQ-13, UC-01
+- Preconditions: A round is open in `L1`.
+- Steps: 1. `S1` responds and matches one face. 2. `S2` responds and matches the same face.
+- Input data: Face-prints built to match the same face.
+- Expected result: After step 1, `S1` is `present`. After step 2, both are `conflict`, and the page of `S1` shows the change.
+- Automation: Integration
+
+### TC-020: Two responses at the same moment cannot both be Present
+
+- Verifies: REQ-13, UC-01
+- Preconditions: A round is open in `L1`.
+- Steps: 1. Send both responses at the same moment, 20 times, each time in a new round.
+- Input data: Face-prints built to match the same face.
+- Expected result: Both are `conflict` every time.
+- Automation: Integration
+
+### TC-021: Show No response after the hour
+
+- Verifies: REQ-13, UC-01
+- Preconditions: A round whose hour is over, and `S3` sent nothing.
+- Steps: 1. Read `attendance_sheet` as `T1`.
+- Input data: None.
+- Expected result: `S3` shows `no_response`. During the hour the same row shows no result yet.
+- Automation: Integration
+
+### TC-022: A second response returns the saved result
+
+- Verifies: REQ-13, UC-01
+- Preconditions: `S1` already has a result.
+- Steps: 1. Respond again.
+- Input data: The same face-print.
+- Expected result: The saved result returns, and the comparison does not run again.
+- Automation: Unit
+
+### TC-023: Request row and seat only when allowed
+
+- Verifies: REQ-14, UC-01
+- Preconditions: `S1` and `S6` have `not_found`, `S4` opted out and `S5` is `present`.
+- Steps: 1. `S1` asks during the hour. 2. `S1` asks after the hour. 3. `S4` asks during the hour. 4. `S5` asks after the hour. 5. `S6` asks for row 16 after the hour.
+- Input data: Row 3, seat 5, on a map of 15 rows by 20 seats.
+- Expected result: Refused, accepted, accepted, refused, refused.
+- Automation: Integration
+
+### TC-024: The teacher decides a request
+
+- Verifies: REQ-15, UC-01
+- Preconditions: `S1` and `S2` have requests in `L1`.
+- Steps: 1. `T1` approves the request of `S1`. 2. `T1` rejects the request of `S2`. 3. `T2` tries to decide the request of `S1`.
+- Input data: None.
+- Expected result: The sheet shows `S1` as present by row and seat, `S2` keeps the earlier result, and `T2` is refused.
+- Automation: Integration
+
+### TC-025: Keep every request, one per lesson
+
+- Verifies: REQ-16, UC-01
+- Preconditions: `S1` may send a request.
+- Steps: 1. `S1` sends a request. 2. `S1` sends another in the same lesson. 3. `T1` reads the requests.
+- Input data: Row 3, seat 5.
+- Expected result: The second is refused, and the first is kept with its time and decision.
+- Automation: Integration
+
+### TC-026: Flag a student
+
+- Verifies: REQ-17, UC-01
+- Preconditions: Requests exist in course A.
+- Steps: 1. Read `attendance_sheet`.
+- Input data: `S1` has 1 rejected request, `S2` has 2 approved and `S3` has 3 approved.
+- Expected result: `S1` and `S3` are flagged, and `S2` is not.
+- Automation: Integration
+
+### TC-027: The sheet updates with each new result
+
+- Verifies: REQ-18, UC-01
+- Preconditions: A round is open, and `T1` has the attendance tab open.
+- Steps: 1. `S1` responds. 2. `S2` responds.
+- Input data: None.
+- Expected result: Each result appears within 2 s, with no reload.
+- Automation: Browser
+
+### TC-028: Download the sheet
+
+- Verifies: REQ-19, UC-01
+- Preconditions: Results exist for `L1`.
+- Steps: 1. Press download. 2. Read the file.
+- Input data: An ID number that starts with 0, and a name that starts with `=`.
+- Expected result: One row per student, in the columns of REQ-19. Every cell is text, the zero stays, no cell is a formula, and the sheet is right to left.
+- Automation: Browser
+
+### TC-029: A student's face-print is deleted right after the comparison
+
+- Verifies: NFR-09, UC-01
+- Preconditions: A round is open.
+- Steps: 1. Respond and keep a reference to the buffer of the face-print. 2. Search the tables and the server log for its numbers.
+- Input data: A generated face-print.
+- Expected result: Within 1 s the buffer is all zeros, and no table or log holds the numbers.
+- Automation: Unit, Integration

@@ -206,7 +206,7 @@ The testing strategy must address the classes from step 7. STP = how we will tes
 - [ ] A.7 Schedule, roles and risks
 
 **Part B: STD (test cases)**, each one: ID, title, requirement it verifies, preconditions, steps, input data, expected result
-- [ ] Test cases for F1 Attendance (`TC-0xx`)
+- [x] Test cases for F1 Attendance (`TC-0xx`)
 - [ ] Test cases for the other features in demo scope (one commit per feature)
 - [ ] Test cases for state transitions (state machines from step 7)
 - [ ] Non-functional test cases: many students at once, different mobile browsers
