@@ -226,11 +226,11 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
   - [x] Smoke script: one real call with our key (evidence for the step 2 spike)
   - [x] Document the LLM layer in `app/README.md` (structure, settings, reused libraries)
 - [ ] Only if we find we need it: Sign in with Google. Removed for now to keep the product simple; the server check and the Google Cloud setup guide can be restored from commits `173a8e6` and `3222230`.
-- [ ] Lecturer: create a class session (QR code / session code)
-- [ ] Student: join from a phone and mark attendance
-- [ ] Prevent duplicate check-ins (one record per student per session)
-- [ ] Lecturer: live attendance list
-- [ ] Lecturer: export the attendance spreadsheet
+- [ ] Teacher: photograph the class and start the hour of responses
+- [ ] Student: register a face, and respond from a phone
+- [ ] One result per student per lesson
+- [ ] Teacher: live attendance sheet
+- [ ] Teacher: download the attendance sheet
 - [ ] Comments and suggestions
 - [ ] Polls
 - [ ] Video summary (if in demo scope)
@@ -250,7 +250,7 @@ Lecturer's golden rule: **demo the requirements, not the code.** Every minute ma
 - [ ] Demo script: context → live scenario (use cases) → evidence (results vs. requirements and tests) → lessons → Q&A, each row tied to `UC-nn` / `REQ-nn`
 - [ ] Freeze a tagged release days before the demo (`git tag`)
 - [ ] Seed realistic demo data
-- [ ] Slide / screen with the QR code and link for the students
+- [ ] Slide / screen with the link for the students
 - [ ] Rehearse twice with a timer, on real phones (log each rehearsal)
 - [ ] Record a backup video + plan B for network and hardware
 - [ ] List known issues to state openly
