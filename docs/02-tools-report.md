@@ -52,6 +52,18 @@ Every tool also records the result of a hands-on spike. We prefer existing tools
 
 ### 2.1 Frontend / web framework
 ### 2.2 Backend / BaaS + realtime database
+
+The need comes from the [forum](features/F2-lesson-forum-strategy.md) and the [polls](features/F3-polls-strategy.md), and from signing in and keeping homework files. A tool has to:
+- bring a new forum message or poll result to 50 connected students within 2 s (NFR-02);
+- hold the data, sign users in and keep PDF files;
+- work on a free tier, with no database server for us to maintain.
+
+| Option | What it is | License | Status |
+|--------|------------|---------|--------|
+| 1. Supabase | A hosted Postgres database with sign-in, file storage and live updates. Free plan: 500 MB database, 1 GB of files, 50 MB per file, 200 live connections | Open source, Apache-2.0; hosted service, free tier | Spike |
+| Firebase, Spark plan | Google's hosted database, sign-in and live updates | Google service, free tier | Rejected without a spike: the free plan has no file storage |
+| Postgres on Render, with our own code | A free database next to our server | Open source; hosted service, free tier | Rejected without a spike: the free database expires after 30 days, and we would write sign-in, files and live updates ourselves |
+
 ### 2.3 Spreadsheet export
 ### 2.4 Attendance check-in method
 
