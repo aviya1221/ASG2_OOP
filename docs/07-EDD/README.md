@@ -1,4 +1,4 @@
-# Step 7: Detailed Design (EDD): Class and Sequence Diagrams
+# Detailed Design (EDD)
 
 <!--
 LECTURER GUIDELINES: EDD, ENGINEERING DESIGN DOCUMENT (lecture 02a, slides 3, 9, 13-17, 22)
@@ -92,6 +92,125 @@ Mermaid supports classDiagram, sequenceDiagram and stateDiagram-v2.
 ## Domain model (class diagram)
 
 <!-- The whole domain in one class diagram. Each EDD then zooms into its own classes. -->
+
+```mermaid
+classDiagram
+    class User {
+        -id: UUID
+        -idNumber: String
+        -name: String
+        -role: Role
+    }
+    class Student
+    class Teacher
+    class Admin
+    class Course {
+        -number: String
+        -name: String
+        -weeklyHours: String
+    }
+    class Lesson {
+        -lectureNumber: int
+        -topic: String
+        -startsAt: DateTime
+        -endsAt: DateTime
+        +hasEnded() bool
+    }
+    class FaceRegistration {
+        -hash: String
+        -optedOut: bool
+    }
+    class AttendanceRound {
+        -expiresAt: DateTime
+        +isOpen() bool
+    }
+    class ClassFace {
+        -photoNo: int
+        -faceNo: int
+        -box: Box
+        -print: FacePrint
+    }
+    class AttendanceResult {
+        -result: ResultKind
+        -score: float
+    }
+    class SeatRequest {
+        -rowNo: int
+        -seatNo: int
+        -status: RequestStatus
+    }
+    class ForumMessage {
+        -text: String
+        -writerName: String
+        -createdAt: DateTime
+        -deletedAt: DateTime
+    }
+    class Survey {
+        -kind: SurveyKind
+        -status: SurveyStatus
+        -allowChange: bool
+        +isOpen() bool
+    }
+    class Question {
+        -type: QuestionType
+        -text: String
+        -options: String
+    }
+    class Answer {
+        -value: JSON
+        -answeredAt: DateTime
+    }
+    class LessonSummary {
+        -status: SummaryStatus
+        -overview: String
+        -topics: JSON
+        -questions: JSON
+        -board: JSON
+    }
+    class Homework {
+        -title: String
+        -fileUrl: String
+    }
+    class ReviewGuide {
+        -sections: JSON
+        -instructions: String
+    }
+    class HomeworkCheck {
+        -checkNumber: int
+        -sectionScores: JSON
+        -overallScore: int
+        -report: JSON
+    }
+    class PushSubscription {
+        -endpoint: String
+    }
+
+    User <|-- Student
+    User <|-- Teacher
+    User <|-- Admin
+    Teacher "1" --> "0..*" Course : teaches
+    Student "0..*" -- "0..*" Course : enrolled in
+    Course "1" *-- "1..*" Lesson
+    Student "1" *-- "0..1" FaceRegistration
+    Student "1" *-- "0..*" PushSubscription
+    Lesson "1" *-- "0..1" AttendanceRound
+    AttendanceRound "1" *-- "0..*" ClassFace
+    Lesson "1" *-- "0..*" AttendanceResult
+    Student "1" --> "0..*" AttendanceResult
+    Lesson "1" *-- "0..*" SeatRequest
+    Student "1" --> "0..*" SeatRequest
+    Lesson "1" *-- "0..*" ForumMessage : forum
+    ForumMessage "0..1" --> "0..*" ForumMessage : replies
+    Lesson "1" *-- "0..*" Survey
+    Survey "1" *-- "1..*" Question
+    Survey "1" *-- "0..*" Answer
+    Student "1" --> "0..*" Answer
+    Lesson "1" *-- "0..1" LessonSummary
+    Lesson "1" *-- "0..*" Homework
+    Homework "1" *-- "1" ReviewGuide
+    Homework "1" *-- "0..*" HomeworkCheck
+    Student "1" --> "0..*" HomeworkCheck
+```
 
 ## Component EDDs
 

@@ -178,7 +178,7 @@ The SDD describes the whole system: "What are the parts?"
 
 The EDD describes one component: "How is this part built?" One file per component, copied from [`_template.md`](docs/07-EDD/_template.md) (the lecturer's 8 EDD sections). Diagrams in Mermaid.
 
-- [ ] Class diagram: domain model (e.g. User, Student, Lecturer, Course, ClassSession, AttendanceRecord, Comment, Poll, Vote, VideoSummary, Homework, Review)
+- [x] Class diagram: domain model (e.g. User, Student, Lecturer, Course, ClassSession, AttendanceRecord, Comment, Poll, Vote, VideoSummary, Homework, Review)
 - [ ] EDD-Attendance (main feature), one commit per section:
   - [ ] Class design (class diagram, incl. services / controllers)
   - [ ] Sequence diagram: student marks attendance
