@@ -96,6 +96,117 @@ flowchart LR
 - Requirements covered: REQ-nn
 -->
 
+The product has three deployable parts: the web client in the browser, our server, and Supabase. The page talks to Supabase directly for data and live updates. It goes through our server only for the four jobs that need a secret key or a decision that a student's phone must not make: comparing face-prints, lesson summaries, homework reviews and sending notifications.
+
+```mermaid
+flowchart TB
+    subgraph browser[Browser, on a phone or a computer]
+        client[2.1 Web client]
+        accounts[2.2 Accounts and timetable]
+        faces[2.3 Face tools]
+        forum[2.5 Forum]
+        polls[2.6 Polls and forms]
+    end
+    subgraph server[Our server]
+        attendance[2.4 Attendance]
+        summary[2.7 Lesson summary]
+        homework[2.8 Homework review]
+        notify[2.9 Notifications]
+        llm[2.10 LLM layer]
+    end
+    subgraph supabase[Supabase]
+        data[(2.11 Data and live updates)]
+    end
+    gemini[[Google Gemini]]
+    push[[Browser notification services]]
+
+    client --> accounts
+    client --> faces
+    client --> forum
+    client --> polls
+    accounts <--> data
+    forum <--> data
+    polls <--> data
+    faces -- face-prints --> attendance
+    client -- recording --> summary
+    client -- homework and solution --> homework
+    attendance --> data
+    summary --> data
+    homework --> data
+    notify --> data
+    attendance --> notify
+    summary --> llm
+    homework --> llm
+    llm --> gemini
+    notify --> push
+```
+
+### 2.1 Web client
+
+- **Runs in:** the browser, as static files built with React and Vite (ADR-4).
+- **Responsibility:** the screens: sign-in, the first screen by role and the lesson page with its three tabs. It fits every screen width and calls the other components.
+- **Requirements covered:** REQ-06, NFR-07, NFR-12.
+
+### 2.2 Accounts and timetable
+
+- **Runs in:** the web client, with its data in Supabase.
+- **Responsibility:** sign-in, roles, courses, weekly hours and who is linked to which lesson. Access rules in the database decide who may see and change what.
+- **Requirements covered:** REQ-01 to REQ-05.
+
+### 2.3 Face tools
+
+- **Runs in:** the browser on the phone, with OpenCV.js and ONNX Runtime Web (ADR-1).
+- **Responsibility:** makes a face-print from the registration photo and keeps it on the student's phone. Finds the faces in a class photo and makes their face-prints. Photos never leave the phone.
+- **Requirements covered:** REQ-07 to REQ-10, NFR-04.
+
+### 2.4 Attendance
+
+- **Runs in:** our server for the comparison, and the web client for the requests and the sheet.
+- **Responsibility:** keeps the class face-prints for 1 hour, compares each student's face-print with them, applies the rules of REQ-13 and saves the result. Handles the row-and-seat requests, shows the attendance sheet and writes it as a file (ADR-6).
+- **Requirements covered:** REQ-12 to REQ-19, NFR-03, NFR-09, NFR-10.
+
+### 2.5 Forum
+
+- **Runs in:** the web client, with its data and live updates in Supabase.
+- **Responsibility:** one forum per lesson date, with messages, replies, hidden names, deletion by the teacher, the list of forums and the expanded conversation.
+- **Requirements covered:** REQ-20 to REQ-29, REQ-70.
+
+### 2.6 Polls and forms
+
+- **Runs in:** the web client, with its data and live updates in Supabase.
+- **Responsibility:** quick polls and forms of four question types (ADR-7), opening and closing them, one answer per student, the live chart of a poll, and showing who answered only to the teacher.
+- **Requirements covered:** REQ-30 to REQ-39, REQ-60 to REQ-69.
+
+### 2.7 Lesson summary
+
+- **Runs in:** our server, with the summary page in the web client.
+- **Responsibility:** receives a recording, sends it to the AI service through the LLM layer (ADR-2), builds and reviews the four parts of the summary, deletes the recording and lets the teacher edit the text.
+- **Requirements covered:** REQ-40 to REQ-49, NFR-05.
+
+### 2.8 Homework review
+
+- **Runs in:** our server, with the homework tab in the web client.
+- **Responsibility:** generates the review guide when a homework is published, checks a solution against it, calculates the scores on the server, allows 3 checks per student, deletes the solution and feeds the class chart.
+- **Requirements covered:** REQ-50 to REQ-59, NFR-01, NFR-06.
+
+### 2.9 Notifications
+
+- **Runs in:** our server.
+- **Responsibility:** keeps each student's browser subscription and notifies the course after the teacher has taken the photos.
+- **Requirements covered:** REQ-11.
+
+### 2.10 LLM layer
+
+- **Runs in:** our server. It already exists in [app/server/src/llm/](../app/server/src/llm/).
+- **Responsibility:** the only path to the AI service. It hides the provider, allows a fake in tests and keeps the key on the server.
+- **Requirements covered:** NFR-08.
+
+### 2.11 Data and live updates
+
+- **Runs in:** Supabase (ADR-3).
+- **Responsibility:** the database, sign-in, files and access rules per table, and sending new rows to connected pages.
+- **Requirements covered:** NFR-02.
+
 ## 3. Interfaces
 
 <!-- How the components communicate: REST endpoints, realtime events, external APIs. -->

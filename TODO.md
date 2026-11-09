@@ -167,7 +167,7 @@ Each use case has the lecturer's 6 fields: name and ID, actor, preconditions, ma
 The SDD describes the whole system: "What are the parts?"
 
 - [x] 1. Context: users and external systems (+ context diagram)
-- [ ] 2. Decomposition: component diagram + one numbered subsection per component (sessions, attendance, comments, polls, export, video summary, homework review)
+- [x] 2. Decomposition: component diagram + one numbered subsection per component (sessions, attendance, comments, polls, export, video summary, homework review)
 - [ ] 3. Interfaces: how components communicate (API endpoints / realtime events / external APIs)
 - [ ] 4. Data: main entities and storage
 - [ ] 5. Deployment diagram (phones, lecturer laptop, server, external APIs)
