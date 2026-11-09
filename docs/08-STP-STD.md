@@ -585,3 +585,95 @@ has a unit-test table per EDD class (A.3). Test case IDs: TC-001, TC-002, ...
 - Input data: None.
 - Expected result: `S2` gets 0 rows, and `T1` gets the answers with who gave them.
 - Automation: Integration
+
+### Lesson summary
+
+### TC-080: The summary page opens only after the lesson and an upload
+
+- Verifies: REQ-40, REQ-41, UC-04
+- Preconditions: `L1` is in progress, and `L2` has ended with no summary.
+- Steps: 1. Press the summary button in each forum. 2. `T1` uploads a recording for `L1`. 3. `T1` uploads a recording for `L2` and presses the button once it is ready.
+- Input data: A small video file.
+- Expected result: The button is in both forums and the page says it is not ready. The upload for `L1` is refused with `lesson_not_ended`, and after the upload for `L2` the page opens.
+- Automation: Browser, Integration
+
+### TC-081: Each upload creates a new summary
+
+- Verifies: REQ-42, UC-04
+- Preconditions: `L2` has a ready summary.
+- Steps: 1. `T1` uploads a new recording, with a fake AI service that waits. 2. Read the summary. 3. Let the fake answer.
+- Input data: A small video file.
+- Expected result: During the wait the old text stays and the status is `in_progress`. At the end the new text replaces it.
+- Automation: Integration
+
+### TC-082: The server answers before calling the AI service
+
+- Verifies: REQ-42, UC-04
+- Preconditions: A fake AI service that never answers.
+- Steps: 1. Call `POST /summaries`.
+- Input data: A small video file.
+- Expected result: 202 arrives while the fake has not answered, and the status is `in_progress`.
+- Automation: Unit
+
+### TC-083: Make the summary from the full video
+
+- Verifies: REQ-43, UC-04
+- Preconditions: `FakeLlmClient`.
+- Steps: 1. Generate a summary.
+- Input data: A small video file.
+- Expected result: The first request carries the video file and asks for a transcript and the board list.
+- Automation: Unit
+
+### TC-084: Fall back to sound alone
+
+- Verifies: REQ-44, UC-04
+- Preconditions: `FakeLlmClient` that answers that the file is too large, and then one that answers that a usage limit was reached.
+- Steps: 1. Generate a summary with each.
+- Input data: A short video with sound.
+- Expected result: `SoundExtractor` runs, the next request carries only the sound, and the board list is empty.
+- Automation: Unit
+
+### TC-085: Show four parts, with up to 300 words
+
+- Verifies: REQ-45, UC-04
+- Preconditions: `FakeLlmClient`.
+- Steps: 1. Generate with an overview of 300 words. 2. Generate with an overview of 301 words. 3. Open the page of the first.
+- Input data: Overviews of 300 and 301 words.
+- Expected result: 300 is accepted and 301 is refused. The page shows the four parts.
+- Automation: Unit, Browser
+
+### TC-086: The review corrects and adds nothing
+
+- Verifies: REQ-46, UC-04
+- Preconditions: `FakeLlmClient`.
+- Steps: 1. Generate a summary.
+- Input data: A second answer with a spelling mistake, and a corrected third answer.
+- Expected result: The third request carries the transcript and the board list, and the saved text is the corrected one.
+- Automation: Unit
+
+### TC-087: The teacher edits the summary
+
+- Verifies: REQ-47, UC-04
+- Preconditions: `L2` has a ready summary.
+- Steps: 1. `T1` changes the overview. 2. `S1` tries to change it. 3. `T1` tries to change the status.
+- Input data: A new overview.
+- Expected result: Saved, refused, refused.
+- Automation: Integration
+
+### TC-088: Delete the recording, on success and on failure
+
+- Verifies: REQ-48, UC-04
+- Preconditions: A file in the temporary folder.
+- Steps: 1. Run a summary that succeeds. 2. Run a summary that fails.
+- Input data: A small video file.
+- Expected result: Both times the file is gone from the disk, and `deleteFile` was called.
+- Automation: Unit
+
+### TC-089: Take the forum topic from the summary
+
+- Verifies: REQ-49, UC-04
+- Preconditions: `L2` has no topic, and another lesson has one.
+- Steps: 1. Save a summary for each.
+- Input data: A summary with a topic.
+- Expected result: `L2` takes the topic of the summary, and the other lesson keeps its own.
+- Automation: Integration
