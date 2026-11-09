@@ -79,6 +79,7 @@ The lecturer requires that we **actually test** every tool we suggest.
   - [x] Server hosting (Render): write the spike in the report
   - [x] Attendance sheet export: test script and measured results → [app/spikes/spreadsheet-export/](app/spikes/spreadsheet-export/)
   - [x] Attendance sheet export: write the spike in the report
+  - [x] Form builder (F6): test code and measured results → [app/spikes/form-builder/](app/spikes/form-builder/)
 - [ ] Comparison table
   - [x] Face tools for photo attendance (F1)
   - [x] Lesson summary (F4)

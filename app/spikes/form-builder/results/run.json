@@ -1,0 +1,28 @@
+{
+  "sizes": {
+    "own code": {
+      "minified_kb": 2.6,
+      "compressed_kb": 1.1
+    },
+    "SurveyJS form library": {
+      "minified_kb": 2478.3,
+      "compressed_kb": 498.7
+    },
+    "Form.io": {
+      "minified_kb": 1780.9,
+      "compressed_kb": 509.2
+    }
+  },
+  "own_code": {
+    "source_lines": 85,
+    "radio_inputs": 7,
+    "checkbox_inputs": 3,
+    "text_areas": 1,
+    "right_to_left": true,
+    "all_unanswered_found": 4,
+    "missing_when_all_answered": 0,
+    "missing_when_multiple_is_empty": [
+      "b"
+    ]
+  }
+}

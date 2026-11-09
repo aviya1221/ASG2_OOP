@@ -1,0 +1,15 @@
+{
+  "name": "spike-form-builder",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": { "start": "node measure.mjs" },
+  "dependencies": {
+    "@formio/js": "5.7.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "survey-core": "3.2.4",
+    "survey-react-ui": "3.2.4"
+  },
+  "devDependencies": { "esbuild": "0.25.12" }
+}
