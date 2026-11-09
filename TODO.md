@@ -60,7 +60,7 @@ The lecturer requires that we **actually test** every tool we suggest.
   - [x] Backend / BaaS + realtime database
   - [ ] Spreadsheet export (CSV / Excel / Google Sheets)
   - [x] Attendance check-in method (QR code, session code, location, etc.)
-  - [ ] Hosting / deployment (public URL that works from phones)
+  - [x] Hosting / deployment (public URL that works from phones)
   - [ ] LLM API (homework review)
   - [x] Speech-to-text / video summarization (class video summary)
   - [ ] Vibe-coding tools (AI coding assistants, app generators)

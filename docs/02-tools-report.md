@@ -104,6 +104,19 @@ So the need is a face tool that:
 | CompreFace, cloud face services | Ready face-recognition services | Apache-2.0 / paid | Rejected without a spike: they receive photos and store faces in their own database |
 
 ### 2.5 Hosting / deployment
+
+The need comes from our server, which calls Gemini, compares face-prints and receives lesson recordings. A tool has to:
+- give a public address that phones can reach;
+- run Node.js on a free tier;
+- keep a request open for as long as the lesson summary takes (NFR-05) and accept a recording of about 40 MB.
+
+| Option | What it is | License | Status |
+|--------|------------|---------|--------|
+| 1. Render | A web service built from a Git repository. Free plan: 0.1 CPU, 512 MB of memory, 750 hours a month, and it sleeps after 15 minutes without traffic | Hosted service, free tier | Spike |
+| Vercel, Hobby plan | Functions that run on request | Hosted service, free tier | Rejected without a spike: a request can carry at most 4.5 MB, and a 10-minute recording weighed 39.1 MB in the lesson summary spike |
+| Railway, Free plan | Hosted containers | Hosted service, free tier | Rejected without a spike: the free plan is $1 of usage credit a month |
+| Fly.io | Hosted containers | Hosted service, paid | Rejected without a spike: new organizations have no free tier |
+
 ### 2.6 LLM API (homework review)
 ### 2.7 Speech-to-text / video summarization
 
