@@ -294,6 +294,21 @@ No ready project does all of this, so we compose existing parts.
   - The Gemini SDK already retries overload errors, but the feature still needs a second model for when Gemini stays overloaded (R7).
   - The server deletes the recording, here and at Google, once the summary is ready.
 
+### ADR-3: Database, sign-in, files and live updates
+
+- **Context:** the forum, the polls and the forms have to reach 50 connected students within 2 s (NFR-02). The product also has to hold its data, sign users in and keep homework files, on a free tier.
+- **Decision:** option 1 from section 2.2, Supabase on the free plan, in the Frankfurt region.
+  - One service holds the database, the sign-in, the files and the live updates.
+  - New forum messages and poll results reach the clients as database changes, so one write both saves a message and publishes it.
+  - Direct broadcast stays as the faster alternative.
+- **Alternatives rejected:**
+  - The free plan of Firebase has no file storage.
+  - A database of our own on Render expires after 30 days on the free plan, and we would write sign-in, files and live updates ourselves.
+- **Consequences:**
+  - The page connects directly with the public key, so every table needs access rules.
+  - The secret key stays on our server.
+  - Lesson recordings are not kept in Supabase, because the free plan allows 50 MB per file. They go from our server straight to Google (ADR-2).
+
 ## 6. Technology risks
 
 | ID | Risk | Probability | Impact | Mitigation |
