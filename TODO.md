@@ -97,6 +97,7 @@ The lecturer requires that we **actually test** every tool we suggest.
   - [x] ADR-2: source and service for the lesson summary (F4)
   - [x] ADR-3: database, sign-in, files and live updates
   - [x] ADR-4: web client
+  - [x] ADR-4: where the web client is hosted (Netlify)
   - [x] ADR-5: hosting the server
   - [x] ADR-6: attendance sheet file
   - [x] ADR-7: form builder

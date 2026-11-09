@@ -508,6 +508,7 @@ The need comes from the [forum decisions](features/F2-lesson-forum-strategy.md) 
   - Client and server share one language, TypeScript.
   - The page starts at 122.5 KB compressed, before the feature code.
   - Only the public Supabase key goes into the page.
+  - The static files are published on the free plan of Netlify, apart from the server, so the site stays up while the server sleeps (R22).
 
 ### ADR-5: Hosting the server
 
