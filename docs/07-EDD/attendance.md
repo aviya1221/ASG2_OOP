@@ -164,6 +164,22 @@ sequenceDiagram
     Responder-->>-Student: shows the result
 ```
 
+The teacher downloads the sheet, which is written in the browser:
+
+```mermaid
+sequenceDiagram
+    actor Teacher
+    participant Sheet as AttendanceSheet
+    participant View as attendance_sheet view
+    participant Excel as write-excel-file
+    Teacher->>+Sheet: presses download
+    Sheet->>+View: reads the rows of the lesson
+    View-->>-Sheet: one row per student
+    Sheet->>+Excel: writes the rows, every cell as text
+    Excel-->>-Sheet: file
+    Sheet-->>-Teacher: saves the file
+```
+
 ## 5. Error handling and edge cases
 
 ## 6. Configuration and performance budget
