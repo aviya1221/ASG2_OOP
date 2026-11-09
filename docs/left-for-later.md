@@ -26,8 +26,8 @@ Last updated: 2026-11-09.
 
 | # | Task | Why it matters | What it needs | Result goes to | Status |
 |---|------|----------------|---------------|----------------|--------|
-| 9 | Look for existing code for the form builder | We agreed to reuse code if something suitable exists, and otherwise to write it | Nothing | Tools report and the [forum decisions](features/F2-lesson-forum-strategy.md) | Open |
-| 10 | Test and record the AI development tools | Section 2.8 of the tools report is empty | Nothing | Tools report section 2.8 | Open |
+| 9 | Look for existing code for the form builder | We agreed to reuse code if something suitable exists, and otherwise to write it | Nothing | Tools report and the [forum decisions](features/F2-lesson-forum-strategy.md) | Done |
+| 10 | Test and record the AI development tools | Section 2.8 of the tools report is empty | Nothing | Tools report section 2.8 | Done |
 | 11 | Decide the build order of the features | It is still open in the homework review decisions | The design documents | [SDD](06-SDD.md) | Open |
 
 ## To check during the build
