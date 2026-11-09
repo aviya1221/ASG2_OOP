@@ -1,0 +1,8 @@
+{
+  "name": "spike-spreadsheet-export",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": { "start": "node run.mjs" },
+  "dependencies": { "exceljs": "4.4.0", "write-excel-file": "4.1.1" }
+}

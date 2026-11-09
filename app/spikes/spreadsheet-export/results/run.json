@@ -1,0 +1,69 @@
+{
+  "students": 50,
+  "repeats": 5,
+  "tools": {
+    "write-excel-file": {
+      "median_ms": 10,
+      "file_bytes": 4574
+    },
+    "exceljs": {
+      "median_ms": 15,
+      "file_bytes": 8439
+    },
+    "csv": {
+      "median_ms": 0,
+      "file_bytes": 3514
+    }
+  },
+  "excel": [
+    {
+      "tool": "write-excel-file",
+      "rows_seen": 51,
+      "right_to_left": true,
+      "ids_correct": 5,
+      "names_correct": 5,
+      "notes_kept_as_text": 5,
+      "notes_run_as_formulas": 0,
+      "ids_seen": [
+        "012345678",
+        "000000018",
+        "123456782",
+        "987654321",
+        "000000026"
+      ]
+    },
+    {
+      "tool": "exceljs",
+      "rows_seen": 51,
+      "right_to_left": true,
+      "ids_correct": 5,
+      "names_correct": 5,
+      "notes_kept_as_text": 5,
+      "notes_run_as_formulas": 0,
+      "ids_seen": [
+        "012345678",
+        "000000018",
+        "123456782",
+        "987654321",
+        "000000026"
+      ]
+    },
+    {
+      "tool": "csv",
+      "rows_seen": 51,
+      "right_to_left": true,
+      "ids_correct": 0,
+      "names_correct": 5,
+      "notes_kept_as_text": 1,
+      "notes_run_as_formulas": 3,
+      "ids_seen": [
+        "12345678",
+        "18",
+        "1.23E+08",
+        "9.88E+08",
+        "26"
+      ]
+    }
+  ],
+  "special_cases": 5
+}
