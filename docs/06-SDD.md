@@ -240,6 +240,29 @@ The server checks the sign-in token on every call. The page waits for the answer
 
 <!-- Main entities and where they are stored. -->
 
+All lasting data is in Supabase, because the server's disk is temporary (ADR-5). The entities are those of the [SRS data dictionary](04-SRS.md).
+
+| Entity | Stored in | Who can read it | Note |
+|--------|-----------|-----------------|------|
+| User, course, lesson | Database | Everyone linked to them | |
+| A student's face-print | The student's phone | Nobody else | In the server's memory only during the comparison (NFR-09) |
+| Face registration (hash) | Database, closed to the page | The server | |
+| Class face-prints | Database, closed to the page | The server | Deleted within 1 hour (NFR-10) |
+| Attendance result | Database | The student and the teacher | Written only by the server |
+| Row-and-seat request | Database | The student and the teacher | |
+| Forum message | Database | Everyone linked to the lesson | |
+| Writer of a message with a hidden name | Database, apart from the message | The teacher | |
+| Poll and form | Database | Everyone linked to the lesson | |
+| Answer | Database | A poll's totals: everyone linked. Who answered, and all form answers: the teacher | |
+| Lesson summary | Database | Everyone linked to the lesson | Holds its status: in progress, ready or failed |
+| Recording | The server's temporary disk | The server | Deleted once the summary is ready (REQ-48) |
+| Homework file | File storage | Everyone linked to the lesson | |
+| Review guide | Database, closed to the page | The server | It holds the expected answers |
+| Solution file | The server's memory | The server | Deleted within 1 minute (REQ-59) |
+| Homework check | Database | The report: that student. The scores: everyone linked, for the chart | |
+| Browser subscription | Database, closed to the page | The server | |
+| Attendance sheet | Not stored | The teacher | Written in the browser from the attendance results |
+
 ## 5. Deployment
 
 <!-- Deployment diagram: student phone (browser), lecturer laptop, server / BaaS, external APIs. -->
