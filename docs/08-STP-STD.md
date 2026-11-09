@@ -86,6 +86,12 @@ has a unit-test table per EDD class (A.3). Test case IDs: TC-001, TC-002, ...
 
 ### A.5 Environment and test data
 
+- **Local and on every push:** Node.js 22, Docker and the Supabase CLI, with a fresh database for each run.
+- **Before a release:** the deployed site and server, one Android phone with Chrome and one iPhone with Safari.
+- **Users:** admin `A1`, teachers `T1` (course A) and `T2` (course B), students `S1` to `S50` in course A and `S51` in course B. All the names and ID numbers are made up.
+- **Lessons:** `L1` of course A, in progress. `L2` of course A, ended.
+- **Face data:** face-prints are generated numbers with a known similarity, and photos are generated pictures of people who do not exist. Automated tests use no photo of a real person.
+
 ### A.6 Entry and exit criteria
 
 ### A.7 Schedule, roles and risks
