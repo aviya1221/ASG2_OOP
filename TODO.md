@@ -43,6 +43,7 @@ The commit history is part of the grade, so commit small and often.
 - [x] Homework review (F5): agreed approach and decisions → [docs/features/F5-homework-review-strategy.md](docs/features/F5-homework-review-strategy.md)
 - [x] Comments and suggestions (F2): agreed approach and decisions → [docs/features/F2-lesson-forum-strategy.md](docs/features/F2-lesson-forum-strategy.md)
 - [x] Video summary (F4): agreed approach, decisions and test results → [docs/features/F4-lesson-summary-strategy.md](docs/features/F4-lesson-summary-strategy.md)
+- [x] User interface: agreed look, screens and client tool → [docs/features/UI-strategy.md](docs/features/UI-strategy.md)
 - [x] Add a "Repository structure" section to the README
 - [x] Add a documentation guide with the lecturer's document chain and ID scheme
 - [x] Align the README with the lecturer's 8 README sections
