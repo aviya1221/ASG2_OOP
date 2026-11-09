@@ -40,12 +40,13 @@ Last updated: 2026-11-09.
 | 15 | Test a full lesson, longer than 10 minutes (R9) | Only a 10-minute clip was tested | A full recording | The lesson summary spike in the tools report | Open |
 | 16 | Stay above 100 events per second for longer than 10 s (R11) | The spike covered short bursts only | The first build | STP / STD | Open |
 | 17 | Open the attendance sheet in Google Sheets and on a phone, and write it in a browser (R17) | Only Excel on Windows and a server were checked | The first build | STP / STD | Open |
+| 23 | Check the database job on the free Supabase plan (EDD-Attendance) | Deleting class face-prints and closing polls depend on it, and only a community answer says that the free plan includes it | The first build | STP / STD | Open |
 
 ## Housekeeping
 
 | # | Task | Why it matters | What it needs | Result goes to | Status |
 |---|------|----------------|---------------|----------------|--------|
-| 18 | Push the commits to GitHub | At the last check they existed only on one computer, and the repository on GitHub had no branch | A team decision | GitHub | Open |
+| 18 | Push the newer commits to GitHub | GitHub holds the work only up to the first version of this list, and everything newer is on one computer | The owner's decision | GitHub | Open |
 | 19 | Delete the Render test service and the `render-test` repository | The hosting spike is over | The account owner | Nothing to record | Open |
 | 20 | Keep the Supabase project awake (R12) | It pauses after 1 week without activity | Opening it before any use | Nothing to record | Ongoing |
 | 21 | Add the ID number to the interactive attendance mock | The sheet in the mock has no ID column, unlike REQ-19 | Nothing | [The mock](assets/F1-attendance-flow-demo.html) and its published copy | Open |
