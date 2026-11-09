@@ -81,6 +81,34 @@ has a unit-test table per EDD class (A.3). Test case IDs: TC-001, TC-002, ...
 
 | EDD | Class | Method | What is checked | Test cases |
 |-----|-------|--------|-----------------|------------|
+| EDD-Attendance | `FaceEngine` | `findFaces`, `makePrint` | A prepared photo gives the known faces, and 128 numbers of length 1 | TC-010, TC-011, TC-014 |
+| EDD-Attendance | `FaceStore` | `save`, `load` | What is saved comes back unchanged | TC-010 |
+| EDD-Attendance | `AttendanceResponder` | `respondToOpenRounds` | One response per open round, and none after opting out | TC-012, TC-017 |
+| EDD-Attendance | `AttendanceSheet` | `load`, `download` | The columns, and every cell as text | TC-028 |
+| EDD-Attendance | `AttendanceRoutes` | `registerFace`, `startRound`, `respond`, `subscribe` | A wrong role, a wrong face-print and a closed round get the right error | TC-013, TC-015, TC-100 |
+| EDD-Attendance | `AttendanceService` | `startRound`, `respond`, `registerFace` | The order of the decisions, one comparison per student, and the face-print overwritten | TC-018, TC-022, TC-029 |
+| EDD-Attendance | `FaceMatcher` | `best` | The highest score across all the photos of the round | TC-018 |
+| EDD-Attendance | `AttendanceRules` | `decide` | Every branch, and the threshold itself | TC-018 |
+| EDD-Attendance | `ClassFaceCache` | `get`, `put` | Returns nothing after the end of the hour | TC-100 |
+| EDD-Attendance | `AttendanceRepository` | `recordMatch`, `saveRound`, `findHash` | Two students on one face, also at the same moment | TC-019, TC-020 |
+| EDD-Attendance | `NotificationService` | `subscribe`, `notifyCourse` | Only the course, and an expired subscription is removed | TC-016 |
+| EDD-Forum | `ForumApi` | `post`, `remove`, `setTopic`, `watch` | Calls the right function, and reloads after a lost connection | TC-042, TC-044, TC-049 |
+| EDD-Forum | `ForumTab` | `open`, `send` | The text stays in the box on failure | TC-051 |
+| EDD-Forum | `ConversationWindow` | `open`, `close` | Fills a phone screen, and the user can write | TC-050 |
+| EDD-Forum | `MessageLinks` | `split` | Addresses become links, and HTML stays text | TC-047 |
+| EDD-Polls | `SurveyApi` | `publishPoll`, `saveForm`, `answer`, `close`, `loadAnswers`, `watch` | Sends the right data, and reports a refusal | TC-060, TC-062, TC-067 |
+| EDD-Polls | `PollCard` | `choose` | Shows the first answer after a refusal | TC-063 |
+| EDD-Polls | `ResultsChart` | `show` | The bars follow the totals | TC-065 |
+| EDD-Polls | `FormBuilder` | `addQuestion`, `save` | All four types of question | TC-070, TC-071 |
+| EDD-Polls | `FormWindow` | `open`, `submit`, `missingAnswers` | Finds every unanswered question | TC-071, TC-072 |
+| EDD-LessonSummary | `SummaryPage` | `open`, `saveEdit` | Each status, and a failure after 15 minutes | TC-080, TC-087, TC-102 |
+| EDD-LessonSummary | `SummaryRoutes` | `create` | 202 before the AI service answers, and the refusals | TC-080, TC-082 |
+| EDD-LessonSummary | `SummaryService` | `start`, `run` | The status at each stage, and deleting on failure | TC-088, TC-102 |
+| EDD-LessonSummary | `SummaryGenerator` | `generate` | The order of the requests, 300 words and the sound fallback | TC-083, TC-084, TC-085, TC-086 |
+| EDD-LessonSummary | `SoundExtractor` | `extract` | The sound track of a short clip | TC-084 |
+| EDD-LessonSummary | `SummaryRepository` | `markStarted`, `saveReady`, `markFailed`, `setTopicIfEmpty` | Keeps an existing topic | TC-089, TC-102 |
+| EDD-LessonSummary | `LlmClient`, `GeminiLlmClient`, `FakeLlmClient` | `generateJson`, `uploadFile`, `deleteFile` | The contract, the errors and the upload, in the existing tests of the server | TC-083 |
+| Domain model | `User`, `Student`, `Teacher`, `Admin`, `Course`, `Lesson`, `FaceRegistration`, `AttendanceRound`, `ClassFace`, `AttendanceResult`, `SeatRequest`, `ForumMessage`, `Survey`, `Question`, `Answer`, `LessonSummary`, `Homework`, `ReviewGuide`, `HomeworkCheck`, `PushSubscription` | Rows in the database | Keys and access rules | TC-003, TC-004, TC-046, TC-063 |
 
 ### A.4 Approach and tools
 
