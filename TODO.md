@@ -235,7 +235,7 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
   - [x] Web client: sign-in and first sign-in
   - [x] Web client: the user's lessons, and the lesson page with three tabs
   - [x] Web client: the admin's timetable and a form for a new course
-  - [ ] Browser tests of accounts and the timetable
+  - [x] Browser tests of accounts and the timetable
 - [ ] Teacher: photograph the class and start the hour of responses
 - [ ] Student: register a face, and respond from a phone
 - [ ] One result per student per lesson
