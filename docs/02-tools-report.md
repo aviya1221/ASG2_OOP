@@ -154,6 +154,17 @@ No ready project does all of this, so we compose existing parts.
 
 ### 2.8 Vibe-coding tools
 
+We prefer existing tools and code, and an AI coding assistant writes what is left. A tool has to:
+- work on the whole repository: read the code and the documents, change several files and run tests and spikes;
+- leave the decisions and the review to the team.
+
+| Option | What it is | License | Status |
+|--------|------------|---------|--------|
+| 1. Claude Code | An AI coding assistant that works in the repository, from a terminal or an editor | Hosted service, paid plan from $17 a month | Spike |
+| GitHub Copilot | An AI assistant inside the editor | Hosted service; a free plan of 2,000 completions a month, and free for verified students | Rejected without a spike: option 1 already covers the need |
+| Cursor | An editor with an AI assistant | Hosted service; a free plan with limited use | Rejected without a spike: option 1 already covers the need |
+| Lovable | Generates a whole app from a description | Hosted service; a free plan of up to 30 build credits a month | Rejected without a spike: the product needs face tools in the browser, a server that calls Gemini and traceable documents, which a generated app does not give |
+
 ### 2.9 Form builder
 
 The need comes from the [forum decisions](features/F2-lesson-forum-strategy.md) and from REQ-60 to REQ-69. A tool has to:
