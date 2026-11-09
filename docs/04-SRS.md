@@ -180,7 +180,7 @@ Rules for REQ-13, checked in this order. Only the result "Present" marks the stu
 | 4 | Two or more students matched the same face | Conflict: the system does not choose among them and passes the case to the teacher for follow-up |
 | 5 | The student sent nothing within the hour | No response |
 
-#### F2: Comments and suggestions, REQ-20 to REQ-29
+#### F2: Comments and suggestions, REQ-20 to REQ-29 and REQ-70
 
 | ID | Requirement | Priority | Source |
 |----|-------------|----------|--------|
@@ -194,6 +194,7 @@ Rules for REQ-13, checked in this order. Only the result "Present" marks the stu
 | REQ-27 | The system shall limit a message to text, which can include links. | Must | D-2 |
 | REQ-28 | The system shall not allow a published message to be edited. | Must | D-2 |
 | REQ-29 | The system shall allow only the teacher to delete a message. | Must | D-2 |
+| REQ-70 | The system shall let everyone linked to the lesson open the forum's conversation in an expanded window and write in it. | Must | D-2 |
 
 #### F3: Polls, REQ-30 to REQ-39
 
@@ -380,6 +381,7 @@ See [05-use-cases.md](05-use-cases.md).
 | REQ-67 Only the teacher sees form answers | UC-03 | | None yet | Gap |
 | REQ-68 Teacher closes a form | UC-03 | | None yet | Gap |
 | REQ-69 Keep the form in the forum | UC-03 | | None yet | Gap |
+| REQ-70 Expanded forum window | UC-02 | | None yet | Gap |
 | NFR-01 Hidden instructions do not change the score | UC-05 | | None yet | Gap |
 | NFR-02 Forum and poll updates within 2 s | UC-02, UC-03 | | None yet | Gap |
 | NFR-03 Attendance response within 2 s | UC-01 | | None yet | Gap |

@@ -168,11 +168,12 @@ flowchart LR
   3. The system saves the message in the forum of that lesson.
   4. The message appears for everyone linked to the lesson without reloading the page.
 - Alternative flows:
+  - 1a. The user opens the forum's conversation in an expanded window, and reads and writes in it.
   - 2a. A student chooses to hide their name from the class: the class sees the message with no name, and the teacher sees who wrote it.
   - 3a. There is no network: the message is not sent, and the user can try again.
   - 4a. The teacher deletes a message: it disappears for everyone.
 - Postconditions: The message is saved in the forum of the lesson and cannot be edited.
-- Covers: REQ-20, REQ-21, REQ-23 to REQ-29, NFR-02
+- Covers: REQ-20, REQ-21, REQ-23 to REQ-29, REQ-70, NFR-02
 
 ### UC-03: Publish a poll or form and answer it
 
