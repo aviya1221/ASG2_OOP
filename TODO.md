@@ -229,7 +229,7 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
 - [ ] Base of the product
   - [x] Local database (Supabase in Docker)
   - [x] Database: accounts and timetable, with access rules
-  - [ ] Test data: made-up users and lessons
+  - [x] Test data: made-up users and lessons
   - [ ] Server: Express, health check, sign-in check, allowed callers
   - [ ] Integration tests of accounts and the timetable
   - [ ] Web client: sign-in and first sign-in
