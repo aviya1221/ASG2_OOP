@@ -280,6 +280,7 @@ Rules for REQ-13, checked in this order. Only the result "Present" marks the stu
 | NFR-09 | Security | The server shall delete a student's face-print within 1 s of the comparison. | Must |
 | NFR-10 | Security | The server shall delete the face-prints from a class photo within 1 hour. | Must |
 | NFR-11 | Availability | The product shall be available for 99% of lesson time during the pilot. | Must |
+| NFR-12 | Usability | The website shall fit every screen width from 320 px to 1920 px, with no sideways scrolling of the page. Wide content, such as the map of the hall, may scroll sideways inside its own box. | Must |
 
 ## 4. Appendices
 
@@ -390,3 +391,4 @@ See [05-use-cases.md](05-use-cases.md).
 | NFR-09 Student face-print deleted within 1 s | UC-01 | | None yet | Gap |
 | NFR-10 Class face-prints deleted within 1 hour | UC-01 | | None yet | Gap |
 | NFR-11 99% availability in the pilot | All | | None yet | Gap |
+| NFR-12 Fits every screen width | All | | None yet | Gap |
