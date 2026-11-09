@@ -403,6 +403,18 @@ No ready project does all of this, so we compose existing parts.
   - The page starts at 122.5 KB compressed, before the feature code.
   - Only the public Supabase key goes into the page.
 
+### ADR-5: Hosting the server
+
+- **Context:** the server calls Gemini, compares face-prints and receives recordings of about 40 MB. Phones have to reach it, and it has to run on a free tier.
+- **Decision:** option 1 from section 2.5: a free Render web service in the Frankfurt region, the same region as Supabase.
+- **Alternatives rejected:**
+  - On the free plan of Vercel a request can carry at most 4.5 MB, and a 10-minute recording weighed 39.1 MB.
+  - The free plan of Railway is $1 of usage credit a month.
+  - Fly.io has no free tier for new organizations.
+- **Consequences:**
+  - The server sleeps after 15 minutes without traffic and took up to 92 s to wake, so the page wakes it when the teacher opens the lesson.
+  - The disk is temporary, so all lasting data goes to Supabase (ADR-3).
+
 ## 6. Technology risks
 
 | ID | Risk | Probability | Impact | Mitigation |
