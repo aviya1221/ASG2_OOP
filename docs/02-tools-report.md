@@ -577,3 +577,5 @@ The need comes from the [forum decisions](features/F2-lesson-forum-strategy.md) 
 | R17 | The sheet was checked only in Excel on Windows and may look different elsewhere | Low | Low | Open the file in Google Sheets and on a phone before the pilot |
 | R18 | A need we find later does not fit our own form code | Low | Low | The code is small, so it can be extended or replaced |
 | R19 | The AI assistant states something wrong, or writes code that only looks right | Medium | High | The team reads results against the raw numbers; tests and the document check run before every commit |
+| R20 | Phone notifications work on an iPhone only for a site added to the home screen; not yet checked | Medium | Medium | Check on real phones before the pilot; a message inside the site is the alternative |
+| R21 | The PollPosition code cannot be reused for quick polls, because it is built on Firebase; not yet checked | Low | Low | A quick poll has one question, so we can write it ourselves |
