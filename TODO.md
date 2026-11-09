@@ -170,7 +170,7 @@ The SDD describes the whole system: "What are the parts?"
 - [x] 2. Decomposition: component diagram + one numbered subsection per component (sessions, attendance, comments, polls, export, video summary, homework review)
 - [x] 3. Interfaces: how components communicate (API endpoints / realtime events / external APIs)
 - [x] 4. Data: main entities and storage
-- [ ] 5. Deployment diagram (phones, lecturer laptop, server, external APIs)
+- [x] 5. Deployment diagram (phones, lecturer laptop, server, external APIs)
 - [ ] 6. Rationale: alternatives and why this one (link to the ADRs from step 2)
 - [ ] 7. Requirement allocation: every `REQ-nn` assigned to a component + fill the "Design" column of the traceability matrix
 

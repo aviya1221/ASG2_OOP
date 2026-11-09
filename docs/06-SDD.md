@@ -267,6 +267,44 @@ All lasting data is in Supabase, because the server's disk is temporary (ADR-5).
 
 <!-- Deployment diagram: student phone (browser), lecturer laptop, server / BaaS, external APIs. -->
 
+```mermaid
+flowchart TB
+    subgraph devices[Users' devices]
+        phone[Student and teacher phones: browser]
+        computer[Admin computer: browser]
+    end
+    subgraph netlify[Netlify]
+        site[Static site: the web client]
+    end
+    subgraph render[Render, Frankfurt]
+        service[Free web service: our Node.js server]
+    end
+    subgraph sb[Supabase, Frankfurt]
+        db[(Database, sign-in, files, live updates)]
+    end
+    gemini[[Google Gemini]]
+    push[[Browser notification services]]
+
+    phone -- downloads the page --> site
+    computer -- downloads the page --> site
+    phone -- data and live updates --> db
+    computer -- data and live updates --> db
+    phone -- face-prints and files --> service
+    service --> db
+    service --> gemini
+    service --> push
+    push --> phone
+```
+
+| Part | Where it runs | Plan |
+|------|---------------|------|
+| Web client | Static site on Netlify, served from its CDN | Free: 300 credits a month |
+| Our server | Web service on Render, in Frankfurt | Free: 0.1 CPU and 512 MB of memory |
+| Data | Supabase, in Frankfurt | Free |
+| AI service | Google Gemini | Free tier |
+
+The static site does not depend on our server, so the forum, the polls and the forms keep working while the server sleeps. The server sleeps after 15 minutes without traffic, and the page wakes it when the teacher opens a lesson (ADR-5). Each production publish on Netlify uses 15 of the 300 monthly credits, and at zero the site stops until the next month, so automatic publishing is off and the team publishes at milestones (R22).
+
 ## 6. Rationale
 
 <!-- Alternatives and why this one. Link to the ADRs in 02-tools-report.md. -->
