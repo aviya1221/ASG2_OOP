@@ -204,7 +204,7 @@ flowchart TB
 ### 2.11 Data and live updates
 
 - **Runs in:** Supabase (ADR-3).
-- **Responsibility:** the database, sign-in, files and access rules per table, and sending new rows to connected pages.
+- **Responsibility:** the database, sign-in, files and access rules per table, sending new rows to connected pages, and a job that runs every minute to delete expired class face-prints and close polls.
 - **Requirements covered:** NFR-02.
 
 ## 3. Interfaces
@@ -226,7 +226,7 @@ The calls to our server:
 | Call | Caller | Purpose |
 |------|--------|---------|
 | `GET /health` | Web client | Wakes the server when the teacher opens the lesson |
-| `POST /faces/register` | Student | Saves the hash of a new face-print |
+| `POST /faces/register` | Student | Saves the hash of a new face-print, a request to replace it, or an opt-out |
 | `POST /attendance/class` | Teacher | Sends the face-prints and positions from the class photos and starts the hour |
 | `POST /attendance/response` | Student | Sends the student's face-print and hash, and returns the result |
 | `POST /notifications/subscribe` | Student | Saves the browser's subscription |
