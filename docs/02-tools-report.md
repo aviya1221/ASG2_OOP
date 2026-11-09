@@ -285,6 +285,31 @@ No ready project does all of this, so we compose existing parts.
 - **Evidence:** [the measured results of the last run](../app/spikes/client-react/results/summary.md) and screenshots at [320 px](../app/spikes/client-react/results/forum-320.png), [390 px](../app/spikes/client-react/results/forum-390.png) and [1280 px](../app/spikes/client-react/results/forum-1280.png).
 - **Time spent:** 5 runs of about 3 minutes each.
 
+### Spike: hosting our server on Render
+
+- **Goal:** find out whether a free web service can run our server: waking up, a long wait, a large upload and a class of attendance responses.
+- **What we did (2026-11-09):** we deployed a small test server, with no keys and no data, to a free Render service in Frankfurt, and measured it from a laptop. Code: [app/spikes/hosting/](../app/spikes/hosting/).
+- **Result:**
+
+  | Measure | Result |
+  |---------|--------|
+  | 50 attendance responses within 60 s | All answered; 95% within 182 ms, the slowest 413 ms |
+  | 50 attendance responses within 1 s | All answered; 95% within 249 ms, the slowest 295 ms |
+  | Upload of 40 MB to the temporary disk | 11.8 s, identical to the original, 72 MB of memory |
+  | Upload of 200 MB to the temporary disk | 60.3 s, identical to the original, 74 MB of memory |
+  | A request with no reply for 330 s | Answered normally after 330.1 s |
+  | Waking after 16 minutes without traffic, 3 tries | 92.3 s, 22.3 s and 12.3 s |
+  | A reply once awake | 129 to 170 ms |
+
+  **Limits we found:**
+  - The first request after a quiet period waits for up to 92 s, so the 2 s target (NFR-03) holds only while the server is awake.
+  - The attendance test compared face-prints and did not save the result to the database.
+  - The upload test did not pass the file on to Gemini.
+  - All requests came from one laptop, not from phones.
+  - The disk is emptied on every restart, and Render may restart a free service at any time.
+- **Evidence:** [the measured results](../app/spikes/hosting/results/summary.md).
+- **Time spent:** the runs took about an hour, most of it waiting for the server to fall asleep.
+
 ## 4. Comparison table
 
 | Need | Option | Cost / free tier | Simplicity | Works on phones | Spike result | Chosen? |
