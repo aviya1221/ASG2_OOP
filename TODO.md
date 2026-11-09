@@ -56,7 +56,7 @@ The lecturer requires that we **actually test** every tool we suggest.
 
 - [x] Define evaluation criteria (cost / free tier, simplicity, works on smartphones, time to set up)
 - [ ] List candidate tools per need:
-  - [ ] Frontend / web framework
+  - [x] Frontend / web framework
   - [x] Backend / BaaS + realtime database
   - [ ] Spreadsheet export (CSV / Excel / Google Sheets)
   - [x] Attendance check-in method (QR code, session code, location, etc.)

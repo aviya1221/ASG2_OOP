@@ -51,6 +51,18 @@ Every tool also records the result of a hands-on spike. We prefer existing tools
 ## 2. Candidate tools by need
 
 ### 2.1 Frontend / web framework
+
+The need comes from the [user interface decisions](features/UI-strategy.md). A tool has to:
+- reuse one lesson header and tab bar across all the screens;
+- show Hebrew from right to left on every width from 320 px to 1920 px (NFR-12);
+- show live updates from Supabase without a reload (NFR-02).
+
+| Option | What it is | License | Status |
+|--------|------------|---------|--------|
+| 1. React + Vite | React 19.3 for the components, Vite 8.3 for the build, TypeScript 7.0 | MIT; TypeScript Apache-2.0 | Spike |
+| Plain HTML and JavaScript | Pages with no library and no build | None needed | Rejected without a spike: we would write and maintain the shared header and the live updates of every screen ourselves |
+| Next.js | A React framework with its own server | MIT | Rejected without a spike: the product already has a Node.js server, and Supabase sends data straight to the page, so a second server adds work with no gain |
+
 ### 2.2 Backend / BaaS + realtime database
 
 The need comes from the [forum](features/F2-lesson-forum-strategy.md) and the [polls](features/F3-polls-strategy.md), and from signing in and keeping homework files. A tool has to:
