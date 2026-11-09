@@ -154,6 +154,22 @@ No ready project does all of this, so we compose existing parts.
 
 ### 2.8 Vibe-coding tools
 
+### 2.9 Form builder
+
+The need comes from the [forum decisions](features/F2-lesson-forum-strategy.md) and from REQ-60 to REQ-69. A tool has to:
+- let the teacher build a form of the four question types inside the product (REQ-61);
+- show it in a window over the forum (REQ-63), from right to left;
+- add little to the page, which starts at 122.5 KB compressed.
+
+| Option | What it is | License | Status |
+|--------|------------|---------|--------|
+| 1. Our own code | A builder and an answer window in React, 85 lines | Ours | Spike |
+| 2. SurveyJS form library | Shows a form from JSON, version 3.2.4. Its builder, Survey Creator, is sold separately | MIT; the builder needs a paid license | Spike |
+| 3. Form.io | A builder and a form renderer, version 5.7.0 | MIT | Spike |
+| FormEngine | Shows a form from JSON | MIT; the visual designer is paid | Rejected without a spike: the free part has no builder |
+| react-jsonschema-form | Shows a form from a JSON Schema | Apache-2.0 | Rejected without a spike: it has no builder |
+| react-form-builder2 | A drag-and-drop form builder | MIT | Rejected without a spike: no release since May 2025 |
+
 ## 3. Spikes (hands-on tests)
 
 <!-- One subsection per tool:
