@@ -1,4 +1,4 @@
-# Step 6: Main Software Components (SDD)
+# Software Design Document (SDD)
 
 <!--
 LECTURER GUIDELINES: SDD, SOFTWARE DESIGN DOCUMENT (lecture 02a, slides 3, 9, 12, 13, 22)
@@ -54,6 +54,39 @@ Draw diagrams in Mermaid. Section 2 has one numbered subsection per component
 ## 1. Context
 
 <!-- Users (student, lecturer) and external systems (LLM API, video source, spreadsheet). Context diagram. -->
+
+The product runs in-person lessons from a phone: photo attendance, a forum with polls and forms, lesson summaries and homework feedback.
+
+| Actor or system | Role |
+|-----------------|------|
+| Student | Uses a phone browser to register a face once, answer attendance, write in the forum, answer polls and forms and check homework |
+| Teacher | Uses a phone browser to photograph the class, approve requests, publish polls, forms and homework and upload recordings |
+| Admin | Uses a computer browser to build the timetable |
+| Google Gemini | AI service that generates review guides, reviews homework and summarises recordings |
+| Browser notification services | Deliver a notification to a student's phone |
+| Phone camera | Takes the registration photo and the class photos, through the browser |
+| Spreadsheet program | Opens the attendance sheet that the teacher downloads |
+
+```mermaid
+flowchart LR
+    student([Student])
+    teacher([Teacher])
+    admin([Admin])
+    product[Lesson management product]
+    gemini[[Google Gemini]]
+    push[[Browser notification services]]
+    camera[[Phone camera]]
+    sheet[[Spreadsheet program]]
+
+    student -- phone browser --> product
+    teacher -- phone browser --> product
+    admin -- computer browser --> product
+    camera -- photos, inside the browser --> product
+    product -- files and prompts --> gemini
+    product -- notifications --> push
+    push -- notification --> student
+    product -- attendance sheet file --> sheet
+```
 
 ## 2. Decomposition
 
