@@ -541,3 +541,4 @@ The need comes from the [forum decisions](features/F2-lesson-forum-strategy.md) 
 | R15 | The server is still asleep when a lesson starts, and the first request waits for up to 92 s | High | Medium | The page wakes the server when the teacher opens the lesson |
 | R16 | Render restarts the free service in the middle of a job | Low | Medium | The teacher uploads the file again |
 | R17 | The sheet was checked only in Excel on Windows and may look different elsewhere | Low | Low | Open the file in Google Sheets and on a phone before the pilot |
+| R18 | A need we find later does not fit our own form code | Low | Low | The code is small, so it can be extended or replaced |
