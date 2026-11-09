@@ -226,6 +226,16 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
   - [x] Smoke script: one real call with our key (evidence for the step 2 spike)
   - [x] Document the LLM layer in `app/README.md` (structure, settings, reused libraries)
 - [ ] Only if we find we need it: Sign in with Google. Removed for now to keep the product simple; the server check and the Google Cloud setup guide can be restored from commits `173a8e6` and `3222230`.
+- [ ] Base of the product
+  - [x] Local database (Supabase in Docker)
+  - [ ] Database: accounts and timetable, with access rules
+  - [ ] Test data: made-up users and lessons
+  - [ ] Server: Express, health check, sign-in check, allowed callers
+  - [ ] Integration tests of accounts and the timetable
+  - [ ] Web client: sign-in and first sign-in
+  - [ ] Web client: the user's lessons, and the lesson page with three tabs
+  - [ ] Web client: the admin's timetable and a form for a new course
+  - [ ] Browser tests of accounts and the timetable
 - [ ] Teacher: photograph the class and start the hour of responses
 - [ ] Student: register a face, and respond from a phone
 - [ ] One result per student per lesson

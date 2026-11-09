@@ -1,0 +1,26 @@
+{
+  "name": "asg2-tools",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Tools shared by the client and the server: the local database and the browser tests.",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "db:start": "supabase start -x studio,mailpit,imgproxy,edge-runtime,logflare,vector,postgres-meta,supavisor",
+    "db:stop": "supabase stop",
+    "db:users": "node scripts/with-local-env.mjs node scripts/seed-users.mjs",
+    "db:reset": "supabase db reset && npm run db:users",
+    "test:integration": "node scripts/with-local-env.mjs npm --prefix server run test:integration",
+    "test:browser": "node scripts/with-local-env.mjs playwright test",
+    "test:browser:ui": "node scripts/with-local-env.mjs playwright test --ui",
+    "test:scripts": "node --test scripts/update-traceability.test.mjs",
+    "matrix": "node scripts/update-traceability.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.65.0",
+    "@supabase/supabase-js": "2.119.0",
+    "supabase": "3.1.0"
+  }
+}

@@ -7,9 +7,10 @@ node_modules/
 .env.*
 !.env.example
 
-# Build output and logs
+# Build output, test reports and logs
 dist/
 coverage/
+reports/
 *.log
 
 # OS and editor files
