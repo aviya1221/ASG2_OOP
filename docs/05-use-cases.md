@@ -155,7 +155,7 @@ flowchart LR
   - 6b. The best score is below the match threshold: the result is Not found.
   - 6c. Two or more students matched the same face: the result is Conflict, and the case passes to the teacher for follow-up.
   - 7a. A student who is not marked present after the hour enters a row and seat, and the teacher approves or rejects the request. Every request is recorded, and a student with a rejected request or 3 or more requests in the course is flagged.
-- Postconditions: Every student of the course has one attendance result, and the server has deleted the face-prints from the photo within 1 hour.
+- Postconditions: Every student of the course has one attendance result, and the server has deleted the face-prints from the photo within 1 minute of the end of the hour.
 - Covers: REQ-10 to REQ-19, NFR-03, NFR-04, NFR-09, NFR-10
 
 ### UC-02: Post a message in the forum

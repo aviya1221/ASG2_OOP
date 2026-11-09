@@ -247,7 +247,7 @@ All lasting data is in Supabase, because the server's disk is temporary (ADR-5).
 | User, course, lesson | Database | Everyone linked to them | |
 | A student's face-print | The student's phone | Nobody else | In the server's memory only during the comparison (NFR-09) |
 | Face registration (hash) | Database, closed to the page | The server | |
-| Class face-prints | Database, closed to the page | The server | Deleted within 1 hour (NFR-10) |
+| Class face-prints | Database, closed to the page | The server | Deleted within 1 minute of the end of the hour (NFR-10) |
 | Attendance result | Database | The student and the teacher | Written only by the server |
 | Row-and-seat request | Database | The student and the teacher | |
 | Forum message | Database | Everyone linked to the lesson | |

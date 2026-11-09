@@ -279,7 +279,7 @@ Rules for REQ-13, checked in this order. Only the result "Present" marks the stu
 | NFR-07 | Usability | The website shall work with no installation in the last 2 versions of Chrome on Android and of Safari on iPhone. | Must |
 | NFR-08 | Security | The service key of the AI service shall appear in 0 of the server's responses to a browser. | Must |
 | NFR-09 | Security | The server shall delete a student's face-print within 1 s of the comparison. | Must |
-| NFR-10 | Security | The server shall delete the face-prints from a class photo within 1 hour. | Must |
+| NFR-10 | Security | The server shall delete the face-prints from a class photo within 1 minute of the end of the hour in which students can respond. | Must |
 | NFR-11 | Availability | The product shall be available for 99% of lesson time during the pilot. | Must |
 | NFR-12 | Usability | The website shall fit every screen width from 320 px to 1920 px, with sideways scrolling only inside the box of content wider than the screen, such as the map of the hall. | Must |
 
@@ -391,6 +391,6 @@ See [05-use-cases.md](05-use-cases.md).
 | NFR-07 Supported browsers | All | SDD §2.1 | None yet | Gap |
 | NFR-08 Service key stays on the server | All | SDD §2.10 | None yet | Gap |
 | NFR-09 Student face-print deleted within 1 s | UC-01 | SDD §2.4 | None yet | Gap |
-| NFR-10 Class face-prints deleted within 1 hour | UC-01 | SDD §2.4 | None yet | Gap |
+| NFR-10 Class face-prints deleted within 1 minute of the hour's end | UC-01 | SDD §2.4 | None yet | Gap |
 | NFR-11 99% availability in the pilot | All | SDD §5 | None yet | Gap |
 | NFR-12 Fits every screen width | All | SDD §2.1 | None yet | Gap |
