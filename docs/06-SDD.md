@@ -309,6 +309,17 @@ The static site does not depend on our server, so the forum, the polls and the f
 
 <!-- Alternatives and why this one. Link to the ADRs in 02-tools-report.md. -->
 
+The choice of each tool, with its alternatives, is in the ADRs of the [tools report](02-tools-report.md): ADR-1 to ADR-8. These are the decisions about the structure:
+
+| Decision | Alternative | Why this one | Record |
+|----------|-------------|--------------|--------|
+| The page talks to the database directly, and goes through our server for four jobs only | All traffic through our server | A sleeping server would stop the whole site, and 0.1 CPU would carry all the traffic. Access rules per table replace a single gate | ADR-3, ADR-5 |
+| One server for all the server jobs | A separate service per feature | One class needs one deployment, and a free plan runs one small instance | This section |
+| Faces are compared on the server | On the student's phone | A student's phone must not decide that its owner is present | Tools report, section 2.4 |
+| Photos stay on the phone, and only face-prints leave it | Comparing photos on the server | The server never holds a photo of a person | ADR-1 |
+| The web client is a separate static site, on Netlify | Our server also serves the page | The site stays up while the server sleeps | ADR-4, ADR-5 |
+| A summary runs in the background | The page waits for the answer | A phone can lock its screen during the minutes the summary takes | This section |
+
 ## 7. Requirement allocation
 
 | Requirement | Component (SDD §) |
