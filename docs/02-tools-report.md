@@ -204,6 +204,33 @@ No ready project does all of this, so we compose existing parts.
 - **Evidence:** [the measured results](../app/spikes/lesson-summary/results/summary.md). The transcripts hold the words of real students, so they stay out of the repository and only the numbers are recorded.
 - **Time spent:** about an hour of run time over all the runs.
 
+### Spike: database and live updates on Supabase
+
+- **Goal:** find out whether the free plan brings a forum message or a poll result to a class of 50 within 2 s (NFR-02), and whether sign-in and file storage work on it.
+- **What we did (2026-11-09):** we opened a free project in Frankfurt and connected 50 clients with `supabase-js` 2.119.0, each with its own connection, all on one laptop. Messages went out in two ways and at four paces, from one message every 2 s to the whole class sending within 1 s. Code: [app/spikes/backend-realtime/](../app/spikes/backend-realtime/).
+  - **Database changes:** a client writes a row, and everyone connected receives it.
+  - **Direct broadcast:** a client sends a message to everyone connected, with no write to the database.
+- **Result:**
+
+  | Pace | Deliveries per method | Database changes: 95% within | Database changes: slowest | Direct broadcast: 95% within | Direct broadcast: slowest |
+  |------|-----------------------|------------------------------|---------------------------|------------------------------|---------------------------|
+  | One message every 2 s | 1,500 | 650 ms | 1,154 ms | 93 ms | 368 ms |
+  | One message every second | 1,000 | 753 ms | 1,049 ms | 81 ms | 360 ms |
+  | The whole class sends within 10 s | 2,500 | 615 ms | 713 ms | 79 ms | 306 ms |
+  | The whole class sends within 1 s | 2,500 | 708 ms | 1,130 ms | 89 ms | 182 ms |
+
+  A delivery is one message reaching one client. All 15,000 deliveries arrived within 2 s, no send failed and no connection was lost. All 50 clients connected in under 1 s in every test. An earlier run at one message every 2 s gave the same picture: all 3,000 deliveries arrived, 95% within 677 ms and 87 ms, and the clients connected within 1.9 s.
+
+  Sign-in took 220 ms at the median over 5 attempts. A 5 MB file took 2.4 s to upload and 2.0 s to download, and came back identical.
+
+  **Limits we found:**
+  - All 50 clients ran on one laptop and one network, so the times do not include real phones.
+  - The test table lets every client read it. A real rule, such as only the students linked to the lesson, has to be checked for each client on each change, so database changes will be slower.
+  - The free plan officially allows 100 events per second, and each delivery counts as an event. The two paces of the whole class went above that (about 250 and 2,500 per second) with no dropped connection, but only for 10 s and 1 s, so a longer burst is still untested.
+  - The free plan allows files of up to 50 MB and pauses a project after 1 week without activity.
+- **Evidence:** [the measured results](../app/spikes/backend-realtime/results/summary.md).
+- **Time spent:** the two runs took about 10 minutes.
+
 ## 4. Comparison table
 
 | Need | Option | Cost / free tier | Simplicity | Works on phones | Spike result | Chosen? |
