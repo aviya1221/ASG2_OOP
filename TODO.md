@@ -238,7 +238,7 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
   - [x] Browser tests of accounts and the timetable
 - [ ] Attendance: database and server
   - [x] Tables and access rules
-  - [ ] Notifications on the server
+  - [x] Notifications on the server
   - [ ] Logic and calls of the server
   - [ ] Integration tests of attendance
 - [ ] Teacher: photograph the class and start the hour of responses
