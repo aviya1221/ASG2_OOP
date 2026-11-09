@@ -209,6 +209,20 @@ sequenceDiagram
 
 ## 6. Configuration and performance budget
 
+Match threshold 0.36 (ADR-1), 60 minutes to respond, 1 to 3 photos in a round and a map of the hall of 15 rows by 20 seats.
+
+A second database job clears the run history once a day, so that it does not fill the free database.
+
+Budget: a response within 2 s in 95% of cases (NFR-03), and 2 minutes per photo to find the faces (NFR-04).
+
 ## 7. Alternatives considered and trade-offs
 
+- **A database job against a timer on our server:** the free server sleeps, and a timer would be lost.
+- **A database function against checking and then writing:** two responses at the same moment could both get `present`.
+- **A view over results and requests against rewriting the result:** results stay written only by the server.
+
 ## 8. Testing and rollout plan
+
+- **Unit tests:** `FaceMatcher`, `AttendanceRules`, `ClassFaceCache` and `AttendanceService` with a fake repository.
+- **On the database:** `record_attendance_match` with two students on one face, and the job that deletes face-prints.
+- **Rollout:** built first, end to end.
