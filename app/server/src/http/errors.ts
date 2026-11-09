@@ -10,3 +10,16 @@ export function sendError(res: Response, status: number, error: string, message:
   const body: ErrorBody = { error, message };
   res.status(status).json(body);
 }
+
+/** Thrown by the logic of a feature, and turned into the error format by the app. */
+export class HttpError extends Error {
+  readonly status: number;
+  readonly code: string;
+
+  constructor(status: number, code: string, message: string) {
+    super(message);
+    this.name = "HttpError";
+    this.status = status;
+    this.code = code;
+  }
+}

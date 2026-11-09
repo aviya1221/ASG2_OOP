@@ -32,6 +32,8 @@ export interface ServerConfig {
   webOrigins: string[];
   supabaseUrl: string;
   supabaseSecretKey: string;
+  /** With no keys the server runs, and notifications are not sent. */
+  vapid?: { publicKey: string; privateKey: string; subject: string };
 }
 
 const DEFAULT_PORT = 8787;
@@ -41,11 +43,15 @@ export function loadServerConfig(env: Env = process.env): ServerConfig {
   if (!Number.isInteger(port) || port < 0 || port > 65535) {
     throw new ConfigError(`PORT must be a port number, got "${env.PORT}"`);
   }
+  const publicKey = read(env, "VAPID_PUBLIC_KEY");
+  const privateKey = read(env, "VAPID_PRIVATE_KEY");
+  const subject = read(env, "VAPID_SUBJECT");
   return {
     port,
     webOrigins: required(env, "WEB_ORIGIN").split(",").map((origin) => origin.trim()),
     supabaseUrl: required(env, "SUPABASE_URL"),
     supabaseSecretKey: required(env, "SUPABASE_SECRET_KEY"),
+    ...(publicKey && privateKey && subject ? { vapid: { publicKey, privateKey, subject } } : {}),
   };
 }
 
