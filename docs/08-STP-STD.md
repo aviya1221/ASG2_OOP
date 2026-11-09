@@ -84,6 +84,15 @@ has a unit-test table per EDD class (A.3). Test case IDs: TC-001, TC-002, ...
 
 ### A.4 Approach and tools
 
+Everything that can run without a real phone or a limited service is automated. Of the 73 test cases in Part B, 67 run automatically on every push, 2 are load scripts that run before each release, and 4 are manual.
+
+- **On every push:** GitHub Actions runs the type check and then the unit, integration and browser tests. A failed run is fixed before new work starts.
+- **One ID from requirement to report:** the name of each automated test starts with its test case ID, for example `TC-018`. A script reads the test reports and writes Passed or Failed into the Status column of the traceability matrix.
+- **Fakes:** `FakeLlmClient` replaces the AI service, so automated runs use none of its daily limit, and a fake sender replaces Web Push.
+- **Time:** unit tests use a controlled clock, and integration tests create rounds and lessons with times in the past instead of waiting.
+- **Camera:** browser tests give the page prepared photos in place of the camera.
+- **Load:** the spike scripts in [app/spikes/backend-realtime/](../app/spikes/backend-realtime/) and [app/spikes/hosting/](../app/spikes/hosting/) become repeatable load tests. They run only before a release, because they use the free quotas.
+
 ### A.5 Environment and test data
 
 - **Local and on every push:** Node.js 22, Docker and the Supabase CLI, with a fresh database for each run.
