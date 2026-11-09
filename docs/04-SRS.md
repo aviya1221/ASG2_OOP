@@ -316,21 +316,21 @@ See [05-use-cases.md](05-use-cases.md).
 | REQ-02 Admin creates a course | UC-07 | SDD §2.2 | TC-002 | Passed |
 | REQ-03 Only the admin changes the timetable | UC-07 | SDD §2.2 | TC-003 | Passed |
 | REQ-04 Users see only their own lessons | UC-08 | SDD §2.2 | TC-004 | Passed |
-| REQ-05 No room code or join step | UC-08 | SDD §2.2 | TC-005 | Passed |
-| REQ-06 Lesson page with three tabs | UC-08 | SDD §2.1 | TC-005 | Passed |
+| REQ-05 No room code or join step | UC-08 | SDD §2.2 | TC-005 | Not run |
+| REQ-06 Lesson page with three tabs | UC-08 | SDD §2.1 | TC-005 | Not run |
 | REQ-07 Register a face from one photo | UC-06 | SDD §2.3 | TC-010, TC-011 | Not run |
-| REQ-08 Opt out of face recognition | UC-06 | SDD §2.3 | TC-012 | Not run |
-| REQ-09 Teacher approves replacing a face | UC-06 | SDD §2.3 | TC-013 | Not run |
+| REQ-08 Opt out of face recognition | UC-06 | SDD §2.3 | TC-012 | Passed |
+| REQ-09 Teacher approves replacing a face | UC-06 | SDD §2.3 | TC-013 | Passed |
 | REQ-10 Teacher photographs the class | UC-01 | SDD §2.3 | TC-014, TC-015, TC-100, TC-118 | Not run |
 | REQ-11 Notify the students | UC-01 | SDD §2.9 | TC-016, TC-118 | Not run |
 | REQ-12 Collect the student's response | UC-01 | SDD §2.4 | TC-017, TC-100, TC-118 | Not run |
-| REQ-13 One attendance result per student | UC-01 | SDD §2.4 | TC-018, TC-019, TC-020, TC-021, TC-022 | Not run |
-| REQ-14 Row-and-seat request | UC-01 | SDD §2.4 | TC-023 | Not run |
-| REQ-15 Teacher decides row-and-seat requests | UC-01 | SDD §2.4 | TC-024 | Not run |
-| REQ-16 Keep a record of requests | UC-01 | SDD §2.4 | TC-025 | Not run |
-| REQ-17 Flag students | UC-01 | SDD §2.4 | TC-026 | Not run |
+| REQ-13 One attendance result per student | UC-01 | SDD §2.4 | TC-018, TC-019, TC-020, TC-021, TC-022 | Passed |
+| REQ-14 Row-and-seat request | UC-01 | SDD §2.4 | TC-023 | Passed |
+| REQ-15 Teacher decides row-and-seat requests | UC-01 | SDD §2.4 | TC-024 | Passed |
+| REQ-16 Keep a record of requests | UC-01 | SDD §2.4 | TC-025 | Passed |
+| REQ-17 Flag students | UC-01 | SDD §2.4 | TC-026 | Passed |
 | REQ-18 Attendance sheet in the app | UC-01 | SDD §2.4 | TC-027 | Not run |
-| REQ-19 Download the attendance sheet | UC-01 | SDD §2.4 | TC-028 | Not run |
+| REQ-19 Download the attendance sheet | UC-01 | SDD §2.4 | TC-028 | Passed |
 | REQ-20 Separate forum per lesson | UC-02 | SDD §2.5 | TC-040 | Not run |
 | REQ-21 List forums by lecture number | UC-02 | SDD §2.5 | TC-041 | Not run |
 | REQ-22 Teacher enters the lecture topic | UC-08 | SDD §2.5 | TC-042 | Not run |
@@ -390,7 +390,7 @@ See [05-use-cases.md](05-use-cases.md).
 | NFR-06 Report within 3 minutes | UC-05 | SDD §2.8 | None yet | Gap |
 | NFR-07 Supported browsers | All | SDD §2.1 | TC-114 | Not run |
 | NFR-08 Service key stays on the server | All | SDD §2.10 | TC-115 | Not run |
-| NFR-09 Student face-print deleted within 1 s | UC-01 | SDD §2.4 | TC-029 | Not run |
-| NFR-10 Class face-prints deleted within 1 minute of the hour's end | UC-01 | SDD §2.4 | TC-100 | Not run |
+| NFR-09 Student face-print deleted within 1 s | UC-01 | SDD §2.4 | TC-029 | Passed |
+| NFR-10 Class face-prints deleted within 1 minute of the hour's end | UC-01 | SDD §2.4 | TC-100 | Passed |
 | NFR-11 99% availability in the pilot | All | SDD §5 | TC-116 | Not run |
 | NFR-12 Fits every screen width | All | SDD §2.1 | TC-117 | Not run |

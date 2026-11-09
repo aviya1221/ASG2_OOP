@@ -19,6 +19,7 @@ const secret = secretClient();
 let server: Server;
 let base: string;
 let lectureNumber = 1000 + Math.floor(Math.random() * 900_000);
+const createdLessons: string[] = [];
 
 type Who = keyof typeof ID;
 
@@ -42,11 +43,23 @@ before(async () => {
   });
   base = `http://127.0.0.1:${(server.address() as AddressInfo).port}`;
 });
-after(() => server.close());
+after(async () => {
+  server.close();
+  // Rounds left open would make the students of the course respond in later test runs.
+  await secret.from("lessons").delete().in("id", createdLessons);
+});
 
-/** A face-print with a direction of its own, so different seeds are far apart. */
+/** A face-print with a direction of its own: numbers from a seeded generator, so different seeds are far apart. */
 function printFor(seed: number): number[] {
-  const values = Array.from({ length: 128 }, (_, i) => Math.sin(seed * 12.9898 + i * 78.233) * 43758.5453 % 1);
+  let state = (seed * 2654435761) >>> 0;
+  const next = () => {
+    state = (state + 0x6d2b79f5) >>> 0;
+    let t = state;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296 - 0.5;
+  };
+  const values = Array.from({ length: 128 }, next);
   const length = Math.hypot(...values);
   return values.map((value) => Math.fround(value / length));
 }
@@ -79,6 +92,7 @@ async function newLesson(ended = false): Promise<string> {
     .select("id")
     .single();
   assert.equal(error, null);
+  createdLessons.push(data!.id as string);
   return data!.id as string;
 }
 
