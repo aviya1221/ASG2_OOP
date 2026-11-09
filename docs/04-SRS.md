@@ -312,12 +312,12 @@ See [05-use-cases.md](05-use-cases.md).
 
 | Requirement | Use case | Design | Test cases | Status |
 |-------------|----------|--------|------------|--------|
-| REQ-01 Sign in before any lesson | UC-08 | SDD §2.2 | TC-001 | Not run |
-| REQ-02 Admin creates a course | UC-07 | SDD §2.2 | TC-002 | Not run |
-| REQ-03 Only the admin changes the timetable | UC-07 | SDD §2.2 | TC-003 | Not run |
-| REQ-04 Users see only their own lessons | UC-08 | SDD §2.2 | TC-004 | Not run |
-| REQ-05 No room code or join step | UC-08 | SDD §2.2 | TC-005 | Not run |
-| REQ-06 Lesson page with three tabs | UC-08 | SDD §2.1 | TC-005 | Not run |
+| REQ-01 Sign in before any lesson | UC-08 | SDD §2.2 | TC-001 | Passed |
+| REQ-02 Admin creates a course | UC-07 | SDD §2.2 | TC-002 | Passed |
+| REQ-03 Only the admin changes the timetable | UC-07 | SDD §2.2 | TC-003 | Passed |
+| REQ-04 Users see only their own lessons | UC-08 | SDD §2.2 | TC-004 | Passed |
+| REQ-05 No room code or join step | UC-08 | SDD §2.2 | TC-005 | Passed |
+| REQ-06 Lesson page with three tabs | UC-08 | SDD §2.1 | TC-005 | Passed |
 | REQ-07 Register a face from one photo | UC-06 | SDD §2.3 | TC-010, TC-011 | Not run |
 | REQ-08 Opt out of face recognition | UC-06 | SDD §2.3 | TC-012 | Not run |
 | REQ-09 Teacher approves replacing a face | UC-06 | SDD §2.3 | TC-013 | Not run |

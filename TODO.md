@@ -247,7 +247,7 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
 - [ ] Homework review (if in demo scope)
 - [ ] Unit tests for the core classes (per the STP, step 8)
 - [ ] Test automation: GitHub Actions runs the type check and the unit, integration and browser tests on every push
-- [ ] Test IDs in the test names, and a script that writes Passed or Failed into the traceability matrix
+- [x] Test IDs in the test names, and a script that writes Passed or Failed into the traceability matrix
 - [ ] Test data: made-up users, generated face-prints and generated photos of people who do not exist
 - [ ] Run the STD test cases and record Pass / Fail + update the traceability matrix status
 - [ ] Deploy to a public URL
