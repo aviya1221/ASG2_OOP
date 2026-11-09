@@ -434,3 +434,5 @@ No ready project does all of this, so we compose existing parts.
 | R12 | The free project is paused after 1 week without activity | Medium | High | Open and check the project before every use |
 | R13 | Real phones and real access rules are slower than in the spike | Medium | Low | Measure again in the system tests; switch to direct broadcast if needed |
 | R14 | Real phones load the page more slowly than the emulated phones, and feature code makes it heavier | Medium | Medium | Time the page on real phones before the pilot; load each tab's code on demand if it is too slow |
+| R15 | The server is still asleep when a lesson starts, and the first request waits for up to 92 s | High | Medium | The page wakes the server when the teacher opens the lesson |
+| R16 | Render restarts the free service in the middle of a job | Low | Medium | The teacher uploads the file again |
