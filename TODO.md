@@ -109,6 +109,7 @@ The lecturer requires that we **actually test** every tool we suggest.
   - [x] Server hosting (Render): R15 and R16
   - [x] Attendance sheet export: R17
   - [x] Form builder: R18
+  - [x] AI coding assistant: R19
 - [x] Track the work left for later → [docs/left-for-later.md](docs/left-for-later.md)
 
 ## Step 3: SoW (Statement of Work) → [docs/03-SoW.md](docs/03-SoW.md)

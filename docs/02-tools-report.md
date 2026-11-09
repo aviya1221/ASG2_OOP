@@ -576,3 +576,4 @@ The need comes from the [forum decisions](features/F2-lesson-forum-strategy.md) 
 | R16 | Render restarts the free service in the middle of a job | Low | Medium | The teacher uploads the file again |
 | R17 | The sheet was checked only in Excel on Windows and may look different elsewhere | Low | Low | Open the file in Google Sheets and on a phone before the pilot |
 | R18 | A need we find later does not fit our own form code | Low | Low | The code is small, so it can be extended or replaced |
+| R19 | The AI assistant states something wrong, or writes code that only looks right | Medium | High | The team reads results against the raw numbers; tests and the document check run before every commit |
