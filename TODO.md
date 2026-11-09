@@ -189,7 +189,7 @@ The EDD describes one component: "How is this part built?" One file per componen
 - [x] EDD-Polls: class design + sequence diagram (create poll + vote) + state machine (poll lifecycle)
 - [x] EDD-LessonSummary: class design + sequence diagram
 - [ ] EDD-HomeworkReview: class design + sequence diagram
-- [ ] API docs: endpoints, requests / responses, errors, examples
+- [x] API docs: endpoints, requests / responses, errors, examples
 - [ ] Fill the "Design" column of the traceability matrix with the EDD names
 
 ## Step 8: Testing strategy (STP / STD) → [docs/08-STP-STD.md](docs/08-STP-STD.md)

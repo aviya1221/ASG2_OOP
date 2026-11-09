@@ -223,7 +223,50 @@ classDiagram
 
 <!-- To add one: copy _template.md to <component>.md and fill it in. -->
 
+The web client (§2.1), accounts and timetable (§2.2), the LLM layer (§2.10) and the data store (§2.11) have no EDD of their own. The domain model above, the API docs below and the code in [app/server/src/llm/](../../app/server/src/llm/) describe them.
+
 ## API docs
 
 <!-- Endpoints of the web app: overview and auth, endpoint reference, responses
 and errors, examples, limits. Can move to its own file (api.md) when it grows. -->
+
+### Overview and authentication
+
+- **Base URL:** the address of the server on Render. There is one version of the API, so addresses carry no version.
+- **Authentication:** every call except `GET /health` sends `Authorization: Bearer <token>`, with the user's Supabase sign-in token. The server checks it on every call.
+- **Callers:** the server accepts browser calls only from the address of the web client on Netlify.
+- **Format:** JSON, except the calls that carry a file, which use `multipart/form-data`. Express handles the routes and multer the uploads.
+
+### Endpoint reference
+
+| Call | Caller | Request example | Success example |
+|------|--------|-----------------|-----------------|
+| `GET /health` | Web client | No body | `200 {"ok": true}` |
+| `POST /faces/register` | Student | `{"hash": "9f2c41..."}` or `{"optOut": true}` | `201 {"status": "registered"}`, or `202 {"status": "waiting_for_teacher"}` when replacing a face |
+| `POST /attendance/class` | Teacher of the lesson | `{"lessonId": "c1a7...", "photos": [{"faces": [{"box": [120, 88, 46, 46], "print": [0.021, -0.113, "... 128 numbers"]}]}]}` | `201 {"expiresAt": "2026-12-01T11:12:00Z"}` |
+| `POST /attendance/response` | Student of the lesson | `{"lessonId": "c1a7...", "print": [0.018, -0.097, "... 128 numbers"], "hash": "9f2c41..."}` | `200 {"result": "present"}` |
+| `POST /notifications/subscribe` | Student | `{"endpoint": "https://fcm.googleapis.com/...", "keys": {"p256dh": "BN3...", "auth": "k1v..."}}` | `204`, no body |
+| `POST /summaries` | Teacher of the lesson | Form fields `lessonId` and `recording` (a video file) | `202 {"status": "in_progress"}` |
+| `POST /homework` | Teacher of the lesson | Form fields `lessonId`, `title` and `file` (a PDF) | `201 {"homeworkId": "7be2...", "questions": 4}` |
+| `POST /homework/{id}/checks` | Student of the lesson | Form field `solution` (a PDF) | `200 {"checkNumber": 1, "overall": 72, "report": {"sections": ["..."]}}` |
+
+### Responses and errors
+
+Every error has the same form: `{"error": "round_closed", "message": "The hour for responding is over."}`.
+
+| Status | Meaning | Error codes |
+|--------|---------|-------------|
+| 400 | The request is not valid | `bad_print`, `not_a_pdf` |
+| 401 | The sign-in token is missing or not valid | `not_signed_in` |
+| 403 | The user may not do this | `not_the_teacher`, `not_in_course`, `outside_lesson` |
+| 404 | The lesson, homework or round does not exist | `not_found`, `no_round` |
+| 409 | The current state does not allow it | `round_exists`, `round_closed`, `summary_in_progress`, `lesson_not_ended`, `no_checks_left` |
+| 413 | The file is too large | `file_too_large` |
+| 503 | The AI service failed. A homework check that ends here does not count | `ai_unavailable` |
+
+### Limits and changes
+
+- A JSON body can be up to 1 MB, a recording up to 200 MB and a PDF up to 20 MB.
+- A student has 3 checks per homework (REQ-56), and no call returns pages of results.
+- The first call after the server has slept can take up to 92 s (ADR-5).
+- A change that breaks a call is recorded here, with its date.
