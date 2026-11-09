@@ -364,6 +364,26 @@ The need comes from the [forum decisions](features/F2-lesson-forum-strategy.md) 
 - **Evidence:** [the measured results](../app/spikes/spreadsheet-export/results/summary.md).
 - **Time spent:** about 15 minutes.
 
+### Spike: form builder (F6)
+
+- **Goal:** find out whether existing code can give us the form builder and the answer window, at a reasonable cost to the page.
+- **What we did (2026-11-09):** we bundled and minified each option with esbuild and measured what it adds to the page, leaving out React, which the page has already. For option 1 we wrote a builder and an answer window for the four question types, and rendered them on a server to check them. Code: [app/spikes/form-builder/](../app/spikes/form-builder/).
+- **Result:**
+
+  | Measure | 1. Our own code | 2. SurveyJS form library | 3. Form.io |
+  |---------|-----------------|--------------------------|------------|
+  | Added to the page, compressed | 1.1 KB | 498.7 KB | 509.2 KB |
+  | Added to the page, minified | 2.6 KB | 2,478.3 KB | 1,780.9 KB |
+  | A form builder for the teacher, free | Yes | No | Yes |
+
+  For a form of the four question types, option 1 rendered 7 radio buttons, 3 checkboxes and 1 text box from right to left, and it found every unanswered question.
+
+  **Limits we found:**
+  - Option 1 was rendered on a server and was not clicked through in a browser or on a phone, and it has no styling yet.
+  - Options 2 and 3 were measured for size only.
+- **Evidence:** [the measured results](../app/spikes/form-builder/results/summary.md).
+- **Time spent:** about 20 minutes.
+
 ## 4. Comparison table
 
 | Need | Option | Cost / free tier | Simplicity | Works on phones | Spike result | Chosen? |
