@@ -677,3 +677,32 @@ has a unit-test table per EDD class (A.3). Test case IDs: TC-001, TC-002, ...
 - Input data: A summary with a topic.
 - Expected result: `L2` takes the topic of the summary, and the other lesson keeps its own.
 - Automation: Integration
+
+### State transitions
+
+### TC-100: Every transition of an attendance round
+
+- Verifies: REQ-10, REQ-12, NFR-10, UC-01
+- Preconditions: `L1` has no round.
+- Steps: 1. `T1` sends the photos. 2. `S1` responds. 3. Set the end of the hour to the past and run the database job. 4. `S2` responds.
+- Input data: Generated face-prints.
+- Expected result: The round opens and the course is notified. `S1` gets a result. The job is scheduled every minute, and after it 0 rows of the round stay in `class_faces` and `ClassFaceCache` is empty. `S2` is refused with `round_closed`.
+- Automation: Integration
+
+### TC-101: Every transition of a poll or form
+
+- Verifies: REQ-30, REQ-37, REQ-38, REQ-60, REQ-62, REQ-68, UC-03
+- Preconditions: `L1` is in progress.
+- Steps: 1. Save a form, and publish it. 2. Publish a poll. 3. `T1` closes the form. 4. Let the lesson end and run the job. 5. Try to reopen the closed poll.
+- Input data: A form and a poll.
+- Expected result: Draft and then open. The poll is open. The form is closed. The job closes the poll. Reopening is refused.
+- Automation: Integration
+
+### TC-102: Every transition of a lesson summary
+
+- Verifies: REQ-41, REQ-42, REQ-48, UC-04
+- Preconditions: `FakeLlmClient`.
+- Steps: 1. Upload, and let the fake succeed. 2. Upload, and let the fake fail. 3. Upload, and upload again during the first 15 minutes. 4. Set the start time 16 minutes back, open the page and upload again.
+- Input data: A small video file.
+- Expected result: In progress and then ready. In progress and then failed. The second upload is refused with `summary_in_progress`. After 16 minutes the page shows a failure, and the upload is accepted.
+- Automation: Unit
