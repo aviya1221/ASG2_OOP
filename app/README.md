@@ -33,7 +33,9 @@ licenses of any code we reuse below.
 - **Server:** Node.js 22 + TypeScript, run directly with `tsx` (no build step).
 - **Tests:** Node's built-in test runner (`node:test`).
 - **LLM:** Google Gemini through Google's official SDK, `@google/genai`.
-- **Phone web client and hosting:** _TODO (steps 2 and 9)._
+- **Web client:** React 19 and Vite 8, in TypeScript, with plain CSS ([ADR-4](../docs/02-tools-report.md#adr-4-web-client), [screens and look](../docs/features/UI-strategy.md)). The client is not built yet; the chosen tools were checked on a [test page](spikes/client-react/).
+- **Database, sign-in, files and live updates:** Supabase ([ADR-3](../docs/02-tools-report.md#adr-3-database-sign-in-files-and-live-updates)).
+- **Hosting:** _TODO (steps 2 and 9)._
 
 ## Run locally
 
@@ -160,3 +162,8 @@ Copy [server/.env.example](server/.env.example) to `server/.env`. The `.env` fil
 | [tsx](https://github.com/privatenumber/tsx) | Runs TypeScript directly (dev tool) | MIT |
 | [TypeScript](https://github.com/microsoft/TypeScript) | Type checker (dev tool) | Apache-2.0 |
 | [@types/node](https://github.com/DefinitelyTyped/DefinitelyTyped) | Node.js type definitions (dev tool) | MIT |
+| [React](https://github.com/react/react) | Web client screens | MIT |
+| [Vite](https://github.com/vitejs/vite) and [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react) | Builds the web client (dev tool) | MIT |
+| [@types/react](https://github.com/DefinitelyTyped/DefinitelyTyped) | React type definitions (dev tool) | MIT |
+| [@supabase/supabase-js](https://github.com/supabase/supabase-js) | Supabase client library | MIT |
+| [Playwright](https://github.com/microsoft/playwright) | Measures the client test page (test page only) | Apache-2.0 |
