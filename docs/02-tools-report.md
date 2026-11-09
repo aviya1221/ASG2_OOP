@@ -243,6 +243,35 @@ No ready project does all of this, so we compose existing parts.
 - **Evidence:** [the measured results](../app/spikes/backend-realtime/results/summary.md).
 - **Time spent:** the two runs took about 10 minutes.
 
+### Spike: web client with React and Vite
+
+- **Goal:** confirm that the stack shows the lesson page in Hebrew on every screen width (NFR-12), and shows live updates without a reload (NFR-02).
+- **What we did (2026-11-09):** we built the lesson header, the three tabs and a sample of each tab. Code: [app/spikes/client-react/](../app/spikes/client-react/).
+  - **Stack:** React 19.3.1, Vite 8.3.7, TypeScript 7.0.2, `@supabase/supabase-js` 2.119.0, plain CSS with media queries.
+  - **Measurement:** a Playwright 1.49.1 script in Edge, on emulated phones. The slow-phone profile is 150 ms latency, 1.6 Mbit/s and a CPU four times slower.
+  - **Screens:** 8 sizes from 320 × 568 to 1920 × 1080, including a phone on its side, on all 3 tabs.
+  - **Live updates:** per run, 30 messages at one per second and 50 within 1 s, timed until they appear on the page.
+- **Result:**
+
+  | Measure | Result |
+  |---------|--------|
+  | First install | 39 s |
+  | Production build | 4.4 s |
+  | Page weight, compressed | 122.5 KB |
+  | Screen checks with no sideways scrolling of the page | 24 of 24 |
+  | First content on the slow phone, median of 5 loads | 1.4 to 1.7 s in 3 runs; 4.2 and 5.0 s in 2 runs |
+  | Database changes: 240 messages over 3 runs | All arrived; 95% within 832 ms at worst; slowest 1,214 ms |
+  | Direct broadcast: 400 messages over 5 runs | All arrived; 95% within 814 ms at worst; slowest 854 ms |
+  | Page reloads during the live updates | 0 |
+
+  **Limits we found:**
+  - The phones were emulated on a laptop, so real phones are still to be timed.
+  - The slower load times came from the first 2 runs, probably because the laptop was busy.
+  - One page received the messages, not 50. The Supabase spike covers 50 clients.
+  - The sample page has no feature code, so the real page will be heavier.
+- **Evidence:** [the measured results of the last run](../app/spikes/client-react/results/summary.md) and screenshots at [320 px](../app/spikes/client-react/results/forum-320.png), [390 px](../app/spikes/client-react/results/forum-390.png) and [1280 px](../app/spikes/client-react/results/forum-1280.png).
+- **Time spent:** 5 runs of about 3 minutes each.
+
 ## 4. Comparison table
 
 | Need | Option | Cost / free tier | Simplicity | Works on phones | Spike result | Chosen? |
