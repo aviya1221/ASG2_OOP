@@ -454,6 +454,18 @@ No ready project does all of this, so we compose existing parts.
   - The server sleeps after 15 minutes without traffic and took up to 92 s to wake, so the page wakes it when the teacher opens the lesson.
   - The disk is temporary, so all lasting data goes to Supabase (ADR-3).
 
+### ADR-6: Attendance sheet file
+
+- **Context:** the teacher downloads a lesson's attendance sheet as a spreadsheet file (REQ-19), with Hebrew names and ID numbers that may start with zeros.
+- **Decision:** option 1 from section 2.3: an `.xlsx` file written with `write-excel-file`. Every cell is written as text, and the sheet is set right to left.
+- **Alternatives rejected:**
+  - In CSV, Excel showed no ID number correctly and ran 3 of 5 notes as formulas.
+  - ExcelJS gave the same result with a library 13 times larger.
+  - The tools rejected without a spike are listed in section 2.3.
+- **Consequences:**
+  - A student's text cannot run as a formula in the teacher's Excel.
+  - ID numbers stay text, so they cannot be used for calculations in the sheet.
+
 ## 6. Technology risks
 
 | ID | Risk | Probability | Impact | Mitigation |
