@@ -1,0 +1,204 @@
+:root {
+  --ink: #111111;
+  --ground: #e5e5e5;
+  --paper: #fbfbfb;
+  --soft: #d6d6d6;
+  --page-width: 1120px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+button {
+  min-height: 44px;
+  min-width: 44px;
+  border: 0;
+  border-radius: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(24px, 6vw, 34px);
+  line-height: 1.2;
+  font-weight: 800;
+}
+
+h2 {
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 800;
+}
+
+.band {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.band-inner {
+  max-width: var(--page-width);
+  margin-inline: auto;
+  padding: 16px 20px 0;
+  display: grid;
+  gap: 4px;
+}
+
+.tabs {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.tabs button {
+  height: 48px;
+  background: transparent;
+  font-weight: 500;
+}
+
+.tabs button[aria-current="page"] {
+  background: var(--ground);
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.content {
+  max-width: var(--page-width);
+  margin-inline: auto;
+  padding: 24px 20px;
+}
+
+.stack {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+}
+
+.forum {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+}
+
+.card {
+  padding: 12px 14px;
+  background: var(--paper);
+  display: grid;
+  gap: 6px;
+}
+
+.card p {
+  overflow-wrap: anywhere;
+}
+
+.framed {
+  border: 1px solid var(--ink);
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.track {
+  display: block;
+  height: 6px;
+  background: var(--soft);
+}
+
+.bar {
+  display: block;
+  height: 6px;
+  background: var(--ink);
+}
+
+.option {
+  padding: 8px 10px;
+  display: grid;
+  gap: 6px;
+  background: transparent;
+  border: 1px solid var(--ink);
+  text-align: right;
+}
+
+.primary {
+  height: 52px;
+  background: var(--ink);
+  color: var(--paper);
+  font-weight: 700;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  padding: 0 12px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.ok { background: #95c374; }
+.review { background: #ebcf5b; }
+.missing { background: #d4703c; }
+.conflict { background: #efc6c2; }
+.none { background: #4a6fa5; color: #ffffff; }
+
+/* A wide hall scrolls inside its own box, so the page itself never scrolls sideways. */
+.hall {
+  overflow-x: auto;
+  display: grid;
+  gap: 6px;
+}
+
+.board {
+  min-width: 284px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 14px;
+}
+
+.seats {
+  min-width: 284px;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(44px, 1fr));
+  gap: 4px;
+}
+
+.seats button {
+  background: var(--paper);
+  border: 1px solid var(--ink);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+@media (min-width: 900px) {
+  .tabs {
+    max-width: 480px;
+  }
+
+  .forum {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  }
+}

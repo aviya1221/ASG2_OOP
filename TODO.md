@@ -73,6 +73,7 @@ The lecturer requires that we **actually test** every tool we suggest.
   - [x] Lesson summary (F4): write the spike in the report
   - [x] Database and live updates (Supabase): test script and measured results → [app/spikes/backend-realtime/](app/spikes/backend-realtime/)
   - [x] Database and live updates (Supabase): write the spike in the report
+  - [x] React client: test page and measured results → [app/spikes/client-react/](app/spikes/client-react/)
 - [ ] Comparison table
   - [x] Face tools for photo attendance (F1)
   - [x] Lesson summary (F4)
