@@ -203,7 +203,7 @@ The testing strategy must address the classes from step 7. STP = how we will tes
 - [x] A.4 Approach and tools
 - [x] A.5 Environment and test data (phones, browsers, fake students, no real personal data)
 - [x] A.6 Entry and exit criteria (when are we done?)
-- [ ] A.7 Schedule, roles and risks
+- [x] A.7 Schedule, roles and risks
 
 **Part B: STD (test cases)**, each one: ID, title, requirement it verifies, preconditions, steps, input data, expected result
 - [x] Test cases for F1 Attendance (`TC-0xx`)

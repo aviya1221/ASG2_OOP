@@ -115,6 +115,17 @@ Everything that can run without a real phone or a limited service is automated. 
 
 ### A.7 Schedule, roles and risks
 
+**Schedule:** unit tests are written with their class, integration tests with each database change, and browser tests when a feature works end to end. Load and manual tests run before each release. A feature is not done until its tests pass.
+
+**Roles:** the development team owns the tests and runs the manual ones, and the AI assistant writes the first version of the test code (ADR-8).
+
+| Risk | Mitigation |
+|------|------------|
+| WebKit in Playwright behaves differently from Safari on an iPhone | A manual run on a real iPhone before each release (TC-114) |
+| Live updates make browser tests unstable | Tests wait for the result on the screen rather than for a fixed time, with one retry on the push run |
+| Load tests use up the free quotas | They run only before a release, never on a push |
+| A fake hides a real difference in the AI service | One real run before each release (TC-113) |
+
 ## Part B: Test cases (STD)
 
 <!-- One block per test case:
