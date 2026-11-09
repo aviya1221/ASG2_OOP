@@ -244,6 +244,7 @@ No ready project does all of this, so we compose existing parts.
 | Lesson summary | 4. Sound to Flash-Lite | Free tier | One call through our LLM layer | Runs on the server; the teacher only uploads a file | 45 s for 20 min; missed student questions | No |
 | Lesson summary | 5. Sound, current model | Free tier | One call through our LLM layer, plus extracting the sound | Runs on the server; the teacher only uploads a file | 129 s and 32,017 tokens for 10 min; 3 student questions; no board | As the fallback (ADR-2) |
 | Lesson summary | 6. Full video | Free tier | One call through our LLM layer | Runs on the server; the teacher only uploads a file | 141 s and 75,530 tokens for 10 min; the same 3 questions; board list; better speaker labels | Yes (ADR-2) |
+| Database and live updates | 1. Supabase | Free plan: 500 MB database, 1 GB of files, 50 MB per file, 200 live connections; paused after 1 week without activity | One service and its client library for data, sign-in, files and live updates | The client library runs in the browser, with nothing to install; not yet timed on a phone | 50 of 50 connected; all 18,000 deliveries within 2 s; 95% within 753 ms at worst with database changes and 93 ms with direct broadcast | Yes (ADR-3) |
 
 ## 5. Decisions (ADRs)
 
