@@ -231,7 +231,7 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
   - [x] Database: accounts and timetable, with access rules
   - [x] Test data: made-up users and lessons
   - [x] Server: Express, health check, sign-in check, allowed callers
-  - [ ] Integration tests of accounts and the timetable
+  - [x] Integration tests of accounts and the timetable
   - [ ] Web client: sign-in and first sign-in
   - [ ] Web client: the user's lessons, and the lesson page with three tabs
   - [ ] Web client: the admin's timetable and a form for a new course
