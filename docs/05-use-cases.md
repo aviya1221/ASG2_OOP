@@ -258,7 +258,7 @@ flowchart LR
 ### UC-08: Sign in and reach a lesson page
 
 - Actor: Teacher or student.
-- Preconditions: The user has an account.
+- Preconditions: The user is on the list that the admin entered.
 - Main success flow:
   1. The user signs in.
   2. The system shows only the lessons of the user's courses, with no room code or join step.
@@ -266,6 +266,7 @@ flowchart LR
   4. The system shows the lesson page with its three tabs.
 - Alternative flows:
   - 1a. The sign-in details are wrong: the system refuses, and the user can try again.
+  - 1b. First sign-in: the user enters their ID number and chooses a password. The system refuses someone who is not on the list or who has already chosen a password.
   - 4a. The teacher enters the lecture topic, before or during the lecture, and it appears in the forum title.
 - Postconditions: The user is on the page of a lesson from their own courses.
 - Covers: REQ-01, REQ-04 to REQ-06, REQ-22
