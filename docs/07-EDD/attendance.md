@@ -107,6 +107,22 @@ stateDiagram-v2
 
 ## 3. Database schema and data formats
 
+| Table or view | Main columns | Access |
+|---------------|--------------|--------|
+| `face_registrations` | `student_id` (key), `hash`, `opted_out` | The server only |
+| `my_face_status` (view) | `registered`, `opted_out` | Read: the student's own row. It holds no hash |
+| `face_replacements` | `id`, `student_id`, `new_hash`, `status`, `decided_by` | Write: the server adds it, and a teacher of one of the student's courses decides |
+| `attendance_rounds` | `lesson_id` (key), `created_at`, `expires_at` | Read: everyone linked to the lesson. Write: the server |
+| `class_faces` | `lesson_id`, `photo_no`, `face_no`, `box`, `print` | The server only |
+| `attendance_results` | `lesson_id` and `student_id` (key), `result`, `photo_no`, `face_no`, `score` | Read: the student and the teacher. Write: the server |
+| `seat_requests` | `lesson_id` and `student_id` (key), `row_no`, `seat_no`, `status`, `decided_at` | Read: the student and the teacher. Add: the student, after the hour or after opting out. Decide: the teacher |
+| `attendance_sheet` (view) | One row per student | Read: the teacher |
+| `push_subscriptions` | `student_id`, `endpoint`, `p256dh`, `auth` | The server only |
+
+`result` is one of `present`, `review`, `not_found` or `conflict`.
+
+The attendance sheet file has the columns ID number, name, attendance, how it was decided and a note for flagged students. Every cell is written as text, from right to left (ADR-6).
+
 ## 4. Sequence diagrams for key flows
 
 The teacher photographs the class:
