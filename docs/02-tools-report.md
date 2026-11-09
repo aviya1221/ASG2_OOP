@@ -352,6 +352,19 @@ No ready project does all of this, so we compose existing parts.
   - The secret key stays on our server.
   - Lesson recordings are not kept in Supabase, because the free plan allows 50 MB per file. They go from our server straight to Google (ADR-2).
 
+### ADR-4: Web client
+
+- **Context:** the screens share one lesson header and tab bar, and must fit every width from 320 px to 1920 px (NFR-12) with live updates from Supabase (NFR-02).
+- **Decision:** option 1 from section 2.1: React 19.3 with Vite 8.3, in TypeScript 7.0. `@supabase/supabase-js` connects the page to Supabase, and plain CSS with media queries fits the page to the screen.
+- **Alternatives rejected:**
+  - Plain HTML and JavaScript would leave the shared header and the live updates of every screen for us to write and maintain.
+  - Next.js adds a second server next to our Node.js server, with no gain, because Supabase sends data straight to the page.
+- **Consequences:**
+  - The client has a build step, and its output is static files.
+  - Client and server share one language, TypeScript.
+  - The page starts at 122.5 KB compressed, before the feature code.
+  - Only the public Supabase key goes into the page.
+
 ## 6. Technology risks
 
 | ID | Risk | Probability | Impact | Mitigation |
