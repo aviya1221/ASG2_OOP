@@ -1,0 +1,69 @@
+# Runs every automated test on every push (docs/08-STP-STD.md, A.4).
+# The AI service and the notification services are replaced by fakes, so a run needs no keys.
+name: Tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            app/package-lock.json
+            app/server/package-lock.json
+            app/client/package-lock.json
+
+      - name: Install
+        run: |
+          npm ci
+          npm --prefix server ci
+          npm --prefix client ci
+
+      - name: Type check
+        run: |
+          npm --prefix server run typecheck
+          npm --prefix client run typecheck
+
+      - name: Unit tests
+        run: |
+          npm run test:scripts
+          npm --prefix server test
+          npm --prefix client test
+
+      - name: Start the local database
+        run: |
+          npm run db:start
+          npm run db:users
+
+      - name: Integration tests
+        run: npm run test:integration
+
+      - name: Install the test browsers
+        run: npx playwright install --with-deps chromium webkit
+
+      - name: Browser tests
+        run: npm run test:browser
+
+      - name: Results by requirement
+        if: always()
+        run: npm run --silent matrix -- --summary >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Keep the reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: app/reports/
+          if-no-files-found: ignore
