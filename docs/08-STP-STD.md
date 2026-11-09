@@ -706,3 +706,86 @@ has a unit-test table per EDD class (A.3). Test case IDs: TC-001, TC-002, ...
 - Input data: A small video file.
 - Expected result: In progress and then ready. In progress and then failed. The second upload is refused with `summary_in_progress`. After 16 minutes the page shows a failure, and the upload is accepted.
 - Automation: Unit
+
+### Quality requirements
+
+### TC-110: Forum and poll updates reach 50 students within 2 s
+
+- Verifies: NFR-02, UC-02, UC-03
+- Preconditions: The deployed product, with the real access rules and 50 signed-in clients.
+- Steps: 1. Run the load script at the rates of the Supabase spike.
+- Input data: 50 generated users.
+- Expected result: 95% of the deliveries arrive within 2 s.
+- Automation: Load
+
+### TC-111: 50 attendance responses in one minute
+
+- Verifies: NFR-03, UC-01
+- Preconditions: The deployed server, awake, with an open round of 50 faces.
+- Steps: 1. Send 50 responses within one minute.
+- Input data: 50 generated face-prints.
+- Expected result: 95% are answered within 2 s, including saving the result.
+- Automation: Load
+
+### TC-112: Find the faces on a phone within 2 minutes per photo
+
+- Verifies: NFR-04, UC-01
+- Preconditions: One Android phone and one iPhone.
+- Steps: 1. Open the attendance tab. 2. Time finding the faces.
+- Input data: A generated photo with 50 faces.
+- Expected result: Under 2 minutes per photo on both phones.
+- Automation: Manual
+
+### TC-113: Summarise a real 10-minute recording within 5 minutes
+
+- Verifies: NFR-05, REQ-43, REQ-46, UC-04
+- Preconditions: The real AI service, with 3 requests left in the daily limit.
+- Steps: 1. Upload the recording. 2. Time it until the summary is ready. 3. Read the summary against the recording.
+- Input data: A 10-minute recording of a public lecture, kept out of the repository.
+- Expected result: Ready within 5 minutes of the end of the upload, with four parts and no invented content.
+- Automation: Manual
+
+### TC-114: Work with nothing installed in the supported browsers
+
+- Verifies: NFR-07, UC-01, UC-02
+- Preconditions: Automatic: Chromium with a phone profile and WebKit with an iPhone profile. Manual: Chrome on Android and Safari on iPhone, in their last 2 versions.
+- Steps: 1. Sign in. 2. Respond to attendance. 3. Post in the forum.
+- Input data: The seed.
+- Expected result: Every step works with nothing installed.
+- Automation: Browser, Manual
+
+### TC-115: The AI service key appears in no response
+
+- Verifies: NFR-08
+- Preconditions: The server runs with a marked value as the service key.
+- Steps: 1. Make every server call, including those that fail. 2. Search every response and the built client files for the value.
+- Input data: A marked key.
+- Expected result: The value appears 0 times.
+- Automation: Integration
+
+### TC-116: Stay available during a full rehearsal
+
+- Verifies: NFR-11
+- Preconditions: A rehearsal of a full lesson on the deployed product.
+- Steps: 1. Probe the site and the server once a minute for the whole lesson.
+- Input data: None.
+- Expected result: At least 99% of the probes succeed.
+- Automation: Manual
+
+### TC-117: Fit every screen width
+
+- Verifies: NFR-12
+- Preconditions: The seed.
+- Steps: 1. Open each screen at each width.
+- Input data: 320, 375, 768, 1280 and 1920 px.
+- Expected result: No page scrolls sideways, except inside the box of the map of the hall.
+- Automation: Browser
+
+### TC-118: Run a whole lesson on real phones
+
+- Verifies: REQ-10, REQ-11, REQ-12, UC-01
+- Preconditions: Volunteers in a real hall, each registered on their own phone.
+- Steps: 1. The teacher photographs the class. 2. Each volunteer receives the notification and opens the site. 3. The teacher downloads the sheet.
+- Input data: The volunteers' own phones. No photo is kept.
+- Expected result: A notification arrives on each phone (R20). Each volunteer who is present gets a result, and the sheet matches who was there.
+- Automation: Manual
