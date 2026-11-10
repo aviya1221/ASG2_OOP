@@ -2,7 +2,7 @@
 
 Work we set aside on purpose so that the next documents can go ahead. The planned steps are in [TODO.md](../TODO.md), and this file lists only what would otherwise be forgotten. When an item is done, set its status to Done and record the result where the table says.
 
-Last updated: 2026-11-09.
+Last updated: 2026-11-10.
 
 ## Waiting for a result
 
@@ -41,6 +41,8 @@ Last updated: 2026-11-09.
 | 16 | Stay above 100 events per second for longer than 10 s (R11) | The spike covered short bursts only | The first build | STP / STD | Open |
 | 17 | Open the attendance sheet in Google Sheets and on a phone, and write it in a browser (R17) | Only Excel on Windows and a server were checked | The first build | STP / STD | Open |
 | 23 | Check the database job on the free Supabase plan (EDD-Attendance) | Deleting class face-prints and closing polls depend on it, and only a community answer says that the free plan includes it | The first build | STP / STD | Open |
+| 24 | Make one review guide live with `gemini-3.6-flash` (REQ-51) | The real-model run of the homework review on 2026-11-10 used the spike's guides, because the model's daily limit was used up | A day with the limit free, and 2 requests | [STP / STD](08-STP-STD.md) | Open |
+| 25 | Check whether the retry of Google's library breaks after a busy answer, and if so add one retry of our own | On 2026-11-10 some reviews failed with "TypeError: unusable" and the same request passed right after, so a student has to try again by hand | Nothing | [app/README.md](../app/README.md), LLM layer decisions | Open |
 
 ## Housekeeping
 
