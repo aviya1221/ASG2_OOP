@@ -195,7 +195,7 @@ The EDD describes one component: "How is this part built?" One file per componen
 - [x] EDD-LessonSummary: class design + sequence diagram
 - [x] EDD-HomeworkReview: class design + sequence diagram
 - [x] API docs: endpoints, requests / responses, errors, examples
-- [ ] Fill the "Design" column of the traceability matrix with the EDD names
+- [x] Fill the "Design" column of the traceability matrix with the EDD names
 
 ## Step 8: Testing strategy (STP / STD) → [docs/08-STP-STD.md](docs/08-STP-STD.md)
 
@@ -215,7 +215,7 @@ The testing strategy must address the classes from step 7. STP = how we will tes
 - [x] Test cases for the other features in demo scope (one commit per feature)
 - [x] Test cases for state transitions (state machines from step 7)
 - [x] Non-functional test cases: many students at once, different mobile browsers
-- [ ] Fill the "Test cases" column of the traceability matrix: no Gap for requirements in demo scope
+- [x] Fill the "Test cases" column of the traceability matrix: no Gap for requirements in demo scope
 
 ## Step 9: Implement the demo web app (KISS) → [app/](app/)
 

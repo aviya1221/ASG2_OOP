@@ -318,79 +318,79 @@ See [05-use-cases.md](05-use-cases.md).
 | REQ-04 Users see only their own lessons | UC-08 | SDD §2.2 | TC-004 | Passed |
 | REQ-05 No room code or join step | UC-08 | SDD §2.2 | TC-005 | Passed |
 | REQ-06 Lesson page with three tabs | UC-08 | SDD §2.1 | TC-005 | Passed |
-| REQ-07 Register a face from one photo | UC-06 | SDD §2.3 | TC-010, TC-011 | Passed |
-| REQ-08 Opt out of face recognition | UC-06 | SDD §2.3 | TC-012 | Passed |
-| REQ-09 Teacher approves replacing a face | UC-06 | SDD §2.3 | TC-013 | Passed |
-| REQ-10 Teacher photographs the class | UC-01 | SDD §2.3 | TC-014, TC-015, TC-100, TC-118 | Not run |
-| REQ-11 Notify the students | UC-01 | SDD §2.9 | TC-016, TC-118 | Not run |
-| REQ-12 Collect the student's response | UC-01 | SDD §2.4 | TC-017, TC-100, TC-118 | Not run |
-| REQ-13 One attendance result per student | UC-01 | SDD §2.4 | TC-018, TC-019, TC-020, TC-021, TC-022 | Passed |
-| REQ-14 Row-and-seat request | UC-01 | SDD §2.4 | TC-023 | Passed |
-| REQ-15 Teacher decides row-and-seat requests | UC-01 | SDD §2.4 | TC-024 | Passed |
-| REQ-16 Keep a record of requests | UC-01 | SDD §2.4 | TC-025 | Passed |
-| REQ-17 Flag students | UC-01 | SDD §2.4 | TC-026 | Passed |
-| REQ-18 Attendance sheet in the app | UC-01 | SDD §2.4 | TC-027 | Passed |
-| REQ-19 Download the attendance sheet | UC-01 | SDD §2.4 | TC-028 | Passed |
-| REQ-20 Separate forum per lesson | UC-02 | SDD §2.5 | TC-040 | Passed |
-| REQ-21 List forums by lecture number | UC-02 | SDD §2.5 | TC-041 | Passed |
-| REQ-22 Teacher enters the lecture topic | UC-08 | SDD §2.5 | TC-042 | Passed |
-| REQ-23 Forums stay open with no closing date | UC-02 | SDD §2.5 | TC-043 | Passed |
-| REQ-24 Show messages without reloading | UC-02 | SDD §2.5 | TC-044 | Passed |
-| REQ-25 Write a message or reply | UC-02 | SDD §2.5 | TC-045, TC-051 | Passed |
-| REQ-26 Who sees the writer's name | UC-02 | SDD §2.5 | TC-046 | Passed |
-| REQ-27 Text-only messages with links | UC-02 | SDD §2.5 | TC-047 | Passed |
-| REQ-28 No editing of messages | UC-02 | SDD §2.5 | TC-048 | Passed |
-| REQ-29 Only the teacher deletes messages | UC-02 | SDD §2.5 | TC-049 | Passed |
-| REQ-30 Publish a poll in the forum | UC-03 | SDD §2.6 | TC-060, TC-101 | Passed |
-| REQ-31 Show a published poll | UC-03 | SDD §2.6 | TC-061 | Passed |
-| REQ-32 Answer a poll only while open | UC-03 | SDD §2.6 | TC-062 | Passed |
-| REQ-33 Refuse a second poll answer | UC-03 | SDD §2.6 | TC-063 | Passed |
-| REQ-34 Allow another poll answer | UC-03 | SDD §2.6 | TC-064 | Passed |
-| REQ-35 Live chart of poll answers | UC-03 | SDD §2.6 | TC-065 | Passed |
-| REQ-36 Teacher sees who answered a poll | UC-03 | SDD §2.6 | TC-066 | Passed |
-| REQ-37 Teacher closes a poll | UC-03 | SDD §2.6 | TC-067, TC-101 | Passed |
-| REQ-38 Poll closes at the end of the lesson | UC-03 | SDD §2.6 | TC-068, TC-101 | Passed |
-| REQ-39 Keep the poll in the forum | UC-03 | SDD §2.6 | TC-069 | Passed |
-| REQ-40 Summary button in the forum | UC-04 | SDD §2.7 | TC-080 | Passed |
-| REQ-41 When the summary page opens | UC-04 | SDD §2.7 | TC-080, TC-102 | Passed |
-| REQ-42 Upload a recording | UC-04 | SDD §2.7 | TC-081, TC-082, TC-102 | Passed |
-| REQ-43 Summary from the full video | UC-04 | SDD §2.7 | TC-083, TC-113 | Not run |
-| REQ-44 Fall back to sound alone | UC-04 | SDD §2.7 | TC-084 | Passed |
-| REQ-45 Four parts of the summary page | UC-04 | SDD §2.7 | TC-085 | Passed |
-| REQ-46 Second review of the summary | UC-04 | SDD §2.7 | TC-086, TC-113 | Not run |
-| REQ-47 Teacher edits the summary | UC-04 | SDD §2.7 | TC-087 | Passed |
-| REQ-48 Delete the recording | UC-04 | SDD §2.7 | TC-088, TC-102 | Passed |
-| REQ-49 Forum topic from the summary | UC-04 | SDD §2.7 | TC-089 | Passed |
-| REQ-50 Publish a homework PDF | UC-05 | SDD §2.8 | None yet | Gap |
-| REQ-51 Generate the review guide | UC-05 | SDD §2.8 | None yet | Gap |
-| REQ-52 Upload a solution for feedback | UC-05 | SDD §2.8 | None yet | Gap |
-| REQ-53 Report for the student only | UC-05 | SDD §2.8 | None yet | Gap |
-| REQ-54 Section scores from 0 to 100 | UC-05 | SDD §2.8 | None yet | Gap |
-| REQ-55 Question and overall scores | UC-05 | SDD §2.8 | None yet | Gap |
-| REQ-56 Three checks per homework | UC-05 | SDD §2.8 | None yet | Gap |
-| REQ-57 Class chart with filter | UC-05 | SDD §2.8 | None yet | Gap |
-| REQ-58 Report never reveals the answer | UC-05 | SDD §2.8 | None yet | Gap |
-| REQ-59 Delete the solution file | UC-05 | SDD §2.8 | None yet | Gap |
-| REQ-60 Build a form | UC-03 | SDD §2.6 | TC-070, TC-101 | Passed |
-| REQ-61 Four question types | UC-03 | SDD §2.6 | TC-071 | Passed |
-| REQ-62 Publish a form in the forum | UC-03 | SDD §2.6 | TC-070, TC-101 | Passed |
-| REQ-63 Form opens over the forum | UC-03 | SDD §2.6 | TC-072 | Passed |
-| REQ-64 Answer a form only while open | UC-03 | SDD §2.6 | TC-062 | Passed |
-| REQ-65 Refuse a second form answer | UC-03 | SDD §2.6 | TC-063 | Passed |
-| REQ-66 Allow another form answer | UC-03 | SDD §2.6 | TC-064 | Passed |
-| REQ-67 Only the teacher sees form answers | UC-03 | SDD §2.6 | TC-073 | Passed |
-| REQ-68 Teacher closes a form | UC-03 | SDD §2.6 | TC-067, TC-101 | Passed |
-| REQ-69 Keep the form in the forum | UC-03 | SDD §2.6 | TC-069 | Passed |
-| REQ-70 Expanded forum window | UC-02 | SDD §2.5 | TC-050 | Passed |
-| NFR-01 Hidden instructions do not raise the score | UC-05 | SDD §2.8 | None yet | Gap |
-| NFR-02 Forum and poll updates within 2 s | UC-02, UC-03 | SDD §2.11 | TC-110 | Not run |
-| NFR-03 Attendance response within 2 s | UC-01 | SDD §2.4 | TC-111 | Not run |
-| NFR-04 Find faces within 2 minutes per photo | UC-01 | SDD §2.3 | TC-112 | Not run |
-| NFR-05 Summary within 5 minutes | UC-04 | SDD §2.7 | TC-113 | Not run |
-| NFR-06 Report within 3 minutes | UC-05 | SDD §2.8 | None yet | Gap |
+| REQ-07 Register a face from one photo | UC-06 | SDD §2.3, EDD-Attendance | TC-010, TC-011 | Passed |
+| REQ-08 Opt out of face recognition | UC-06 | SDD §2.3, EDD-Attendance | TC-012 | Passed |
+| REQ-09 Teacher approves replacing a face | UC-06 | SDD §2.3, EDD-Attendance | TC-013 | Passed |
+| REQ-10 Teacher photographs the class | UC-01 | SDD §2.3, EDD-Attendance | TC-014, TC-015, TC-100, TC-118 | Not run |
+| REQ-11 Notify the students | UC-01 | SDD §2.9, EDD-Attendance | TC-016, TC-118 | Not run |
+| REQ-12 Collect the student's response | UC-01 | SDD §2.4, EDD-Attendance | TC-017, TC-100, TC-118 | Not run |
+| REQ-13 One attendance result per student | UC-01 | SDD §2.4, EDD-Attendance | TC-018, TC-019, TC-020, TC-021, TC-022 | Passed |
+| REQ-14 Row-and-seat request | UC-01 | SDD §2.4, EDD-Attendance | TC-023 | Passed |
+| REQ-15 Teacher decides row-and-seat requests | UC-01 | SDD §2.4, EDD-Attendance | TC-024 | Passed |
+| REQ-16 Keep a record of requests | UC-01 | SDD §2.4, EDD-Attendance | TC-025 | Passed |
+| REQ-17 Flag students | UC-01 | SDD §2.4, EDD-Attendance | TC-026 | Passed |
+| REQ-18 Attendance sheet in the app | UC-01 | SDD §2.4, EDD-Attendance | TC-027 | Passed |
+| REQ-19 Download the attendance sheet | UC-01 | SDD §2.4, EDD-Attendance | TC-028 | Passed |
+| REQ-20 Separate forum per lesson | UC-02 | SDD §2.5, EDD-Forum | TC-040 | Passed |
+| REQ-21 List forums by lecture number | UC-02 | SDD §2.5, EDD-Forum | TC-041 | Passed |
+| REQ-22 Teacher enters the lecture topic | UC-08 | SDD §2.5, EDD-Forum | TC-042 | Passed |
+| REQ-23 Forums stay open with no closing date | UC-02 | SDD §2.5, EDD-Forum | TC-043 | Passed |
+| REQ-24 Show messages without reloading | UC-02 | SDD §2.5, EDD-Forum | TC-044 | Passed |
+| REQ-25 Write a message or reply | UC-02 | SDD §2.5, EDD-Forum | TC-045, TC-051 | Passed |
+| REQ-26 Who sees the writer's name | UC-02 | SDD §2.5, EDD-Forum | TC-046 | Passed |
+| REQ-27 Text-only messages with links | UC-02 | SDD §2.5, EDD-Forum | TC-047 | Passed |
+| REQ-28 No editing of messages | UC-02 | SDD §2.5, EDD-Forum | TC-048 | Passed |
+| REQ-29 Only the teacher deletes messages | UC-02 | SDD §2.5, EDD-Forum | TC-049 | Passed |
+| REQ-30 Publish a poll in the forum | UC-03 | SDD §2.6, EDD-Polls | TC-060, TC-101 | Passed |
+| REQ-31 Show a published poll | UC-03 | SDD §2.6, EDD-Polls | TC-061 | Passed |
+| REQ-32 Answer a poll only while open | UC-03 | SDD §2.6, EDD-Polls | TC-062 | Passed |
+| REQ-33 Refuse a second poll answer | UC-03 | SDD §2.6, EDD-Polls | TC-063 | Passed |
+| REQ-34 Allow another poll answer | UC-03 | SDD §2.6, EDD-Polls | TC-064 | Passed |
+| REQ-35 Live chart of poll answers | UC-03 | SDD §2.6, EDD-Polls | TC-065 | Passed |
+| REQ-36 Teacher sees who answered a poll | UC-03 | SDD §2.6, EDD-Polls | TC-066 | Passed |
+| REQ-37 Teacher closes a poll | UC-03 | SDD §2.6, EDD-Polls | TC-067, TC-101 | Passed |
+| REQ-38 Poll closes at the end of the lesson | UC-03 | SDD §2.6, EDD-Polls | TC-068, TC-101 | Passed |
+| REQ-39 Keep the poll in the forum | UC-03 | SDD §2.6, EDD-Polls | TC-069 | Passed |
+| REQ-40 Summary button in the forum | UC-04 | SDD §2.7, EDD-LessonSummary | TC-080 | Passed |
+| REQ-41 When the summary page opens | UC-04 | SDD §2.7, EDD-LessonSummary | TC-080, TC-102 | Passed |
+| REQ-42 Upload a recording | UC-04 | SDD §2.7, EDD-LessonSummary | TC-081, TC-082, TC-102 | Passed |
+| REQ-43 Summary from the full video | UC-04 | SDD §2.7, EDD-LessonSummary | TC-083, TC-113 | Not run |
+| REQ-44 Fall back to sound alone | UC-04 | SDD §2.7, EDD-LessonSummary | TC-084 | Passed |
+| REQ-45 Four parts of the summary page | UC-04 | SDD §2.7, EDD-LessonSummary | TC-085 | Passed |
+| REQ-46 Second review of the summary | UC-04 | SDD §2.7, EDD-LessonSummary | TC-086, TC-113 | Not run |
+| REQ-47 Teacher edits the summary | UC-04 | SDD §2.7, EDD-LessonSummary | TC-087 | Passed |
+| REQ-48 Delete the recording | UC-04 | SDD §2.7, EDD-LessonSummary | TC-088, TC-102 | Passed |
+| REQ-49 Forum topic from the summary | UC-04 | SDD §2.7, EDD-LessonSummary | TC-089 | Passed |
+| REQ-50 Publish a homework PDF | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-130 | Not run |
+| REQ-51 Generate the review guide | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-131 | Not run |
+| REQ-52 Upload a solution for feedback | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-132 | Not run |
+| REQ-53 Report for the student only | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-133 | Not run |
+| REQ-54 Section scores from 0 to 100 | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-134 | Not run |
+| REQ-55 Question and overall scores | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-135 | Not run |
+| REQ-56 Three checks per homework | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-136 | Not run |
+| REQ-57 Class chart with filter | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-137 | Not run |
+| REQ-58 Report never reveals the answer | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-138 | Not run |
+| REQ-59 Delete the solution file | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-139 | Not run |
+| REQ-60 Build a form | UC-03 | SDD §2.6, EDD-Polls | TC-070, TC-101 | Passed |
+| REQ-61 Four question types | UC-03 | SDD §2.6, EDD-Polls | TC-071 | Passed |
+| REQ-62 Publish a form in the forum | UC-03 | SDD §2.6, EDD-Polls | TC-070, TC-101 | Passed |
+| REQ-63 Form opens over the forum | UC-03 | SDD §2.6, EDD-Polls | TC-072 | Passed |
+| REQ-64 Answer a form only while open | UC-03 | SDD §2.6, EDD-Polls | TC-062 | Passed |
+| REQ-65 Refuse a second form answer | UC-03 | SDD §2.6, EDD-Polls | TC-063 | Passed |
+| REQ-66 Allow another form answer | UC-03 | SDD §2.6, EDD-Polls | TC-064 | Passed |
+| REQ-67 Only the teacher sees form answers | UC-03 | SDD §2.6, EDD-Polls | TC-073 | Passed |
+| REQ-68 Teacher closes a form | UC-03 | SDD §2.6, EDD-Polls | TC-067, TC-101 | Passed |
+| REQ-69 Keep the form in the forum | UC-03 | SDD §2.6, EDD-Polls | TC-069 | Passed |
+| REQ-70 Expanded forum window | UC-02 | SDD §2.5, EDD-Forum | TC-050 | Passed |
+| NFR-01 Hidden instructions do not raise the score | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-140 | Not run |
+| NFR-02 Forum and poll updates within 2 s | UC-02, UC-03 | SDD §2.11, EDD-Forum, EDD-Polls | TC-110 | Not run |
+| NFR-03 Attendance response within 2 s | UC-01 | SDD §2.4, EDD-Attendance | TC-111 | Not run |
+| NFR-04 Find faces within 2 minutes per photo | UC-01 | SDD §2.3, EDD-Attendance | TC-112 | Not run |
+| NFR-05 Summary within 5 minutes | UC-04 | SDD §2.7, EDD-LessonSummary | TC-113 | Not run |
+| NFR-06 Report within 3 minutes | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-141 | Not run |
 | NFR-07 Supported browsers | All | SDD §2.1 | TC-114 | Not run |
 | NFR-08 Service key stays on the server | All | SDD §2.10 | TC-115 | Not run |
-| NFR-09 Student face-print deleted within 1 s | UC-01 | SDD §2.4 | TC-029 | Passed |
-| NFR-10 Class face-prints deleted within 1 minute of the hour's end | UC-01 | SDD §2.4 | TC-100 | Passed |
+| NFR-09 Student face-print deleted within 1 s | UC-01 | SDD §2.4, EDD-Attendance | TC-029 | Passed |
+| NFR-10 Class face-prints deleted within 1 minute of the hour's end | UC-01 | SDD §2.4, EDD-Attendance | TC-100 | Passed |
 | NFR-11 99% availability in the pilot | All | SDD §5 | TC-116 | Not run |
 | NFR-12 Fits every screen width | All | SDD §2.1 | TC-117 | Not run |
