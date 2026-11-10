@@ -255,7 +255,7 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
 - [x] Polls
 - [ ] Lesson summary: database and server
   - [x] Table and access rules
-  - [ ] Making the summary on the server, with the sound fallback
+  - [x] Making the summary on the server, with the sound fallback
   - [ ] Integration tests of the lesson summary
 - [ ] Video summary (if in demo scope)
 - [ ] Homework review (if in demo scope)
