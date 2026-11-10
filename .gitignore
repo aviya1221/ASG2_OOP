@@ -11,6 +11,9 @@ node_modules/
 app/client/public/vendor/
 app/client/public/models/
 
+# Real people's names and ID numbers for the demo: kept on this computer only
+app/demo-data/
+
 # The local link of the Netlify command line to the site
 .netlify/
 
