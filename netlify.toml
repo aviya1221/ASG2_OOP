@@ -1,0 +1,22 @@
+# The web client on Netlify (docs/06-SDD.md, section 5: deployment).
+# Each production publish uses 15 of the 300 monthly credits, so the team publishes by hand at milestones (R22).
+# VITE_SUPABASE_URL, VITE_SUPABASE_PUBLIC_KEY, VITE_SERVER_URL and VITE_VAPID_PUBLIC_KEY are set in the Netlify dashboard.
+[build]
+  base = "app/client"
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# The face tools do not change between versions, so phones keep them for a week
+# instead of downloading about 63 MB again.
+[[headers]]
+  for = "/models/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/vendor/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"

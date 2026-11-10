@@ -1,0 +1,33 @@
+# Our server on Render (docs/06-SDD.md, section 5: deployment).
+# Values marked "sync: false" are secret or depend on the other services, and are entered in the Render dashboard.
+services:
+  - type: web
+    name: lesson-server
+    runtime: node
+    plan: free
+    region: frankfurt
+    rootDir: app/server
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /health
+    # A new version goes up only after the tests of that commit passed on GitHub.
+    autoDeployTrigger: checksPass
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: LLM_PROVIDER
+        value: gemini
+      - key: WEB_ORIGIN
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SECRET_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: VAPID_PUBLIC_KEY
+        sync: false
+      - key: VAPID_PRIVATE_KEY
+        sync: false
+      - key: VAPID_SUBJECT
+        sync: false
