@@ -365,6 +365,98 @@ td {
   color: var(--paper);
 }
 
+.reply {
+  margin-inline-start: 24px;
+  border-inline-start: 3px solid var(--soft);
+}
+
+.message-text {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.check input {
+  width: 20px;
+  height: 20px;
+}
+
+.topic {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 8px;
+}
+
+.topic .field {
+  flex: 1 1 200px;
+}
+
+.choices {
+  display: grid;
+  gap: 6px;
+}
+
+.choice {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+}
+
+.option {
+  min-height: 44px;
+  padding: 8px 10px;
+  background: transparent;
+  border: 1px solid var(--ink);
+  text-align: right;
+}
+
+.option.chosen {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.results {
+  display: grid;
+  gap: 8px;
+}
+
+.track {
+  display: block;
+  height: 6px;
+  background: var(--soft);
+}
+
+.bar {
+  display: block;
+  height: 6px;
+  background: var(--ink);
+}
+
+.missing {
+  border-color: var(--problem);
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  overflow-y: auto;
+  background: var(--ground);
+}
+
+.overlay-body {
+  max-width: 760px;
+  margin-inline: auto;
+  padding: 20px;
+}
+
 .admin {
   display: grid;
   gap: 24px;

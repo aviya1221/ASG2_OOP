@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, useParams } from "react-router";
 import { AttendanceTab } from "../attendance/AttendanceTab.tsx";
+import { ForumTab } from "../forum/ForumTab.tsx";
 import { supabase } from "../lib/supabase.ts";
 import { lectureTitle } from "./lessons.ts";
 
@@ -13,6 +14,7 @@ const TABS = [
 type TabId = (typeof TABS)[number]["id"];
 
 interface LessonHeader {
+  courseId: string;
   courseName: string;
   lectureNumber: number;
   topic: string | null;
@@ -30,7 +32,7 @@ export function LessonPage() {
     setMissing(false);
     void supabase
       .from("lessons")
-      .select("lecture_number, topic, courses(name)")
+      .select("course_id, lecture_number, topic, courses(name)")
       .eq("id", lessonId)
       .maybeSingle()
       .then(({ data }) => {
@@ -39,6 +41,7 @@ export function LessonPage() {
           return;
         }
         setLesson({
+          courseId: data.course_id,
           courseName: (data.courses as unknown as { name: string }).name,
           lectureNumber: data.lecture_number,
           topic: data.topic,
@@ -77,6 +80,8 @@ export function LessonPage() {
       <main className="content">
         {openTab === "attendance" ? (
           <AttendanceTab lessonId={lessonId} />
+        ) : openTab === "forum" ? (
+          <ForumTab lessonId={lessonId} courseId={lesson.courseId} courseName={lesson.courseName} />
         ) : (
           <>
             <h2>{TABS.find((item) => item.id === openTab)?.label}</h2>

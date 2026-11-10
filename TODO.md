@@ -251,7 +251,7 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
   - [x] Forum tables and functions
   - [x] Poll and form tables, rules and the closing job
   - [x] Integration tests of the forum, polls and forms
-- [ ] Comments and suggestions
+- [x] Comments and suggestions
 - [x] Polls
 - [ ] Video summary (if in demo scope)
 - [ ] Homework review (if in demo scope)
