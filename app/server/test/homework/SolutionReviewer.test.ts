@@ -57,6 +57,16 @@ describe("SolutionReviewer", () => {
     assert.equal(llm.calls.filter((call) => call.method === "uploadFile").length, 0);
   });
 
+  it("writes the guide in the order the spike measured, whatever order its keys come back from the database", async () => {
+    const reordered = {
+      system_prompt: GUIDE.system_prompt,
+      questions: GUIDE.questions.map((q) => ({ sections: q.sections.map((s) => ({ giving_away: s.giving_away, score_bands: s.score_bands, expected: s.expected, requirements: s.requirements, asked: s.asked, id: s.id })), title: q.title, id: q.id })),
+    };
+    const llm = scripted([FULL]);
+    await new SolutionReviewer(llm).review(reordered, PDF_BYTES);
+    assert.ok(requests(llm)[0]!.instructions!.endsWith(`Review guide:\n${JSON.stringify(GUIDE.questions)}`));
+  });
+
   it("asks again with another seed after a rejected answer, because the same seed returns the same answer", async () => {
     const llm = scripted([() => answerOf([mark("q1_a", 50)]), FULL]);
     const marks = await new SolutionReviewer(llm).review(GUIDE, PDF_BYTES);

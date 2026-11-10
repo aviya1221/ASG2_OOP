@@ -30,6 +30,17 @@ export function sectionIds(guide: ReviewGuide): string[] {
   return guide.questions.flatMap((question) => question.sections.map((section) => section.id));
 }
 
+/** The guide as the spike sent it: the database reorders the keys of a stored guide, so the order is set here. */
+export function guideText(guide: ReviewGuide): string {
+  return JSON.stringify(
+    guide.questions.map(({ id, title, sections }) => ({
+      id,
+      title,
+      sections: sections.map(({ id, asked, requirements, expected, score_bands, giving_away }) => ({ id, asked, requirements, expected, score_bands, giving_away })),
+    })),
+  );
+}
+
 export function reviewSchema(ids: string[]): JsonSchema {
   const text: JsonSchema = { type: "string" };
   return {
@@ -125,7 +136,7 @@ export class SolutionReviewer {
 
   async #ask(guide: ReviewGuide, ids: string[], solution: Uint8Array, seed: number): Promise<SectionMark[]> {
     const { data } = await this.#llm.generateJson<SectionMark[]>({
-      instructions: `${REVIEW_RULES}\n\nInstructions for this homework:\n${guide.system_prompt}\n\nReview guide:\n${JSON.stringify(guide.questions)}`,
+      instructions: `${REVIEW_RULES}\n\nInstructions for this homework:\n${guide.system_prompt}\n\nReview guide:\n${guideText(guide)}`,
       prompt: REVIEW_PROMPT,
       // The solution goes inside the request and is never uploaded as a file (REQ-59).
       attachments: [{ mimeType: PDF, data: solution }],
