@@ -249,7 +249,7 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
 - [x] Teacher: download the attendance sheet
 - [ ] Forum, polls and forms: database
   - [x] Forum tables and functions
-  - [ ] Poll and form tables, rules and the closing job
+  - [x] Poll and form tables, rules and the closing job
   - [ ] Integration tests of the forum, polls and forms
 - [ ] Comments and suggestions
 - [ ] Polls
