@@ -361,16 +361,16 @@ See [05-use-cases.md](05-use-cases.md).
 | REQ-47 Teacher edits the summary | UC-04 | SDD §2.7, EDD-LessonSummary | TC-087 | Passed |
 | REQ-48 Delete the recording | UC-04 | SDD §2.7, EDD-LessonSummary | TC-088, TC-102 | Passed |
 | REQ-49 Forum topic from the summary | UC-04 | SDD §2.7, EDD-LessonSummary | TC-089 | Passed |
-| REQ-50 Publish a homework PDF | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-130 | Not run |
-| REQ-51 Generate the review guide | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-131 | Not run |
-| REQ-52 Upload a solution for feedback | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-132 | Not run |
-| REQ-53 Report for the student only | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-133 | Not run |
-| REQ-54 Section scores from 0 to 100 | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-134 | Not run |
-| REQ-55 Question and overall scores | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-135 | Not run |
-| REQ-56 Three checks per homework | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-136 | Not run |
-| REQ-57 Class chart with filter | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-137 | Not run |
+| REQ-50 Publish a homework PDF | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-130 | Passed |
+| REQ-51 Generate the review guide | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-131 | Passed |
+| REQ-52 Upload a solution for feedback | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-132 | Passed |
+| REQ-53 Report for the student only | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-133 | Passed |
+| REQ-54 Section scores from 0 to 100 | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-134 | Passed |
+| REQ-55 Question and overall scores | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-135 | Passed |
+| REQ-56 Three checks per homework | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-136 | Passed |
+| REQ-57 Class chart with filter | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-137 | Passed |
 | REQ-58 Report never reveals the answer | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-138 | Not run |
-| REQ-59 Delete the solution file | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-139 | Not run |
+| REQ-59 Delete the solution file | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-139 | Passed |
 | REQ-60 Build a form | UC-03 | SDD §2.6, EDD-Polls | TC-070, TC-101 | Passed |
 | REQ-61 Four question types | UC-03 | SDD §2.6, EDD-Polls | TC-071 | Passed |
 | REQ-62 Publish a form in the forum | UC-03 | SDD §2.6, EDD-Polls | TC-070, TC-101 | Passed |
