@@ -216,5 +216,7 @@ Copy [server/.env.example](server/.env.example) to `server/.env`. The `.env` fil
 | [ONNX Runtime Web](https://github.com/microsoft/onnxruntime) | Runs the face-print model in the browser | MIT |
 | [write-excel-file](https://gitlab.com/catamphetamine/write-excel-file) | Writes the attendance sheet | MIT |
 | [web-push](https://github.com/web-push-libs/web-push) | Sends phone notifications | MPL-2.0 |
+| [multer](https://github.com/expressjs/multer) | Receives the recording of a lesson | MIT |
+| [ffmpeg-static](https://github.com/eugeneware/ffmpeg-static) | Copies the sound track of a recording. It runs as a separate program | GPL-3.0-or-later |
 | [ExcelJS](https://github.com/exceljs/exceljs) | Reads the attendance sheet in a browser test (dev tool) | MIT |
 | [Test photos](e2e/photos/README.md) | Generated pictures of people who do not exist | Public domain |
