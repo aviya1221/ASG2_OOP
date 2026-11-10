@@ -95,7 +95,7 @@ The lecturer requires that we **actually test** every tool we suggest.
   - [x] Form builder
   - [x] AI coding assistant
   - [x] Homework review (F5)
-- [ ] Decisions as ADRs: what we chose, alternatives rejected and why (one commit per decision)
+- [x] Decisions as ADRs: what we chose, alternatives rejected and why (one commit per decision)
   - [x] ADR-1: face tool for photo attendance (F1)
   - [x] ADR-2: source and service for the lesson summary (F4)
   - [x] ADR-3: database, sign-in, files and live updates
@@ -105,6 +105,7 @@ The lecturer requires that we **actually test** every tool we suggest.
   - [x] ADR-6: attendance sheet file
   - [x] ADR-7: form builder
   - [x] ADR-8: way of building
+  - [x] ADR-9: model for the homework review (F5)
 - [ ] Technology risk register with mitigations (keep a fallback for risky tools)
   - [x] Face tools for photo attendance (F1): R1 to R6
   - [x] Lesson summary (F4): R7 to R10
