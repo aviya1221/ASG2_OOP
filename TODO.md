@@ -253,6 +253,10 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
   - [x] Integration tests of the forum, polls and forms
 - [x] Comments and suggestions
 - [x] Polls
+- [ ] Lesson summary: database and server
+  - [x] Table and access rules
+  - [ ] Making the summary on the server, with the sound fallback
+  - [ ] Integration tests of the lesson summary
 - [ ] Video summary (if in demo scope)
 - [ ] Homework review (if in demo scope)
 - [ ] Unit tests for the core classes (per the STP, step 8)
