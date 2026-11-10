@@ -247,6 +247,10 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
 - [x] One result per student per lesson
 - [x] Teacher: live attendance sheet
 - [x] Teacher: download the attendance sheet
+- [ ] Forum, polls and forms: database
+  - [x] Forum tables and functions
+  - [ ] Poll and form tables, rules and the closing job
+  - [ ] Integration tests of the forum, polls and forms
 - [ ] Comments and suggestions
 - [ ] Polls
 - [ ] Video summary (if in demo scope)
