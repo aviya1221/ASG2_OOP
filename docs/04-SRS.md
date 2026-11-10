@@ -270,7 +270,7 @@ Rules for REQ-13, checked in this order. Only the result "Present" marks the stu
 
 | ID | Category | Requirement | Priority |
 |----|----------|-------------|----------|
-| NFR-01 | Security | Text in a student's file that addresses the reviewer, visible or hidden, shall change the score of a section by no more than 10 points compared with the same file without that text. | Must |
+| NFR-01 | Security | Text in a student's file that addresses the reviewer, visible or hidden, shall raise the median score of a section over 3 reviews by no more than 10 points compared with the same file without that text. | Must |
 | NFR-02 | Performance | With 50 students connected, a new forum message or poll result shall appear for everyone within 2 s in 95% of cases. | Must |
 | NFR-03 | Performance | With 50 students responding in the same minute, the server shall process a student's attendance response within 2 s in 95% of cases. | Must |
 | NFR-04 | Performance | The teacher's phone shall find the faces in a class photo with 50 faces within 2 minutes per photo. | Must |
@@ -382,7 +382,7 @@ See [05-use-cases.md](05-use-cases.md).
 | REQ-68 Teacher closes a form | UC-03 | SDD §2.6 | TC-067, TC-101 | Passed |
 | REQ-69 Keep the form in the forum | UC-03 | SDD §2.6 | TC-069 | Passed |
 | REQ-70 Expanded forum window | UC-02 | SDD §2.5 | TC-050 | Passed |
-| NFR-01 Hidden instructions do not change the score | UC-05 | SDD §2.8 | None yet | Gap |
+| NFR-01 Hidden instructions do not raise the score | UC-05 | SDD §2.8 | None yet | Gap |
 | NFR-02 Forum and poll updates within 2 s | UC-02, UC-03 | SDD §2.11 | TC-110 | Not run |
 | NFR-03 Attendance response within 2 s | UC-01 | SDD §2.4 | TC-111 | Not run |
 | NFR-04 Find faces within 2 minutes per photo | UC-01 | SDD §2.3 | TC-112 | Not run |
