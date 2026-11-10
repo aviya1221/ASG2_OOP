@@ -369,7 +369,7 @@ See [05-use-cases.md](05-use-cases.md).
 | REQ-55 Question and overall scores | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-135 | Passed |
 | REQ-56 Three checks per homework | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-136 | Passed |
 | REQ-57 Class chart with filter | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-137 | Passed |
-| REQ-58 Report never reveals the answer | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-138 | Not run |
+| REQ-58 Report never reveals the answer | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-138 | Passed |
 | REQ-59 Delete the solution file | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-139 | Passed |
 | REQ-60 Build a form | UC-03 | SDD §2.6, EDD-Polls | TC-070, TC-101 | Passed |
 | REQ-61 Four question types | UC-03 | SDD §2.6, EDD-Polls | TC-071 | Passed |
@@ -382,12 +382,12 @@ See [05-use-cases.md](05-use-cases.md).
 | REQ-68 Teacher closes a form | UC-03 | SDD §2.6, EDD-Polls | TC-067, TC-101 | Passed |
 | REQ-69 Keep the form in the forum | UC-03 | SDD §2.6, EDD-Polls | TC-069 | Passed |
 | REQ-70 Expanded forum window | UC-02 | SDD §2.5, EDD-Forum | TC-050 | Passed |
-| NFR-01 Hidden instructions do not raise the score | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-140 | Not run |
+| NFR-01 Hidden instructions do not raise the score | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-140 | Passed |
 | NFR-02 Forum and poll updates within 2 s | UC-02, UC-03 | SDD §2.11, EDD-Forum, EDD-Polls | TC-110 | Not run |
 | NFR-03 Attendance response within 2 s | UC-01 | SDD §2.4, EDD-Attendance | TC-111 | Not run |
 | NFR-04 Find faces within 2 minutes per photo | UC-01 | SDD §2.3, EDD-Attendance | TC-112 | Not run |
 | NFR-05 Summary within 5 minutes | UC-04 | SDD §2.7, EDD-LessonSummary | TC-113 | Not run |
-| NFR-06 Report within 3 minutes | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-141 | Not run |
+| NFR-06 Report within 3 minutes | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-141 | Passed |
 | NFR-07 Supported browsers | All | SDD §2.1 | TC-114 | Not run |
 | NFR-08 Service key stays on the server | All | SDD §2.10 | TC-115 | Not run |
 | NFR-09 Student face-print deleted within 1 s | UC-01 | SDD §2.4, EDD-Attendance | TC-029 | Passed |
