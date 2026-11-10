@@ -264,6 +264,17 @@ button.framed {
   background: transparent;
 }
 
+.link-button {
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid var(--ink);
+  text-decoration: none;
+}
+
+.actions {
+  flex-wrap: wrap;
+}
+
 .hidden-input {
   position: absolute;
   width: 1px;

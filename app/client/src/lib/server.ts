@@ -22,6 +22,23 @@ async function send(path: string, body: unknown, token: string): Promise<Respons
   });
 }
 
+/** Sends a file to our server. A large upload is not sent twice. */
+export async function uploadToServer<T>(path: string, form: FormData): Promise<T> {
+  const { data } = await supabase.auth.getSession();
+  const token = data.session?.access_token;
+  if (!token) throw new ServerError("not_signed_in", "Sign in first.");
+  const response = await fetch(`${import.meta.env.VITE_SERVER_URL}${path}`, {
+    method: "POST",
+    headers: { authorization: `Bearer ${token}` },
+    body: form,
+    signal: AbortSignal.timeout(10 * TIMEOUT_MS),
+  });
+  const text = await response.text();
+  const json = text ? JSON.parse(text) : {};
+  if (!response.ok) throw new ServerError(json.error ?? "server_error", json.message ?? "");
+  return json as T;
+}
+
 /** Calls our server with the user's sign-in token, and tries once more if the network failed. */
 export async function callServer<T>(path: string, body: unknown): Promise<T> {
   const { data } = await supabase.auth.getSession();

@@ -204,6 +204,9 @@ export function ForumTab({ lessonId, courseId, courseName }: { lessonId: string;
       <div className="row-between">
         <h2>פורום</h2>
         <span className="actions">
+          <Link className="framed small link-button" to={`/lessons/${lessonId}/summary`}>
+            סיכום השיעור
+          </Link>
           <button className="framed small" onClick={() => setListOpen(!listOpen)}>
             כל ההרצאות
           </button>

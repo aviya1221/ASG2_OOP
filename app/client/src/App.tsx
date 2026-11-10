@@ -5,6 +5,7 @@ import { useAttendanceResponder } from "./attendance/AttendanceResponder.ts";
 import { FacePage } from "./attendance/FacePage.tsx";
 import { LessonPage } from "./lessons/LessonPage.tsx";
 import { LessonsPage } from "./lessons/LessonsPage.tsx";
+import { SummaryPage } from "./summaries/SummaryPage.tsx";
 import { AdminPage } from "./timetable/AdminPage.tsx";
 
 export function App() {
@@ -19,6 +20,7 @@ export function App() {
   const { person } = session;
   return (
     <Routes>
+      <Route path="/lessons/:lessonId/summary" element={<SummaryPage />} />
       <Route path="/lessons/:lessonId/:tab?" element={<LessonPage />} />
       <Route path="/face" element={<FacePage person={person} />} />
       <Route path="*" element={person.role === "admin" ? <AdminPage person={person} /> : <LessonsPage person={person} />} />

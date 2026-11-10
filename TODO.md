@@ -257,7 +257,7 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
   - [x] Table and access rules
   - [x] Making the summary on the server, with the sound fallback
   - [x] Integration tests of the lesson summary
-- [ ] Video summary (if in demo scope)
+- [x] Video summary (if in demo scope)
 - [ ] Homework review (if in demo scope)
 - [ ] Unit tests for the core classes (per the STP, step 8)
 - [x] Test automation: GitHub Actions runs the type check and the unit, integration and browser tests on every push
