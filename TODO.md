@@ -85,7 +85,7 @@ The lecturer requires that we **actually test** every tool we suggest.
   - [x] AI coding assistant: write the spike in the report
   - [x] Homework review (F5): scripts and measured results → [app/spikes/homework-review/](app/spikes/homework-review/)
   - [x] Homework review (F5): write the spike in the report
-- [ ] Comparison table
+- [x] Comparison table
   - [x] Face tools for photo attendance (F1)
   - [x] Lesson summary (F4)
   - [x] Database and live updates (Supabase)
@@ -94,6 +94,7 @@ The lecturer requires that we **actually test** every tool we suggest.
   - [x] Attendance sheet export
   - [x] Form builder
   - [x] AI coding assistant
+  - [x] Homework review (F5)
 - [ ] Decisions as ADRs: what we chose, alternatives rejected and why (one commit per decision)
   - [x] ADR-1: face tool for photo attendance (F1)
   - [x] ADR-2: source and service for the lesson summary (F4)

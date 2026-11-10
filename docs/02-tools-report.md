@@ -470,6 +470,8 @@ The need comes from the [forum decisions](features/F2-lesson-forum-strategy.md) 
 | Form builder | 1. Our own code | Free | 85 lines to write and maintain | Runs in the browser, with nothing to install; not yet tried on a phone | Adds 1.1 KB compressed; rendered all four question types from right to left; found every unanswered question | Yes (ADR-7) |
 | Form builder | 2. SurveyJS form library | The form library is free; the builder is paid | One library for the answer window; the builder would still be ours or paid | Not tested | Adds 498.7 KB compressed | No |
 | Form builder | 3. Form.io | Free, open source | One library with a builder and a renderer | Not tested | Adds 509.2 KB compressed | No |
+| Homework review | 1. `gemini-3.5-flash-lite` | Free tier; no daily limit reached in about 94 requests | One call through our LLM layer | Runs on the server; the student uploads a PDF | 4.2 s at the median; overall score moved up to 9 points, one section up to 35; 1 of 16 reports gave away an idea; Arabic letters in 5 sections | Yes |
+| Homework review | 2. `gemini-3.6-flash` | Free tier of 20 requests a day | One call through our LLM layer | Runs on the server; the student uploads a PDF | 32 to 65 s for a review on the first try; overall score moved up to 4 points, one section up to 25; 0 of 7 reports gave away an idea; 18 requests failed because the model was busy | No |
 | AI coding assistant | 1. Claude Code | Paid plan from $17 a month | Works in the repository, with no extra setup | A development tool, not part of the product | 172 of 172 commits and 8 spikes; two wrong statements, caught by the team | Yes (ADR-8) |
 
 ## 5. Decisions (ADRs)
