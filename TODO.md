@@ -84,6 +84,7 @@ The lecturer requires that we **actually test** every tool we suggest.
   - [x] Form builder (F6): write the spike in the report
   - [x] AI coding assistant: write the spike in the report
   - [x] Homework review (F5): scripts and measured results → [app/spikes/homework-review/](app/spikes/homework-review/)
+  - [x] Homework review (F5): write the spike in the report
 - [ ] Comparison table
   - [x] Face tools for photo attendance (F1)
   - [x] Lesson summary (F4)

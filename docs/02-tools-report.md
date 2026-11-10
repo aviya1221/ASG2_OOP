@@ -408,6 +408,33 @@ The need comes from the [forum decisions](features/F2-lesson-forum-strategy.md) 
 - **Evidence:** [the measured results](../app/spikes/form-builder/results/summary.md).
 - **Time spent:** about 20 minutes.
 
+### Spike: homework review (F5)
+
+- **Goal:** find out whether a model can make a review guide from a homework PDF in any subject, and then score solutions steadily, without giving away the answer and without obeying text in the file.
+- **What we did:** two made-up homeworks, in probability (7 sections) and social psychology (5 sections), each with a strong, a partial and a weak solution as PDF files. `gemini-3.6-flash` made one guide per homework, reused for every check. Every review went through the product's LLM layer with a fixed seed, and with two wordings of the rule against giving away the answer. Code: [app/spikes/homework-review/](../app/spikes/homework-review/).
+- **Result.** The rows on giving away, steadiness and Arabic letters use the stricter wording. For option 1, the time and the hidden instructions were measured with the first wording.
+
+  | Measure | 1. `gemini-3.5-flash-lite` | 2. `gemini-3.6-flash` |
+  |---------|----------------------------|------------------------|
+  | Reviews done | 82, with no daily limit reached | 10 in two days, stopped each day by the limit of 20 requests a day |
+  | Time of a review | 4.2 s at the median; 4.5 and 8.1 s for 20 pages | 32 to 65 s when it went through on the first try |
+  | Requests that failed because the model was busy | 7 of about 94 | 18, and 3 reviews failed all 3 tries |
+  | Overall score of the partial solution, different seeds | 38 to 47, and 24 to 30 | 41 to 45, and 27 to 31 |
+  | Largest move of one section, different seeds | 35 points | 25 points |
+  | Reports with a key step or a requested idea | 1 of 16 | 0 of 7 |
+  | Sections with Arabic letters inside Hebrew words | 5 | 0 |
+  | Hidden and visible instructions in 4 languages | 35 of 36 section medians within 10 points; the largest rise was 10 | Not reached before the daily limit |
+
+  With option 1, the same file and the same seed gave identical scores, and an empty file or a copy of the homework got 0 in every section. With both models, a section left blank got 0 in every review.
+
+  **Limits we found:**
+  - Option 1 gave 0 to a section answered but completely wrong 31 times, so the server lifts it to 1.
+  - A retry with the same seed returned the same rejected answer, so a retry needs another seed.
+  - The spike set no temperature, because Gemini 3.6 and later ignore it, so the seed is the only setting for steadiness.
+  - With option 1, the median of 3 reviews still moved a section by 25 points, at three times the requests.
+- **Evidence:** [the measured results](../app/spikes/homework-review/results/summary.md).
+- **Time spent:** two sessions, on 2026-11-09 and 2026-11-10, because of the daily limit.
+
 ### Spike: AI coding assistant
 
 - **Goal:** find out whether an AI coding assistant can carry the work on a product like ours, and where the team still has to check it.
