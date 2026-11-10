@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 import { ID, newCourse, newLesson, openAs, secret, signedInClient, studentFor } from "./helpers.ts";
 
 // Several people sign in at once in these tests, which takes longer in the iPhone profile.
-test.describe.configure({ timeout: 60_000 });
+test.describe.configure({ timeout: 120_000 });
 
 const POLL = [{ id: "q1", type: "single", text: "הבנתם את הדוגמה?", options: ["כן", "חלקית", "לא"] }];
 

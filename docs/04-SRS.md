@@ -351,16 +351,16 @@ See [05-use-cases.md](05-use-cases.md).
 | REQ-37 Teacher closes a poll | UC-03 | SDD §2.6 | TC-067, TC-101 | Passed |
 | REQ-38 Poll closes at the end of the lesson | UC-03 | SDD §2.6 | TC-068, TC-101 | Passed |
 | REQ-39 Keep the poll in the forum | UC-03 | SDD §2.6 | TC-069 | Passed |
-| REQ-40 Summary button in the forum | UC-04 | SDD §2.7 | TC-080 | Not run |
-| REQ-41 When the summary page opens | UC-04 | SDD §2.7 | TC-080, TC-102 | Not run |
-| REQ-42 Upload a recording | UC-04 | SDD §2.7 | TC-081, TC-082, TC-102 | Not run |
+| REQ-40 Summary button in the forum | UC-04 | SDD §2.7 | TC-080 | Passed |
+| REQ-41 When the summary page opens | UC-04 | SDD §2.7 | TC-080, TC-102 | Passed |
+| REQ-42 Upload a recording | UC-04 | SDD §2.7 | TC-081, TC-082, TC-102 | Passed |
 | REQ-43 Summary from the full video | UC-04 | SDD §2.7 | TC-083, TC-113 | Not run |
-| REQ-44 Fall back to sound alone | UC-04 | SDD §2.7 | TC-084 | Not run |
-| REQ-45 Four parts of the summary page | UC-04 | SDD §2.7 | TC-085 | Not run |
+| REQ-44 Fall back to sound alone | UC-04 | SDD §2.7 | TC-084 | Passed |
+| REQ-45 Four parts of the summary page | UC-04 | SDD §2.7 | TC-085 | Passed |
 | REQ-46 Second review of the summary | UC-04 | SDD §2.7 | TC-086, TC-113 | Not run |
-| REQ-47 Teacher edits the summary | UC-04 | SDD §2.7 | TC-087 | Not run |
-| REQ-48 Delete the recording | UC-04 | SDD §2.7 | TC-088, TC-102 | Not run |
-| REQ-49 Forum topic from the summary | UC-04 | SDD §2.7 | TC-089 | Not run |
+| REQ-47 Teacher edits the summary | UC-04 | SDD §2.7 | TC-087 | Passed |
+| REQ-48 Delete the recording | UC-04 | SDD §2.7 | TC-088, TC-102 | Passed |
+| REQ-49 Forum topic from the summary | UC-04 | SDD §2.7 | TC-089 | Passed |
 | REQ-50 Publish a homework PDF | UC-05 | SDD §2.8 | None yet | Gap |
 | REQ-51 Generate the review guide | UC-05 | SDD §2.8 | None yet | Gap |
 | REQ-52 Upload a solution for feedback | UC-05 | SDD §2.8 | None yet | Gap |

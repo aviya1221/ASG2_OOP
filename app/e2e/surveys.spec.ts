@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 import { ID, L1, newCourse, newLesson, openAs, secret, signedInClient, studentFor } from "./helpers.ts";
 
 // Several people sign in at once in these tests, which takes longer in the iPhone profile.
-test.describe.configure({ timeout: 60_000 });
+test.describe.configure({ timeout: 120_000 });
 
 test("TC-061 a poll appears for the students of the lesson with no reload", async ({ browser, page }, info) => {
   const student = studentFor(info.project.name, 60);
