@@ -496,3 +496,60 @@ td {
     align-items: start;
   }
 }
+
+/* Homework tab: the report and the class chart (REQ-53, REQ-57). */
+.homework-tab h3,
+.homework-tab h4 {
+  margin: 0;
+  line-height: 1.3;
+}
+
+.homework-tab h3 {
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.homework-tab h4 {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.report-section {
+  padding: 10px 12px;
+  border: 1px solid var(--soft);
+}
+
+.feedback {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+}
+
+.feedback dt {
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.feedback dd {
+  margin: 0 0 6px;
+}
+
+.chart-filter {
+  grid-auto-flow: column;
+  align-items: center;
+}
+
+.chart-filter select {
+  width: auto;
+}
+
+.result-row.me {
+  font-weight: 700;
+  outline: 2px solid var(--ink);
+  outline-offset: 4px;
+}
+
+.place {
+  font-variant-numeric: tabular-nums;
+}

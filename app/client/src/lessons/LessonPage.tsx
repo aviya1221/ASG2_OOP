@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, NavLink, useParams } from "react-router";
 import { AttendanceTab } from "../attendance/AttendanceTab.tsx";
 import { ForumTab } from "../forum/ForumTab.tsx";
+import { HomeworkTab } from "../homework/HomeworkTab.tsx";
 import { supabase } from "../lib/supabase.ts";
 import { lectureTitle } from "./lessons.ts";
 
@@ -83,10 +84,7 @@ export function LessonPage() {
         ) : openTab === "forum" ? (
           <ForumTab lessonId={lessonId} courseId={lesson.courseId} courseName={lesson.courseName} />
         ) : (
-          <>
-            <h2>{TABS.find((item) => item.id === openTab)?.label}</h2>
-            <p className="muted">הלשונית הזאת עדיין בבנייה.</p>
-          </>
+          <HomeworkTab lessonId={lessonId} />
         )}
       </main>
     </>
