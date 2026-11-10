@@ -55,13 +55,13 @@ The commit history is part of the grade, so commit small and often.
 The lecturer requires that we **actually test** every tool we suggest.
 
 - [x] Define evaluation criteria (cost / free tier, simplicity, works on smartphones, time to set up)
-- [ ] List candidate tools per need:
+- [x] List candidate tools per need:
   - [x] Frontend / web framework
   - [x] Backend / BaaS + realtime database
   - [x] Spreadsheet export (CSV / Excel / Google Sheets)
   - [x] Attendance check-in method (QR code, session code, location, etc.)
   - [x] Hosting / deployment (public URL that works from phones)
-  - [ ] LLM API (homework review)
+  - [x] LLM API (homework review)
   - [x] Speech-to-text / video summarization (class video summary)
   - [x] Vibe-coding tools (AI coding assistants, app generators)
   - [x] Form builder

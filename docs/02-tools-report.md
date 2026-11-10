@@ -132,6 +132,19 @@ The need comes from our server, which calls Gemini, compares face-prints and rec
 | Fly.io | Hosted containers | Hosted service, paid | Rejected without a spike: new organizations have no free tier |
 
 ### 2.6 LLM API (homework review)
+
+The need comes from the [homework review decisions](features/F5-homework-review-strategy.md). A tool has to:
+- read a homework PDF in any subject and produce a review guide for it;
+- score each section of a solution PDF steadily, give feedback without the answer, and ignore instructions written in the file;
+- serve a class of 50 with up to 3 checks each, on a free tier, and answer within 3 minutes (NFR-06).
+
+| Option | What it is | License | Status |
+|--------|------------|---------|--------|
+| 1. `gemini-3.5-flash-lite` | Google's light model, through our LLM layer | Google service, free tier | Spike |
+| 2. `gemini-3.6-flash` | Google's current Flash model, through our LLM layer | Google service, free tier of 20 requests a day | Spike |
+| Models of other providers (OpenAI, Anthropic) | The same kind of service from another company | Paid | Rejected without a spike: no free tier for a pilot; the LLM layer allows a change later |
+| An open model on our server | A small model run by our own server | Open | Rejected without a spike: the free server has 0.1 CPU and 512 MB of memory |
+
 ### 2.7 Speech-to-text / video summarization
 
 The need comes from the [lesson summary decisions](features/F4-lesson-summary-strategy.md). A tool has to:
