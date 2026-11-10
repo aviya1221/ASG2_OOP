@@ -11,6 +11,9 @@ node_modules/
 app/client/public/vendor/
 app/client/public/models/
 
+# The local link of the Netlify command line to the site
+.netlify/
+
 # Build output, test reports and logs
 dist/
 coverage/
