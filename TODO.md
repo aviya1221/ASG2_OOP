@@ -252,7 +252,7 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
   - [x] Poll and form tables, rules and the closing job
   - [x] Integration tests of the forum, polls and forms
 - [ ] Comments and suggestions
-- [ ] Polls
+- [x] Polls
 - [ ] Video summary (if in demo scope)
 - [ ] Homework review (if in demo scope)
 - [ ] Unit tests for the core classes (per the STP, step 8)
