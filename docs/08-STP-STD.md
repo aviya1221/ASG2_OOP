@@ -66,8 +66,6 @@ has a unit-test table per EDD class (A.3). Test case IDs: TC-001, TC-002, ...
 
 **Not under test:** Google Gemini, Supabase, Netlify and Render themselves. Fakes replace the AI service and the notification services in automated runs.
 
-**Not yet covered:** the homework review. Its classes and test cases are added together with its design.
-
 ### A.2 Test levels
 
 | Level | What is tested | Tool | Who |
@@ -108,11 +106,20 @@ has a unit-test table per EDD class (A.3). Test case IDs: TC-001, TC-002, ...
 | EDD-LessonSummary | `SoundExtractor` | `extract` | The sound track of a short clip | TC-084 |
 | EDD-LessonSummary | `SummaryRepository` | `markStarted`, `saveReady`, `markFailed`, `setTopicIfEmpty` | Keeps an existing topic | TC-089, TC-102 |
 | EDD-LessonSummary | `LlmClient`, `GeminiLlmClient`, `FakeLlmClient` | `generateJson`, `uploadFile`, `deleteFile` | The contract, the errors and the upload, in the existing tests of the server | TC-083 |
+| EDD-HomeworkReview | `HomeworkTab` | `publish`, `check` | Publishes a homework, sends a solution and opens the report | TC-130, TC-132 |
+| EDD-HomeworkReview | `ReportView` | `show` | Every section, and the notice of unanswered sections | TC-133, TC-134 |
+| EDD-HomeworkReview | `ClassChart` | `show`, `places` | Equal scores share a place, and the filter | TC-137 |
+| EDD-HomeworkReview | `HomeworkRoutes` | `publish`, `check` | A wrong role, a file that is not a PDF and a file that is too large | TC-130, TC-139 |
+| EDD-HomeworkReview | `HomeworkService` | `publish`, `check` | Three checks, a failure that does not count, and the solution dropped | TC-136, TC-139 |
+| EDD-HomeworkReview | `GuideGenerator` | `generate` | One request per homework, with an answer of the right shape | TC-131 |
+| EDD-HomeworkReview | `SolutionReviewer` | `review` | Lifting 0 to 1, another seed after a rejected answer, and Arabic letters | TC-134 |
+| EDD-HomeworkReview | `ScoreCalculator` | `questionScores`, `overall` | Plain averages, rounding, and at least 1 | TC-135 |
+| EDD-HomeworkReview | `HomeworkRepository` | `saveHomework`, `findGuide`, `countChecks`, `saveCheck` | Counts only checks that were saved | TC-136 |
 | Domain model | `User`, `Student`, `Teacher`, `Admin`, `Course`, `Lesson`, `FaceRegistration`, `AttendanceRound`, `ClassFace`, `AttendanceResult`, `SeatRequest`, `ForumMessage`, `Survey`, `Question`, `Answer`, `LessonSummary`, `Homework`, `ReviewGuide`, `HomeworkCheck`, `PushSubscription` | Rows in the database | Keys and access rules | TC-003, TC-004, TC-046, TC-063 |
 
 ### A.4 Approach and tools
 
-Everything that can run without a real phone or a limited service is automated. Of the 74 test cases in Part B, 68 run automatically on every push, 2 are load scripts that run before each release, and 4 are manual.
+Everything that can run without a real phone or a limited service is automated. Of the 86 test cases in Part B, 77 run automatically on every push, 2 are load scripts that run before each release, and 7 are manual.
 
 - **On every push:** GitHub Actions runs the type check and then the unit, integration and browser tests. A failed run is fixed before new work starts.
 - **One ID from requirement to report:** the name of each automated test starts with its test case ID, for example `TC-018`. A script reads the test reports and writes Passed or Failed into the Status column of the traceability matrix.
@@ -845,4 +852,114 @@ Everything that can run without a real phone or a limited service is automated. 
 - Steps: 1. The teacher photographs the class. 2. Each volunteer receives the notification and opens the site. 3. The teacher downloads the sheet.
 - Input data: The volunteers' own phones. No photo is kept.
 - Expected result: A notification arrives on each phone (R20). Each volunteer who is present gets a result, and the sheet matches who was there.
+- Automation: Manual
+
+### Homework review
+
+### TC-130: Publish a homework PDF
+
+- Verifies: REQ-50, UC-05
+- Preconditions: `T1` is signed in, in `L1`.
+- Steps: 1. Publish a homework PDF in the homework tab. 2. `S1` opens the tab. 3. `S51` tries to open it.
+- Input data: A made-up homework PDF of 2 pages.
+- Expected result: The homework appears for `S1` with its PDF, and `S51` cannot reach it.
+- Automation: Browser, Integration
+
+### TC-131: Make the review guide once and use it unchanged
+
+- Verifies: REQ-51, UC-05
+- Preconditions: A fake AI service that counts its requests.
+- Steps: 1. Publish a homework. 2. Check 2 solutions. 3. As `S1`, read the guide.
+- Input data: Made-up PDFs.
+- Expected result: The guide is made once, both checks send the same guide, and `S1` gets 0 rows.
+- Automation: Unit, Integration
+
+### TC-132: Upload a solution from the button next to the homework
+
+- Verifies: REQ-52, UC-05
+- Preconditions: A published homework, and `S1` has made no check.
+- Steps: 1. Press the check button next to the homework. 2. Upload the solution.
+- Input data: A made-up solution PDF.
+- Expected result: The report opens on the same page.
+- Automation: Browser
+
+### TC-133: Show the report only to the student who asked
+
+- Verifies: REQ-53, UC-05
+- Preconditions: A published homework.
+- Steps: 1. `S1` checks a solution. 2. As `S2`, read the checks of `S1`.
+- Input data: A made-up solution PDF.
+- Expected result: `S1` sees, for each section, the score, what meets the requirements, what is missing and a direction. `S2` gets 0 reports.
+- Automation: Integration, Browser
+
+### TC-134: Score answered and unanswered sections
+
+- Verifies: REQ-54, UC-05
+- Preconditions: `FakeLlmClient`.
+- Steps: 1. Check a solution.
+- Input data: An answer with one section not answered, and one answered with 0.
+- Expected result: The unanswered section gets 0, with a notice at the top of the report, and the answered one is lifted to 1.
+- Automation: Unit, Browser
+
+### TC-135: Calculate the question and overall scores
+
+- Verifies: REQ-55, UC-05
+- Preconditions: A guide with 2 questions.
+- Steps: 1. Calculate the scores.
+- Input data: Question 1 with sections of 80 and 61, question 2 with one section of 0, and points in the homework that differ by question.
+- Expected result: Question 1 is 70.5, question 2 is 0, and the overall score is 35, whatever points the homework states. An overall score below 1 becomes 1.
+- Automation: Unit
+
+### TC-136: Allow up to 3 checks, not counting a failure
+
+- Verifies: REQ-56, UC-05
+- Preconditions: A published homework.
+- Steps: 1. Make a check that fails for a technical reason. 2. Make 3 checks. 3. Try a fourth.
+- Input data: A fake AI service that fails once.
+- Expected result: The failed check is not saved. The fourth is refused with `no_checks_left`, and the chart shows the third.
+- Automation: Unit, Integration
+
+### TC-137: Show the class chart with places and a filter
+
+- Verifies: REQ-57, UC-05
+- Preconditions: Three students have checks.
+- Steps: 1. Open the chart as one of them. 2. Filter by a question, then by a section.
+- Input data: Overall scores of 80, 80 and 60.
+- Expected result: Places 1, 1 and 3, with the viewing student highlighted, and the filter changes the order.
+- Automation: Unit, Browser
+
+### TC-138: Never give the answer in a report
+
+- Verifies: REQ-58, UC-05
+- Preconditions: The real AI service and the spike's test set.
+- Steps: 1. Check the partial solution, and the solution that asks for the answer, in both subjects.
+- Input data: The made-up homework of the spike.
+- Expected result: No report holds an item from the list of results and requested ideas.
+- Automation: Manual
+
+### TC-139: Delete the solution file within 1 minute
+
+- Verifies: REQ-59, UC-05
+- Preconditions: A published homework.
+- Steps: 1. Check a solution. 2. Look for the file on the server's disk, in the database and among the files uploaded to the AI service.
+- Input data: A made-up solution PDF.
+- Expected result: The file was never written to disk or uploaded, and the database keeps only the scores, the report, the check number and the time.
+- Automation: Unit, Integration
+
+### TC-140: Raise no section by more than 10 points with hidden instructions
+
+- Verifies: NFR-01, UC-05
+- Preconditions: The real AI service.
+- Steps: 1. Review each file 3 times, with different seeds.
+- Input data: The partial solution, with and without hidden and visible instructions in 4 languages.
+- Expected result: The median of every section rises by at most 10 points.
+- Automation: Manual
+
+### TC-141: Report on 20 pages within 3 minutes
+
+- Verifies: NFR-06, UC-05
+- Preconditions: The real AI service.
+- Steps: 1. Check the solution.
+- Input data: A made-up solution of 20 pages.
+- Expected result: The report arrives within 3 minutes.
 - Automation: Manual
