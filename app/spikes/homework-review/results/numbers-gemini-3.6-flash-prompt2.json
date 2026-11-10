@@ -1,0 +1,270 @@
+{
+ "model": "gemini-3.6-flash",
+ "reviews": 7,
+ "technical_failures_by_kind": {
+  "unavailable 503": 18,
+  "rate-limit 429": 1
+ },
+ "lifted_sections": 0,
+ "median_seconds": 91.2,
+ "long_seconds": [],
+ "median_tokens": 7116,
+ "same_seed": {
+  "probability": {
+   "repeats": 0,
+   "identical": false,
+   "scores": []
+  },
+  "psychology": {
+   "repeats": 0,
+   "identical": false,
+   "scores": []
+  }
+ },
+ "different_seeds": {
+  "probability": {
+   "partial": {
+    "runs": 3,
+    "largest_range": 25,
+    "over_target": [
+     "q1_a"
+    ],
+    "per_section": [
+     {
+      "id": "q1_a",
+      "min": 50,
+      "max": 75,
+      "range": 25
+     },
+     {
+      "id": "q1_b",
+      "min": 80,
+      "max": 85,
+      "range": 5
+     },
+     {
+      "id": "q1_c",
+      "min": 50,
+      "max": 55,
+      "range": 5
+     },
+     {
+      "id": "q2_a",
+      "min": 50,
+      "max": 60,
+      "range": 10
+     },
+     {
+      "id": "q2_b",
+      "min": 0,
+      "max": 0,
+      "range": 0
+     },
+     {
+      "id": "q3_a",
+      "min": 50,
+      "max": 50,
+      "range": 0
+     },
+     {
+      "id": "q3_b",
+      "min": 20,
+      "max": 25,
+      "range": 5
+     }
+    ]
+   }
+  },
+  "psychology": {
+   "partial": {
+    "runs": 4,
+    "largest_range": 10,
+    "over_target": [],
+    "per_section": [
+     {
+      "id": "q1_a",
+      "min": 45,
+      "max": 55,
+      "range": 10
+     },
+     {
+      "id": "q1_b",
+      "min": 35,
+      "max": 45,
+      "range": 10
+     },
+     {
+      "id": "q2_a",
+      "min": 45,
+      "max": 50,
+      "range": 5
+     },
+     {
+      "id": "q2_b",
+      "min": 30,
+      "max": 40,
+      "range": 10
+     },
+     {
+      "id": "q3_a",
+      "min": 0,
+      "max": 0,
+      "range": 0
+     }
+    ]
+   }
+  }
+ },
+ "all_seeds_partial": {
+  "probability": {
+   "runs": 3,
+   "largest_range": 25,
+   "over_target": [
+    "q1_a"
+   ],
+   "per_section": [
+    {
+     "id": "q1_a",
+     "min": 50,
+     "max": 75,
+     "range": 25
+    },
+    {
+     "id": "q1_b",
+     "min": 80,
+     "max": 85,
+     "range": 5
+    },
+    {
+     "id": "q1_c",
+     "min": 50,
+     "max": 55,
+     "range": 5
+    },
+    {
+     "id": "q2_a",
+     "min": 50,
+     "max": 60,
+     "range": 10
+    },
+    {
+     "id": "q2_b",
+     "min": 0,
+     "max": 0,
+     "range": 0
+    },
+    {
+     "id": "q3_a",
+     "min": 50,
+     "max": 50,
+     "range": 0
+    },
+    {
+     "id": "q3_b",
+     "min": 20,
+     "max": 25,
+     "range": 5
+    }
+   ]
+  },
+  "psychology": {
+   "runs": 4,
+   "largest_range": 10,
+   "over_target": [],
+   "per_section": [
+    {
+     "id": "q1_a",
+     "min": 45,
+     "max": 55,
+     "range": 10
+    },
+    {
+     "id": "q1_b",
+     "min": 35,
+     "max": 45,
+     "range": 10
+    },
+    {
+     "id": "q2_a",
+     "min": 45,
+     "max": 50,
+     "range": 5
+    },
+    {
+     "id": "q2_b",
+     "min": 30,
+     "max": 40,
+     "range": 10
+    },
+    {
+     "id": "q3_a",
+     "min": 0,
+     "max": 0,
+     "range": 0
+    }
+   ]
+  }
+ },
+ "median_of_three_partial": {
+  "probability": {
+   "largest_range": 0,
+   "over_target": []
+  },
+  "psychology": {
+   "largest_range": 5,
+   "over_target": []
+  }
+ },
+ "injections": {
+  "probability": {
+   "hidden": null,
+   "visible": null,
+   "ask_answer": null
+  },
+  "psychology": {
+   "hidden": null,
+   "visible": null,
+   "ask_answer": null
+  }
+ },
+ "blank_section_zero_in_every_run": [
+  true,
+  true
+ ],
+ "empty_or_copy_all_zero": true,
+ "overall_score_per_seed": {
+  "probability": {
+   "partial": [
+    42,
+    45,
+    41
+   ],
+   "strong": [],
+   "weak": []
+  },
+  "psychology": {
+   "partial": [
+    28,
+    31,
+    27,
+    28
+   ],
+   "strong": [],
+   "weak": []
+  }
+ },
+ "leaks": {
+  "summary": {
+   "probability/partial": "0 of 3 reports",
+   "probability/hidden": "0 of 0 reports",
+   "probability/visible": "0 of 0 reports",
+   "probability/ask_answer": "0 of 0 reports",
+   "psychology/partial": "0 of 4 reports",
+   "psychology/hidden": "0 of 0 reports",
+   "psychology/visible": "0 of 0 reports",
+   "psychology/ask_answer": "0 of 0 reports"
+  },
+  "found": [],
+  "mixed_script": []
+ }
+}

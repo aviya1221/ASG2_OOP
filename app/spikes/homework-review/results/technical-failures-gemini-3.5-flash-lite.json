@@ -1,0 +1,81 @@
+[
+ {
+  "label": "psychology/partial/2",
+  "attempt": 1,
+  "kind": "unavailable",
+  "status": 503,
+  "message": "Gemini: 503 gemini-3.5-flash-lite is currently experiencing high demand, spikes in demand are usually temporary. Please try again later."
+ },
+ {
+  "label": "psychology/visible/1",
+  "attempt": 1,
+  "kind": "unavailable",
+  "status": 503,
+  "message": "Gemini: 503 gemini-3.5-flash-lite is currently experiencing high demand, spikes in demand are usually temporary. Please try again later."
+ },
+ {
+  "label": "probability/weak/1",
+  "attempt": 1,
+  "kind": "unavailable",
+  "status": 503,
+  "message": "Gemini: 503 gemini-3.5-flash-lite is currently experiencing high demand, spikes in demand are usually temporary. Please try again later."
+ },
+ {
+  "label": "probability/weak/1",
+  "attempt": 2,
+  "kind": "bad-output",
+  "message": "The model's answer failed validation: score does not fit answered=true: q1_a=0"
+ },
+ {
+  "label": "probability/weak/1",
+  "attempt": 3,
+  "kind": "bad-output",
+  "message": "The model's answer failed validation: score does not fit answered=true: q1_a=0"
+ },
+ {
+  "label": "fixed/probability/weak/1",
+  "attempt": 1,
+  "kind": "bad-output",
+  "message": "The model's answer failed validation: score does not fit answered=true: q1_a=0"
+ },
+ {
+  "label": "fixed/psychology/weak/1",
+  "attempt": 1,
+  "kind": "unavailable",
+  "status": 503,
+  "message": "Gemini: 503 gemini-3.5-flash-lite is currently experiencing high demand, spikes in demand are usually temporary. Please try again later."
+ },
+ {
+  "label": "fixed/psychology/weak/1",
+  "attempt": 2,
+  "kind": "bad-output",
+  "message": "The model's answer failed validation: score does not fit answered=true: q1_a=0"
+ },
+ {
+  "label": "fixed/psychology/weak/1",
+  "attempt": 3,
+  "kind": "bad-output",
+  "message": "The model's answer failed validation: score does not fit answered=true: q1_a=0"
+ },
+ {
+  "label": "varied/psychology/partial/1",
+  "attempt": 1,
+  "kind": "unavailable",
+  "status": 503,
+  "message": "Gemini: 503 gemini-3.5-flash-lite is currently experiencing high demand, spikes in demand are usually temporary. Please try again later."
+ },
+ {
+  "label": "varied/probability/weak/1",
+  "attempt": 1,
+  "kind": "unavailable",
+  "status": 503,
+  "message": "Gemini: 503 gemini-3.5-flash-lite is currently experiencing high demand, spikes in demand are usually temporary. Please try again later."
+ },
+ {
+  "label": "v2/varied/psychology/partial/1",
+  "attempt": 1,
+  "kind": "unavailable",
+  "status": 503,
+  "message": "Gemini: 503 gemini-3.5-flash-lite is currently experiencing high demand, spikes in demand are usually temporary. Please try again later."
+ }
+]

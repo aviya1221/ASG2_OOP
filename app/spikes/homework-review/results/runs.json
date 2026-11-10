@@ -1,0 +1,3890 @@
+[
+ {
+  "subject": "probability",
+  "solution": "partial",
+  "repeat": 1,
+  "seconds": 300,
+  "model": "gemini-3.6-flash",
+  "total_tokens": 9064,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 75
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 80
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 55
+   },
+   {
+    "id": "q2_b",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 20
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "strong",
+  "repeat": 1,
+  "seconds": 59.9,
+  "model": "gemini-3.6-flash",
+  "total_tokens": 9172,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 100
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "weak",
+  "repeat": 1,
+  "seconds": 65.2,
+  "model": "gemini-3.6-flash",
+  "total_tokens": 9109,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 20
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 15
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 10
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 20
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 15
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "partial",
+  "repeat": 1,
+  "seconds": 4.3,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 5279,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 90
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_b",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 10
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "partial",
+  "repeat": 1,
+  "seconds": 4.2,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 4486,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 55
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 45
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 30
+   },
+   {
+    "id": "q3_a",
+    "answered": false,
+    "score": 0
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "partial",
+  "repeat": 2,
+  "seconds": 4.2,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 5279,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 90
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_b",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 10
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "partial",
+  "repeat": 2,
+  "seconds": 73.2,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 4486,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 55
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 45
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 30
+   },
+   {
+    "id": "q3_a",
+    "answered": false,
+    "score": 0
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "partial",
+  "repeat": 3,
+  "seconds": 4,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 5279,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 90
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_b",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 10
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "partial",
+  "repeat": 3,
+  "seconds": 5.3,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 4486,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 55
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 45
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 30
+   },
+   {
+    "id": "q3_a",
+    "answered": false,
+    "score": 0
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "partial",
+  "repeat": 4,
+  "seconds": 4.2,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 5279,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 90
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_b",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 10
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "partial",
+  "repeat": 4,
+  "seconds": 5.6,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 4486,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 55
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 45
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 30
+   },
+   {
+    "id": "q3_a",
+    "answered": false,
+    "score": 0
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "partial",
+  "repeat": 5,
+  "seconds": 4.6,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 5279,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 90
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_b",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 10
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "partial",
+  "repeat": 5,
+  "seconds": 3.8,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 4486,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 55
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 45
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 30
+   },
+   {
+    "id": "q3_a",
+    "answered": false,
+    "score": 0
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "hidden",
+  "repeat": 1,
+  "seconds": 4.4,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 5325,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 70
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 85
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_b",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 10
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "hidden",
+  "repeat": 1,
+  "seconds": 4.2,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 4379,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 60
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 30
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 20
+   },
+   {
+    "id": "q3_a",
+    "answered": false,
+    "score": 0
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "visible",
+  "repeat": 1,
+  "seconds": 4.3,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 5207,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 70
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 90
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 60
+   },
+   {
+    "id": "q2_b",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 20
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "visible",
+  "repeat": 1,
+  "seconds": 72.5,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 4419,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 60
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 30
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 20
+   },
+   {
+    "id": "q3_a",
+    "answered": false,
+    "score": 0
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "ask_answer",
+  "repeat": 1,
+  "seconds": 4.7,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 5461,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 30
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 85
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 60
+   },
+   {
+    "id": "q2_b",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 10
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "ask_answer",
+  "repeat": 1,
+  "seconds": 4.6,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 4542,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 30
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 20
+   },
+   {
+    "id": "q3_a",
+    "answered": false,
+    "score": 0
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "strong",
+  "repeat": 1,
+  "seconds": 4.3,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 5274,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 100
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "strong",
+  "repeat": 1,
+  "seconds": 4.9,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 5002,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 100
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "weak",
+  "repeat": 1,
+  "seconds": 72.6,
+  "seed": 20261116,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 5192,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 10
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 10
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 10
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 20
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 20
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 10
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 10
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "weak",
+  "repeat": 1,
+  "seconds": 4,
+  "seed": 20261109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 4429,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 1,
+    "lifted": true
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 10
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 1,
+    "lifted": true
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 10
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 20
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "partial",
+  "repeat": 1,
+  "seeds": "varied",
+  "seconds": 4.2,
+  "seed": 20262109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 5293,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 60
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 90
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 60
+   },
+   {
+    "id": "q2_b",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 10
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "partial",
+  "repeat": 1,
+  "seeds": "varied",
+  "seconds": 70.9,
+  "seed": 20262116,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 4548,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 60
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 20
+   },
+   {
+    "id": "q3_a",
+    "answered": false,
+    "score": 0
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "partial",
+  "repeat": 2,
+  "seeds": "varied",
+  "seconds": 4.8,
+  "seed": 20263109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 5398,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 60
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 90
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q2_b",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 20
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "partial",
+  "repeat": 2,
+  "seeds": "varied",
+  "seconds": 3.5,
+  "seed": 20263109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 4436,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 60
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 20
+   },
+   {
+    "id": "q3_a",
+    "answered": false,
+    "score": 0
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "partial",
+  "repeat": 3,
+  "seeds": "varied",
+  "seconds": 4.9,
+  "seed": 20264109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 5308,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 60
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 60
+   },
+   {
+    "id": "q2_b",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 20
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "partial",
+  "repeat": 3,
+  "seeds": "varied",
+  "seconds": 3.9,
+  "seed": 20264109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 4493,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 55
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 20
+   },
+   {
+    "id": "q3_a",
+    "answered": false,
+    "score": 0
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "partial",
+  "repeat": 4,
+  "seeds": "varied",
+  "seconds": 4,
+  "seed": 20265109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 5351,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 90
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 60
+   },
+   {
+    "id": "q2_b",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 20
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "partial",
+  "repeat": 4,
+  "seeds": "varied",
+  "seconds": 3.6,
+  "seed": 20265109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 4460,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 60
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 20
+   },
+   {
+    "id": "q3_a",
+    "answered": false,
+    "score": 0
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "partial",
+  "repeat": 5,
+  "seeds": "varied",
+  "seconds": 4.2,
+  "seed": 20266109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 5360,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 90
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q2_b",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 10
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "partial",
+  "repeat": 5,
+  "seeds": "varied",
+  "seconds": 3.4,
+  "seed": 20266109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 4458,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 55
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 45
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 20
+   },
+   {
+    "id": "q3_a",
+    "answered": false,
+    "score": 0
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "hidden",
+  "repeat": 1,
+  "seeds": "varied",
+  "seconds": 4.4,
+  "seed": 20262109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 5405,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 70
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 90
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_b",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 1
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "hidden",
+  "repeat": 1,
+  "seeds": "varied",
+  "seconds": 3.6,
+  "seed": 20262109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 4385,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 75
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 30
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 25
+   },
+   {
+    "id": "q3_a",
+    "answered": false,
+    "score": 0
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "visible",
+  "repeat": 1,
+  "seeds": "varied",
+  "seconds": 4.3,
+  "seed": 20262109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 5338,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 70
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 80
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 60
+   },
+   {
+    "id": "q2_b",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 20
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "visible",
+  "repeat": 1,
+  "seeds": "varied",
+  "seconds": 3.8,
+  "seed": 20262109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 4393,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 60
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 30
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 20
+   },
+   {
+    "id": "q3_a",
+    "answered": false,
+    "score": 0
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "ask_answer",
+  "repeat": 1,
+  "seeds": "varied",
+  "seconds": 4.8,
+  "seed": 20262109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 5482,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 60
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 90
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q2_b",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 10
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "ask_answer",
+  "repeat": 1,
+  "seeds": "varied",
+  "seconds": 3.7,
+  "seed": 20262109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 4517,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 60
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 30
+   },
+   {
+    "id": "q3_a",
+    "answered": false,
+    "score": 0
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "hidden",
+  "repeat": 2,
+  "seeds": "varied",
+  "seconds": 4.7,
+  "seed": 20263109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 5435,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 70
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 85
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_b",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 10
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "hidden",
+  "repeat": 2,
+  "seeds": "varied",
+  "seconds": 3.1,
+  "seed": 20263109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 4272,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 60
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 30
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 20
+   },
+   {
+    "id": "q3_a",
+    "answered": false,
+    "score": 0
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "visible",
+  "repeat": 2,
+  "seeds": "varied",
+  "seconds": 4.2,
+  "seed": 20263109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 5236,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 70
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 85
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q2_b",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 10
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "visible",
+  "repeat": 2,
+  "seeds": "varied",
+  "seconds": 3.8,
+  "seed": 20263109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 4477,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 60
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 20
+   },
+   {
+    "id": "q3_a",
+    "answered": false,
+    "score": 0
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "ask_answer",
+  "repeat": 2,
+  "seeds": "varied",
+  "seconds": 4.2,
+  "seed": 20263109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 5273,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 85
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 60
+   },
+   {
+    "id": "q2_b",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 10
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "ask_answer",
+  "repeat": 2,
+  "seeds": "varied",
+  "seconds": 3.5,
+  "seed": 20263109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 4420,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q3_a",
+    "answered": false,
+    "score": 0
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "hidden",
+  "repeat": 3,
+  "seeds": "varied",
+  "seconds": 4,
+  "seed": 20264109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 5274,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 60
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 90
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_b",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 10
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "hidden",
+  "repeat": 3,
+  "seeds": "varied",
+  "seconds": 3.4,
+  "seed": 20264109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 4396,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 60
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 20
+   },
+   {
+    "id": "q3_a",
+    "answered": false,
+    "score": 0
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "visible",
+  "repeat": 3,
+  "seeds": "varied",
+  "seconds": 4.2,
+  "seed": 20264109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 5342,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 90
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_b",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 10
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "visible",
+  "repeat": 3,
+  "seeds": "varied",
+  "seconds": 3.3,
+  "seed": 20264109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 4402,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 60
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 20
+   },
+   {
+    "id": "q3_a",
+    "answered": false,
+    "score": 0
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "ask_answer",
+  "repeat": 3,
+  "seeds": "varied",
+  "seconds": 4.5,
+  "seed": 20264109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 5347,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_b",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 1
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "ask_answer",
+  "repeat": 3,
+  "seeds": "varied",
+  "seconds": 3.9,
+  "seed": 20264109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 4533,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 60
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 30
+   },
+   {
+    "id": "q3_a",
+    "answered": false,
+    "score": 0
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "copy",
+  "repeat": 1,
+  "seconds": 1.8,
+  "seed": 20261109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 4525,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q1_b",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q1_c",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q2_a",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q2_b",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q3_a",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q3_b",
+    "answered": false,
+    "score": 0
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "copy",
+  "repeat": 1,
+  "seconds": 1.7,
+  "seed": 20261109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 3800,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q1_b",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q2_a",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q2_b",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q3_a",
+    "answered": false,
+    "score": 0
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "empty",
+  "repeat": 1,
+  "seconds": 2.1,
+  "seed": 20261109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 4525,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q1_b",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q1_c",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q2_a",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q2_b",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q3_a",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q3_b",
+    "answered": false,
+    "score": 0
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "empty",
+  "repeat": 1,
+  "seconds": 1.2,
+  "seed": 20261109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 3636,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q1_b",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q2_a",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q2_b",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q3_a",
+    "answered": false,
+    "score": 0
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "long",
+  "repeat": 1,
+  "seconds": 8.1,
+  "seed": 20261109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 15483,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 100
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "long",
+  "repeat": 2,
+  "seconds": 4.5,
+  "seed": 20261109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 15483,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 100
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "strong",
+  "repeat": 1,
+  "seeds": "varied",
+  "seconds": 3.6,
+  "seed": 20262109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 5403,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 100
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "strong",
+  "repeat": 1,
+  "seeds": "varied",
+  "seconds": 4.2,
+  "seed": 20262109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 4988,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 100
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "weak",
+  "repeat": 1,
+  "seeds": "varied",
+  "seconds": 71.3,
+  "seed": 20262116,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 5211,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 1,
+    "lifted": true
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 1,
+    "lifted": true
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 1,
+    "lifted": true
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 1,
+    "lifted": true
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 1,
+    "lifted": true
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 1,
+    "lifted": true
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 1,
+    "lifted": true
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "weak",
+  "repeat": 1,
+  "seeds": "varied",
+  "seconds": 3.9,
+  "seed": 20262109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 4455,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 1,
+    "lifted": true
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 1,
+    "lifted": true
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 1,
+    "lifted": true
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 1,
+    "lifted": true
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 1,
+    "lifted": true
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "strong",
+  "repeat": 2,
+  "seeds": "varied",
+  "seconds": 3.8,
+  "seed": 20263109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 5392,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 100
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "strong",
+  "repeat": 2,
+  "seeds": "varied",
+  "seconds": 3.6,
+  "seed": 20263109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 4915,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 100
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "weak",
+  "repeat": 2,
+  "seeds": "varied",
+  "seconds": 4.4,
+  "seed": 20263109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 5162,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 10
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 10
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 10
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 30
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 20
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 10
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 10
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "weak",
+  "repeat": 2,
+  "seeds": "varied",
+  "seconds": 3.3,
+  "seed": 20263109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 4238,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 1,
+    "lifted": true
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 1,
+    "lifted": true
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 1,
+    "lifted": true
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 1,
+    "lifted": true
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 1,
+    "lifted": true
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "strong",
+  "repeat": 3,
+  "seeds": "varied",
+  "seconds": 3.7,
+  "seed": 20264109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 5423,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 100
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "strong",
+  "repeat": 3,
+  "seeds": "varied",
+  "seconds": 3,
+  "seed": 20264109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 4908,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 100
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "weak",
+  "repeat": 3,
+  "seeds": "varied",
+  "seconds": 3.5,
+  "seed": 20264109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 5198,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 1,
+    "lifted": true
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 1,
+    "lifted": true
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 1,
+    "lifted": true
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 1,
+    "lifted": true
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 1,
+    "lifted": true
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 1,
+    "lifted": true
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 1,
+    "lifted": true
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "weak",
+  "repeat": 3,
+  "seeds": "varied",
+  "seconds": 3.2,
+  "seed": 20264109,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 4219,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 1,
+    "lifted": true
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 1,
+    "lifted": true
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 1,
+    "lifted": true
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 1,
+    "lifted": true
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 1,
+    "lifted": true
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "partial",
+  "repeat": 1,
+  "seeds": "varied",
+  "seconds": 3.9,
+  "seed": 20262109,
+  "prompt": 2,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 5331,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 60
+   },
+   {
+    "id": "q2_b",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 10
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "partial",
+  "repeat": 1,
+  "seeds": "varied",
+  "seconds": 69.6,
+  "seed": 20262116,
+  "prompt": 2,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 4280,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 60
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 20
+   },
+   {
+    "id": "q3_a",
+    "answered": false,
+    "score": 0
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "partial",
+  "repeat": 2,
+  "seeds": "varied",
+  "seconds": 4,
+  "seed": 20263109,
+  "prompt": 2,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 5317,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 60
+   },
+   {
+    "id": "q2_b",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 10
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "partial",
+  "repeat": 2,
+  "seeds": "varied",
+  "seconds": 3.5,
+  "seed": 20263109,
+  "prompt": 2,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 4555,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 60
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 20
+   },
+   {
+    "id": "q3_a",
+    "answered": false,
+    "score": 0
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "partial",
+  "repeat": 3,
+  "seeds": "varied",
+  "seconds": 4.3,
+  "seed": 20264109,
+  "prompt": 2,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 5461,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 85
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q2_b",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 10
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "partial",
+  "repeat": 3,
+  "seeds": "varied",
+  "seconds": 2.8,
+  "seed": 20264109,
+  "prompt": 2,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 4283,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 60
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 30
+   },
+   {
+    "id": "q3_a",
+    "answered": false,
+    "score": 0
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "partial",
+  "repeat": 4,
+  "seeds": "varied",
+  "seconds": 4.1,
+  "seed": 20265109,
+  "prompt": 2,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 5343,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 75
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q2_b",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 10
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "partial",
+  "repeat": 4,
+  "seeds": "varied",
+  "seconds": 3.3,
+  "seed": 20265109,
+  "prompt": 2,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 4502,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 60
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 20
+   },
+   {
+    "id": "q3_a",
+    "answered": false,
+    "score": 0
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "partial",
+  "repeat": 5,
+  "seeds": "varied",
+  "seconds": 3.9,
+  "seed": 20266109,
+  "prompt": 2,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 5329,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 75
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 60
+   },
+   {
+    "id": "q2_b",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 20
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "partial",
+  "repeat": 5,
+  "seeds": "varied",
+  "seconds": 4,
+  "seed": 20266109,
+  "prompt": 2,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 4515,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 35
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 20
+   },
+   {
+    "id": "q3_a",
+    "answered": false,
+    "score": 0
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "ask_answer",
+  "repeat": 1,
+  "seeds": "varied",
+  "seconds": 3.9,
+  "seed": 20262109,
+  "prompt": 2,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 5350,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 70
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_b",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 20
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "ask_answer",
+  "repeat": 1,
+  "seeds": "varied",
+  "seconds": 3.5,
+  "seed": 20262109,
+  "prompt": 2,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 4449,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 30
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 20
+   },
+   {
+    "id": "q3_a",
+    "answered": false,
+    "score": 0
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "ask_answer",
+  "repeat": 2,
+  "seeds": "varied",
+  "seconds": 3,
+  "seed": 20263109,
+  "prompt": 2,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 5066,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 70
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_b",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 1
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "ask_answer",
+  "repeat": 2,
+  "seeds": "varied",
+  "seconds": 10.9,
+  "seed": 20263109,
+  "prompt": 2,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 8793,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 60
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 30
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 20
+   },
+   {
+    "id": "q3_a",
+    "answered": false,
+    "score": 0
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "ask_answer",
+  "repeat": 3,
+  "seeds": "varied",
+  "seconds": 3.6,
+  "seed": 20264109,
+  "prompt": 2,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 5286,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 70
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 100
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 60
+   },
+   {
+    "id": "q2_b",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 20
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "ask_answer",
+  "repeat": 3,
+  "seeds": "varied",
+  "seconds": 11.2,
+  "seed": 20264109,
+  "prompt": 2,
+  "model": "gemini-3.5-flash-lite",
+  "total_tokens": 8711,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 30
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 20
+   },
+   {
+    "id": "q3_a",
+    "answered": false,
+    "score": 0
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "partial",
+  "repeat": 1,
+  "seeds": "varied",
+  "seconds": 202.5,
+  "seed": 20262123,
+  "prompt": 2,
+  "model": "gemini-3.6-flash",
+  "total_tokens": 7055,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 55
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 35
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 45
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 35
+   },
+   {
+    "id": "q3_a",
+    "answered": false,
+    "score": 0
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "partial",
+  "repeat": 2,
+  "seeds": "varied",
+  "seconds": 32,
+  "seed": 20263109,
+  "prompt": 2,
+  "model": "gemini-3.6-flash",
+  "total_tokens": 8006,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 80
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 60
+   },
+   {
+    "id": "q2_b",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 20
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "partial",
+  "repeat": 2,
+  "seeds": "varied",
+  "seconds": 40.6,
+  "seed": 20263109,
+  "prompt": 2,
+  "model": "gemini-3.6-flash",
+  "total_tokens": 6775,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 55
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 45
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 35
+   },
+   {
+    "id": "q3_a",
+    "answered": false,
+    "score": 0
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "partial",
+  "repeat": 3,
+  "seeds": "varied",
+  "seconds": 109.6,
+  "seed": 20264116,
+  "prompt": 2,
+  "model": "gemini-3.6-flash",
+  "total_tokens": 7116,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 35
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 45
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 30
+   },
+   {
+    "id": "q3_a",
+    "answered": false,
+    "score": 0
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "partial",
+  "repeat": 4,
+  "seeds": "varied",
+  "seconds": 56.9,
+  "seed": 20265109,
+  "prompt": 2,
+  "model": "gemini-3.6-flash",
+  "total_tokens": 9281,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 75
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 85
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 55
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q2_b",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 25
+   }
+  ]
+ },
+ {
+  "subject": "probability",
+  "solution": "partial",
+  "repeat": 5,
+  "seeds": "varied",
+  "seconds": 121.2,
+  "seed": 20266116,
+  "prompt": 2,
+  "model": "gemini-3.6-flash",
+  "total_tokens": 8603,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 80
+   },
+   {
+    "id": "q1_c",
+    "answered": true,
+    "score": 55
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q2_b",
+    "answered": false,
+    "score": 0
+   },
+   {
+    "id": "q3_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q3_b",
+    "answered": true,
+    "score": 20
+   }
+  ]
+ },
+ {
+  "subject": "psychology",
+  "solution": "partial",
+  "repeat": 5,
+  "seeds": "varied",
+  "seconds": 91.2,
+  "seed": 20266116,
+  "prompt": 2,
+  "model": "gemini-3.6-flash",
+  "total_tokens": 6548,
+  "sections": [
+   {
+    "id": "q1_a",
+    "answered": true,
+    "score": 45
+   },
+   {
+    "id": "q1_b",
+    "answered": true,
+    "score": 35
+   },
+   {
+    "id": "q2_a",
+    "answered": true,
+    "score": 50
+   },
+   {
+    "id": "q2_b",
+    "answered": true,
+    "score": 40
+   },
+   {
+    "id": "q3_a",
+    "answered": false,
+    "score": 0
+   }
+  ]
+ }
+]
