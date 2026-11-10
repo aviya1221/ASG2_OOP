@@ -331,26 +331,26 @@ See [05-use-cases.md](05-use-cases.md).
 | REQ-17 Flag students | UC-01 | SDD §2.4 | TC-026 | Passed |
 | REQ-18 Attendance sheet in the app | UC-01 | SDD §2.4 | TC-027 | Passed |
 | REQ-19 Download the attendance sheet | UC-01 | SDD §2.4 | TC-028 | Passed |
-| REQ-20 Separate forum per lesson | UC-02 | SDD §2.5 | TC-040 | Not run |
-| REQ-21 List forums by lecture number | UC-02 | SDD §2.5 | TC-041 | Not run |
-| REQ-22 Teacher enters the lecture topic | UC-08 | SDD §2.5 | TC-042 | Not run |
-| REQ-23 Forums stay open with no closing date | UC-02 | SDD §2.5 | TC-043 | Not run |
-| REQ-24 Show messages without reloading | UC-02 | SDD §2.5 | TC-044 | Not run |
-| REQ-25 Write a message or reply | UC-02 | SDD §2.5 | TC-045, TC-051 | Not run |
-| REQ-26 Who sees the writer's name | UC-02 | SDD §2.5 | TC-046 | Not run |
-| REQ-27 Text-only messages with links | UC-02 | SDD §2.5 | TC-047 | Not run |
-| REQ-28 No editing of messages | UC-02 | SDD §2.5 | TC-048 | Not run |
-| REQ-29 Only the teacher deletes messages | UC-02 | SDD §2.5 | TC-049 | Not run |
-| REQ-30 Publish a poll in the forum | UC-03 | SDD §2.6 | TC-060, TC-101 | Not run |
-| REQ-31 Show a published poll | UC-03 | SDD §2.6 | TC-061 | Not run |
-| REQ-32 Answer a poll only while open | UC-03 | SDD §2.6 | TC-062 | Not run |
-| REQ-33 Refuse a second poll answer | UC-03 | SDD §2.6 | TC-063 | Not run |
-| REQ-34 Allow another poll answer | UC-03 | SDD §2.6 | TC-064 | Not run |
-| REQ-35 Live chart of poll answers | UC-03 | SDD §2.6 | TC-065 | Not run |
-| REQ-36 Teacher sees who answered a poll | UC-03 | SDD §2.6 | TC-066 | Not run |
-| REQ-37 Teacher closes a poll | UC-03 | SDD §2.6 | TC-067, TC-101 | Not run |
-| REQ-38 Poll closes at the end of the lesson | UC-03 | SDD §2.6 | TC-068, TC-101 | Not run |
-| REQ-39 Keep the poll in the forum | UC-03 | SDD §2.6 | TC-069 | Not run |
+| REQ-20 Separate forum per lesson | UC-02 | SDD §2.5 | TC-040 | Passed |
+| REQ-21 List forums by lecture number | UC-02 | SDD §2.5 | TC-041 | Passed |
+| REQ-22 Teacher enters the lecture topic | UC-08 | SDD §2.5 | TC-042 | Passed |
+| REQ-23 Forums stay open with no closing date | UC-02 | SDD §2.5 | TC-043 | Passed |
+| REQ-24 Show messages without reloading | UC-02 | SDD §2.5 | TC-044 | Passed |
+| REQ-25 Write a message or reply | UC-02 | SDD §2.5 | TC-045, TC-051 | Passed |
+| REQ-26 Who sees the writer's name | UC-02 | SDD §2.5 | TC-046 | Passed |
+| REQ-27 Text-only messages with links | UC-02 | SDD §2.5 | TC-047 | Passed |
+| REQ-28 No editing of messages | UC-02 | SDD §2.5 | TC-048 | Passed |
+| REQ-29 Only the teacher deletes messages | UC-02 | SDD §2.5 | TC-049 | Passed |
+| REQ-30 Publish a poll in the forum | UC-03 | SDD §2.6 | TC-060, TC-101 | Passed |
+| REQ-31 Show a published poll | UC-03 | SDD §2.6 | TC-061 | Passed |
+| REQ-32 Answer a poll only while open | UC-03 | SDD §2.6 | TC-062 | Passed |
+| REQ-33 Refuse a second poll answer | UC-03 | SDD §2.6 | TC-063 | Passed |
+| REQ-34 Allow another poll answer | UC-03 | SDD §2.6 | TC-064 | Passed |
+| REQ-35 Live chart of poll answers | UC-03 | SDD §2.6 | TC-065 | Passed |
+| REQ-36 Teacher sees who answered a poll | UC-03 | SDD §2.6 | TC-066 | Passed |
+| REQ-37 Teacher closes a poll | UC-03 | SDD §2.6 | TC-067, TC-101 | Passed |
+| REQ-38 Poll closes at the end of the lesson | UC-03 | SDD §2.6 | TC-068, TC-101 | Passed |
+| REQ-39 Keep the poll in the forum | UC-03 | SDD §2.6 | TC-069 | Passed |
 | REQ-40 Summary button in the forum | UC-04 | SDD §2.7 | TC-080 | Not run |
 | REQ-41 When the summary page opens | UC-04 | SDD §2.7 | TC-080, TC-102 | Not run |
 | REQ-42 Upload a recording | UC-04 | SDD §2.7 | TC-081, TC-082, TC-102 | Not run |
@@ -371,17 +371,17 @@ See [05-use-cases.md](05-use-cases.md).
 | REQ-57 Class chart with filter | UC-05 | SDD §2.8 | None yet | Gap |
 | REQ-58 Report never reveals the answer | UC-05 | SDD §2.8 | None yet | Gap |
 | REQ-59 Delete the solution file | UC-05 | SDD §2.8 | None yet | Gap |
-| REQ-60 Build a form | UC-03 | SDD §2.6 | TC-070, TC-101 | Not run |
-| REQ-61 Four question types | UC-03 | SDD §2.6 | TC-071 | Not run |
-| REQ-62 Publish a form in the forum | UC-03 | SDD §2.6 | TC-070, TC-101 | Not run |
-| REQ-63 Form opens over the forum | UC-03 | SDD §2.6 | TC-072 | Not run |
-| REQ-64 Answer a form only while open | UC-03 | SDD §2.6 | TC-062 | Not run |
-| REQ-65 Refuse a second form answer | UC-03 | SDD §2.6 | TC-063 | Not run |
-| REQ-66 Allow another form answer | UC-03 | SDD §2.6 | TC-064 | Not run |
-| REQ-67 Only the teacher sees form answers | UC-03 | SDD §2.6 | TC-073 | Not run |
-| REQ-68 Teacher closes a form | UC-03 | SDD §2.6 | TC-067, TC-101 | Not run |
-| REQ-69 Keep the form in the forum | UC-03 | SDD §2.6 | TC-069 | Not run |
-| REQ-70 Expanded forum window | UC-02 | SDD §2.5 | TC-050 | Not run |
+| REQ-60 Build a form | UC-03 | SDD §2.6 | TC-070, TC-101 | Passed |
+| REQ-61 Four question types | UC-03 | SDD §2.6 | TC-071 | Passed |
+| REQ-62 Publish a form in the forum | UC-03 | SDD §2.6 | TC-070, TC-101 | Passed |
+| REQ-63 Form opens over the forum | UC-03 | SDD §2.6 | TC-072 | Passed |
+| REQ-64 Answer a form only while open | UC-03 | SDD §2.6 | TC-062 | Passed |
+| REQ-65 Refuse a second form answer | UC-03 | SDD §2.6 | TC-063 | Passed |
+| REQ-66 Allow another form answer | UC-03 | SDD §2.6 | TC-064 | Passed |
+| REQ-67 Only the teacher sees form answers | UC-03 | SDD §2.6 | TC-073 | Passed |
+| REQ-68 Teacher closes a form | UC-03 | SDD §2.6 | TC-067, TC-101 | Passed |
+| REQ-69 Keep the form in the forum | UC-03 | SDD §2.6 | TC-069 | Passed |
+| REQ-70 Expanded forum window | UC-02 | SDD §2.5 | TC-050 | Passed |
 | NFR-01 Hidden instructions do not change the score | UC-05 | SDD §2.8 | None yet | Gap |
 | NFR-02 Forum and poll updates within 2 s | UC-02, UC-03 | SDD §2.11 | TC-110 | Not run |
 | NFR-03 Attendance response within 2 s | UC-01 | SDD §2.4 | TC-111 | Not run |

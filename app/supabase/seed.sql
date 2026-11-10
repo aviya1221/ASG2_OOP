@@ -1,4 +1,5 @@
 -- Made-up data for local runs and automated tests. No name or ID number here is real.
+-- Students 52 to 99 belong to no course, so browser tests can put them in courses of their own.
 -- The sign-in accounts are added by scripts/seed-users.mjs, through the sign-in service.
 
 insert into public.people (id_number, name, role) values
@@ -8,7 +9,7 @@ insert into public.people (id_number, name, role) values
 
 insert into public.people (id_number, name, role)
 select '3' || lpad(n::text, 8, '0'), 'סטודנט ' || n, 'student'
-from generate_series(1, 51) n;
+from generate_series(1, 99) n;
 
 insert into public.courses (id, number, name, teacher_id_number, weekly_hours) values
   ('aaaaaaaa-0000-4000-8000-000000000001', '1001', 'קורס א', '200000001', '[{"day": 0, "start": "10:00", "end": "12:00"}]'),

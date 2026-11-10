@@ -81,6 +81,33 @@ export async function newLesson(students: string[] = []): Promise<string> {
   return data.id as string;
 }
 
+/** A course of its own with these students and lessons, for tests that need several lessons. */
+export async function newCourse(students: string[], lessons: { number: number; topic?: string; hoursFromNow?: number }[]): Promise<string[]> {
+  const first = await newLesson(students);
+  const { data } = await secret.from("lessons").select("course_id").eq("id", first).single();
+  await secret.from("lessons").delete().eq("id", first);
+  const ids: string[] = [];
+  for (const lesson of lessons) {
+    const startsAt = Date.now() + (lesson.hoursFromNow ?? -0.5) * 3_600_000;
+    const { data: row, error } = await secret
+      .from("lessons")
+      .insert({ course_id: data!.course_id, lecture_number: lesson.number, topic: lesson.topic ?? null, starts_at: new Date(startsAt).toISOString(), ends_at: new Date(startsAt + 7_200_000).toISOString() })
+      .select("id")
+      .single();
+    if (error) throw new Error(error.message);
+    ids.push(row.id as string);
+  }
+  return ids;
+}
+
+/** A signed-in connection to the database, as the phone of this person has. */
+export async function signedInClient(idNumber: string) {
+  const client = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_PUBLIC_KEY!, NO_SESSION);
+  const { error } = await client.auth.signInWithPassword({ email: `${idNumber}@${EMAIL_DOMAIN}`, password: PASSWORD });
+  if (error) throw new Error(error.message);
+  return client;
+}
+
 /** Opens a round directly in the database. */
 export async function startRound(lessonId: string, prints: number[][]): Promise<void> {
   const faces = prints.map((print, face_no) => ({ photo_no: 0, face_no, box: [face_no, 0, 40, 40], print }));
