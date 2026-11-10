@@ -6,8 +6,13 @@ import { ClassFaceCache } from "./attendance/ClassFaceCache.ts";
 import { FaceMatcher } from "./attendance/FaceMatcher.ts";
 import { loadConfig, loadServerConfig } from "./config/env.ts";
 import { createServices } from "./container.ts";
+import { GuideGenerator } from "./homework/GuideGenerator.ts";
+import { HomeworkRoutes } from "./homework/HomeworkRoutes.ts";
+import { HomeworkService } from "./homework/HomeworkService.ts";
+import { SolutionReviewer } from "./homework/SolutionReviewer.ts";
 import { createApp } from "./http/app.ts";
 import { SupabaseAttendanceRepository } from "./integrations/supabase/SupabaseAttendanceRepository.ts";
+import { SupabaseHomeworkRepository } from "./integrations/supabase/SupabaseHomeworkRepository.ts";
 import { SupabaseNotificationRepository } from "./integrations/supabase/SupabaseNotificationRepository.ts";
 import { SupabaseSummaryRepository } from "./integrations/supabase/SupabaseSummaryRepository.ts";
 import { SupabaseUserVerifier } from "./integrations/supabase/SupabaseUserVerifier.ts";
@@ -19,7 +24,7 @@ import { SummaryRoutes } from "./summaries/SummaryRoutes.ts";
 import { SummaryService } from "./summaries/SummaryService.ts";
 
 const config = loadServerConfig();
-const { llm } = createServices(loadConfig());
+const { llm, reviewLlm } = createServices(loadConfig());
 const supabase = createClient(config.supabaseUrl, config.supabaseSecretKey, {
   auth: { persistSession: false, autoRefreshToken: false },
 });
@@ -37,11 +42,16 @@ const attendance = new AttendanceService({
   notifications,
 });
 const summaries = new SummaryService(new SupabaseSummaryRepository(supabase), new SummaryGenerator(llm, new FfmpegSoundExtractor()));
+const homework = new HomeworkService(new SupabaseHomeworkRepository(supabase), new GuideGenerator(llm), new SolutionReviewer(reviewLlm));
 
 const app = createApp({
   webOrigins: config.webOrigins,
   verifier,
-  routers: [new AttendanceRoutes(attendance, notifications, verifier).router(), new SummaryRoutes(summaries, verifier).router()],
+  routers: [
+    new AttendanceRoutes(attendance, notifications, verifier).router(),
+    new SummaryRoutes(summaries, verifier).router(),
+    new HomeworkRoutes(homework, verifier).router(),
+  ],
 });
 
 app.listen(config.port, "0.0.0.0", () => {
