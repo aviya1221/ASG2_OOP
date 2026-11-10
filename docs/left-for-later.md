@@ -10,7 +10,7 @@ Last updated: 2026-11-09.
 |---|------|----------------|---------------|----------------|--------|
 | 1 | Compare `gemini-3.6-flash` with `gemini-3.5-flash-lite` for the homework review, then choose the model | `gemini-3.6-flash` allows 20 requests a day on the free plan, and a class of 50 can need 150 for one homework | The comparison run set for 2026-11-10 at 10:05 | [Tools report](02-tools-report.md) sections 2.6 and 3, the comparison table, a new ADR and the risks | Done |
 | 2 | Commit the homework review spike | It is the evidence for item 1 | Item 1 | [app/spikes/homework-review/](../app/spikes/homework-review/) | Done |
-| 3 | Update the homework review decisions | Gemini 3.6 and later ignore the temperature, a retry needs another seed, an answered section that got 0 is lifted to 1, and the median of 3 reviews may be dropped | Item 1 | [F5 decisions](features/F5-homework-review-strategy.md) | Waiting |
+| 3 | Update the homework review decisions | Gemini 3.6 and later ignore the temperature, a retry needs another seed, an answered section that got 0 is lifted to 1, and the median of 3 reviews may be dropped | Item 1 | [F5 decisions](features/F5-homework-review-strategy.md) | Done |
 | 4 | Decide whether NFR-01 limits only a rise in the score | In the spike the only move above 10 points was a drop | Item 1 | [SRS](04-SRS.md) | Waiting |
 
 ## Needs real phones

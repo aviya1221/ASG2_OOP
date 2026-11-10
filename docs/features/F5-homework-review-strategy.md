@@ -35,10 +35,11 @@ Small differences between runs are acceptable, but we try to avoid them:
 
 - The section requirements are generated once per homework, so every student is measured against the same text.
 - The model and the generated prompt stay the same for all the checks of a homework.
-- We use a low temperature and a fixed seed. The Gemini API accepts both, and it treats the seed as best effort.
+- We use a fixed seed, which the Gemini API treats as best effort. We set no temperature: Gemini 3.6 and later ignore it, and the spike measured both models without it.
+- A retry after a rejected answer uses another seed, because the same seed returns the same answer.
 - For each section the model must first quote the evidence from the solution, and only then give the score.
 
-**Spike before building:** review the same solution five times, on homework from at least two subjects. The target is that no section moves by more than 10 points. If that fails, each check runs three reviews and takes the median of each section.
+**Spike result:** with `gemini-3.5-flash-lite` and the stricter wording, the overall score of the same solution moved by up to 9 points between seeds, and one section by up to 35. The median of three reviews is dropped: it triples the requests and still moved a section by 25 points. The model is chosen in [ADR-9](../02-tools-report.md#adr-9-model-for-the-homework-review).
 
 ## 4. Protections
 
@@ -54,8 +55,10 @@ Small differences between runs are acceptable, but we try to avoid them:
 - The homework file is treated the same way when the reviewer is generated, because a teacher may have copied it from elsewhere.
 - The answer must fit a fixed structure with known section IDs and scores from 0 to 100. The server checks it and rejects anything else.
 - The server calculates the totals and the chart. The model only scores sections.
+- An answered section that gets 0 from the model is lifted to 1 by the server.
+- A report with Arabic letters inside Hebrew words is asked for again once, with another seed.
 
-**Test set.** The test cases include solutions with hidden white text, instructions in several languages and direct requests for the answer. A protected run must score the same as the same file without the added text, within the tolerance in section 3, and must not reveal an answer.
+**Test set.** The test cases include solutions with hidden white text, instructions in several languages and direct requests for the answer. Over 3 reviews, the added text must not raise the median score of a section by more than 10 points compared with the same file without it (NFR-01), and no report may reveal an answer.
 
 ## 5. Further details
 
@@ -65,11 +68,10 @@ Small differences between runs are acceptable, but we try to avoid them:
 
 ## 6. What we reuse
 
-The LLM layer in [app/server/src/llm/](../../app/server/src/llm/) already reads a PDF, takes standing instructions and returns JSON by a schema. It needs one small addition: passing the temperature and the seed. Text-similarity comparison is not needed, because students are compared by their scores.
+The LLM layer in [app/server/src/llm/](../../app/server/src/llm/) already reads a PDF, takes standing instructions and returns JSON by a schema. It needs one small addition: passing the seed. Text-similarity comparison is not needed, because students are compared by their scores.
 
-Still to be built: users, lessons, the database, the phone screens and the chart.
+Still to be built: the homework tables, the homework tab and the chart.
 
 ## 7. Still open
 
-- **Spike results** from section 3.
-- **Build order** relative to the attendance feature and the shared base of users and lessons.
+Nothing. The spike is done, and the homework review is built last.
