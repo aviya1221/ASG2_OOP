@@ -18,7 +18,7 @@ Last updated: 2026-11-09.
 | # | Task | Why it matters | What it needs | Result goes to | Status |
 |---|------|----------------|---------------|----------------|--------|
 | 5 | Check phone notifications on Android Chrome and iPhone Safari (REQ-11) | Safari is expected to notify only a site added to the home screen, which would clash with having nothing to install. If so, a message inside the site is the alternative | One Android phone and one iPhone | Tools report, and the SRS interfaces if the design changes | Open |
-| 6 | Run the PollPosition code and answer a poll from 3 phones | It decides whether we reuse its code for quick polls | 3 phones | Tools report and the [F3 decisions](features/F3-polls-strategy.md) | Open |
+| 6 | Run the PollPosition code and answer a poll from 3 phones | It decides whether we reuse its code for quick polls | 3 phones | Not needed: the poll is our own code ([EDD-Polls](07-EDD/polls-and-forms.md)) | Done |
 | 7 | Check the face tools on camera originals with registration photos, and time them on phones (R1, R2, R4, R5, NFR-04) | So far we used compressed copies and a laptop | Volunteers, phones and a lecture hall | The face tools spike in the tools report | Open |
 | 8 | Time the page and the live updates on real phones, with real access rules (R13, R14, NFR-02) | The spikes used a laptop and emulated phones | The first build, and phones | [STP / STD](08-STP-STD.md) | Open |
 

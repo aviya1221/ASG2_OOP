@@ -40,7 +40,7 @@ classDiagram
     FormWindow "1" --> "1" SurveyApi
 ```
 
-`FormBuilder` and `FormWindow` come from the form builder spike (ADR-7), and the poll editor and `ResultsChart` from PollPosition or Recharts (R21).
+`FormBuilder` and `FormWindow` come from the form builder spike (ADR-7). The poll editor and `ResultsChart` are a few lines of our own, with the chart drawn in plain CSS, so the PollPosition code was not needed (R21).
 
 ## 2. Algorithms and data structures
 
