@@ -120,7 +120,7 @@ test("TC-049 the teacher deletes a message, and the open page of a student updat
 });
 
 test("TC-050 write in the expanded window, where a poll is one line", async ({ page }, info) => {
-  const student = studentFor(info.project.name, 50);
+  const student = studentFor(info.project.name, 54);
   const lessonId = await newLesson([student]);
   await publishPoll(lessonId);
 
