@@ -4,7 +4,8 @@
 [build]
   base = "app/client"
   command = "npm run build"
-  publish = "dist"
+  # Counted from the root of the repository, not from the base folder.
+  publish = "app/client/dist"
 
 [build.environment]
   NODE_VERSION = "22"
