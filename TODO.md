@@ -106,7 +106,7 @@ The lecturer requires that we **actually test** every tool we suggest.
   - [x] ADR-7: form builder
   - [x] ADR-8: way of building
   - [x] ADR-9: model for the homework review (F5)
-- [ ] Technology risk register with mitigations (keep a fallback for risky tools)
+- [x] Technology risk register with mitigations (keep a fallback for risky tools)
   - [x] Face tools for photo attendance (F1): R1 to R6
   - [x] Lesson summary (F4): R7 to R10
   - [x] Database and live updates (Supabase): R11 to R13
@@ -117,6 +117,7 @@ The lecturer requires that we **actually test** every tool we suggest.
   - [x] AI coding assistant: R19
   - [x] Checks left for real phones: R20 and R21
   - [x] Web client hosting (Netlify): R22
+  - [x] Homework review (F5): R23 to R26
 - [x] Track the work left for later → [docs/left-for-later.md](docs/left-for-later.md)
 
 ## Step 3: SoW (Statement of Work) → [docs/03-SoW.md](docs/03-SoW.md)
