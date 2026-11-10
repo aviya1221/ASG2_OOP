@@ -8,6 +8,8 @@ export interface GeminiConfig {
   apiKey: string;
   /** Model for text and JSON answers. */
   textModel: string;
+  /** Model for reviewing homework solutions: a class can need 150 reviews of one homework (ADR-9). */
+  reviewModel: string;
   /** Model for embeddings (comparing homework). */
   embeddingModel: string;
   /** Length of each embedding vector; 768 is one of the sizes Google recommends. */
@@ -27,6 +29,8 @@ export interface GeminiConfig {
 export const GEMINI_DEFAULTS = {
   /** Current stable Flash model. gemini-2.5-* are deprecated and re-routed on 2026-12-01. */
   textModel: "gemini-3.6-flash",
+  /** The light model, chosen in the homework review spike (docs/02-tools-report.md, ADR-9). */
+  reviewModel: "gemini-3.5-flash-lite",
   /** Google's recommended embedding model (multimodal). */
   embeddingModel: "gemini-embedding-2",
   embeddingDimensions: 768,

@@ -46,6 +46,11 @@ export interface LlmRequest {
   /** Upper limit on the answer's length, in tokens. */
   maxOutputTokens?: number;
   effort?: LlmEffort;
+  /**
+   * The same request with the same seed tends to get the same answer, which keeps
+   * scores steady. Providers treat it as best effort (ADR-9).
+   */
+  seed?: number;
 }
 
 /** A plain JSON Schema object (type, properties, required, items, enum...). */

@@ -175,6 +175,7 @@ export class GeminiLlmClient implements LlmClient {
     const generationConfig = {
       ...(request.maxOutputTokens !== undefined ? { max_output_tokens: request.maxOutputTokens } : {}),
       ...(request.effort !== undefined ? { thinking_level: request.effort } : {}),
+      ...(request.seed !== undefined ? { seed: request.seed } : {}),
     };
     const params: CreateParams = {
       model: this.#config.textModel,

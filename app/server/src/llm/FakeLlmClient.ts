@@ -79,9 +79,13 @@ export class FakeLlmClient implements LlmClient {
   }
 }
 
-/** Builds the simplest value that fits a JSON schema, so any JSON feature works offline. */
-function sampleFromSchema(schema: JsonSchema): unknown {
-  if (Array.isArray(schema.enum) && schema.enum.length > 0) return schema.enum[0];
+/**
+ * Builds the simplest value that fits a JSON schema, so any JSON feature works offline.
+ * A list gets its minimum length, and its n-th item takes the n-th allowed value of
+ * each `enum`, so items that carry an id from a fixed list stay distinct.
+ */
+function sampleFromSchema(schema: JsonSchema, index = 0): unknown {
+  if (Array.isArray(schema.enum) && schema.enum.length > 0) return schema.enum[index % schema.enum.length];
   switch (schema.type) {
     case "string":
       return "[fake]";
@@ -90,12 +94,14 @@ function sampleFromSchema(schema: JsonSchema): unknown {
       return typeof schema.minimum === "number" ? schema.minimum : 0;
     case "boolean":
       return false;
-    case "array":
-      return [];
+    case "array": {
+      const length = typeof schema.minItems === "number" ? schema.minItems : 0;
+      return Array.from({ length }, (_, i) => sampleFromSchema((schema.items ?? {}) as JsonSchema, i));
+    }
     case "object": {
       const properties = (schema.properties ?? {}) as Record<string, JsonSchema>;
       const result: Record<string, unknown> = {};
-      for (const [key, child] of Object.entries(properties)) result[key] = sampleFromSchema(child);
+      for (const [key, child] of Object.entries(properties)) result[key] = sampleFromSchema(child, index);
       return result;
     }
     default:

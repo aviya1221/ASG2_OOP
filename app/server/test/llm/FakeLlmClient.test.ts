@@ -34,6 +34,31 @@ describe("FakeLlmClient", () => {
     assert.deepEqual(result.data, { score: 1, verdict: "pass", comments: [], late: false });
   });
 
+  it("fills a list to its minimum length, giving each item the next id from a fixed list", async () => {
+    const llm = new FakeLlmClient();
+    const result = await llm.generateJson({
+      prompt: "review",
+      schema: {
+        type: "object",
+        properties: {
+          sections: {
+            type: "array",
+            minItems: 3,
+            items: { type: "object", properties: { id: { type: "string", enum: ["q1_a", "q1_b", "q2"] }, score: { type: "integer", minimum: 0 } } },
+          },
+        },
+      },
+    });
+
+    assert.deepEqual(result.data, {
+      sections: [
+        { id: "q1_a", score: 0 },
+        { id: "q1_b", score: 0 },
+        { id: "q2", score: 0 },
+      ],
+    });
+  });
+
   it("runs the feature's check exactly like the real client", async () => {
     const llm = new FakeLlmClient({ json: () => ({ score: 140 }) });
     const validate = () => {

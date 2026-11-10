@@ -263,6 +263,11 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
   - [x] Making the summary on the server, with the sound fallback
   - [x] Integration tests of the lesson summary
 - [x] Video summary (if in demo scope)
+- [ ] Homework review: database and server
+  - [x] LLM layer: a seed, a separate model for reviews, and fake answers that fill required lists
+  - [ ] Tables, file storage and access rules
+  - [ ] Guide, review and scores on the server
+  - [ ] Integration tests of the homework review
 - [ ] Homework review (if in demo scope)
 - [ ] Unit tests for the core classes (per the STP, step 8)
 - [x] Test automation: GitHub Actions runs the type check and the unit, integration and browser tests on every push

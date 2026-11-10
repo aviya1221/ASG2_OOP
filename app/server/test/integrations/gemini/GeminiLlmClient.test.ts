@@ -94,6 +94,16 @@ describe("GeminiLlmClient.generateText", () => {
     ]);
   });
 
+  it("passes the seed with the generation settings, and leaves it out when there is none", async () => {
+    const { sdk, calls } = fakeSdk();
+    const client = new GeminiLlmClient(CONFIG, { sdk });
+    await client.generateText({ prompt: "Review this", seed: 20261109 });
+    await client.generateText({ prompt: "Review this" });
+
+    assert.deepEqual(calls.create[0].generation_config, { seed: 20261109 });
+    assert.equal(calls.create[1].generation_config, undefined);
+  });
+
   it("throws 'incomplete' when the interaction did not finish", async () => {
     const { sdk } = fakeSdk({ create: () => ({ ...completed("half an ans"), status: "incomplete" }) });
     await assert.rejects(new GeminiLlmClient(CONFIG, { sdk }).generateText({ prompt: "x" }), {

@@ -13,12 +13,14 @@ describe("loadConfig: LLM settings", () => {
     const config = loadConfig({
       GEMINI_API_KEY: "abc",
       GEMINI_TEXT_MODEL: "gemini-3.8-flash",
+      GEMINI_REVIEW_MODEL: "gemini-3.8-flash-lite",
       GEMINI_EMBEDDING_MODEL: "gemini-embedding-001",
       GEMINI_STORE_INTERACTIONS: "TRUE",
     });
     assert.equal(config.llm.provider, "gemini");
     if (config.llm.provider !== "gemini") return;
     assert.equal(config.llm.gemini.textModel, "gemini-3.8-flash");
+    assert.equal(config.llm.gemini.reviewModel, "gemini-3.8-flash-lite");
     assert.equal(config.llm.gemini.embeddingModel, "gemini-embedding-001");
     assert.equal(config.llm.gemini.storeInteractions, true);
   });

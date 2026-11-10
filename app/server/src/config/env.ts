@@ -81,6 +81,7 @@ function loadLlmSettings(env: Env): LlmSettings {
       ...GEMINI_DEFAULTS,
       apiKey,
       textModel: read(env, "GEMINI_TEXT_MODEL") ?? GEMINI_DEFAULTS.textModel,
+      reviewModel: read(env, "GEMINI_REVIEW_MODEL") ?? GEMINI_DEFAULTS.reviewModel,
       embeddingModel: read(env, "GEMINI_EMBEDDING_MODEL") ?? GEMINI_DEFAULTS.embeddingModel,
       storeInteractions: readBoolean(env, "GEMINI_STORE_INTERACTIONS") ?? GEMINI_DEFAULTS.storeInteractions,
     },

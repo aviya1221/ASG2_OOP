@@ -186,7 +186,8 @@ Copy [server/.env.example](server/.env.example) to `server/.env`. The `.env` fil
 |----------|----------|---------|---------|
 | `LLM_PROVIDER` | no | `gemini` | `gemini` for real calls, `fake` for canned answers (tests, offline demo) |
 | `GEMINI_API_KEY` | with `gemini` | | Key from Google AI Studio |
-| `GEMINI_TEXT_MODEL` | no | `gemini-3.6-flash` | Model for text and JSON answers |
+| `GEMINI_TEXT_MODEL` | no | `gemini-3.6-flash` | Model for text and JSON answers, and for the review guides of homework |
+| `GEMINI_REVIEW_MODEL` | no | `gemini-3.5-flash-lite` | Model that reviews homework solutions (ADR-9) |
 | `GEMINI_EMBEDDING_MODEL` | no | `gemini-embedding-2` | Model for comparing texts |
 | `GEMINI_STORE_INTERACTIONS` | no | `false` | Let Google keep interactions |
 | `PORT` | no | `8787` | The port of the web server |
