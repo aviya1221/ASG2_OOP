@@ -212,7 +212,7 @@ Rules for REQ-13, checked in this order. Only the result "Present" marks the stu
 | REQ-37 | The system shall let the teacher close an open poll at any time. | Must | D-3 |
 | REQ-38 | The system shall close, at the end of the lesson, a poll that was published before the end of the lesson and is still open. | Must | D-3 |
 | REQ-39 | The system shall keep a poll and its results in the forum of its lesson date. | Must | D-3 |
-#### F4: Class video ML summary, REQ-40 to REQ-49
+#### F4: Class video ML summary, REQ-40 to REQ-49 and REQ-73
 
 | ID | Requirement | Priority | Source |
 |----|-------------|----------|--------|
@@ -221,11 +221,12 @@ Rules for REQ-13, checked in this order. Only the result "Present" marks the stu
 | REQ-42 | The system shall let the teacher upload a recording of a lesson, and create a new summary from each upload. | Must | D-4 |
 | REQ-43 | The system shall create the summary automatically from the full video, picture and sound. | Must | D-4 |
 | REQ-44 | The system shall create the summary from the sound alone when the file exceeds the AI service's file size limit or a usage limit is reached. | Must | D-4 |
-| REQ-45 | The system shall show four parts on the summary page: a summary of the lesson of up to 300 words, the topics in order with their start times, the students' questions with the teacher's answers, and the content from the board. | Must | D-4 |
+| REQ-45 | The system shall show the summary as one page of up to 450 words, written with headings and key terms in bold: a title with the topic of the lesson, a short opening paragraph, a heading for each main topic with the board content that adds to it, then the main questions the students asked with the teacher's answers. | Must | D-4 |
 | REQ-46 | The system shall correct any spelling mistake or garbled copying in the summary by comparing it with the transcript and the list of board content, without adding new content. | Must | D-4 |
 | REQ-47 | The system shall let the teacher edit the text of the summary by hand. | Must | D-4 |
 | REQ-48 | The system shall delete the recording once the summary is ready. | Must | D-4 |
 | REQ-49 | The system shall use the topic from the lesson summary as the lecture topic of the forum title when the teacher has not entered one. | Must | D-4 |
+| REQ-73 | The system shall show a new summary only to the teacher until the teacher publishes it to the class, and let the teacher hide it again. | Must | D-4 |
 
 #### F5: LLM homework review, REQ-50 to REQ-59
 
@@ -358,7 +359,7 @@ See [05-use-cases.md](05-use-cases.md).
 | REQ-42 Upload a recording | UC-04 | SDD §2.7, EDD-LessonSummary | TC-081, TC-082, TC-102 | Passed |
 | REQ-43 Summary from the full video | UC-04 | SDD §2.7, EDD-LessonSummary | TC-083, TC-113 | Not run |
 | REQ-44 Fall back to sound alone | UC-04 | SDD §2.7, EDD-LessonSummary | TC-084 | Passed |
-| REQ-45 Four parts of the summary page | UC-04 | SDD §2.7, EDD-LessonSummary | TC-085 | Passed |
+| REQ-45 One-page summary | UC-04 | SDD §2.7, EDD-LessonSummary | TC-085 | Not run |
 | REQ-46 Second review of the summary | UC-04 | SDD §2.7, EDD-LessonSummary | TC-086, TC-113 | Not run |
 | REQ-47 Teacher edits the summary | UC-04 | SDD §2.7, EDD-LessonSummary | TC-087 | Passed |
 | REQ-48 Delete the recording | UC-04 | SDD §2.7, EDD-LessonSummary | TC-088, TC-102 | Passed |
@@ -386,6 +387,7 @@ See [05-use-cases.md](05-use-cases.md).
 | REQ-70 Expanded forum window | UC-02 | SDD §2.5, EDD-Forum | TC-050 | Passed |
 | REQ-71 The user's name on every screen | All | SDD §2.1 | None yet | Gap |
 | REQ-72 Weekly timetable of lessons | UC-08 | SDD §2.1 | None yet | Gap |
+| REQ-73 Summary shown to the class only after publishing | UC-04 | SDD §2.7, EDD-LessonSummary | None yet | Gap |
 | NFR-01 Hidden instructions do not raise the score | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-140 | Passed |
 | NFR-02 Forum and poll updates within 2 s | UC-02, UC-03 | SDD §2.11, EDD-Forum, EDD-Polls | TC-110 | Not run |
 | NFR-03 Attendance response within 2 s | UC-01 | SDD §2.4, EDD-Attendance | TC-111 | Not run |

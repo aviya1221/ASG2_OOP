@@ -56,7 +56,7 @@ Requirement number ranges per feature:
 | F1 Attendance + spreadsheet (main) | REQ-10 to REQ-19 |
 | F2 Comments and suggestions | REQ-20 to REQ-29, REQ-70 |
 | F3 Polls | REQ-30 to REQ-39 |
-| F4 Class video summary | REQ-40 to REQ-49 |
+| F4 Class video summary | REQ-40 to REQ-49, REQ-73 |
 | F5 Homework review | REQ-50 to REQ-59 |
 | F6 Forms (surveys with more than one question, published in the forum) | REQ-60 to REQ-69 |
 
