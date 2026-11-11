@@ -181,7 +181,13 @@ test("TC-119 publishing goes on while the teacher moves to another tab, and its 
   await openAs(page, ID.T1, `/lessons/${lessonId}/homework`);
   await page.getByLabel("שם המטלה").fill("מטלה ברקע");
   await page.getByLabel("קובץ המטלה (PDF)").setInputFiles(pdf("homework.pdf"));
+  // The fake AI service answers at once, so the request waits a little to leave time to move to another tab.
+  await page.route(`${SERVER_URL}/homework`, async (route) => {
+    await new Promise((resolve) => setTimeout(resolve, 2_000));
+    await route.continue();
+  });
   await page.getByRole("button", { name: "פרסום המטלה" }).click();
+  await expect(page.getByRole("button", { name: "פעולה ברקע" })).toBeVisible();
 
   const tabs = page.getByRole("navigation", { name: "לשוניות השיעור" });
   await tabs.getByRole("link", { name: "נוכחות" }).click();
