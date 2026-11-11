@@ -1,7 +1,7 @@
 # F4 Lesson summary: approach and decisions
 
 What the team agreed about the lesson video summary, before writing its documents.
-Agreed on 2026-11-08. This note feeds the video summary requirements in the SRS (F4), its use case, its EDD and the speech and video section of the tools report.
+Agreed on 2026-11-08 and updated on 2026-11-11 after a walk-through of the working product. This note feeds the video summary requirements in the SRS (F4), its use case, its EDD and the speech and video section of the tools report.
 
 ## 1. The idea
 
@@ -10,14 +10,13 @@ After a lesson, the teacher uploads its recording. The app creates a summary aut
 ## 2. What we agreed
 
 1. **A button in the forum.** The forum of each lesson date has a button that leads to the lesson's summary page.
-2. **When the page opens.** Only after the lesson, and only after the teacher has uploaded the recording.
+2. **When the page opens.** Only after the lesson, and only after the teacher has uploaded the recording. At first only the teacher sees the summary. The students see it after the teacher publishes it to the class, and the teacher can hide it again. A new upload hides the summary until the teacher publishes the new one.
 3. **The source.** The model works from the full video, picture and sound. Sound alone is the fallback when the file is too large or a usage limit is reached.
-4. **The page has four parts:**
-   - a summary of the lesson of up to 300 words;
-   - the topics in order, each with the time it started;
-   - the students' questions with the teacher's answers;
-   - the formulas and other content from the board.
-5. **How it is made.** The model first writes the transcript with speaker labels and the list of what was on the board. It then writes the four parts from them.
+4. **One page.** The summary is one page of up to 450 words, written like a document with headings and bold text:
+   - a title with the topic of the lesson, and a short opening paragraph;
+   - a heading for each main topic, with short points and the key terms in bold. Content from the board joins the topic it belongs to, and only when it adds something new and important;
+   - at the end, the main questions the students asked, each with the teacher's answer.
+5. **How it is made.** The model first writes the transcript with speaker labels and the list of what was on the board. It then writes the summary page from them.
 6. **Second review.** Finally the model goes over the whole summary against the transcript and the board list, mainly to catch spelling mistakes and garbled copying, and corrects them. It corrects only what the source supports and adds no new content.
 7. **Teacher corrections.** The teacher can upload the recording again to create a new summary, and can edit the summary's text by hand.
 8. **The recording is deleted** once the summary is ready. The page does not show the video.
