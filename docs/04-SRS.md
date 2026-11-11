@@ -228,7 +228,7 @@ Rules for REQ-13, checked in this order. Only the result "Present" marks the stu
 | REQ-49 | The system shall use the topic from the lesson summary as the lecture topic of the forum title when the teacher has not entered one. | Must | D-4 |
 | REQ-73 | The system shall show a new summary only to the teacher until the teacher publishes it to the class, and let the teacher hide it again. | Must | D-4 |
 
-#### F5: LLM homework review, REQ-50 to REQ-59
+#### F5: LLM homework review, REQ-50 to REQ-59 and REQ-74
 
 | ID | Requirement | Priority | Source |
 |----|-------------|----------|--------|
@@ -242,6 +242,7 @@ Rules for REQ-13, checked in this order. Only the result "Present" marks the stu
 | REQ-57 | The system shall show everyone linked to the lesson a chart of every checked student's name and position, highlighting the viewing student's place, with equal scores sharing a place, that can be filtered by overall score, question or section. | Must | D-5 |
 | REQ-58 | The system shall never reveal in a report the answer, working code, a final result or a rewritten passage of the homework. | Must | D-5 |
 | REQ-59 | The system shall delete a student's solution file within 1 minute of the end of the check, keeping only the scores, the report, the check number and the time. | Must | D-5 |
+| REQ-74 | The system shall let the teacher of the lesson delete a homework they published, after confirming, together with its file, its review guide and the students' checks. | Must | D-5 |
 
 #### F6: Forms, REQ-60 to REQ-69
 
@@ -388,6 +389,7 @@ See [05-use-cases.md](05-use-cases.md).
 | REQ-71 The user's name on every screen | All | SDD §2.1 | None yet | Gap |
 | REQ-72 Weekly timetable of lessons | UC-08 | SDD §2.1 | None yet | Gap |
 | REQ-73 Summary shown to the class only after publishing | UC-04 | SDD §2.7, EDD-LessonSummary | None yet | Gap |
+| REQ-74 Teacher deletes a homework | UC-05 | SDD §2.8, EDD-HomeworkReview | None yet | Gap |
 | NFR-01 Hidden instructions do not raise the score | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-140 | Passed |
 | NFR-02 Forum and poll updates within 2 s | UC-02, UC-03 | SDD §2.11, EDD-Forum, EDD-Polls | TC-110 | Not run |
 | NFR-03 Attendance response within 2 s | UC-01 | SDD §2.4, EDD-Attendance | TC-111 | Not run |
