@@ -286,6 +286,7 @@ Rules for REQ-13, checked in this order. Only the result "Present" marks the stu
 | NFR-10 | Security | The server shall delete the face-prints from a class photo within 1 minute of the end of the hour in which students can respond. | Must |
 | NFR-11 | Availability | The product shall be available for 99% of lesson time during the pilot. | Must |
 | NFR-12 | Usability | The website shall fit every screen width from 320 px to 1920 px, with sideways scrolling only inside the box of content wider than the screen, such as the map of the hall. | Must |
+| NFR-13 | Usability | An action that has started (publishing a homework, checking a solution, uploading a recording, processing the class photos or registering a face) shall go on to its end and show its result in 100% of the cases in which the user moves to another page of the product before it ends. | Must |
 
 ## 4. Appendices
 
@@ -402,3 +403,4 @@ See [05-use-cases.md](05-use-cases.md).
 | NFR-10 Class face-prints deleted within 1 minute of the hour's end | UC-01 | SDD §2.4, EDD-Attendance | TC-100 | Passed |
 | NFR-11 99% availability in the pilot | All | SDD §5 | TC-116 | Not run |
 | NFR-12 Fits every screen width | All | SDD §2.1 | TC-117 | Not run |
+| NFR-13 Long actions keep running between pages | UC-01, UC-04, UC-05, UC-06 | SDD §2.1 | None yet | Gap |

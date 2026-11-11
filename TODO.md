@@ -272,7 +272,7 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
 - [ ] Changes after the walk-through of 2026-11-11
   - [x] Decisions: the screens (top bar, icons, timetable, actions that keep running)
   - [x] Decisions: the lesson summary, polls and homework
-  - [ ] SRS: changed and new requirements, and the traceability matrix
+  - [x] SRS: changed and new requirements, and the traceability matrix
   - [ ] Use cases: the summary, polls, homework and the first screen
   - [ ] SDD and EDD: the summary, polls, homework and the shared parts of the client
   - [ ] STD: new and changed test cases
