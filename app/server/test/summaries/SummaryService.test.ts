@@ -7,17 +7,17 @@ import { describe, it } from "node:test";
 import type { SummaryGenerator } from "../../src/summaries/SummaryGenerator.ts";
 import type { SummaryRepository } from "../../src/summaries/SummaryRepository.ts";
 import { SummaryService } from "../../src/summaries/SummaryService.ts";
-import type { GeneratedSummary, SummaryParts, SummaryState } from "../../src/summaries/types.ts";
+import type { GeneratedSummary, SummaryState } from "../../src/summaries/types.ts";
 
 const NOW = new Date("2026-12-01T12:00:00Z");
 const ENDED = { teacherId: "T1", endsAt: new Date("2026-12-01T11:00:00Z") };
-const RESULT: GeneratedSummary = { parts: { overview: "תקציר", topics: [], questions: [], board: [] }, lessonTopic: "נושא" };
+const RESULT: GeneratedSummary = { body: "# נושא\n\nתקציר", lessonTopic: "נושא" };
 
 class FakeRepository implements SummaryRepository {
   lesson = ENDED;
   state: SummaryState | null = null;
   history: string[] = [];
-  saved: SummaryParts | null = null;
+  saved: string | null = null;
   topic: string | null = null;
 
   async findLesson() {
@@ -30,10 +30,10 @@ class FakeRepository implements SummaryRepository {
     this.history.push("in_progress");
     this.state = { status: "in_progress", startedAt: NOW };
   }
-  async saveReady(_lesson: string, parts: SummaryParts) {
+  async saveReady(_lesson: string, body: string) {
     this.history.push("ready");
     this.state = { status: "ready", startedAt: NOW };
-    this.saved = parts;
+    this.saved = body;
   }
   async markFailed() {
     this.history.push("failed");

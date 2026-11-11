@@ -1,5 +1,6 @@
-import { Pencil, Save, Upload, X } from "lucide-react";
-import { useCallback, useEffect, useState, type ChangeEvent } from "react";
+import { Eye, EyeOff, Pencil, Printer, Save, Send, Upload, X } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
+import Markdown from "react-markdown";
 import { useParams } from "react-router";
 import { useSession } from "../accounts/session.tsx";
 import { lectureTitle } from "../lessons/lessons.ts";
@@ -7,7 +8,7 @@ import { ServerError, uploadToServer } from "../lib/server.ts";
 import { supabase } from "../lib/supabase.ts";
 import { useEndedCount, useTask, useTasks } from "../tasks/BackgroundTasks.tsx";
 import { ICON, IconButton } from "../ui/Icon.tsx";
-import { fromEditable, isStale, toEditable, type SummaryParts } from "./summaryText.ts";
+import { isStale, MAX_SUMMARY_WORDS, summaryWords } from "./summaryText.ts";
 
 interface Lesson {
   courseName: string;
@@ -19,7 +20,8 @@ interface Lesson {
 interface Summary {
   status: "in_progress" | "ready" | "failed";
   startedAt: Date;
-  parts: SummaryParts | null;
+  body: string | null;
+  published: boolean;
 }
 
 const UPLOAD_ERRORS: Record<string, string> = {
@@ -28,7 +30,7 @@ const UPLOAD_ERRORS: Record<string, string> = {
   file_too_large: "ההקלטה גדולה מ־200 מגה.",
 };
 
-/** The summary page of a lesson (REQ-40 to REQ-49). */
+/** The summary page of a lesson (REQ-40 to REQ-49, REQ-73). */
 export function SummaryPage() {
   const { lessonId = "" } = useParams();
   const session = useSession();
@@ -39,7 +41,8 @@ export function SummaryPage() {
   const load = useCallback(async () => {
     const [lessonRow, summaryRow] = await Promise.all([
       supabase.from("lessons").select("lecture_number, topic, ends_at, courses(name)").eq("id", lessonId).maybeSingle(),
-      supabase.from("lesson_summaries").select("*").eq("lesson_id", lessonId).maybeSingle(),
+      // A student reads the row only after the teacher publishes it (REQ-73).
+      supabase.from("lesson_summaries").select("status, started_at, body, published").eq("lesson_id", lessonId).maybeSingle(),
     ]);
     if (lessonRow.data) {
       setLesson({
@@ -50,15 +53,7 @@ export function SummaryPage() {
       });
     }
     const row = summaryRow.data;
-    setSummary(
-      row
-        ? {
-            status: row.status,
-            startedAt: new Date(row.started_at),
-            parts: row.overview === null ? null : { overview: row.overview, topics: row.topics ?? [], questions: row.questions ?? [], board: row.board ?? [] },
-          }
-        : null,
-    );
+    setSummary(row ? { status: row.status, startedAt: new Date(row.started_at), body: row.body, published: row.published } : null);
   }, [lessonId]);
 
   // The upload goes on in the background, so the page reloads when it ends (NFR-13).
@@ -86,7 +81,7 @@ export function SummaryPage() {
 
   return (
     <>
-      <header className="band">
+      <header className="band no-print">
         <div className="band-inner">
           <div className="band-title">
             <h1>סיכום השיעור</h1>
@@ -97,64 +92,89 @@ export function SummaryPage() {
         </div>
       </header>
       <main className="content stack">
-        {!summary && <p>אין עדיין סיכום לשיעור הזה. הוא ייפתח אחרי השיעור, כשהמרצה יעלה הקלטה.</p>}
+        {!summary &&
+          (isTeacher ? (
+            <p>אין עדיין סיכום לשיעור הזה. הוא ייווצר אחרי שתעלה את ההקלטה, ויהיה גלוי רק לך עד שתפרסם אותו.</p>
+          ) : (
+            <p>אין עדיין סיכום לשיעור הזה. הוא יופיע כאן אחרי שהמרצה יפרסם אותו.</p>
+          ))}
         {inProgress && <p role="status">הסיכום בהכנה. הוא יופיע כאן כשיהיה מוכן.</p>}
         {failed && (
           <p className="problem" role="alert">
             יצירת הסיכום נכשלה.{isTeacher ? " אפשר להעלות את ההקלטה שוב." : ""}
           </p>
         )}
-        {summary?.parts && <SummaryView lessonId={lessonId} parts={summary.parts} editable={isTeacher && summary.status === "ready"} onSaved={load} />}
-        {isTeacher && !inProgress && (lessonEnded ? <RecordingUpload lessonId={lessonId} again={Boolean(summary)} /> : <p className="muted">אפשר להעלות הקלטה אחרי סוף השיעור.</p>)}
+        {summary?.body && (
+          <SummaryView
+            key={summary.body}
+            lessonId={lessonId}
+            body={summary.body}
+            published={summary.published}
+            isTeacher={isTeacher}
+            editable={isTeacher && summary.status === "ready"}
+            onSaved={load}
+          />
+        )}
+        {isTeacher &&
+          !inProgress &&
+          (lessonEnded ? <RecordingUpload lessonId={lessonId} again={Boolean(summary)} /> : <p className="muted no-print">אפשר להעלות הקלטה אחרי סוף השיעור.</p>)}
       </main>
     </>
   );
 }
 
-function SummaryView({ lessonId, parts, editable, onSaved }: { lessonId: string; parts: SummaryParts; editable: boolean; onSaved: () => Promise<void> }) {
+export function SummaryView({
+  lessonId,
+  body,
+  published,
+  isTeacher,
+  editable,
+  onSaved,
+}: {
+  lessonId: string;
+  body: string;
+  published: boolean;
+  isTeacher: boolean;
+  editable: boolean;
+  onSaved: () => Promise<void>;
+}) {
   const [editing, setEditing] = useState(false);
-  const [text, setText] = useState(() => toEditable(parts));
+  const [text, setText] = useState(body);
   const [problem, setProblem] = useState("");
+  const words = summaryWords(text);
 
-  async function save() {
-    const { error } = await supabase.from("lesson_summaries").update(fromEditable(text)).eq("lesson_id", lessonId);
+  async function change(values: { body?: string; published?: boolean }): Promise<boolean> {
+    setProblem("");
+    const { error } = await supabase.from("lesson_summaries").update(values).eq("lesson_id", lessonId);
     if (error) {
       setProblem("השמירה נכשלה.");
-      return;
+      return false;
     }
-    setEditing(false);
     await onSaved();
+    return true;
+  }
+
+  async function save() {
+    if (await change({ body: text.trim() })) setEditing(false);
   }
 
   if (editing) {
-    const field = (key: keyof typeof text, label: string, hint: string, rows: number) => (
-      <div className="field">
-        <label htmlFor={`summary-${key}`}>{label}</label>
-        <textarea
-          id={`summary-${key}`}
-          rows={rows}
-          aria-describedby={`summary-${key}-hint`}
-          value={text[key]}
-          onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setText({ ...text, [key]: e.target.value })}
-        />
-        <span id={`summary-${key}-hint`} className="muted">
-          {hint}
-        </span>
-      </div>
-    );
     return (
       <section className="stack" aria-label="עריכת הסיכום">
-        {field("overview", "סיכום", "עד 300 מילים", 8)}
-        {field("topics", "נושאים", "בכל שורה: זמן ונושא, למשל 02:15 הגדרות", 5)}
-        {field("questions", "שאלות ותשובות", "בכל שורה: זמן | שאלה | תשובה", 5)}
-        {field("board", "מהלוח", "בכל שורה: זמן ותוכן", 5)}
+        <div className="field">
+          <label htmlFor="summary-body">הסיכום</label>
+          <textarea id="summary-body" rows={22} dir="auto" aria-describedby="summary-body-hint" value={text} onChange={(e) => setText(e.target.value)} />
+          <span id="summary-body-hint" className={words > MAX_SUMMARY_WORDS ? "problem" : "muted"}>
+            {words} מילים מתוך {MAX_SUMMARY_WORDS} לכל היותר. # לכותרת, ## לכותרת משנה, - לנקודה ו־**מילה** להדגשה.
+          </span>
+        </div>
         {problem && (
           <p className="problem" role="alert">
             {problem}
           </p>
         )}
         <div className="actions">
-          <button className="primary small" onClick={() => void save()}>
+          <button className="primary small" disabled={words > MAX_SUMMARY_WORDS || !text.trim()} onClick={() => void save()}>
             <Save {...ICON} />
             שמירה
           </button>
@@ -168,46 +188,46 @@ function SummaryView({ lessonId, parts, editable, onSaved }: { lessonId: string;
   }
 
   return (
-    <article className="stack" aria-label="הסיכום">
-      <section className="card stack">
-        <h2>סיכום</h2>
-        <p className="message-text">{parts.overview}</p>
-      </section>
-      <section className="card stack">
-        <h2>נושאים</h2>
-        <ol className="stack">
-          {parts.topics.map((topic, index) => (
-            <li key={index}>
-              <span className="muted">{topic.start}</span> {topic.title}
-            </li>
-          ))}
-        </ol>
-      </section>
-      <section className="card stack">
-        <h2>שאלות ותשובות</h2>
-        {parts.questions.length === 0 && <p className="muted">לא היו שאלות.</p>}
-        {parts.questions.map((item, index) => (
-          <div key={index} className="stack">
-            <b>
-              <span className="muted">{item.time}</span> {item.question}
-            </b>
-            <p>{item.answer}</p>
-          </div>
-        ))}
-      </section>
-      <section className="card stack">
-        <h2>מהלוח</h2>
-        {parts.board.length === 0 && <p className="muted">לא נמצא תוכן מהלוח.</p>}
-        <ul className="stack">
-          {parts.board.map((item, index) => (
-            <li key={index}>
-              <span className="muted">{item.time}</span> <span dir="auto">{item.content}</span>
-            </li>
-          ))}
-        </ul>
-      </section>
-      {editable && <IconButton icon={Pencil} label="עריכת הסיכום" onClick={() => setEditing(true)} />}
-    </article>
+    <div className="stack">
+      {isTeacher && (
+        <div className="summary-tools no-print">
+          <span className={published ? "chip shown" : "chip private"}>
+            {published ? <Eye {...ICON} size={16} /> : <EyeOff {...ICON} size={16} />}
+            {published ? "פורסם לכיתה" : "גלוי רק לך"}
+          </span>
+          <span className="actions">
+            {editable &&
+              (published ? (
+                <button className="secondary small" onClick={() => void change({ published: false })}>
+                  <EyeOff {...ICON} />
+                  הסתרה מהכיתה
+                </button>
+              ) : (
+                <button className="primary small" onClick={() => void change({ published: true })}>
+                  <Send {...ICON} />
+                  פרסום לכיתה
+                </button>
+              ))}
+            {editable && <IconButton icon={Pencil} label="עריכת הסיכום" onClick={() => setEditing(true)} />}
+            <IconButton icon={Printer} label="הדפסה" onClick={() => window.print()} />
+          </span>
+        </div>
+      )}
+      {problem && (
+        <p className="problem" role="alert">
+          {problem}
+        </p>
+      )}
+      <article className="doc" aria-label="הסיכום" dir="auto">
+        <Markdown>{body}</Markdown>
+      </article>
+      {!isTeacher && (
+        <button className="link no-print" onClick={() => window.print()}>
+          <Printer {...ICON} />
+          הדפסה
+        </button>
+      )}
+    </div>
   );
 }
 
@@ -239,8 +259,9 @@ function RecordingUpload({ lessonId, again }: { lessonId: string; again: boolean
   }
 
   return (
-    <section className="card stack">
+    <section className="card stack no-print">
       <h2>{again ? "הקלטה חדשה" : "העלאת הקלטה"}</h2>
+      {again && <p className="muted">סיכום חדש יחליף את הנוכחי, ויהיה גלוי רק לך עד שתפרסם אותו.</p>}
       <label className="field">
         <span>הקלטת השיעור</span>
         <input type="file" accept="video/*,audio/*" onChange={(e) => setFile(e.target.files?.[0] ?? null)} />

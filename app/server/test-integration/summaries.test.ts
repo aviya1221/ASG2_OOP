@@ -19,9 +19,9 @@ let base: string;
 
 /** Lets a test hold the AI service, to look at the page while the summary is in progress. */
 let gate: Promise<void> = Promise.resolve();
-let overview = "סיכום חדש";
+let text = "סיכום חדש";
 
-const PARTS = () => ({ overview, topics: [{ title: "נושא", start: "00:10" }], questions: [], board: [], lesson_topic: "נושא מהסיכום" });
+const PARTS = () => ({ document: `# נושא מהסיכום\n\n${text}`, lesson_topic: "נושא מהסיכום" });
 const llm = new FakeLlmClient({
   json: (request: LlmJsonRequest<unknown>) => (request.prompt.startsWith("Transcribe") ? { utterances: [], on_screen: [] } : PARTS()),
 });
@@ -104,7 +104,7 @@ describe("the lesson summary", () => {
 
   it("TC-081 each upload makes a new summary, and the old text stays while the new one is made", async () => {
     const lessonId = await newLesson(true);
-    overview = "הסיכום הראשון";
+    text = "הסיכום הראשון";
     await upload(lessonId);
     await lastFinished;
 
@@ -112,18 +112,18 @@ describe("the lesson summary", () => {
     gate = new Promise((resolve) => {
       open = resolve;
     });
-    overview = "הסיכום השני";
+    text = "הסיכום השני";
     await upload(lessonId);
     const during = await summaryOf(lessonId);
     assert.equal(during?.status, "in_progress");
-    assert.equal(during?.overview, "הסיכום הראשון");
+    assert.match(during?.body, /הסיכום הראשון/);
 
     open();
     await lastFinished;
     gate = Promise.resolve();
     const done = await summaryOf(lessonId);
     assert.equal(done?.status, "ready");
-    assert.equal(done?.overview, "הסיכום השני");
+    assert.equal(done?.body, "# נושא מהסיכום\n\nהסיכום השני");
   });
 
   it("TC-087 the teacher edits the summary, a student cannot, and nobody changes the status", async () => {
@@ -132,13 +132,38 @@ describe("the lesson summary", () => {
     await lastFinished;
 
     const teacher = await signedIn("T1");
-    const edited = await teacher.from("lesson_summaries").update({ overview: "תוקן בידי המרצה" }).eq("lesson_id", lessonId).select("overview").single();
-    assert.equal(edited.data?.overview, "תוקן בידי המרצה");
+    const edited = await teacher.from("lesson_summaries").update({ body: "# תוקן בידי המרצה" }).eq("lesson_id", lessonId).select("body").single();
+    assert.equal(edited.data?.body, "# תוקן בידי המרצה");
+    await teacher.from("lesson_summaries").update({ published: true }).eq("lesson_id", lessonId);
 
     const student = await signedIn("S1");
-    assert.deepEqual((await student.from("lesson_summaries").update({ overview: "שונה" }).eq("lesson_id", lessonId).select("overview")).data, []);
+    assert.deepEqual((await student.from("lesson_summaries").update({ body: "שונה" }).eq("lesson_id", lessonId).select("body")).data, []);
     assert.ok((await teacher.from("lesson_summaries").update({ status: "failed" }).eq("lesson_id", lessonId)).error);
-    assert.equal((await student.from("lesson_summaries").select("overview").eq("lesson_id", lessonId).single()).data?.overview, "תוקן בידי המרצה");
+    assert.equal((await student.from("lesson_summaries").select("body").eq("lesson_id", lessonId).single()).data?.body, "# תוקן בידי המרצה");
+  });
+
+  it("TC-143 the class sees the summary only after the teacher publishes it, and a new upload hides it again", async () => {
+    const lessonId = await newLesson(true);
+    await upload(lessonId);
+    await lastFinished;
+    const teacher = await signedIn("T1");
+    const student = await signedIn("S1");
+    const studentSees = async () => (await student.from("lesson_summaries").select("body").eq("lesson_id", lessonId)).data?.length === 1;
+
+    assert.equal((await teacher.from("lesson_summaries").select("published").eq("lesson_id", lessonId).single()).data?.published, false);
+    assert.equal(await studentSees(), false, "a new summary is the teacher's only");
+    assert.deepEqual((await student.from("lesson_summaries").update({ published: true }).eq("lesson_id", lessonId).select("published")).data, []);
+    assert.equal(await studentSees(), false, "a student cannot publish it");
+
+    await teacher.from("lesson_summaries").update({ published: true }).eq("lesson_id", lessonId);
+    assert.equal(await studentSees(), true, "after publishing");
+    await teacher.from("lesson_summaries").update({ published: false }).eq("lesson_id", lessonId);
+    assert.equal(await studentSees(), false, "after hiding");
+
+    await teacher.from("lesson_summaries").update({ published: true }).eq("lesson_id", lessonId);
+    await upload(lessonId);
+    assert.equal(await studentSees(), false, "a new upload hides it until the new one is published");
+    await lastFinished;
   });
 
   it("TC-089 the forum takes the topic from the summary only when the lesson has none", async () => {

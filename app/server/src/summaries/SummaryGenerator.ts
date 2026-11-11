@@ -1,7 +1,7 @@
 import { rm } from "node:fs/promises";
 import { LlmError, type JsonSchema, type LlmClient, type UploadedFile } from "../llm/index.ts";
 import type { SoundExtractor } from "./SoundExtractor.ts";
-import { MAX_OVERVIEW_WORDS, type GeneratedSummary, type Recording, type SummaryParts } from "./types.ts";
+import { MAX_SUMMARY_WORDS, type GeneratedSummary, type Recording } from "./types.ts";
 
 interface Transcript {
   utterances: { time: string; speaker: string; text: string }[];
@@ -24,15 +24,17 @@ Include only what you can really read. Do not invent content.`;
 
 const WRITE = `You get the transcript of a recorded lesson in Hebrew, with speaker labels, and the list of what was on the board.
 Write in Hebrew, from them only, and invent nothing:
-- overview: a summary of the lesson of up to ${MAX_OVERVIEW_WORDS} words.
-- topics: the topics in order, each with the time it started (mm:ss).
-- questions: each question a student asked, with the time and the teacher's answer.
-- board: the formulas and other content from the board, with times.
+- document: a summary of the lesson for its students, in Markdown, that fits on one printed page: at most ${MAX_SUMMARY_WORDS} words in all. Build it like this:
+  1. "# " and the topic of the lesson, then a short opening paragraph of two or three sentences.
+  2. For each main topic, in the order it was taught: "## " and a short title, then a few short bullet points ("- "). Put the key terms in **bold**.
+     Add content from the board inside the topic it belongs to, and only when it adds something new and important, such as a formula, a definition or a worked example. Write a formula in \`code\`.
+  3. "## שאלות מהשיעור" with the main questions the students asked, each as "- **the question**" followed by the teacher's answer in one or two sentences. Leave out small or repeated questions, and leave out this part when no student asked anything.
+  Write no times, no speaker names, nothing about the recording itself and no closing line.
 - lesson_topic: the topic of the lesson, in a few words.`;
 
-const REVIEW = `You get a summary of a lesson, its transcript and the list of what was on the board.
+const REVIEW = `You get a summary of a lesson in Markdown, its transcript and the list of what was on the board.
 Correct only spelling mistakes and garbled copying in the summary, by comparing it with the transcript and the board list.
-Correct only what the sources support. Add no new content and remove nothing. Return the summary in the same structure.`;
+Correct only what the sources support. Add no new content, remove nothing, and keep the headings, bullet points and bold text as they are. Return the summary in the same structure.`;
 
 const timed = (field: string): JsonSchema => ({
   type: "object",
@@ -49,35 +51,32 @@ const TRANSCRIPT_SCHEMA = (withBoard: boolean): JsonSchema => ({
   required: withBoard ? ["utterances", "on_screen"] : ["utterances"],
 });
 
-const PARTS_SCHEMA: JsonSchema = {
+const DOCUMENT_SCHEMA: JsonSchema = {
   type: "object",
-  properties: {
-    overview: { type: "string" },
-    topics: { type: "array", items: { type: "object", properties: { title: { type: "string" }, start: { type: "string" } }, required: ["title", "start"] } },
-    questions: {
-      type: "array",
-      items: { type: "object", properties: { time: { type: "string" }, question: { type: "string" }, answer: { type: "string" } }, required: ["time", "question", "answer"] },
-    },
-    board: { type: "array", items: timed("content") },
-    lesson_topic: { type: "string" },
-  },
-  required: ["overview", "topics", "questions", "board", "lesson_topic"],
+  properties: { document: { type: "string" }, lesson_topic: { type: "string" } },
+  required: ["document", "lesson_topic"],
 };
 
-type PartsAnswer = SummaryParts & { lesson_topic: string };
+interface DocumentAnswer {
+  document: string;
+  lesson_topic: string;
+}
 
 export function wordCount(text: string): number {
   return text.trim().split(/\s+/).filter(Boolean).length;
 }
 
-/** Refuses an answer of the wrong shape or an overview above the limit (REQ-45). */
-export function checkParts(value: unknown): PartsAnswer {
-  const parts = value as PartsAnswer;
-  if (typeof parts?.overview !== "string" || !Array.isArray(parts.topics) || !Array.isArray(parts.questions) || !Array.isArray(parts.board)) {
-    throw new Error("the summary is missing a part");
-  }
-  if (wordCount(parts.overview) > MAX_OVERVIEW_WORDS) throw new Error(`the overview has more than ${MAX_OVERVIEW_WORDS} words`);
-  return parts;
+/** Counts the words a reader sees: the marks of headings, points and bold text are not words. */
+export function summaryWords(markdown: string): number {
+  return wordCount(markdown.replace(/^\s*(#{1,6}|[-*+]|\d+\.)\s+/gm, "").replace(/[*_`]/g, ""));
+}
+
+/** Refuses an empty summary and one longer than a page (REQ-45). */
+export function checkDocument(value: unknown): DocumentAnswer {
+  const answer = value as DocumentAnswer;
+  if (typeof answer?.document !== "string" || !answer.document.trim()) throw new Error("the summary is empty");
+  if (summaryWords(answer.document) > MAX_SUMMARY_WORDS) throw new Error(`the summary has more than ${MAX_SUMMARY_WORDS} words`);
+  return answer;
 }
 
 /** Sound alone is used when the file is over the limit of the AI service or a usage limit is reached (REQ-44). */
@@ -85,7 +84,7 @@ function needsSoundOnly(error: unknown): boolean {
   return error instanceof LlmError && (error.kind === "rate-limit" || error.kind === "invalid-request");
 }
 
-/** Makes the four parts of a summary with three requests (docs/07-EDD/lesson-summary.md, ADR-2). */
+/** Makes the one-page summary with three requests (docs/07-EDD/lesson-summary.md, ADR-2). */
 export class SummaryGenerator {
   readonly #llm: LlmClient;
   readonly #sound: SoundExtractor;
@@ -114,11 +113,10 @@ export class SummaryGenerator {
     const board = (transcript.on_screen ?? []).map((item) => `[${item.time}] ${item.content}`).join("\n");
     const sources = `Transcript:\n${lines}\n\nBoard:\n${board || "(none)"}`;
 
-    const written = await this.#json<PartsAnswer>(`${WRITE}\n\n${sources}`, PARTS_SCHEMA, checkParts);
-    const reviewed = await this.#json<PartsAnswer>(`${REVIEW}\n\nSummary:\n${JSON.stringify(written)}\n\n${sources}`, PARTS_SCHEMA, checkParts);
+    const written = await this.#json<DocumentAnswer>(`${WRITE}\n\n${sources}`, DOCUMENT_SCHEMA, checkDocument);
+    const reviewed = await this.#json<DocumentAnswer>(`${REVIEW}\n\nSummary:\n${JSON.stringify(written)}\n\n${sources}`, DOCUMENT_SCHEMA, checkDocument);
 
-    const { lesson_topic, ...parts } = reviewed;
-    return { parts: { overview: parts.overview, topics: parts.topics, questions: parts.questions, board: parts.board }, lessonTopic: lesson_topic || written.lesson_topic };
+    return { body: reviewed.document.trim(), lessonTopic: reviewed.lesson_topic || written.lesson_topic };
   }
 
   async #transcribe(recording: Recording, withBoard: boolean): Promise<Transcript> {

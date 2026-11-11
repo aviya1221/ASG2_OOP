@@ -4,7 +4,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, it } from "node:test";
 import { FakeLlmClient, LlmError, type LlmJsonRequest } from "../../src/llm/index.ts";
-import { SummaryGenerator, wordCount } from "../../src/summaries/SummaryGenerator.ts";
+import { SummaryGenerator, summaryWords } from "../../src/summaries/SummaryGenerator.ts";
 
 const TRANSCRIPT = {
   utterances: [
@@ -14,11 +14,8 @@ const TRANSCRIPT = {
   on_screen: [{ time: "01:00", content: "P(A|B)" }],
 };
 
-const PARTS = (overview: string) => ({
-  overview,
-  topics: [{ title: "הגדרה", start: "00:10" }],
-  questions: [{ time: "02:00", question: "מה ההבדל מחיתוך?", answer: "המכנה משתנה" }],
-  board: [{ time: "01:00", content: "P(A|B)" }],
+const PARTS = (text: string) => ({
+  document: `# הסתברות מותנית\n\n${text}\n\n## שאלות מהשיעור\n\n- **מה ההבדל מחיתוך?** המכנה משתנה.`,
   lesson_topic: "הסתברות מותנית",
 });
 
@@ -71,18 +68,33 @@ describe("SummaryGenerator", () => {
     }
   });
 
-  it("TC-085 accepts an overview of 300 words and refuses one of 301, after one more try", async () => {
-    const words = (n: number) => Array.from({ length: n }, (_, i) => `מילה${i}`).join(" ");
-    assert.equal(wordCount(words(300)), 300);
+  it("TC-085 asks for one page with headings, bold terms, the board inside its topic and the main questions", async () => {
+    const llm = scripted([() => TRANSCRIPT, () => PARTS("פתיחה"), () => PARTS("פתיחה")]);
+    await new SummaryGenerator(llm, sound).generate(RECORDING);
 
-    const ok = scripted([() => TRANSCRIPT, () => PARTS(words(300)), () => PARTS(words(300))]);
-    const { parts } = await new SummaryGenerator(ok, sound).generate(RECORDING);
-    assert.equal(wordCount(parts.overview), 300);
+    const write = llm.calls.filter((c) => c.method === "generateJson")[1]!.input as LlmJsonRequest<unknown>;
+    assert.match(write.prompt, /Markdown/);
+    assert.match(write.prompt, /at most 450 words/);
+    assert.match(write.prompt, /\*\*bold\*\*/);
+    assert.match(write.prompt, /board inside the topic it belongs to/);
+    assert.match(write.prompt, /## שאלות מהשיעור/);
+  });
 
-    const tooLong = scripted([() => TRANSCRIPT, () => PARTS(words(301))]);
+  it("TC-085 accepts a summary of 450 words and refuses one of 451, after one more try", async () => {
+    // The page adds 9 words around the text: the title, the heading of the questions, and one question with its answer.
+    const words = (n: number) => Array.from({ length: n - 9 }, (_, i) => `מילה${i}`).join(" ");
+    assert.equal(summaryWords(PARTS(words(450)).document), 450);
+    assert.equal(summaryWords("## כותרת\n\n- **מונח** ועוד `x`"), 4, "the marks of Markdown are not words");
+
+    const ok = scripted([() => TRANSCRIPT, () => PARTS(words(450)), () => PARTS(words(450))]);
+    const { body } = await new SummaryGenerator(ok, sound).generate(RECORDING);
+    assert.equal(summaryWords(body), 450);
+    assert.match(body, /^# הסתברות מותנית/);
+
+    const tooLong = scripted([() => TRANSCRIPT, () => PARTS(words(451))]);
     await assert.rejects(new SummaryGenerator(tooLong, sound).generate(RECORDING), { kind: "bad-output" });
     const tries = tooLong.calls.filter((c) => c.method === "generateJson").length;
-    assert.equal(tries, 3, "the transcript, then the parts twice");
+    assert.equal(tries, 3, "the transcript, then the page twice");
   });
 
   it("TC-086 the review gets the transcript and the board, and its corrected text is the one kept", async () => {
@@ -100,7 +112,8 @@ describe("SummaryGenerator", () => {
     assert.match(review!.prompt, /Correct only spelling mistakes/);
     assert.match(review!.prompt, /היום נדבר על הסתברות מותנית/);
     assert.match(review!.prompt, /P\(A\|B\)/);
-    assert.equal(result.parts.overview, "היום דיברנו על הסתברות מותנית");
+    assert.match(result.body, /היום דיברנו על הסתברות מותנית/);
+    assert.match(review!.prompt, /keep the headings, bullet points and bold text/);
     assert.equal(result.lessonTopic, "הסתברות מותנית");
   });
 

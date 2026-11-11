@@ -1,6 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { SummaryRepository } from "../../summaries/SummaryRepository.ts";
-import type { SummaryLesson, SummaryParts, SummaryState } from "../../summaries/types.ts";
+import type { SummaryLesson, SummaryState } from "../../summaries/types.ts";
 
 function throwIf(error: { message: string } | null): void {
   if (error) throw new Error(error.message);
@@ -31,14 +31,14 @@ export class SupabaseSummaryRepository implements SummaryRepository {
   async markStarted(lessonId: string): Promise<void> {
     const { error } = await this.#db
       .from("lesson_summaries")
-      .upsert({ lesson_id: lessonId, status: "in_progress", started_at: new Date().toISOString(), finished_at: null });
+      .upsert({ lesson_id: lessonId, status: "in_progress", started_at: new Date().toISOString(), finished_at: null, published: false });
     throwIf(error);
   }
 
-  async saveReady(lessonId: string, parts: SummaryParts): Promise<void> {
+  async saveReady(lessonId: string, body: string): Promise<void> {
     const { error } = await this.#db
       .from("lesson_summaries")
-      .update({ status: "ready", finished_at: new Date().toISOString(), ...parts })
+      .update({ status: "ready", finished_at: new Date().toISOString(), body })
       .eq("lesson_id", lessonId);
     throwIf(error);
   }

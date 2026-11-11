@@ -41,8 +41,8 @@ export class SummaryService {
 
   async #run(lessonId: string, recording: Recording): Promise<void> {
     try {
-      const { parts, lessonTopic } = await this.#generator.generate(recording);
-      await this.#repository.saveReady(lessonId, parts);
+      const { body, lessonTopic } = await this.#generator.generate(recording);
+      await this.#repository.saveReady(lessonId, body);
       if (lessonTopic.trim()) await this.#repository.setTopicIfEmpty(lessonId, lessonTopic.trim());
     } catch (error) {
       console.error(error instanceof Error ? error.message : "The summary failed");

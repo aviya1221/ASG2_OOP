@@ -221,4 +221,5 @@ Copy [server/.env.example](server/.env.example) to `server/.env`. The `.env` fil
 | [ffmpeg-static](https://github.com/eugeneware/ffmpeg-static) | Copies the sound track of a recording. It runs as a separate program | GPL-3.0-or-later |
 | [ExcelJS](https://github.com/exceljs/exceljs) | Reads the attendance sheet in a browser test (dev tool) | MIT |
 | [Lucide](https://github.com/lucide-icons/lucide) (lucide-react) | Thin-line icons on the buttons | ISC |
+| [react-markdown](https://github.com/remarkjs/react-markdown) | Shows the one-page lesson summary with its headings and bold text, without running any HTML in it | MIT |
 | [Test photos](e2e/photos/README.md) | Generated pictures of people who do not exist | Public domain |

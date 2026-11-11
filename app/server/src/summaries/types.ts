@@ -1,17 +1,12 @@
-export const MAX_OVERVIEW_WORDS = 300;
+/** About one printed page with its headings (REQ-45). */
+export const MAX_SUMMARY_WORDS = 450;
 export const MAX_RECORDING_BYTES = 200 * 1024 * 1024;
 /** A summary still in progress after this long is shown as failed, because the free server may have stopped. */
 export const STALE_AFTER_MS = 15 * 60_000;
 
-export interface SummaryParts {
-  overview: string;
-  topics: { title: string; start: string }[];
-  questions: { time: string; question: string; answer: string }[];
-  board: { time: string; content: string }[];
-}
-
 export interface GeneratedSummary {
-  parts: SummaryParts;
+  /** The one-page summary in Markdown: headings, short points and bold key terms. */
+  body: string;
   lessonTopic: string;
 }
 
