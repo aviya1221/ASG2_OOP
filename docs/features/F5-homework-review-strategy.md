@@ -1,7 +1,7 @@
 # F5 Homework review: approach and decisions
 
 What the team agreed about the homework review, before writing its documents.
-Agreed on 2026-11-08. This note feeds the homework requirements in the SRS (F5), the homework review use case, the homework review EDD, its test cases and the LLM section of the tools report.
+Agreed on 2026-11-08 and updated on 2026-11-11 after a walk-through of the working product. This note feeds the homework requirements in the SRS (F5), the homework review use case, the homework review EDD, its test cases and the LLM section of the tools report.
 
 ## 1. The idea
 
@@ -28,6 +28,7 @@ This is a pilot, not a production system, so privacy reviews and outside approva
 8. **The overall score.** A question's score is the plain average of its sections, and the overall score is the plain average of all the questions. Points stated in the homework do not change this. The result is rounded and never goes below 1.
 9. **Three checks per student per homework.** Each check replaces that student's previous result in the chart. The third check is final for that student.
 10. **The chart.** The students of the lesson and its teacher see the name of every student who was checked and where their score stands. A student's own place is highlighted. A filter switches between the overall score, any question and any section of that homework.
+11. **Deleting a homework.** The teacher of the lesson can delete a homework they published, after confirming. Its file, its review guide and the students' checks are deleted with it.
 
 ## 3. Keeping scores steady
 
