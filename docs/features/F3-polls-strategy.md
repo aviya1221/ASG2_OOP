@@ -1,11 +1,11 @@
 # F3 Polls: build strategy
 
 What the team agreed about polls, and where the code comes from.
-Agreed on 2026-11-06 and updated on 2026-11-08 to match the [lesson forum decisions](F2-lesson-forum-strategy.md). This note feeds the SoW (polls deliverable), the polls requirements in the SRS (F3), the polls use case and the polls EDD.
+Agreed on 2026-11-06, updated on 2026-11-08 to match the [lesson forum decisions](F2-lesson-forum-strategy.md), and updated again on 2026-11-11 after a walk-through of the working product. This note feeds the SoW (polls deliverable), the polls requirements in the SRS (F3), the polls use case and the polls EDD.
 
 ## 1. The idea
 
-A teacher, in the middle of a live lesson, asks a short question to check that the class understood the material. The students answer from their phones, and the teacher sees the answers come in live.
+A teacher, in the middle of a live lesson, asks a short question to check that the class understood the material. The teacher can also ask before or after the lesson. The students answer from their phones, and the teacher sees the answers come in live.
 
 ## 2. What we agreed
 
@@ -20,10 +20,10 @@ A teacher, in the middle of a live lesson, asks a short question to check that t
    1. The teacher opens the forum of the lesson date, writes a question with a few answer options and publishes the poll.
    2. Every student of that lesson sees the poll in the forum and taps an answer.
    3. Everyone linked to the lesson sees a results chart that updates without reloading the page, and the teacher also sees who answered what.
-   4. The teacher chooses when to close the poll, and a poll that is still open closes at the end of the lesson. The poll and its results stay in the forum of that date.
+   4. The teacher chooses when to close the poll. A poll opened before the end of the lesson closes at the end of the lesson if it is still open. A poll opened after the lesson stays open until the teacher closes it. The poll and its results stay in the forum of that date.
 6. **One answer per student.** Each answer is saved under the student's ID. A student cannot answer again unless the teacher allowed it when creating the poll, and then the new answer replaces the earlier one.
 7. **KISS:** a quick poll has one multiple-choice question. Surveys with several questions are forms, which are described in the forum decisions.
-8. **No preparing in advance.** The teacher creates a quick poll during the lesson and cannot prepare it before.
+8. **Any time.** The teacher can publish a quick poll during the lesson or outside its hours, for example before the lesson or after it.
 9. **Storage:** the answers live in the same database as the rest of the app, which the tools report chooses. There is no separate poll service.
 
 ## 3. Where the code comes from
@@ -50,7 +50,7 @@ The chart library inside those components is [Recharts](https://github.com/recha
 - The link between a poll and the forum of a lesson date.
 - Publishing and answering a poll inside the forum, for the teacher and for the student.
 - Saving the poll and its results in the forum of that date.
-- Closing a poll that is still open at the end of the lesson.
+- Closing, at the end of the lesson, a poll that was opened before the end and is still open.
 
 ### 3.3 Alternatives we checked and rejected
 
