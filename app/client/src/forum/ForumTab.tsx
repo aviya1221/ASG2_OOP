@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState, type FormEvent } from "react";
+import { ChartColumn, ClipboardList, FileText, List, Maximize2, Plus, Reply, Save, Send, Trash2, X } from "lucide-react";
 import { Link } from "react-router";
 import { useSession } from "../accounts/session.tsx";
 import { supabase } from "../lib/supabase.ts";
@@ -9,6 +10,7 @@ import { SurveyApi, type AnswerRow, type Survey } from "../surveys/SurveyApi.ts"
 import type { Answers, Question } from "../surveys/questions.ts";
 import { ForumApi, type ForumTitle, type Message } from "./ForumApi.ts";
 import { splitLinks } from "./MessageLinks.ts";
+import { ICON, IconButton } from "../ui/Icon.tsx";
 
 interface ForumData {
   messages: Message[];
@@ -109,16 +111,8 @@ export function ForumTab({ lessonId, courseId, courseName }: { lessonId: string;
         {message.deleted ? <p className="muted">ההודעה נמחקה על ידי המרצה.</p> : <MessageText text={message.text} />}
         {!message.deleted && (
           <div className="actions">
-            {!reply && (
-              <button className="link" onClick={() => setReplyTo(message)}>
-                תגובה
-              </button>
-            )}
-            {isTeacher && (
-              <button className="link" aria-label="מחיקת ההודעה" onClick={() => void ForumApi.remove(message.id).then(load)}>
-                מחיקה
-              </button>
-            )}
+            {!reply && <IconButton icon={Reply} label="תגובה" onClick={() => setReplyTo(message)} />}
+            {isTeacher && <IconButton icon={Trash2} className="danger" label="מחיקת ההודעה" onClick={() => void ForumApi.remove(message.id).then(load)} />}
           </div>
         )}
       </article>
@@ -156,12 +150,13 @@ export function ForumTab({ lessonId, courseId, courseName }: { lessonId: string;
         {!isTeacher && answered && <span className="muted">התשובות שלך נשלחו.</span>}
         {!isTeacher && survey.status === "open" && (!answered || survey.allowChange) && (
           <button className="primary small" onClick={() => setFormFor(survey)}>
+            <ClipboardList {...ICON} />
             {answered ? "שינוי התשובות" : "מילוי הטופס"}
           </button>
         )}
         {isTeacher && <FormAnswers survey={survey} answers={answers} />}
         {isTeacher && survey.status === "open" && (
-          <button className="framed small" onClick={() => void SurveyApi.close(survey.id).then(load)}>
+          <button className="secondary small" onClick={() => void SurveyApi.close(survey.id).then(load)}>
             סגירת הטופס
           </button>
         )}
@@ -204,15 +199,12 @@ export function ForumTab({ lessonId, courseId, courseName }: { lessonId: string;
       <div className="row-between">
         <h2>פורום</h2>
         <span className="actions">
-          <Link className="framed small link-button" to={`/lessons/${lessonId}/summary`}>
+          <Link className="link-button small" to={`/lessons/${lessonId}/summary`}>
+            <FileText {...ICON} />
             סיכום השיעור
           </Link>
-          <button className="framed small" onClick={() => setListOpen(!listOpen)}>
-            כל ההרצאות
-          </button>
-          <button className="framed small" onClick={() => setExpanded(true)}>
-            הרחבה
-          </button>
+          <IconButton icon={List} label="כל ההרצאות" aria-expanded={listOpen} onClick={() => setListOpen(!listOpen)} />
+          <IconButton icon={Maximize2} label="הרחבה" onClick={() => setExpanded(true)} />
         </span>
       </div>
 
@@ -247,6 +239,7 @@ export function ForumTab({ lessonId, courseId, courseName }: { lessonId: string;
             <p key={draft.id} className="card request">
               <span>טופס: {draft.questions.length} שאלות</span>
               <button className="primary small" onClick={() => void SurveyApi.publishForm(draft.id).then(load)}>
+                <Send {...ICON} />
                 פרסום
               </button>
             </p>
@@ -262,9 +255,7 @@ export function ForumTab({ lessonId, courseId, courseName }: { lessonId: string;
           <div className="overlay-body stack">
             <div className="row-between">
               <h2>השיחה בשיעור</h2>
-              <button className="framed small" onClick={() => setExpanded(false)}>
-                סגירה
-              </button>
+              <IconButton icon={X} label="סגירה" onClick={() => setExpanded(false)} />
             </div>
             {timeline(true)}
             {composer}
@@ -336,9 +327,7 @@ function Composer({
       {replyTo && (
         <p className="muted row-between">
           <span>תגובה ל: {replyTo.text.slice(0, 40)}</span>
-          <button type="button" className="link" onClick={onCancelReply}>
-            ביטול
-          </button>
+          <IconButton icon={X} label="ביטול התגובה" onClick={onCancelReply} />
         </p>
       )}
       <label className="field">
@@ -357,6 +346,7 @@ function Composer({
         </p>
       )}
       <button className="primary" type="submit" disabled={busy || !text.trim()}>
+        <Send {...ICON} />
         שליחה
       </button>
     </form>
@@ -389,16 +379,19 @@ function TeacherTools({ lessonId, onPoll, onForm }: { lessonId: string; onPoll: 
           <span>נושא ההרצאה</span>
           <input value={topic} onChange={(e) => setTopic(e.target.value)} />
         </label>
-        <button className="framed small" type="submit">
+        <button className="secondary small" type="submit">
+          <Save {...ICON} />
           שמירת הנושא
         </button>
         {saved && <span role="status">{saved}</span>}
       </form>
       <div className="actions">
         <button className="primary small" onClick={onPoll}>
+          <ChartColumn {...ICON} />
           סקר חדש
         </button>
         <button className="primary small" onClick={onForm}>
+          <ClipboardList {...ICON} />
           טופס חדש
         </button>
       </div>
@@ -438,6 +431,7 @@ function PollComposer({ onPublish }: { onPublish: (question: Question, allowChan
         </label>
       ))}
       <button className="link" onClick={() => setOptions([...options, ""])}>
+        <Plus {...ICON} />
         הוספת אפשרות
       </button>
       <label className="check">
@@ -450,6 +444,7 @@ function PollComposer({ onPublish }: { onPublish: (question: Question, allowChan
         </p>
       )}
       <button className="primary" onClick={() => void publish()}>
+        <Send {...ICON} />
         פרסום הסקר
       </button>
     </div>

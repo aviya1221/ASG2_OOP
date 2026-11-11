@@ -1,9 +1,11 @@
+import { Pencil, Save, Upload, X } from "lucide-react";
 import { useCallback, useEffect, useState, type ChangeEvent } from "react";
 import { Link, useParams } from "react-router";
 import { useSession } from "../accounts/session.tsx";
 import { lectureTitle } from "../lessons/lessons.ts";
 import { ServerError, uploadToServer } from "../lib/server.ts";
 import { supabase } from "../lib/supabase.ts";
+import { ICON, IconButton } from "../ui/Icon.tsx";
 import { fromEditable, isStale, toEditable, type SummaryParts } from "./summaryText.ts";
 
 interface Lesson {
@@ -148,9 +150,11 @@ function SummaryView({ lessonId, parts, editable, onSaved }: { lessonId: string;
         )}
         <div className="actions">
           <button className="primary small" onClick={() => void save()}>
+            <Save {...ICON} />
             שמירה
           </button>
-          <button className="framed small" onClick={() => setEditing(false)}>
+          <button className="secondary small" onClick={() => setEditing(false)}>
+            <X {...ICON} />
             ביטול
           </button>
         </div>
@@ -197,11 +201,7 @@ function SummaryView({ lessonId, parts, editable, onSaved }: { lessonId: string;
           ))}
         </ul>
       </section>
-      {editable && (
-        <button className="framed small" onClick={() => setEditing(true)}>
-          עריכת הסיכום
-        </button>
-      )}
+      {editable && <IconButton icon={Pencil} label="עריכת הסיכום" onClick={() => setEditing(true)} />}
     </article>
   );
 }
@@ -241,6 +241,7 @@ function RecordingUpload({ lessonId, again, onStarted }: { lessonId: string; aga
         </p>
       )}
       <button className="primary" disabled={!file || busy} onClick={() => void upload()}>
+        <Upload {...ICON} />
         {busy ? "מעלה..." : "העלאה ויצירת סיכום"}
       </button>
     </section>

@@ -1,4 +1,6 @@
+import { Lock } from "lucide-react";
 import { useState } from "react";
+import { ICON } from "../ui/Icon.tsx";
 import { ResultsChart } from "./ResultsChart.tsx";
 import type { AnswerRow, Survey } from "./SurveyApi.ts";
 import type { Answers } from "./questions.ts";
@@ -80,7 +82,8 @@ export function PollCard({
         </details>
       )}
       {isTeacher && open && (
-        <button className="framed small" onClick={() => void onClose()}>
+        <button className="secondary small" onClick={() => void onClose()}>
+          <Lock {...ICON} />
           סגירת הסקר
         </button>
       )}

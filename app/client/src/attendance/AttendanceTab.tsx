@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useRef, useState, type ChangeEvent } from "react";
+import { Camera, Check, Download, Send, X } from "lucide-react";
 import { Link } from "react-router";
 import { useSession, type Person } from "../accounts/session.tsx";
 import { callServer, ServerError } from "../lib/server.ts";
 import { supabase } from "../lib/supabase.ts";
 import { downloadSheet, loadSheet, RESULT_LABELS, type SheetRow } from "./AttendanceSheet.ts";
 import { faceEngine, photoToCanvas } from "./FaceEngine.ts";
+import { ICON, IconButton } from "../ui/Icon.tsx";
 
 const MAX_PHOTOS = 3;
 const ROWS = 15;
@@ -121,6 +123,7 @@ function PhotoTaker({ lessonId, onSent }: { lessonId: string; onSent: () => void
       <h2>נוכחות</h2>
       {photos.length < MAX_PHOTOS && (
         <label className="primary big">
+          <Camera {...ICON} />
           <span>{photos.length === 0 ? "צילום הכיתה" : "הוספת תמונה"}</span>
           <input className="hidden-input" type="file" accept="image/*" capture="environment" onChange={addPhoto} disabled={Boolean(progress)} aria-label="צילום הכיתה" />
         </label>
@@ -138,6 +141,7 @@ function PhotoTaker({ lessonId, onSent }: { lessonId: string; onSent: () => void
       )}
       {photos.length > 0 && (
         <button className="primary" onClick={() => void send()} disabled={Boolean(progress)}>
+          <Send {...ICON} />
           סיום ושליחה
         </button>
       )}
@@ -198,12 +202,8 @@ function RoundView({ lessonId, expiresAt }: { lessonId: string; expiresAt: Date 
                   {row.name}: שורה {row.rowNo}, מושב {row.seatNo}
                 </span>
                 <span className="actions">
-                  <button className="primary small" onClick={() => void decide(row.idNumber, "approved")} aria-label={`אישור הבקשה של ${row.name}`}>
-                    אישור
-                  </button>
-                  <button className="framed small" onClick={() => void decide(row.idNumber, "rejected")} aria-label={`דחיית הבקשה של ${row.name}`}>
-                    דחייה
-                  </button>
+                  <IconButton icon={Check} className="approve" label={`אישור הבקשה של ${row.name}`} onClick={() => void decide(row.idNumber, "approved")} />
+                  <IconButton icon={X} className="danger" label={`דחיית הבקשה של ${row.name}`} onClick={() => void decide(row.idNumber, "rejected")} />
                 </span>
               </li>
             ))}
@@ -214,6 +214,7 @@ function RoundView({ lessonId, expiresAt }: { lessonId: string; expiresAt: Date 
       <div className="row-between">
         <h2>גיליון נוכחות</h2>
         <button className="primary small" onClick={() => void downloadSheet(rows, `attendance-${lessonId.slice(0, 8)}.xlsx`)}>
+          <Download {...ICON} />
           הורדת הגיליון
         </button>
       </div>
@@ -271,12 +272,8 @@ function FaceReplacements() {
           <li key={item.id} className="card request">
             <span>{item.name}</span>
             <span className="actions">
-              <button className="primary small" onClick={() => void decide(item.id, "approved")}>
-                אישור
-              </button>
-              <button className="framed small" onClick={() => void decide(item.id, "rejected")}>
-                דחייה
-              </button>
+              <IconButton icon={Check} className="approve" label={`אישור ההחלפה של ${item.name}`} onClick={() => void decide(item.id, "approved")} />
+              <IconButton icon={X} className="danger" label={`דחיית ההחלפה של ${item.name}`} onClick={() => void decide(item.id, "rejected")} />
             </span>
           </li>
         ))}
@@ -405,6 +402,7 @@ function SeatPicker({ lessonId, idNumber, onSent }: { lessonId: string; idNumber
         </p>
       )}
       <button className="primary" disabled={!seat} onClick={() => void send()}>
+        <Send {...ICON} />
         שליחת בקשה
       </button>
     </>

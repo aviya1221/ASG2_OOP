@@ -1,7 +1,9 @@
+import { FileText, Send, Upload } from "lucide-react";
 import { useCallback, useEffect, useState, type FormEvent } from "react";
 import { useSession } from "../accounts/session.tsx";
 import { ServerError, uploadToServer } from "../lib/server.ts";
 import { supabase } from "../lib/supabase.ts";
+import { ICON, IconAnchor } from "../ui/Icon.tsx";
 import { ClassChart } from "./ClassChart.tsx";
 import { ReportView } from "./ReportView.tsx";
 import { MAX_CHECKS, type ChartRow, type Check } from "./scores.ts";
@@ -100,11 +102,7 @@ export function HomeworkTab({ lessonId }: { lessonId: string }) {
         <section key={item.id} className="card stack homework" aria-label={item.title}>
           <div className="row-between">
             <h3>{item.title}</h3>
-            {item.url && (
-              <a className="link-button small" href={item.url} target="_blank" rel="noopener noreferrer">
-                פתיחת המטלה
-              </a>
-            )}
+            {item.url && <IconAnchor icon={FileText} label="פתיחת המטלה" href={item.url} target="_blank" rel="noopener noreferrer" />}
           </div>
           {role === "student" && <CheckForm homeworkId={item.id} used={item.checksUsed} onChecked={load} />}
           {item.latest && <ReportView check={item.latest} />}
@@ -166,6 +164,7 @@ function PublishForm({ lessonId, onPublished }: { lessonId: string; onPublished:
         </p>
       )}
       <button className="primary" disabled={!file || !title.trim() || busy}>
+        <Send {...ICON} />
         {busy ? "מפרסם..." : "פרסום המטלה"}
       </button>
     </form>
@@ -212,6 +211,7 @@ function CheckForm({ homeworkId, used, onChecked }: { homeworkId: string; used: 
         </p>
       )}
       <button className="primary" disabled={!file || busy} onClick={() => void check()}>
+        <Upload {...ICON} />
         {busy ? "בודק את הפתרון..." : "בדיקת הפתרון"}
       </button>
     </div>

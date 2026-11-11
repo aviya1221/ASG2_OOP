@@ -91,7 +91,7 @@ test("TC-070 build a form before the lesson, keep it as a draft, then publish it
   await openAs(page, ID.T1, `/lessons/${future}/forum`);
   await page.getByRole("button", { name: "טופס חדש" }).click();
   const builder = page.getByRole("dialog", { name: "טופס חדש" });
-  for (const type of ["+ בחירה יחידה", "+ בחירה מרובה", "+ דירוג בסולם", "+ טקסט חופשי"]) {
+  for (const type of ["בחירה יחידה", "בחירה מרובה", "דירוג בסולם", "טקסט חופשי"]) {
     await builder.getByRole("button", { name: type }).click();
   }
   for (const [index, text] of ["איזה פרק?", "מה עזר?", "כמה ברור?", "הערות"].entries()) {

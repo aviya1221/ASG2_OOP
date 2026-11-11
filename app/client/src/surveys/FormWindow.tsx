@@ -1,4 +1,6 @@
+import { Send, X } from "lucide-react";
 import { useState } from "react";
+import { ICON, IconButton } from "../ui/Icon.tsx";
 import { missingAnswers, type AnswerValue, type Answers, type Question } from "./questions.ts";
 
 function QuestionInput({ question, value, onChange }: { question: Question; value: AnswerValue | undefined; onChange: (value: AnswerValue) => void }) {
@@ -81,9 +83,7 @@ export function FormWindow({
       <div className="overlay-body stack">
         <div className="row-between">
           <h2>טופס</h2>
-          <button className="framed small" onClick={onClose}>
-            סגירה
-          </button>
+          <IconButton icon={X} label="סגירה" onClick={onClose} />
         </div>
         {questions.map((question) => (
           <fieldset key={question.id} className={marked.includes(question.id) ? "stack missing" : "stack"} data-question={question.id}>
@@ -98,6 +98,7 @@ export function FormWindow({
           </p>
         )}
         <button className="primary" onClick={() => void submit()}>
+          <Send {...ICON} />
           שליחת התשובות
         </button>
       </div>

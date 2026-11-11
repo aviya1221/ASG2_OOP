@@ -220,4 +220,5 @@ Copy [server/.env.example](server/.env.example) to `server/.env`. The `.env` fil
 | [multer](https://github.com/expressjs/multer) | Receives the recording of a lesson | MIT |
 | [ffmpeg-static](https://github.com/eugeneware/ffmpeg-static) | Copies the sound track of a recording. It runs as a separate program | GPL-3.0-or-later |
 | [ExcelJS](https://github.com/exceljs/exceljs) | Reads the attendance sheet in a browser test (dev tool) | MIT |
+| [Lucide](https://github.com/lucide-icons/lucide) (lucide-react) | Thin-line icons on the buttons | ISC |
 | [Test photos](e2e/photos/README.md) | Generated pictures of people who do not exist | Public domain |

@@ -1,4 +1,6 @@
+import { Plus, Save, Send, Trash2, X } from "lucide-react";
 import { useState } from "react";
+import { ICON, IconButton } from "../ui/Icon.tsx";
 import { cleanQuestions, hasOptions, newQuestion, QUESTION_TYPES, questionProblems, type Question, type QuestionType } from "./questions.ts";
 
 /** Builds a form of the four question types (REQ-60, REQ-61), from the form builder spike (ADR-7). */
@@ -30,9 +32,7 @@ export function FormBuilder({
       <div className="overlay-body stack">
         <div className="row-between">
           <h2>טופס חדש</h2>
-          <button className="framed small" onClick={onClose}>
-            ביטול
-          </button>
+          <IconButton icon={X} label="ביטול" onClick={onClose} />
         </div>
         {questions.map((question, index) => (
           <fieldset key={question.id} className="stack">
@@ -55,19 +55,19 @@ export function FormBuilder({
             ))}
             {hasOptions(question.type) && (
               <button className="link" onClick={() => change(question.id, { options: [...(question.options ?? []), ""] })}>
+                <Plus {...ICON} />
                 הוספת אפשרות
               </button>
             )}
             {question.type === "rating" && <span className="muted">סולם מ־1 עד {question.scale}</span>}
-            <button className="link" onClick={() => setQuestions((all) => all.filter((q) => q.id !== question.id))}>
-              מחיקת השאלה
-            </button>
+            <IconButton icon={Trash2} className="danger" label={`מחיקת שאלה ${index + 1}`} onClick={() => setQuestions((all) => all.filter((q) => q.id !== question.id))} />
           </fieldset>
         ))}
         <div className="chips">
           {(Object.entries(QUESTION_TYPES) as [QuestionType, string][]).map(([type, label]) => (
-            <button key={type} className="framed small" onClick={() => setQuestions((all) => [...all, newQuestion(`q${all.length + 1}-${Date.now()}`, type)])}>
-              + {label}
+            <button key={type} className="secondary small" onClick={() => setQuestions((all) => [...all, newQuestion(`q${all.length + 1}-${Date.now()}`, type)])}>
+              <Plus {...ICON} />
+              {label}
             </button>
           ))}
         </div>
@@ -83,10 +83,12 @@ export function FormBuilder({
           </ul>
         )}
         <div className="actions">
-          <button className="framed small" onClick={() => void save(false)}>
+          <button className="secondary small" onClick={() => void save(false)}>
+            <Save {...ICON} />
             שמירה כטיוטה
           </button>
           <button className="primary small" onClick={() => void save(true)}>
+            <Send {...ICON} />
             פרסום בפורום
           </button>
         </div>

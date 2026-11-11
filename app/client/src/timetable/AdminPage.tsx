@@ -1,6 +1,8 @@
+import { Plus, Save } from "lucide-react";
 import { useCallback, useEffect, useState, type FormEvent } from "react";
 import type { Person } from "../accounts/session.tsx";
 import { supabase } from "../lib/supabase.ts";
+import { ICON } from "../ui/Icon.tsx";
 import { DAYS, DEFAULT_WEEKS, parseStudents, problemsIn, saveErrorMessage, type CourseForm, type Slot } from "./courseForm.ts";
 
 interface CourseRow {
@@ -155,6 +157,7 @@ export function AdminPage({ person }: { person: Person }) {
               </div>
             ))}
             <button className="link" type="button" onClick={() => change("slots", [...form.slots, { day: 0, start: "10:00", end: "12:00" }])}>
+              <Plus {...ICON} />
               הוספת שעה שבועית
             </button>
           </fieldset>
@@ -185,6 +188,7 @@ export function AdminPage({ person }: { person: Person }) {
             </p>
           )}
           <button className="primary" type="submit" disabled={busy}>
+            <Save {...ICON} />
             שמירת הקורס
           </button>
         </form>

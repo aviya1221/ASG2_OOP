@@ -65,7 +65,7 @@ describe("FormBuilder", () => {
     const onSave = vi.fn().mockResolvedValue(undefined);
     render(<FormBuilder onSave={onSave} onClose={() => {}} />);
 
-    for (const label of ["+ בחירה יחידה", "+ בחירה מרובה", "+ דירוג בסולם", "+ טקסט חופשי"]) {
+    for (const label of ["בחירה יחידה", "בחירה מרובה", "דירוג בסולם", "טקסט חופשי"]) {
       await user.click(screen.getByRole("button", { name: label }));
     }
     await user.click(screen.getByRole("button", { name: "פרסום בפורום" }));

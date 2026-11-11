@@ -1,4 +1,5 @@
 import { useEffect, useState, type ChangeEvent } from "react";
+import { Ban, Bell, Camera } from "lucide-react";
 import { Link } from "react-router";
 import type { Person } from "../accounts/session.tsx";
 import { callServer } from "../lib/server.ts";
@@ -6,6 +7,7 @@ import { supabase } from "../lib/supabase.ts";
 import { faceEngine, photoToCanvas } from "./FaceEngine.ts";
 import { FaceStore, hashOfPrint } from "./FaceStore.ts";
 import { notificationsSupported, subscribeToNotifications } from "./notifications.ts";
+import { ICON } from "../ui/Icon.tsx";
 
 type Status = { registered: boolean; optedOut: boolean } | null;
 
@@ -89,6 +91,7 @@ export function FacePage({ person }: { person: Person }) {
         <p>התמונה וטביעת הפנים נשארות בטלפון הזה. השרת מקבל רק חותמת.</p>
         {status?.registered && <p className="muted">הפנים שלך רשומות. רישום חדש יחכה לאישור של מרצה.</p>}
         <label className="primary big">
+          <Camera {...ICON} />
           <span>צילום תמונה</span>
           <input className="hidden-input" type="file" accept="image/*" capture="user" onChange={register} disabled={Boolean(progress)} aria-label="צילום תמונה" />
         </label>
@@ -105,11 +108,13 @@ export function FacePage({ person }: { person: Person }) {
         )}
         {!status?.optedOut && (
           <button className="link" onClick={() => void optOut()}>
+            <Ban {...ICON} />
             לא להשתתף בזיהוי פנים
           </button>
         )}
         {notificationsSupported() && (
           <button className="link" onClick={() => void enableNotifications()}>
+            <Bell {...ICON} />
             הפעלת התראות
           </button>
         )}

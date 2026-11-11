@@ -6,6 +6,12 @@
   --muted: #5b5b5b;
   --problem: #9c2b12;
   --saved: #2f6b1f;
+  --soft-button: #ececec;
+  --soft-button-hover: #dcdcdc;
+  --line: #c4c4c4;
+  --radius: 12px;
+  --radius-small: 8px;
+  --shadow: 0 1px 2px rgb(0 0 0 / 6%), 0 4px 12px rgb(0 0 0 / 5%);
   --page-width: 1120px;
 }
 
@@ -48,21 +54,45 @@ button,
 input,
 select,
 textarea {
-  border-radius: 0;
+  border-radius: var(--radius-small);
   font: inherit;
   color: inherit;
 }
 
-button {
+/* Every button is soft and rounded, with an icon and a word side by side (UI decisions 1 and 17). */
+button,
+.link-button,
+.icon-button {
   min-height: 44px;
   min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   border: 0;
+  border-radius: var(--radius);
   cursor: pointer;
+  text-decoration: none;
+  transition:
+    background-color 0.15s,
+    color 0.15s,
+    transform 0.05s;
+}
+
+button:active:not(:disabled),
+.link-button:active,
+.icon-button:active {
+  transform: translateY(1px);
 }
 
 button:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: default;
+}
+
+button svg,
+.link-button svg {
+  flex: none;
 }
 
 :focus-visible {
@@ -102,13 +132,19 @@ button:disabled {
 
 .band-button {
   min-height: 44px;
-  display: inline-grid;
-  place-items: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   padding-inline: 14px;
-  background: transparent;
+  background: rgb(255 255 255 / 12%);
   color: var(--paper);
-  border: 1px solid var(--paper);
+  border-radius: var(--radius);
   text-decoration: none;
+}
+
+.band-button:hover,
+.band .icon-button:hover:not(:disabled) {
+  background: rgb(255 255 255 / 20%);
 }
 
 .band-actions {
@@ -128,6 +164,7 @@ button:disabled {
 
 .tabs a {
   min-height: 48px;
+  border-radius: var(--radius) var(--radius) 0 0;
   display: grid;
   place-items: center;
   text-decoration: none;
@@ -165,6 +202,8 @@ button:disabled {
 .card {
   padding: 12px 14px;
   background: var(--paper);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
   display: grid;
   gap: 2px;
 }
@@ -184,14 +223,61 @@ button:disabled {
 
 .primary {
   height: 52px;
+  padding-inline: 20px;
   background: var(--ink);
   color: var(--paper);
   font-weight: 700;
 }
 
-.link {
+.primary:hover:not(:disabled) {
+  background: #333333;
+}
+
+.secondary,
+.link-button {
+  padding-inline: 14px;
+  background: var(--soft-button);
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.secondary:hover:not(:disabled),
+.link-button:hover {
+  background: var(--soft-button-hover);
+}
+
+.icon-button {
+  width: 44px;
+  padding: 0;
   background: transparent;
-  text-decoration: underline;
+  color: inherit;
+  border-radius: 50%;
+}
+
+.icon-button:hover:not(:disabled) {
+  background: var(--soft-button);
+}
+
+.icon-button.danger:hover:not(:disabled) {
+  color: var(--problem);
+}
+
+.icon-button.approve:hover:not(:disabled) {
+  color: var(--saved);
+}
+
+.link {
+  min-height: 36px;
+  width: fit-content;
+  padding-inline: 8px;
+  background: transparent;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.link:hover:not(:disabled) {
+  background: var(--soft-button);
+  color: var(--ink);
 }
 
 .field {
@@ -207,8 +293,14 @@ button:disabled {
   min-height: 44px;
   padding: 8px 10px;
   background: var(--paper);
-  border: 1px solid var(--ink);
+  border: 1px solid var(--line);
   font-weight: 400;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-color: var(--ink);
 }
 
 .field input[dir="ltr"] {
@@ -219,7 +311,8 @@ fieldset {
   min-width: 0;
   margin: 0;
   padding: 12px;
-  border: 1px solid var(--ink);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
 }
 
 legend {
@@ -249,8 +342,11 @@ legend {
 
 .big {
   height: 72px;
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-radius: var(--radius);
   font-size: 20px;
   cursor: pointer;
 }
@@ -260,16 +356,6 @@ legend {
   padding-inline: 14px;
 }
 
-button.framed {
-  background: transparent;
-}
-
-.link-button {
-  display: inline-grid;
-  place-items: center;
-  border: 1px solid var(--ink);
-  text-decoration: none;
-}
 
 .actions {
   flex-wrap: wrap;
@@ -291,6 +377,7 @@ button.framed {
 .chip {
   display: inline-block;
   padding: 2px 12px;
+  border-radius: 999px;
   font-size: 14px;
   font-weight: 700;
 }
@@ -312,12 +399,14 @@ button.framed {
 
 .actions {
   display: flex;
+  align-items: center;
   gap: 8px;
 }
 
 .table-box {
   overflow-x: auto;
   background: var(--paper);
+  border-radius: var(--radius);
 }
 
 table {
@@ -367,7 +456,8 @@ td {
 
 .seat {
   background: var(--paper);
-  border: 1px solid var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 6px;
   font-size: 14px;
 }
 
@@ -422,10 +512,15 @@ td {
 
 .option {
   min-height: 44px;
-  padding: 8px 10px;
-  background: transparent;
-  border: 1px solid var(--ink);
+  justify-content: start;
+  padding: 8px 12px;
+  background: var(--paper);
+  border: 1px solid var(--line);
   text-align: right;
+}
+
+.option:hover {
+  border-color: var(--ink);
 }
 
 .option.chosen {
@@ -441,12 +536,14 @@ td {
 .track {
   display: block;
   height: 6px;
+  border-radius: 3px;
   background: var(--soft);
 }
 
 .bar {
   display: block;
   height: 6px;
+  border-radius: 3px;
   background: var(--ink);
 }
 
@@ -517,6 +614,7 @@ td {
 .report-section {
   padding: 10px 12px;
   border: 1px solid var(--soft);
+  border-radius: var(--radius-small);
 }
 
 .feedback {
