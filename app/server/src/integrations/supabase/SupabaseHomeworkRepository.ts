@@ -48,6 +48,12 @@ export class SupabaseHomeworkRepository implements HomeworkRepository {
     return data ? { id: data.id, lessonId: data.lesson_id, title: data.title, filePath: data.file_path } : null;
   }
 
+  async deleteHomework(homework: Homework): Promise<void> {
+    // The guide and the checks are deleted with the row (on delete cascade).
+    throwIf((await this.#db.from("homework").delete().eq("id", homework.id)).error);
+    throwIf((await this.#db.storage.from(BUCKET).remove([homework.filePath])).error);
+  }
+
   async studiesLesson(lessonId: string, studentId: string): Promise<boolean> {
     const lesson = await this.#db.from("lessons").select("course_id").eq("id", lessonId).maybeSingle();
     throwIf(lesson.error);

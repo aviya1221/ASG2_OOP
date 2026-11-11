@@ -1,10 +1,10 @@
-import { FileText, Send, Upload } from "lucide-react";
+import { FileText, Send, Trash2, Upload } from "lucide-react";
 import { useCallback, useEffect, useState, type FormEvent } from "react";
 import { useSession } from "../accounts/session.tsx";
-import { ServerError, uploadToServer } from "../lib/server.ts";
+import { deleteOnServer, ServerError, uploadToServer } from "../lib/server.ts";
 import { supabase } from "../lib/supabase.ts";
 import { useEndedCount, useTask, useTasks } from "../tasks/BackgroundTasks.tsx";
-import { ICON, IconAnchor } from "../ui/Icon.tsx";
+import { ICON, IconAnchor, IconButton } from "../ui/Icon.tsx";
 import { ClassChart } from "./ClassChart.tsx";
 import { ReportView } from "./ReportView.tsx";
 import { MAX_CHECKS, type ChartRow, type Check } from "./scores.ts";
@@ -89,6 +89,18 @@ export function HomeworkTab({ lessonId }: { lessonId: string }) {
     void load();
   }, [load, ended]);
 
+  /** The teacher confirms first, because the students' checks are deleted too (REQ-74). */
+  async function remove(item: HomeworkItem) {
+    if (!window.confirm(`למחוק את המטלה "${item.title}"? גם הבדיקות של הסטודנטים יימחקו.`)) return;
+    setProblem("");
+    try {
+      await deleteOnServer(`/homework/${item.id}`);
+    } catch {
+      setProblem("מחיקת המטלה נכשלה. אפשר לנסות שוב.");
+    }
+    await load();
+  }
+
   if (items === null) return <p>טוען...</p>;
 
   return (
@@ -105,7 +117,10 @@ export function HomeworkTab({ lessonId }: { lessonId: string }) {
         <section key={item.id} className="card stack homework" aria-label={item.title}>
           <div className="row-between">
             <h3>{item.title}</h3>
-            {item.url && <IconAnchor icon={FileText} label="פתיחת המטלה" href={item.url} target="_blank" rel="noopener noreferrer" />}
+            <span className="actions">
+              {item.url && <IconAnchor icon={FileText} label="פתיחת המטלה" href={item.url} target="_blank" rel="noopener noreferrer" />}
+              {role === "teacher" && <IconButton icon={Trash2} className="danger" label={`מחיקת המטלה ${item.title}`} onClick={() => void remove(item)} />}
+            </span>
           </div>
           {role === "student" && <CheckForm lessonId={lessonId} homeworkId={item.id} title={item.title} used={item.checksUsed} />}
           {item.latest && <ReportView check={item.latest} />}

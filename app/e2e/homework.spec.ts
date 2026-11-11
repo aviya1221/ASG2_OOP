@@ -159,3 +159,33 @@ test("TC-137 the class chart gives equal scores one place, marks the viewer, and
   await chart.getByLabel("לפי").selectOption({ label: "שאלה 2" });
   await expect(rows.nth(0)).toContainText(`1. ${viewerName} (המקום שלך)`);
 });
+
+test("TC-142 the teacher deletes a homework after confirming, and a cancel keeps it", async ({ page }) => {
+  const lessonId = await newLesson();
+  await publish(lessonId, "מטלה למחיקה");
+  await openAs(page, ID.T1, `/lessons/${lessonId}/homework`);
+  const card = page.getByRole("region", { name: "מטלה למחיקה" });
+
+  page.once("dialog", (dialog) => void dialog.dismiss());
+  await card.getByRole("button", { name: "מחיקת המטלה מטלה למחיקה" }).click();
+  await expect(card).toBeVisible();
+
+  page.once("dialog", (dialog) => void dialog.accept());
+  await card.getByRole("button", { name: "מחיקת המטלה מטלה למחיקה" }).click();
+  await expect(card).toHaveCount(0);
+  expect((await secret.from("homework").select("id").eq("lesson_id", lessonId)).data).toEqual([]);
+});
+
+test("TC-119 publishing goes on while the teacher moves to another tab, and its result is there on return", async ({ page }) => {
+  const lessonId = await newLesson();
+  await openAs(page, ID.T1, `/lessons/${lessonId}/homework`);
+  await page.getByLabel("שם המטלה").fill("מטלה ברקע");
+  await page.getByLabel("קובץ המטלה (PDF)").setInputFiles(pdf("homework.pdf"));
+  await page.getByRole("button", { name: "פרסום המטלה" }).click();
+
+  const tabs = page.getByRole("navigation", { name: "לשוניות השיעור" });
+  await tabs.getByRole("link", { name: "נוכחות" }).click();
+  await expect(page.getByText('המטלה "מטלה ברקע" פורסמה.')).toBeVisible();
+  await tabs.getByRole("link", { name: "מטלות" }).click();
+  await expect(page.getByRole("region", { name: "מטלה ברקע" })).toBeVisible();
+});

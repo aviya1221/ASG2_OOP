@@ -19,7 +19,7 @@ function textOf(value: unknown, name: string): string {
   return value.trim();
 }
 
-/** POST /homework and POST /homework/{id}/checks (docs/07-EDD/README.md, API docs). */
+/** POST /homework, DELETE /homework/{id} and POST /homework/{id}/checks (docs/07-EDD/README.md, API docs). */
 export class HomeworkRoutes {
   readonly #service: HomeworkService;
   readonly #verifier: UserVerifier;
@@ -33,6 +33,7 @@ export class HomeworkRoutes {
     const router = Router();
     const signedIn = requireUser(this.#verifier);
     router.post("/homework", signedIn, this.#receive("file"), this.publish);
+    router.delete("/homework/:id", signedIn, this.remove);
     router.post("/homework/:id/checks", signedIn, this.#receive("solution"), this.check);
     return router;
   }
@@ -55,6 +56,13 @@ export class HomeworkRoutes {
     const pdf = pdfOf(req.file);
     const { homework, questions } = await this.#service.publish(textOf(req.body?.lessonId, "lessonId"), user.idNumber, textOf(req.body?.title, "title"), pdf);
     res.status(201).json({ homeworkId: homework.id, questions });
+  };
+
+  remove = async (req: Request, res: Response): Promise<void> => {
+    const user = signedInUser(res);
+    if (user.role !== "teacher") throw new HttpError(403, "not_the_teacher", "Only the teacher of the lesson can do this.");
+    await this.#service.remove(String(req.params.id), user.idNumber);
+    res.status(204).end();
   };
 
   check = async (req: Request, res: Response): Promise<void> => {

@@ -39,6 +39,22 @@ export async function uploadToServer<T>(path: string, form: FormData): Promise<T
   return json as T;
 }
 
+/** Asks our server to delete something, with the user's sign-in token. */
+export async function deleteOnServer(path: string): Promise<void> {
+  const { data } = await supabase.auth.getSession();
+  const token = data.session?.access_token;
+  if (!token) throw new ServerError("not_signed_in", "Sign in first.");
+  const response = await fetch(`${import.meta.env.VITE_SERVER_URL}${path}`, {
+    method: "DELETE",
+    headers: { authorization: `Bearer ${token}` },
+    signal: AbortSignal.timeout(TIMEOUT_MS),
+  });
+  if (response.ok) return;
+  const text = await response.text();
+  const json = text ? JSON.parse(text) : {};
+  throw new ServerError(json.error ?? "server_error", json.message ?? "");
+}
+
 /** Calls our server with the user's sign-in token, and tries once more if the network failed. */
 export async function callServer<T>(path: string, body: unknown): Promise<T> {
   const { data } = await supabase.auth.getSession();

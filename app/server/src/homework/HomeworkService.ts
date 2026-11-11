@@ -44,6 +44,15 @@ export class HomeworkService {
     return { homework, questions: guide.questions.length };
   }
 
+  /** Only the teacher of the lesson deletes a homework, and its guide, checks and file go with it (REQ-74). */
+  async remove(homeworkId: string, teacherId: string): Promise<void> {
+    const homework = await this.#repository.findHomework(homeworkId);
+    if (!homework) throw new HttpError(404, "not_found", "There is no such homework.");
+    const lesson = await this.#repository.findLesson(homework.lessonId);
+    if (lesson?.teacherId !== teacherId) throw new HttpError(403, "not_the_teacher", "Only the teacher of the lesson can do this.");
+    await this.#repository.deleteHomework(homework);
+  }
+
   /** The solution stays in memory and is dropped when the check ends (REQ-59). */
   async check(homeworkId: string, studentId: string, solution: Uint8Array): Promise<HomeworkCheck> {
     const homework = await this.#repository.findHomework(homeworkId);

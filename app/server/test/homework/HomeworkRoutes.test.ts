@@ -31,6 +31,9 @@ const service = {
     received.push({ method: "publish", args });
     return { homework: { id: "h1", lessonId: "L1", title: "מטלה 1", filePath: "L1/h1.pdf" }, questions: 2 };
   },
+  remove: async (...args: unknown[]) => {
+    received.push({ method: "remove", args });
+  },
   check: async (...args: unknown[]) => {
     received.push({ method: "check", args });
     return CHECK;
@@ -87,6 +90,17 @@ describe("HomeworkRoutes", () => {
     large.set(PDF_BYTES);
     const tooLarge = await post("/homework", "teacher", form({ lessonId: "L1", title: "מטלה" }, { ...pdf, bytes: large }));
     assert.deepEqual([tooLarge.status, tooLarge.json.error], [413, "file_too_large"]);
+  });
+
+  it("TC-142 deletes a homework for a teacher and refuses a student", async () => {
+    received.length = 0;
+    const remove = (token: string) => fetch(`${base}/homework/h1`, { method: "DELETE", headers: { authorization: `Bearer ${token}` } });
+
+    const refused = await remove("student");
+    assert.deepEqual([refused.status, ((await refused.json()) as { error: string }).error], [403, "not_the_teacher"]);
+    assert.equal(received.length, 0);
+    assert.equal((await remove("teacher")).status, 204);
+    assert.deepEqual(received, [{ method: "remove", args: ["h1", "T1"] }]);
   });
 
   it("refuses a teacher who checks a solution, and a check with no file", async () => {

@@ -19,6 +19,7 @@ class FakeRepository implements HomeworkRepository {
   guide: ReviewGuide | null = GUIDE;
   checks: HomeworkCheck[] = [];
   published: { lessonId: string; title: string; pdf: Uint8Array; guide: ReviewGuide }[] = [];
+  deleted: Homework[] = [];
   /** How many saves find their number taken by a request sent at the same time. */
   takenBySameTime = 0;
 
@@ -31,6 +32,9 @@ class FakeRepository implements HomeworkRepository {
   }
   async findHomework() {
     return this.homework;
+  }
+  async deleteHomework(homework: Homework) {
+    this.deleted.push(homework);
   }
   async studiesLesson(_lessonId: string, studentId: string) {
     return this.students.has(studentId);
@@ -149,6 +153,21 @@ describe("HomeworkService with the canned answers of the offline demo", () => {
     assert.equal(questions, 1);
     assert.deepEqual(check.report.sections.map(({ answered, score, meets }) => [answered, score, meets]), [[false, 0, ""]]);
     assert.equal(check.overall, 1);
+  });
+});
+
+describe("HomeworkService.remove", () => {
+  it("TC-142 deletes a homework for the teacher of its lesson only", async () => {
+    const repository = new FakeRepository();
+    const service = new HomeworkService(repository, noGuides, reviewerOf([MARKS]).reviewer);
+
+    await assert.rejects(service.remove("h1", "T2"), { status: 403, code: "not_the_teacher" });
+    assert.equal(repository.deleted.length, 0);
+    await service.remove("h1", "T1");
+    assert.deepEqual(repository.deleted, [repository.homework]);
+
+    repository.homework = null;
+    await assert.rejects(service.remove("h9", "T1"), { status: 404, code: "not_found" });
   });
 });
 

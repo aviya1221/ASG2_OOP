@@ -5,6 +5,8 @@ export interface HomeworkRepository {
   /** Stores the PDF, the homework and its guide together, or none of them. */
   saveHomework(lessonId: string, title: string, pdf: Uint8Array, guide: ReviewGuide): Promise<Homework>;
   findHomework(homeworkId: string): Promise<Homework | null>;
+  /** Deletes the homework with its guide and checks, and then its PDF (REQ-74). */
+  deleteHomework(homework: Homework): Promise<void>;
   studiesLesson(lessonId: string, studentId: string): Promise<boolean>;
   findGuide(homeworkId: string): Promise<ReviewGuide | null>;
   /** Counts saved checks only, so a check that failed is not counted (REQ-56). */

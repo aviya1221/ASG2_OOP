@@ -196,6 +196,27 @@ describe("the homework review", () => {
     assert.equal(files?.length, 1, "only the homework itself is stored, never a solution");
   });
 
+  it("TC-142 the teacher deletes a homework with its file and checks, and another teacher cannot", async () => {
+    const lessonId = await newLesson();
+    const { json } = await publish(lessonId);
+    await check(json.homeworkId);
+    const remove = async (who: "T1" | "T2") => {
+      const token = (await (await signedIn(who)).auth.getSession()).data.session!.access_token;
+      return fetch(`${base}/homework/${json.homeworkId}`, { method: "DELETE", headers: { authorization: `Bearer ${token}` } });
+    };
+
+    assert.equal((await remove("T2")).status, 403);
+    assert.equal((await secret.from("homework").select("id").eq("id", json.homeworkId)).data?.length, 1);
+    assert.equal((await remove("T1")).status, 204);
+
+    for (const table of ["homework", "review_guides", "homework_checks"]) {
+      const column = table === "homework" ? "id" : "homework_id";
+      assert.deepEqual((await secret.from(table).select(column).eq(column, json.homeworkId)).data, [], `${table} still has the homework`);
+    }
+    const { data: files } = await secret.storage.from("homework").list(lessonId);
+    assert.equal(files?.length, 0, "the PDF is deleted too");
+  });
+
   it("refuses a file that is not a PDF", async () => {
     const lessonId = await newLesson();
     const answer = await post("/homework", "T1", "file", new TextEncoder().encode("notes"), { lessonId, title: "מטלה" }, "text/plain");
