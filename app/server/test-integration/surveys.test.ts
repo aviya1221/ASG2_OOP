@@ -6,6 +6,12 @@ const secret = secretClient();
 const created: string[] = [];
 let lectureNumber = 4_000_000 + Math.floor(Math.random() * 1_000_000);
 
+/** Ends the lesson a second ago, with its polls published a minute before that. */
+async function endLesson(lessonId: string, pollIds: string[]): Promise<void> {
+  await secret.from("surveys").update({ published_at: new Date(Date.now() - 60_000).toISOString() }).in("id", pollIds);
+  await secret.from("lessons").update({ ends_at: new Date(Date.now() - 1000).toISOString() }).eq("id", lessonId);
+}
+
 after(async () => {
   await secret.from("lessons").delete().in("id", created);
 });
@@ -52,12 +58,14 @@ async function totals(surveyId: string): Promise<Record<number, number>> {
 }
 
 describe("polls and forms", () => {
-  it("TC-060 a poll is published only during the lesson, with at least 2 options", async () => {
+  it("TC-060 the teacher of the lesson publishes a poll at any time, with at least 2 options", async () => {
     const now = await newLesson();
     assert.equal((await publish(now, "poll")).error, null);
+    assert.equal((await publish(await newLesson(-5), "poll")).error, null, "after the lesson");
+    assert.equal((await publish(await newLesson(48), "poll")).error, null, "before the lesson");
 
-    const ended = await newLesson(-5);
-    assert.ok((await publish(ended, "poll")).error, "after the lesson");
+    const otherTeacher = await signedIn("T2");
+    assert.ok((await otherTeacher.from("surveys").insert({ lesson_id: now, kind: "poll", questions: POLL })).error, "a teacher of another course");
 
     const teacher = await signedIn("T1");
     const oneOption = await teacher.from("surveys").insert({ lesson_id: now, kind: "poll", questions: [{ ...POLL[0], options: ["רק אחת"] }] });
@@ -148,17 +156,19 @@ describe("polls and forms", () => {
     }
   });
 
-  it("TC-068 the job closes a poll at the end of the lesson, and leaves a form open", async () => {
+  it("TC-068 the job closes a poll published before the end of the lesson, and leaves a later poll and a form open", async () => {
     const lessonId = await newLesson(-0.5, 1);
     const poll = (await publish(lessonId, "poll")).data!;
     const form = (await publish(lessonId, "form")).data!;
-    await secret.from("lessons").update({ ends_at: new Date(Date.now() - 1000).toISOString() }).eq("id", lessonId);
+    await endLesson(lessonId, [poll.id]);
+    const later = (await publish(lessonId, "poll")).data!;
 
     assert.equal((await secret.rpc("run_minute_jobs")).error, null);
-    const { data } = await secret.from("surveys").select("id, status").in("id", [poll.id, form.id]);
+    const { data } = await secret.from("surveys").select("id, status").in("id", [poll.id, form.id, later.id]);
     const status = Object.fromEntries((data ?? []).map((row) => [row.id, row.status]));
     assert.equal(status[poll.id], "closed");
     assert.equal(status[form.id], "open");
+    assert.equal(status[later.id], "open", "a poll published after the lesson waits for the teacher");
   });
 
   it("TC-073 only the teacher sees the answers of a form", async () => {
@@ -192,7 +202,7 @@ describe("polls and forms", () => {
     assert.ok((await teacher.from("surveys").insert({ lesson_id: now, kind: "poll", status: "draft", questions: POLL })).error, "a poll has no draft");
 
     await teacher.from("surveys").update({ status: "closed" }).eq("id", draft.id);
-    await secret.from("lessons").update({ ends_at: new Date(Date.now() - 1000).toISOString() }).eq("id", now);
+    await endLesson(now, [poll.id]);
     await secret.rpc("run_minute_jobs");
     assert.equal((await secret.from("surveys").select("status").eq("id", poll.id).single()).data?.status, "closed");
 

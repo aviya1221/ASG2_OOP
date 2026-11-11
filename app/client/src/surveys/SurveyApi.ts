@@ -44,7 +44,7 @@ function toSurvey(row: SurveyRow): Survey {
 }
 
 const PUBLISH_ERRORS: Record<string, string> = {
-  "new row violates row-level security policy": "אפשר לפרסם סקר רק במהלך השיעור.",
+  "new row violates row-level security policy": "רק המרצה של השיעור יכול לפרסם בו.",
 };
 
 export class SurveyError extends Error {}

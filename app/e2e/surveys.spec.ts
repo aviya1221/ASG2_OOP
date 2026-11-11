@@ -171,3 +171,22 @@ test("UC-03 the teacher sees who answered a poll, and closes it", async ({ page 
   await expect(card).toContainText("הסקר סגור");
   expect(L1).toBeTruthy();
 });
+
+test("TC-060 the teacher publishes a poll after the lesson, and it stays open until the teacher closes it", async ({ page }) => {
+  const lessonId = await newLesson();
+  const ended = new Date(Date.now() - 60_000).toISOString();
+  await secret.from("lessons").update({ starts_at: new Date(Date.now() - 7_200_000).toISOString(), ends_at: ended }).eq("id", lessonId);
+
+  await openAs(page, ID.T1, `/lessons/${lessonId}/forum`);
+  await page.getByRole("button", { name: "סקר חדש" }).click();
+  await page.getByLabel("שאלת הסקר").fill("מה לחזור עליו?");
+  await page.getByLabel("אפשרות 1").fill("ההגדרות");
+  await page.getByLabel("אפשרות 2").fill("התרגיל");
+  await page.getByRole("button", { name: "פרסום הסקר" }).click();
+  const poll = page.getByRole("article", { name: "סקר: מה לחזור עליו?" });
+  await expect(poll).toBeVisible();
+
+  expect((await secret.rpc("run_minute_jobs")).error).toBeNull();
+  await page.reload();
+  await expect(poll.getByRole("button", { name: "סגירת הסקר" })).toBeVisible();
+});
