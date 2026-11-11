@@ -282,7 +282,7 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
   - [x] The teacher deletes a homework
   - [x] Polls at any time
   - [x] A one-page summary, shown to the class only after the teacher publishes it
-  - [ ] A weekly timetable as the first screen of teachers and students
+  - [x] A weekly timetable as the first screen of teachers and students
 - [ ] Unit tests for the core classes (per the STP, step 8)
 - [x] Test automation: GitHub Actions runs the type check and the unit, integration and browser tests on every push
 - [x] Test IDs in the test names, and a script that writes Passed or Failed into the traceability matrix

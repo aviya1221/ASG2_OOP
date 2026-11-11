@@ -75,3 +75,17 @@ test("UC-08 a student cannot open a lesson of another course", async ({ page }) 
   await signIn(page, ID.S51);
   await expect(page.getByText("השיעור הזה לא נמצא.")).toBeVisible();
 });
+
+test("TC-008 the first screen is a weekly timetable that moves between weeks, with today's lesson in it", async ({ page }) => {
+  await page.goto("/");
+  await signIn(page, ID.S1);
+  const timetable = page.getByRole("region", { name: "מערכת השעות" });
+  await expect(timetable.getByRole("link", { name: /קורס א/ }).first()).toBeVisible();
+
+  const title = timetable.getByRole("heading", { level: 2 });
+  const thisWeek = await title.textContent();
+  await timetable.getByRole("button", { name: "השבוע הבא" }).click();
+  await expect(title).not.toHaveText(thisWeek!);
+  await timetable.getByRole("button", { name: "השבוע", exact: true }).click();
+  await expect(title).toHaveText(thisWeek!);
+});

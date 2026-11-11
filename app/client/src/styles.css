@@ -751,6 +751,95 @@ td {
   }
 }
 
+/* The weekly timetable of teachers and students (REQ-72, UI decision 9). */
+.next-lesson {
+  gap: 4px;
+  padding: 14px 16px;
+}
+
+.week-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+}
+
+.week-head h2 {
+  font-size: 18px;
+}
+
+.day-strip {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 6px;
+}
+
+.day-pick {
+  min-height: 56px;
+  flex-direction: column;
+  gap: 0;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+  font-size: 13px;
+}
+
+.day-pick b {
+  font-size: 16px;
+}
+
+.day-pick.chosen {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.week-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.day-column {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+
+.day-column h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.day-column.today {
+  padding: 8px;
+  background: rgb(0 0 0 / 5%);
+  border-radius: var(--radius);
+}
+
+@media (max-width: 899px) {
+  .day-column:not(.chosen) {
+    display: none;
+  }
+
+  .day-column.today {
+    padding: 0;
+    background: none;
+  }
+}
+
+@media (min-width: 900px) {
+  .day-strip {
+    display: none;
+  }
+
+  .day-column {
+    padding: 8px;
+  }
+
+  .week-grid {
+    grid-template-columns: repeat(var(--days), minmax(0, 1fr));
+  }
+}
+
 /* The summary page: one page written like a document (REQ-45), and the teacher's tools (REQ-73). */
 .summary-tools {
   display: flex;
