@@ -1,6 +1,5 @@
 import { useEffect, useState, type ChangeEvent } from "react";
 import { Ban, Bell, Camera } from "lucide-react";
-import { Link } from "react-router";
 import type { Person } from "../accounts/session.tsx";
 import { callServer } from "../lib/server.ts";
 import { supabase } from "../lib/supabase.ts";
@@ -81,9 +80,6 @@ export function FacePage({ person }: { person: Person }) {
     <>
       <header className="band">
         <div className="band-inner">
-          <Link className="band-back" to="/">
-            כל השיעורים
-          </Link>
           <h1>רישום פנים</h1>
         </div>
       </header>

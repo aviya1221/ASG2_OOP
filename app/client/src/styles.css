@@ -13,6 +13,7 @@
   --radius-small: 8px;
   --shadow: 0 1px 2px rgb(0 0 0 / 6%), 0 4px 12px rgb(0 0 0 / 5%);
   --page-width: 1120px;
+  --gutter: clamp(16px, 3vw, 32px);
 }
 
 * {
@@ -100,64 +101,101 @@ button svg,
   outline-offset: 2px;
 }
 
+/* The bar on top of every screen, across the full width (UI decision 3, REQ-71). */
+.topbar {
+  min-height: 60px;
+  padding: 8px var(--gutter);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  background: var(--ink);
+  color: var(--paper);
+  border-bottom: 1px solid rgb(255 255 255 / 14%);
+}
+
+.topbar-side {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.topbar .icon-button:hover:not(:disabled) {
+  background: rgb(255 255 255 / 16%);
+  color: var(--paper);
+}
+
+.topbar-brand {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding-inline: 8px;
+  border-radius: var(--radius);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.topbar-brand:hover {
+  background: rgb(255 255 255 / 16%);
+}
+
+.topbar-user {
+  min-width: 0;
+  display: grid;
+  margin-inline-end: 4px;
+  line-height: 1.25;
+  text-align: end;
+}
+
+.topbar-user b,
+.topbar-user span {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.topbar-user span {
+  color: var(--soft);
+  font-size: 13px;
+}
+
+/* The band of each page: its title on one side and, on a lesson page, the tabs on the other. */
 .band {
   background: var(--ink);
   color: var(--paper);
 }
 
 .band-inner {
-  max-width: var(--page-width);
-  margin-inline: auto;
-  padding: 16px 20px;
-  display: grid;
-  gap: 4px;
+  padding: 16px var(--gutter);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: end;
+  gap: 12px 32px;
 }
 
-.band-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: start;
-  gap: 12px;
+.band-title {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
 }
 
 .band-note {
   color: var(--soft);
 }
 
-.band-back {
-  width: fit-content;
-  color: var(--soft);
-  font-size: 14px;
-}
-
-.band-button {
-  min-height: 44px;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding-inline: 14px;
-  background: rgb(255 255 255 / 12%);
-  color: var(--paper);
-  border-radius: var(--radius);
-  text-decoration: none;
-}
-
-.band-button:hover,
-.band .icon-button:hover:not(:disabled) {
-  background: rgb(255 255 255 / 20%);
-}
-
-.band-actions {
-  display: flex;
-  gap: 8px;
-}
-
 .band:has(.tabs) .band-inner {
   padding-bottom: 0;
 }
 
+.band:has(.tabs) .band-title {
+  padding-bottom: 4px;
+}
+
 .tabs {
-  margin-top: 12px;
+  flex: 1 1 100%;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
@@ -583,9 +621,19 @@ td {
   align-content: start;
 }
 
+@media (max-width: 479px) {
+  .topbar-brand span {
+    display: none;
+  }
+}
+
 @media (min-width: 900px) {
   .tabs {
-    max-width: 480px;
+    flex: 0 1 480px;
+  }
+
+  .band:has(.tabs) .band-title {
+    padding-bottom: 16px;
   }
 
   .admin {

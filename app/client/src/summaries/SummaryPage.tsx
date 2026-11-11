@@ -1,6 +1,6 @@
 import { Pencil, Save, Upload, X } from "lucide-react";
 import { useCallback, useEffect, useState, type ChangeEvent } from "react";
-import { Link, useParams } from "react-router";
+import { useParams } from "react-router";
 import { useSession } from "../accounts/session.tsx";
 import { lectureTitle } from "../lessons/lessons.ts";
 import { ServerError, uploadToServer } from "../lib/server.ts";
@@ -82,13 +82,12 @@ export function SummaryPage() {
     <>
       <header className="band">
         <div className="band-inner">
-          <Link className="band-back" to={`/lessons/${lessonId}/forum`}>
-            חזרה לפורום
-          </Link>
-          <h1>סיכום השיעור</h1>
-          <p className="band-note">
-            {lesson.courseName} · {lectureTitle(lesson)}
-          </p>
+          <div className="band-title">
+            <h1>סיכום השיעור</h1>
+            <p className="band-note">
+              {lesson.courseName} · {lectureTitle(lesson)}
+            </p>
+          </div>
         </div>
       </header>
       <main className="content stack">

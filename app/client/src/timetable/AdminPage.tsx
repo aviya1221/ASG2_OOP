@@ -1,6 +1,5 @@
 import { Plus, Save } from "lucide-react";
 import { useCallback, useEffect, useState, type FormEvent } from "react";
-import type { Person } from "../accounts/session.tsx";
 import { supabase } from "../lib/supabase.ts";
 import { ICON } from "../ui/Icon.tsx";
 import { DAYS, DEFAULT_WEEKS, parseStudents, problemsIn, saveErrorMessage, type CourseForm, type Slot } from "./courseForm.ts";
@@ -24,7 +23,7 @@ const EMPTY_FORM: CourseForm = {
 };
 
 /** The admin's one screen: the weekly timetable and a form for a new course. */
-export function AdminPage({ person }: { person: Person }) {
+export function AdminPage() {
   const [courses, setCourses] = useState<CourseRow[]>([]);
   const [form, setForm] = useState<CourseForm>(EMPTY_FORM);
   const [problems, setProblems] = useState<string[]>([]);
@@ -80,14 +79,8 @@ export function AdminPage({ person }: { person: Person }) {
   return (
     <>
       <header className="band">
-        <div className="band-inner band-row">
-          <div>
-            <h1>מערכת שעות</h1>
-            <p className="band-note">{person.name}</p>
-          </div>
-          <button className="band-button" onClick={() => void supabase.auth.signOut()}>
-            יציאה
-          </button>
+        <div className="band-inner">
+          <h1>מערכת שעות</h1>
         </div>
       </header>
       <main className="content admin">

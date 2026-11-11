@@ -3,6 +3,7 @@ import { SignInPage } from "./accounts/SignInPage.tsx";
 import { useSession } from "./accounts/session.tsx";
 import { useAttendanceResponder } from "./attendance/AttendanceResponder.ts";
 import { FacePage } from "./attendance/FacePage.tsx";
+import { TopBar } from "./layout/TopBar.tsx";
 import { LessonPage } from "./lessons/LessonPage.tsx";
 import { LessonsPage } from "./lessons/LessonsPage.tsx";
 import { SummaryPage } from "./summaries/SummaryPage.tsx";
@@ -19,11 +20,14 @@ export function App() {
 
   const { person } = session;
   return (
-    <Routes>
-      <Route path="/lessons/:lessonId/summary" element={<SummaryPage />} />
-      <Route path="/lessons/:lessonId/:tab?" element={<LessonPage />} />
-      <Route path="/face" element={<FacePage person={person} />} />
-      <Route path="*" element={person.role === "admin" ? <AdminPage person={person} /> : <LessonsPage person={person} />} />
-    </Routes>
+    <>
+      <TopBar person={person} />
+      <Routes>
+        <Route path="/lessons/:lessonId/summary" element={<SummaryPage />} />
+        <Route path="/lessons/:lessonId/:tab?" element={<LessonPage />} />
+        <Route path="/face" element={<FacePage person={person} />} />
+        <Route path="*" element={person.role === "admin" ? <AdminPage /> : <LessonsPage />} />
+      </Routes>
+    </>
   );
 }

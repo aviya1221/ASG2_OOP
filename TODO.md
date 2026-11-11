@@ -276,7 +276,7 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
   - [ ] Use cases: the summary, polls, homework and the first screen
   - [ ] SDD and EDD: the summary, polls, homework and the shared parts of the client
   - [ ] STD: new and changed test cases
-  - [ ] Top bar on every screen: the user's name, a back arrow and sign-out
+  - [x] Top bar on every screen: the user's name, a back arrow and sign-out
   - [x] Rounded buttons with thin-line icons
   - [ ] Long actions keep running when the user moves to another page
   - [ ] The teacher deletes a homework

@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
-import type { Person } from "../accounts/session.tsx";
 import { supabase } from "../lib/supabase.ts";
 import { formatWhen, isCurrent, lectureTitle, orderLessons, type Lesson } from "./lessons.ts";
 
 /** The first screen of a teacher or a student: only the lessons of their own courses. */
-export function LessonsPage({ person }: { person: Person }) {
+export function LessonsPage() {
   const [lessons, setLessons] = useState<Lesson[] | null>(null);
   const [failed, setFailed] = useState(false);
 
@@ -36,21 +35,8 @@ export function LessonsPage({ person }: { person: Person }) {
   return (
     <>
       <header className="band">
-        <div className="band-inner band-row">
-          <div>
-            <h1>השיעורים שלי</h1>
-            <p className="band-note">{person.name}</p>
-          </div>
-          <div className="band-actions">
-            {person.role === "student" && (
-              <Link className="band-button" to="/face">
-                רישום פנים
-              </Link>
-            )}
-            <button className="band-button" onClick={() => void supabase.auth.signOut()}>
-              יציאה
-            </button>
-          </div>
+        <div className="band-inner">
+          <h1>השיעורים שלי</h1>
         </div>
       </header>
       <main className="content">

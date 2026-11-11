@@ -64,14 +64,14 @@ export function LessonPage() {
     <>
       <header className="band">
         <div className="band-inner">
-          <Link className="band-back" to="/">
-            כל השיעורים
-          </Link>
-          <h1>{lesson.courseName}</h1>
-          <p className="band-note">{lectureTitle(lesson)}</p>
+          <div className="band-title">
+            <h1>{lesson.courseName}</h1>
+            <p className="band-note">{lectureTitle(lesson)}</p>
+          </div>
           <nav className="tabs" aria-label="לשוניות השיעור">
             {TABS.map((item) => (
-              <NavLink key={item.id} to={`/lessons/${lessonId}/${item.id}`} aria-current={item.id === openTab ? "page" : undefined}>
+              // Switching tabs replaces the address, so the back arrow leaves the lesson.
+              <NavLink key={item.id} replace to={`/lessons/${lessonId}/${item.id}`} aria-current={item.id === openTab ? "page" : undefined}>
                 {item.label}
               </NavLink>
             ))}
