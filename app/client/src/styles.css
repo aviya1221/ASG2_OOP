@@ -161,6 +161,107 @@ button svg,
   font-size: 13px;
 }
 
+/* Long actions that go on in the background (UI decision 18, NFR-13). */
+.task-indicator {
+  position: relative;
+}
+
+.task-chip {
+  min-height: 36px;
+  padding-inline: 12px;
+  background: rgb(255 255 255 / 12%);
+  color: var(--paper);
+  border-radius: 999px;
+  font-size: 14px;
+}
+
+.task-chip:hover {
+  background: rgb(255 255 255 / 20%);
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spin {
+    animation: none;
+  }
+}
+
+.task-list {
+  position: absolute;
+  inset-inline-end: 0;
+  top: calc(100% + 6px);
+  z-index: 20;
+  min-width: 240px;
+  padding: 6px;
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.task-list a {
+  display: block;
+  padding: 10px 12px;
+  border-radius: var(--radius-small);
+  text-decoration: none;
+}
+
+.task-list a:hover {
+  background: var(--soft-button);
+}
+
+.task-messages {
+  position: fixed;
+  inset-inline: 16px;
+  bottom: 16px;
+  z-index: 30;
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.task-message {
+  width: 100%;
+  max-width: 560px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px;
+  padding-inline-start: 16px;
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  pointer-events: auto;
+}
+
+.task-message.failed {
+  background: var(--problem);
+}
+
+.task-message span {
+  flex: 1;
+}
+
+.task-message a {
+  font-weight: 700;
+}
+
+.task-message .icon-button:hover:not(:disabled) {
+  background: rgb(255 255 255 / 16%);
+  color: var(--paper);
+}
+
 /* The band of each page: its title on one side and, on a lesson page, the tabs on the other. */
 .band {
   background: var(--ink);
@@ -624,6 +725,14 @@ td {
 @media (max-width: 479px) {
   .topbar-brand span {
     display: none;
+  }
+
+  .task-chip span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
   }
 }
 

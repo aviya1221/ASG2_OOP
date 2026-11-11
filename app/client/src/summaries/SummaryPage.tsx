@@ -5,6 +5,7 @@ import { useSession } from "../accounts/session.tsx";
 import { lectureTitle } from "../lessons/lessons.ts";
 import { ServerError, uploadToServer } from "../lib/server.ts";
 import { supabase } from "../lib/supabase.ts";
+import { useEndedCount, useTask, useTasks } from "../tasks/BackgroundTasks.tsx";
 import { ICON, IconButton } from "../ui/Icon.tsx";
 import { fromEditable, isStale, toEditable, type SummaryParts } from "./summaryText.ts";
 
@@ -60,8 +61,13 @@ export function SummaryPage() {
     );
   }, [lessonId]);
 
+  // The upload goes on in the background, so the page reloads when it ends (NFR-13).
+  const ended = useEndedCount(lessonId);
   useEffect(() => {
     void load();
+  }, [load, ended]);
+
+  useEffect(() => {
     const channel = supabase
       .channel(`summary-${lessonId}-${Math.random().toString(36).slice(2)}`)
       .on("postgres_changes", { event: "*", schema: "public", table: "lesson_summaries", filter: `lesson_id=eq.${lessonId}` }, () => void load())
@@ -99,7 +105,7 @@ export function SummaryPage() {
           </p>
         )}
         {summary?.parts && <SummaryView lessonId={lessonId} parts={summary.parts} editable={isTeacher && summary.status === "ready"} onSaved={load} />}
-        {isTeacher && !inProgress && (lessonEnded ? <RecordingUpload lessonId={lessonId} again={Boolean(summary)} onStarted={load} /> : <p className="muted">אפשר להעלות הקלטה אחרי סוף השיעור.</p>)}
+        {isTeacher && !inProgress && (lessonEnded ? <RecordingUpload lessonId={lessonId} again={Boolean(summary)} /> : <p className="muted">אפשר להעלות הקלטה אחרי סוף השיעור.</p>)}
       </main>
     </>
   );
@@ -205,26 +211,31 @@ function SummaryView({ lessonId, parts, editable, onSaved }: { lessonId: string;
   );
 }
 
-function RecordingUpload({ lessonId, again, onStarted }: { lessonId: string; again: boolean; onStarted: () => Promise<void> }) {
+function RecordingUpload({ lessonId, again }: { lessonId: string; again: boolean }) {
+  const { start } = useTasks();
+  const task = useTask("summary-upload", lessonId);
   const [file, setFile] = useState<File | null>(null);
-  const [busy, setBusy] = useState(false);
-  const [problem, setProblem] = useState("");
+  const busy = task?.status === "running";
+  const problem = task?.status === "failed" ? (UPLOAD_ERRORS[task.error instanceof ServerError ? task.error.code : ""] ?? "ההעלאה נכשלה. אפשר לנסות שוב.") : "";
 
-  async function upload() {
-    if (!file) return;
-    setBusy(true);
-    setProblem("");
+  function upload() {
+    if (!file || busy) return;
     const form = new FormData();
     form.append("lessonId", lessonId);
     form.append("recording", file);
-    try {
-      await uploadToServer("/summaries", form);
-      await onStarted();
-    } catch (error) {
-      setProblem(UPLOAD_ERRORS[error instanceof ServerError ? error.code : ""] ?? "ההעלאה נכשלה. אפשר לנסות שוב.");
-    } finally {
-      setBusy(false);
-    }
+    start(
+      {
+        kind: "summary-upload",
+        key: lessonId,
+        scope: lessonId,
+        label: "העלאת הקלטת השיעור",
+        doneText: "ההקלטה הועלתה, והסיכום בהכנה.",
+        failText: "העלאת ההקלטה נכשלה.",
+        link: `/lessons/${lessonId}/summary`,
+        stopsOnClose: true,
+      },
+      () => uploadToServer("/summaries", form),
+    );
   }
 
   return (
@@ -239,7 +250,12 @@ function RecordingUpload({ lessonId, again, onStarted }: { lessonId: string; aga
           {problem}
         </p>
       )}
-      <button className="primary" disabled={!file || busy} onClick={() => void upload()}>
+      {busy && (
+        <p className="muted" role="status">
+          ההקלטה עולה. אפשר לעבור לעמוד אחר בינתיים, אבל לא לסגור את הדף.
+        </p>
+      )}
+      <button className="primary" disabled={!file || busy} onClick={upload}>
         <Upload {...ICON} />
         {busy ? "מעלה..." : "העלאה ויצירת סיכום"}
       </button>

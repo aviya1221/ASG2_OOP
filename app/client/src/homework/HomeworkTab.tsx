@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState, type FormEvent } from "react";
 import { useSession } from "../accounts/session.tsx";
 import { ServerError, uploadToServer } from "../lib/server.ts";
 import { supabase } from "../lib/supabase.ts";
+import { useEndedCount, useTask, useTasks } from "../tasks/BackgroundTasks.tsx";
 import { ICON, IconAnchor } from "../ui/Icon.tsx";
 import { ClassChart } from "./ClassChart.tsx";
 import { ReportView } from "./ReportView.tsx";
@@ -82,16 +83,18 @@ export function HomeworkTab({ lessonId }: { lessonId: string }) {
     );
   }, [lessonId]);
 
+  // Publishing and checking go on in the background, so the list reloads whenever one of them ends (NFR-13).
+  const ended = useEndedCount(lessonId);
   useEffect(() => {
     void load();
-  }, [load]);
+  }, [load, ended]);
 
   if (items === null) return <p>טוען...</p>;
 
   return (
     <div className="stack homework-tab">
       <h2>מטלות</h2>
-      {role === "teacher" && <PublishForm lessonId={lessonId} onPublished={load} />}
+      {role === "teacher" && <PublishForm lessonId={lessonId} />}
       {problem && (
         <p className="problem" role="alert">
           {problem}
@@ -104,7 +107,7 @@ export function HomeworkTab({ lessonId }: { lessonId: string }) {
             <h3>{item.title}</h3>
             {item.url && <IconAnchor icon={FileText} label="פתיחת המטלה" href={item.url} target="_blank" rel="noopener noreferrer" />}
           </div>
-          {role === "student" && <CheckForm homeworkId={item.id} used={item.checksUsed} onChecked={load} />}
+          {role === "student" && <CheckForm lessonId={lessonId} homeworkId={item.id} title={item.title} used={item.checksUsed} />}
           {item.latest && <ReportView check={item.latest} />}
           {item.chart.length > 0 && <ClassChart rows={item.chart} />}
         </section>
@@ -113,33 +116,45 @@ export function HomeworkTab({ lessonId }: { lessonId: string }) {
   );
 }
 
-function PublishForm({ lessonId, onPublished }: { lessonId: string; onPublished: () => Promise<void> }) {
+function PublishForm({ lessonId }: { lessonId: string }) {
+  const { start } = useTasks();
+  const task = useTask("homework-publish", lessonId);
   const [title, setTitle] = useState("");
   const [file, setFile] = useState<File | null>(null);
-  const [busy, setBusy] = useState(false);
-  const [problem, setProblem] = useState("");
   const [round, setRound] = useState(0);
+  const busy = task?.status === "running";
+  const problem = task?.status === "failed" ? messageOf(PUBLISH_ERRORS, task.error) : "";
 
-  async function publish(event: FormEvent) {
+  // The form empties only after a success, so after a failure the teacher can send it again.
+  const published = task?.status === "done" ? task.id : 0;
+  useEffect(() => {
+    if (!published) return;
+    setTitle("");
+    setFile(null);
+    setRound((value) => value + 1);
+  }, [published]);
+
+  function publish(event: FormEvent) {
     event.preventDefault();
-    if (!file || !title.trim()) return;
-    setBusy(true);
-    setProblem("");
+    if (!file || !title.trim() || busy) return;
+    const name = title.trim();
     const form = new FormData();
     form.append("lessonId", lessonId);
-    form.append("title", title.trim());
+    form.append("title", name);
     form.append("file", file);
-    try {
-      await uploadToServer("/homework", form);
-      setTitle("");
-      setFile(null);
-      setRound(round + 1);
-      await onPublished();
-    } catch (error) {
-      setProblem(messageOf(PUBLISH_ERRORS, error));
-    } finally {
-      setBusy(false);
-    }
+    start(
+      {
+        kind: "homework-publish",
+        key: lessonId,
+        scope: lessonId,
+        label: `פרסום המטלה "${name}"`,
+        doneText: `המטלה "${name}" פורסמה.`,
+        failText: `פרסום המטלה "${name}" נכשל.`,
+        link: `/lessons/${lessonId}/homework`,
+        stopsOnClose: true,
+      },
+      () => uploadToServer("/homework", form),
+    );
   }
 
   return (
@@ -155,7 +170,7 @@ function PublishForm({ lessonId, onPublished }: { lessonId: string; onPublished:
       </label>
       {busy && (
         <p className="muted" role="status">
-          מכין את הנחיות הבדיקה מהמטלה. זה יכול לקחת עד שתי דקות.
+          מכין את הנחיות הבדיקה מהמטלה. זה יכול לקחת עד שתי דקות, ואפשר לעבור לעמוד אחר בינתיים.
         </p>
       )}
       {problem && (
@@ -171,31 +186,41 @@ function PublishForm({ lessonId, onPublished }: { lessonId: string; onPublished:
   );
 }
 
-function CheckForm({ homeworkId, used, onChecked }: { homeworkId: string; used: number; onChecked: () => Promise<void> }) {
+function CheckForm({ lessonId, homeworkId, title, used }: { lessonId: string; homeworkId: string; title: string; used: number }) {
+  const { start } = useTasks();
+  const task = useTask("homework-check", homeworkId);
   const [file, setFile] = useState<File | null>(null);
-  const [busy, setBusy] = useState(false);
-  const [problem, setProblem] = useState("");
   const [round, setRound] = useState(0);
+  const busy = task?.status === "running";
+  const problem = task?.status === "failed" ? messageOf(CHECK_ERRORS, task.error) : "";
   const left = MAX_CHECKS - used;
+
+  const checked = task?.status === "done" ? task.id : 0;
+  useEffect(() => {
+    if (!checked) return;
+    setFile(null);
+    setRound((value) => value + 1);
+  }, [checked]);
 
   if (left <= 0) return <p className="muted">שלוש הבדיקות נוצלו, והאחרונה היא הסופית.</p>;
 
-  async function check() {
-    if (!file) return;
-    setBusy(true);
-    setProblem("");
+  function check() {
+    if (!file || busy) return;
     const form = new FormData();
     form.append("solution", file);
-    try {
-      await uploadToServer(`/homework/${homeworkId}/checks`, form);
-      setFile(null);
-      setRound(round + 1);
-      await onChecked();
-    } catch (error) {
-      setProblem(messageOf(CHECK_ERRORS, error));
-    } finally {
-      setBusy(false);
-    }
+    start(
+      {
+        kind: "homework-check",
+        key: homeworkId,
+        scope: lessonId,
+        label: `בדיקת הפתרון של "${title}"`,
+        doneText: `הדוח על הפתרון של "${title}" מוכן.`,
+        failText: `בדיקת הפתרון של "${title}" נכשלה.`,
+        link: `/lessons/${lessonId}/homework`,
+        stopsOnClose: true,
+      },
+      () => uploadToServer(`/homework/${homeworkId}/checks`, form),
+    );
   }
 
   return (
@@ -210,7 +235,7 @@ function CheckForm({ homeworkId, used, onChecked }: { homeworkId: string; used: 
           {problem}
         </p>
       )}
-      <button className="primary" disabled={!file || busy} onClick={() => void check()}>
+      <button className="primary" disabled={!file || busy} onClick={check}>
         <Upload {...ICON} />
         {busy ? "בודק את הפתרון..." : "בדיקת הפתרון"}
       </button>

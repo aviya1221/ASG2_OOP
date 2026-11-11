@@ -278,7 +278,7 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
   - [ ] STD: new and changed test cases
   - [x] Top bar on every screen: the user's name, a back arrow and sign-out
   - [x] Rounded buttons with thin-line icons
-  - [ ] Long actions keep running when the user moves to another page
+  - [x] Long actions keep running when the user moves to another page
   - [ ] The teacher deletes a homework
   - [ ] Polls at any time
   - [ ] A one-page summary, shown to the class only after the teacher publishes it

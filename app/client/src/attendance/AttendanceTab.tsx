@@ -6,6 +6,7 @@ import { callServer, ServerError } from "../lib/server.ts";
 import { supabase } from "../lib/supabase.ts";
 import { downloadSheet, loadSheet, RESULT_LABELS, type SheetRow } from "./AttendanceSheet.ts";
 import { faceEngine, photoToCanvas } from "./FaceEngine.ts";
+import { useEndedCount, useTask, useTasks } from "../tasks/BackgroundTasks.tsx";
 import { ICON, IconButton } from "../ui/Icon.tsx";
 
 const MAX_PHOTOS = 3;
@@ -66,8 +67,11 @@ interface PhotoFaces {
 
 function TeacherAttendance({ lessonId }: { lessonId: string }) {
   const [round, reload] = useRound(lessonId);
+  // The photos are processed and sent in the background, so the tab reloads when that ends (NFR-13).
+  const ended = useEndedCount(lessonId);
+  useEffect(reload, [reload, ended]);
   if (round === undefined) return <p>טוען...</p>;
-  return round ? <RoundView lessonId={lessonId} expiresAt={round.expiresAt} /> : <PhotoTaker lessonId={lessonId} onSent={reload} />;
+  return round ? <RoundView lessonId={lessonId} expiresAt={round.expiresAt} /> : <PhotoTaker lessonId={lessonId} />;
 }
 
 const SEND_ERRORS: Record<string, string> = {
@@ -76,46 +80,74 @@ const SEND_ERRORS: Record<string, string> = {
   not_the_teacher: "רק המרצה של השיעור יכול לצלם.",
 };
 
-function PhotoTaker({ lessonId, onSent }: { lessonId: string; onSent: () => void }) {
-  const [photos, setPhotos] = useState<PhotoFaces[]>([]);
-  const [progress, setProgress] = useState("");
-  const [problem, setProblem] = useState("");
+/** Finds the faces in one class photo and makes their face-prints, in the browser. */
+async function facesIn(file: File): Promise<PhotoFaces> {
+  const engine = faceEngine();
+  await engine.load();
+  const canvas = await photoToCanvas(file);
+  const found = await engine.findFaces(canvas);
+  const faces: PhotoFaces["faces"] = [];
+  for (const face of found) {
+    const print = await engine.makePrint(canvas, face);
+    faces.push({ box: face.box.map(Math.round), print: Array.from(print) });
+  }
+  return { faces };
+}
 
-  async function addPhoto(event: ChangeEvent<HTMLInputElement>) {
+/** The photos are kept with the background actions, so leaving the tab does not lose them. */
+function PhotoTaker({ lessonId }: { lessonId: string }) {
+  const { tasks, start, clear } = useTasks();
+  const sending = useTask("class-send", lessonId);
+  const photoTasks = tasks.filter((task) => task.kind === "class-photo" && task.scope === lessonId);
+  const photos = photoTasks.filter((task) => task.status === "done").map((task) => task.result as PhotoFaces);
+  const link = `/lessons/${lessonId}/attendance`;
+
+  let progress = "";
+  if (photoTasks.some((task) => task.status === "running")) progress = "טוען את כלי הזיהוי ומחפש פנים...";
+  if (sending?.status === "running") progress = "שולח...";
+  let problem = "";
+  if (photoTasks.at(-1)?.status === "failed") problem = "לא הצלחנו לעבד את התמונה. אפשר לנסות שוב.";
+  if (sending?.status === "failed") {
+    problem = SEND_ERRORS[sending.error instanceof ServerError ? sending.error.code : ""] ?? "השליחה נכשלה. אפשר לנסות שוב.";
+  }
+
+  function addPhoto(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
     event.target.value = "";
     if (!file) return;
-    setProblem("");
-    try {
-      setProgress("טוען את כלי הזיהוי ומחפש פנים...");
-      const engine = faceEngine();
-      await engine.load();
-      const canvas = await photoToCanvas(file);
-      const found = await engine.findFaces(canvas);
-      const faces: PhotoFaces["faces"] = [];
-      for (const face of found) {
-        const print = await engine.makePrint(canvas, face);
-        faces.push({ box: face.box.map(Math.round), print: Array.from(print) });
-      }
-      setPhotos((current) => [...current, { faces }]);
-    } catch {
-      setProblem("לא הצלחנו לעבד את התמונה. אפשר לנסות שוב.");
-    } finally {
-      setProgress("");
-    }
+    start(
+      {
+        kind: "class-photo",
+        // A photo that failed is replaced by the next try in the same place.
+        key: `${lessonId}-${photos.length + 1}`,
+        scope: lessonId,
+        label: "עיבוד תמונת הכיתה",
+        doneText: "תמונת הכיתה עובדה. אפשר להוסיף תמונה או לשלוח.",
+        failText: "עיבוד תמונת הכיתה נכשל.",
+        link,
+        stopsOnClose: true,
+      },
+      () => facesIn(file),
+    );
   }
 
-  async function send() {
-    setProgress("שולח...");
-    setProblem("");
-    try {
-      await callServer("/attendance/class", { lessonId, photos });
-      onSent();
-    } catch (error) {
-      setProblem(SEND_ERRORS[error instanceof ServerError ? error.code : ""] ?? "השליחה נכשלה. אפשר לנסות שוב.");
-    } finally {
-      setProgress("");
-    }
+  function send() {
+    start(
+      {
+        kind: "class-send",
+        key: lessonId,
+        scope: lessonId,
+        label: "שליחת תמונות הכיתה",
+        doneText: "התמונות נשלחו, והסטודנטים מקבלים את התוצאות.",
+        failText: "שליחת תמונות הכיתה נכשלה.",
+        link,
+        stopsOnClose: true,
+      },
+      async () => {
+        await callServer("/attendance/class", { lessonId, photos });
+        clear("class-photo", lessonId);
+      },
+    );
   }
 
   return (
@@ -140,7 +172,7 @@ function PhotoTaker({ lessonId, onSent }: { lessonId: string; onSent: () => void
         </p>
       )}
       {photos.length > 0 && (
-        <button className="primary" onClick={() => void send()} disabled={Boolean(progress)}>
+        <button className="primary" onClick={send} disabled={Boolean(progress)}>
           <Send {...ICON} />
           סיום ושליחה
         </button>
