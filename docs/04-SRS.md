@@ -139,7 +139,7 @@ The product runs in a web browser on a phone or a computer. The teacher's phone 
 | REQ-11 | The system shall ... | Must | D-1 |
 -->
 
-#### F0: Accounts, timetable and lesson page, REQ-01 to REQ-09
+#### F0: Accounts, timetable and lesson page, REQ-01 to REQ-09, REQ-71 and REQ-72
 
 | ID | Requirement | Priority | Source |
 |----|-------------|----------|--------|
@@ -152,6 +152,8 @@ The product runs in a web browser on a phone or a computer. The teacher's phone 
 | REQ-07 | The system shall let a student register their face once, from 1 photo taken on their own phone. | Must | D-1 |
 | REQ-08 | The system shall let a student opt out of face recognition. | Must | D-1 |
 | REQ-09 | The system shall require approval from a teacher of one of the student's courses before the student replaces their registered face. | Should | D-1 |
+| REQ-71 | The system shall show the name and role of the signed-in user at the top of every screen. | Must | D-1 to D-5 |
+| REQ-72 | The system shall show each teacher and each student their lessons as a weekly timetable, from which the lesson happening now, or else the next one, opens in one tap. | Must | D-1 to D-5 |
 
 #### F1: Attendance and spreadsheet (main feature), REQ-10 to REQ-19
 
@@ -382,6 +384,8 @@ See [05-use-cases.md](05-use-cases.md).
 | REQ-68 Teacher closes a form | UC-03 | SDD §2.6, EDD-Polls | TC-067, TC-101 | Passed |
 | REQ-69 Keep the form in the forum | UC-03 | SDD §2.6, EDD-Polls | TC-069 | Passed |
 | REQ-70 Expanded forum window | UC-02 | SDD §2.5, EDD-Forum | TC-050 | Passed |
+| REQ-71 The user's name on every screen | All | SDD §2.1 | None yet | Gap |
+| REQ-72 Weekly timetable of lessons | UC-08 | SDD §2.1 | None yet | Gap |
 | NFR-01 Hidden instructions do not raise the score | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-140 | Passed |
 | NFR-02 Forum and poll updates within 2 s | UC-02, UC-03 | SDD §2.11, EDD-Forum, EDD-Polls | TC-110 | Not run |
 | NFR-03 Attendance response within 2 s | UC-01 | SDD §2.4, EDD-Attendance | TC-111 | Not run |
