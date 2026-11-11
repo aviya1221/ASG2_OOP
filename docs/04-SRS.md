@@ -202,7 +202,7 @@ Rules for REQ-13, checked in this order. Only the result "Present" marks the stu
 
 | ID | Requirement | Priority | Source |
 |----|-------------|----------|--------|
-| REQ-30 | The system shall let the teacher publish, during the lesson, a poll in the forum of that lesson date: one multiple-choice question with at least 2 answer options. | Must | D-3 |
+| REQ-30 | The system shall let the teacher publish, at any time, a poll in the forum of a lesson date: one multiple-choice question with at least 2 answer options. | Must | D-3 |
 | REQ-31 | The system shall show a published poll in the forum to every student of that lesson. | Must | D-3 |
 | REQ-32 | The system shall let a student choose one answer to a poll only while the poll is open. | Must | D-3 |
 | REQ-33 | The system shall refuse a student's second answer to a poll unless the teacher allowed another answer when creating it. | Must | D-3 |
@@ -210,7 +210,7 @@ Rules for REQ-13, checked in this order. Only the result "Present" marks the stu
 | REQ-35 | The system shall show everyone linked to the lesson a chart of a poll's answers that updates without reloading the page. | Must | D-3 |
 | REQ-36 | The system shall show the teacher who gave each answer to a poll. | Must | D-3 |
 | REQ-37 | The system shall let the teacher close an open poll at any time. | Must | D-3 |
-| REQ-38 | The system shall close a poll that is still open at the end of the lesson. | Must | D-3 |
+| REQ-38 | The system shall close, at the end of the lesson, a poll that was published before the end of the lesson and is still open. | Must | D-3 |
 | REQ-39 | The system shall keep a poll and its results in the forum of its lesson date. | Must | D-3 |
 #### F4: Class video ML summary, REQ-40 to REQ-49
 
@@ -343,7 +343,7 @@ See [05-use-cases.md](05-use-cases.md).
 | REQ-27 Text-only messages with links | UC-02 | SDD §2.5, EDD-Forum | TC-047 | Passed |
 | REQ-28 No editing of messages | UC-02 | SDD §2.5, EDD-Forum | TC-048 | Passed |
 | REQ-29 Only the teacher deletes messages | UC-02 | SDD §2.5, EDD-Forum | TC-049 | Passed |
-| REQ-30 Publish a poll in the forum | UC-03 | SDD §2.6, EDD-Polls | TC-060, TC-101 | Passed |
+| REQ-30 Publish a poll at any time | UC-03 | SDD §2.6, EDD-Polls | TC-060, TC-101 | Not run |
 | REQ-31 Show a published poll | UC-03 | SDD §2.6, EDD-Polls | TC-061 | Passed |
 | REQ-32 Answer a poll only while open | UC-03 | SDD §2.6, EDD-Polls | TC-062 | Passed |
 | REQ-33 Refuse a second poll answer | UC-03 | SDD §2.6, EDD-Polls | TC-063 | Passed |
@@ -351,7 +351,7 @@ See [05-use-cases.md](05-use-cases.md).
 | REQ-35 Live chart of poll answers | UC-03 | SDD §2.6, EDD-Polls | TC-065 | Passed |
 | REQ-36 Teacher sees who answered a poll | UC-03 | SDD §2.6, EDD-Polls | TC-066 | Passed |
 | REQ-37 Teacher closes a poll | UC-03 | SDD §2.6, EDD-Polls | TC-067, TC-101 | Passed |
-| REQ-38 Poll closes at the end of the lesson | UC-03 | SDD §2.6, EDD-Polls | TC-068, TC-101 | Passed |
+| REQ-38 Poll opened before the end closes at the end of the lesson | UC-03 | SDD §2.6, EDD-Polls | TC-068, TC-101 | Not run |
 | REQ-39 Keep the poll in the forum | UC-03 | SDD §2.6, EDD-Polls | TC-069 | Passed |
 | REQ-40 Summary button in the forum | UC-04 | SDD §2.7, EDD-LessonSummary | TC-080 | Passed |
 | REQ-41 When the summary page opens | UC-04 | SDD §2.7, EDD-LessonSummary | TC-080, TC-102 | Passed |
