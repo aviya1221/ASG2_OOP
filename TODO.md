@@ -270,7 +270,7 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
   - [x] Integration tests of the homework review
 - [x] Homework review (if in demo scope)
 - [ ] Changes after the walk-through of 2026-11-11
-  - [ ] Decisions: the screens (top bar, icons, timetable, actions that keep running)
+  - [x] Decisions: the screens (top bar, icons, timetable, actions that keep running)
   - [ ] Decisions: the lesson summary, polls and homework
   - [ ] SRS: changed and new requirements, and the traceability matrix
   - [ ] Use cases: the summary, polls, homework and the first screen
