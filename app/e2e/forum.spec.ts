@@ -52,7 +52,7 @@ test("TC-045 a reply appears under its message", async ({ page }, info) => {
   await openAs(page, ID.T1, `/lessons/${lessonId}/forum`);
   const question = page.locator("article", { hasText: "שאלה ראשונה" });
   await question.getByRole("button", { name: "תגובה" }).click();
-  await page.getByLabel("תגובה", { exact: true }).fill("התשובה בשקף 4");
+  await page.getByRole("textbox", { name: "תגובה" }).fill("התשובה בשקף 4");
   await page.getByRole("button", { name: "שליחה" }).click();
 
   const reply = page.locator("article.reply", { hasText: "התשובה בשקף 4" });
