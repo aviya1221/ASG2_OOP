@@ -1,127 +1,138 @@
 # EDD-Attendance: Attendance
 
 - Component: SDD §2.3 Face tools, §2.4 Attendance, §2.9 Notifications
-- Requirements: REQ-07 to REQ-19, NFR-03, NFR-04, NFR-09, NFR-10
-- Use cases: UC-01, UC-06
+- Requirements: REQ-10 to REQ-19, REQ-76, NFR-03, NFR-04, NFR-09, NFR-10
+- Use cases: UC-01
+- Decisions: [F1 decisions](../features/F1-attendance-strategy.md), [ADR-10](../02-tools-report.md#adr-10-attendance-by-confirmation-checked-against-a-face-count)
 
 ## 1. Module and class design
 
-`FaceEngine`, `FaceStore`, `AttendanceResponder` and `AttendanceSheet` run in the browser, and the rest on our server.
+`FaceEngine`, `ClassPhotoStore`, `NumberedPhoto` and `AttendanceSheet` run in the browser, and the rest on our server. A student's confirmation and pick, and the teacher's decisions and changes, go straight to the database under its access rules. The server does only what the page may not: it starts a round and saves the shared photo.
 
 ```mermaid
 classDiagram
     class FaceEngine {
         +load() void
         +findFaces(photo) FoundFace
-        +makePrint(photo, face) FacePrint
     }
-    class FaceStore {
-        +save(print, hash) void
-        +load() StoredFace
+    class ClassPhotoStore {
+        +save(lessonId, photos) void
+        +load(lessonId) StoredRound
+        +remove(lessonId) void
     }
-    class AttendanceResponder {
-        +respondToOpenRounds() void
+    class NumberedPhoto {
+        +numberFaces(boxes) PhotoNumber
+        +drawNumbers(photo, numbers) Blob
     }
     class AttendanceSheet {
         +load(lessonId) SheetRow
         +download(rows) void
     }
     class AttendanceRoutes {
-        +registerFace(request) Response
         +startRound(request) Response
-        +respond(request) Response
+        +sharePhotos(request) Response
         +subscribe(request) Response
     }
     class AttendanceService {
-        -threshold: number
-        +registerFace(studentId, hash, optOut) string
-        +startRound(lessonId, teacherId, photos) Round
-        +respond(lessonId, studentId, print, hash) Result
-    }
-    class FaceMatcher {
-        +best(print, faces) FaceMatch
+        +startRound(lessonId, teacherId, faceCount) Round
+        +sharePhotos(lessonId, teacherId, files, numbers) Date
+        +removeExpiredPhotos() number
     }
     class AttendanceRules {
-        +decide(hashFits, score, threshold) Decision
-    }
-    class ClassFaceCache {
-        -entries: Map
-        +get(lessonId) ClassFace
-        +put(lessonId, faces, expiresAt) void
+        +needsNumbers(confirmations, faces) boolean
     }
     class AttendanceRepository {
-        +saveRound(lessonId, photos, expiresAt) Round
+        +findLesson(lessonId) LessonInfo
+        +saveRound(lessonId, faceCount) Round
         +findRound(lessonId) Round
-        +loadFaces(lessonId) ClassFace
-        +findHash(studentId) string
-        +saveHash(studentId, hash, optOut) void
-        +addReplacement(studentId, hash) void
-        +findResult(lessonId, studentId) Result
-        +saveResult(lessonId, studentId, result) void
-        +recordMatch(lessonId, studentId, match) Result
+        +confirmationCount(lessonId) number
+        +confirmedStudents(lessonId) string
+        +hasSharedPhotos(lessonId) boolean
+        +saveSharedPhotos(lessonId, files, numbers, expiresAt) void
+        +expiredPhotoFiles(now) string
+        +removePhotoFiles(paths) void
     }
     class NotificationService {
         +subscribe(studentId, subscription) void
         +notifyCourse(lessonId) void
+        +notifyPhotoShared(studentIds) void
     }
-    AttendanceResponder "1" --> "1" FaceStore
-    AttendanceResponder ..> AttendanceRoutes : HTTPS
+    NumberedPhoto ..> ClassPhotoStore : reads the photo
+    ClassPhotoStore ..> AttendanceRoutes : HTTPS, after sending the count
     AttendanceRoutes "1" --> "1" AttendanceService
     AttendanceRoutes "1" --> "1" NotificationService
-    AttendanceService "1" --> "1" FaceMatcher
     AttendanceService "1" --> "1" AttendanceRules
-    AttendanceService "1" --> "1" ClassFaceCache
     AttendanceService "1" --> "1" AttendanceRepository
     AttendanceService "1" --> "1" NotificationService
 ```
 
 ## 2. Algorithms and data structures
 
-**Face-print, in the browser.** YuNet finds the faces at confidence 0.5, in a photo of up to 12 MP, and SFace turns each aligned face into 128 numbers. The photo never leaves the phone.
+**Counting the faces, in the browser.** YuNet finds the faces at confidence 0.5, in a photo of up to 12 MP. Only the number of faces leaves the phone. The photo and its face boxes stay in the browser's storage (`ClassPhotoStore`), for at most 25 hours.
 
-**Hash.** SHA-256 over the bytes of the face-print. The phone calculates it at registration, and the server on every response.
+**The check (REQ-13, REQ-14).** When the 4 minutes end, `AttendanceRules.needsNumbers` compares the confirmations with the faces. More confirmations than faces means someone confirmed without being in the hall.
 
-**Result (REQ-13).** The server takes the highest cosine similarity against every face of the round, and then:
+**The numbers.** Every face gets a number, from left to right by the middle of its box, so "number 32" names one face. The teacher's phone draws a frame and the number on each face, and only that copy is shared.
 
-1. If the hash does not fit, the result is `review`, with no comparison.
-2. If the best score is below the threshold, the result is `not_found`.
-3. Otherwise the database function `record_attendance_match` locks that face. If no other student matched it, the result is `present`. If one did, they all get `conflict`, even a student who already had `present`.
-4. A student who sent nothing has no row, and the sheet shows `no_response` after the hour.
+**The result (REQ-13).** The view `attendance_status` gives each student of the course one result in each lesson, in the order of the SRS table:
+1. The teacher's own decision (REQ-76).
+2. No photo, or the 4 minutes still running.
+3. No confirmation.
+4. No more confirmations than faces.
+5. Then the picks.
 
-**The sheet.** The view `attendance_sheet` merges results with row-and-seat requests and sets the flag of REQ-17. A teacher's decision changes only the request.
+The teacher reads it through `attendance_sheet`, and a student reads their own row through `my_attendance`. Nothing is stored as a result, so a pick, a decision or the end of the 4 minutes changes the result with no job.
 
-**Deleting.** A student's face-print is overwritten right after the comparison (NFR-09). A database job runs every minute and deletes the class face-prints of finished rounds, and `ClassFaceCache` drops them at the same moment (NFR-10).
+**Picks.**
+- A student has one pick per lesson. A pick with no number says "I am not in the photo".
+- A pick of a number that no other student picked counts at once.
+- The teacher decides the others. When the teacher approves one pick of a number, a database trigger rejects the other picks of that number, and a unique index allows at most one approved pick per number.
 
-**Replacing a face (REQ-09).** A teacher approves the new hash from the page, and a database trigger applies it.
+**Deleting.**
+- The teacher's phone deletes the photo right after sharing it, or once the 4 minutes end with no need to share (NFR-10).
+- The server deletes a shared photo 24 hours after sharing. It looks for such photos when it starts and every 10 minutes (NFR-09).
 
-**Notifications.** After the round is saved, the server sends Web Push messages with the `web-push` library.
+**Notifications.** The server sends Web Push messages with the `web-push` library: to the whole course when the round starts, and to the students who confirmed when the teacher shares the photo.
 
 **The life of a round:**
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Open: teacher sends the photos [during the lesson] / notify the course
-    Open --> Closed: 1 hour passes / delete the class face-prints
-    Closed --> [*]
+    [*] --> Confirming: teacher sends the face count [during the lesson] / notify the course
+    Confirming --> Done: 4 minutes pass [confirmations <= faces]
+    Confirming --> NeedsNumbers: 4 minutes pass [confirmations > faces]
+    NeedsNumbers --> Shared: teacher shares the photo / notify who confirmed
+    Shared --> Done: 24 hours pass / delete the photo
+    Done --> [*]
 ```
 
 ## 3. Database schema and data formats
 
-| Table or view | Main columns | Access |
-|---------------|--------------|--------|
-| `face_registrations` | `student_id` (key), `hash`, `opted_out` | The server only |
-| `my_face_status` (view) | `registered`, `opted_out` | Read: the student's own row. It holds no hash |
-| `face_replacements` | `id`, `student_id`, `new_hash`, `status`, `decided_by` | Write: the server adds it, and a teacher of one of the student's courses decides |
-| `attendance_rounds` | `lesson_id` (key), `created_at`, `expires_at` | Read: everyone linked to the lesson. Write: the server |
-| `class_faces` | `lesson_id`, `photo_no`, `face_no`, `box`, `print` | The server only |
-| `attendance_results` | `lesson_id` and `student_id` (key), `result`, `photo_no`, `face_no`, `score` | Read: the student and the teacher. Write: the server |
-| `seat_requests` | `lesson_id` and `student_id` (key), `row_no`, `seat_no`, `status`, `decided_at` | Read: the student and the teacher. Add: the student, after the hour or after opting out. Decide: the teacher |
-| `attendance_sheet` (view) | One row per student | Read: the teacher |
+| Table, view or file store | Main columns | Access |
+|---------------------------|--------------|--------|
+| `attendance_rounds` | `lesson_id` (key), `created_at`, `expires_at`, `face_count` | Read: everyone linked to the lesson. Write: the server |
+| `attendance_confirmations` | `lesson_id` and `student_id` (key), `created_at` | Read: the student's own row, and the teacher. Add: the student, for themselves, within the 4 minutes |
+| `attendance_counts` (view) | `face_count`, `expires_at`, `confirmations` | Read: everyone linked to the lesson. It names no student |
+| `shared_photos` | `lesson_id` and `photo_no` (key), `file_path`, `shared_at`, `expires_at`, `file_removed` | Read: everyone linked to the lesson. Write: the server |
+| `photo_numbers` | `lesson_id` and `number` (key), `photo_no`, `face_no`, `box` | Read: everyone linked to the lesson. Write: the server |
+| `number_claims` | `lesson_id` and `student_id` (key), `number` (empty for "not in the photo"), `status`, `created_at`, `decided_at` | Read: the student's own row, and the teacher. Add: a student who confirmed, while the shared photo is up. Decide: the teacher, while the pick waits |
+| `my_number_claim` (view) | `number`, `status`, `contested` | Read: the student's own pick |
+| `attendance_overrides` | `lesson_id` and `student_id` (key), `present`, `decided_at` | Read and write: the teacher of the lesson, for students of its course |
+| `attendance_status` (view) | One row per student and lesson: `attendance`, `decided_by`, `confirmed`, the pick | Closed to the page |
+| `attendance_sheet` (view) | One row per student, with the flag | Read: the teacher |
+| `my_attendance` (view) | `attendance`, `decided_by`, `confirmed` | Read: the student's own rows |
 | `push_subscriptions` | `student_id`, `endpoint`, `p256dh`, `auth` | The server only |
+| File store `class-photos` | The shared photo, a JPEG of up to 10 MB | Read: the teacher, and a student who confirmed while the photo is up |
 
-`result` is one of `present`, `review`, `not_found` or `conflict`.
+**Values.**
+- `attendance` is one of `present`, `absent`, `pending`, `confirmed`, `waiting` or `no_photo`.
+- `decided_by` is one of `confirmation`, `photo_number` or `teacher`.
 
-The attendance sheet file has the columns ID number, name, attendance, how it was decided and a note for flagged students. Every cell is written as text, from right to left (ADR-6).
+**The calls.**
+- `POST /attendance/class` takes `{ lessonId, faceCount }`.
+- `POST /attendance/photos` takes a form with `lessonId`, `photoNos` (`[0]`), `numbers` (`[{ number, photoNo, faceNo, box }]`, one for every face) and one JPEG in `photos`.
+
+**The attendance sheet file** has the columns ID number, name, attendance, how it was decided and a note for flagged students. Every cell is written as text, from right to left (ADR-6).
 
 ## 4. Sequence diagrams for key flows
 
@@ -131,53 +142,73 @@ The teacher photographs the class:
 sequenceDiagram
     actor Teacher
     participant Engine as FaceEngine
+    participant Store as ClassPhotoStore
     participant Routes as AttendanceRoutes
     participant Service as AttendanceService
     participant Repo as AttendanceRepository
     participant Notify as NotificationService
-    Teacher->>+Engine: findFaces(photo) and makePrint(photo, face)
-    Engine-->>-Teacher: faces and face-prints
-    Teacher->>+Routes: POST /attendance/class
-    Routes->>+Service: startRound(lessonId, teacherId, photos)
-    Service->>+Repo: saveRound(lessonId, photos, expiresAt)
-    Repo-->>-Service: round
+    Teacher->>+Engine: findFaces(photo)
+    Engine-->>-Teacher: face boxes
+    Teacher->>+Routes: POST /attendance/class with the face count
+    Routes->>+Service: startRound(lessonId, teacherId, faceCount)
+    Service->>+Repo: saveRound(lessonId, faceCount)
+    Repo-->>-Service: round, ending in 4 minutes
     Service-)Notify: notifyCourse(lessonId)
     Service-->>-Routes: round
     Routes-->>-Teacher: 201, expiresAt
+    Teacher->>+Store: save(lessonId, photo and boxes)
+    Store-->>-Teacher: kept on this phone
 ```
 
-A student responds, with no further action:
+A student confirms, and the teacher's sheet updates:
 
 ```mermaid
 sequenceDiagram
     actor Student
-    participant Responder as AttendanceResponder
-    participant Store as FaceStore
+    participant Page as Student's page
+    participant DB as Database
+    participant Sheet as Teacher's page
+    Student->>+Page: presses "I was in the lesson"
+    Page->>+DB: adds a row to attendance_confirmations
+    Note over DB: the access rule checks the student, the course and the 4 minutes
+    DB-->>-Page: saved
+    Page-->>-Student: "You confirmed you were in the lesson"
+    DB-)Sheet: live update of the new confirmation
+    Sheet->>+DB: reads attendance_sheet and attendance_counts
+    DB-->>-Sheet: rows and counts
+```
+
+More students confirmed than there are faces:
+
+```mermaid
+sequenceDiagram
+    actor Teacher
+    participant Store as ClassPhotoStore
+    participant Numbered as NumberedPhoto
     participant Routes as AttendanceRoutes
     participant Service as AttendanceService
-    participant Cache as ClassFaceCache
-    participant Matcher as FaceMatcher
     participant Rules as AttendanceRules
     participant Repo as AttendanceRepository
-    Student->>+Responder: opens the site
-    Responder->>+Store: load()
-    Store-->>-Responder: face-print and hash
-    Responder->>+Routes: POST /attendance/response
-    Routes->>+Service: respond(lessonId, studentId, print, hash)
-    Service->>+Repo: findHash(studentId)
-    Repo-->>-Service: saved hash
-    Service->>+Cache: get(lessonId)
-    Cache-->>-Service: class faces
-    Service->>+Matcher: best(print, faces)
-    Matcher-->>-Service: match
-    Service->>+Rules: decide(hashFits, score, threshold)
-    Rules-->>-Service: matched
-    Service->>+Repo: recordMatch(lessonId, studentId, match)
-    Repo-->>-Service: present or conflict
-    Note over Service: overwrites the face-print with zeros
-    Service-->>-Routes: result
-    Routes-->>-Responder: 200, result
-    Responder-->>-Student: shows the result
+    participant Notify as NotificationService
+    actor Student
+    Teacher->>+Store: load(lessonId)
+    Store-->>-Teacher: photo and boxes
+    Teacher->>+Numbered: numberFaces(boxes) and drawNumbers(photo, numbers)
+    Numbered-->>-Teacher: photo with numbers
+    Teacher->>+Routes: POST /attendance/photos
+    Routes->>+Service: sharePhotos(lessonId, teacherId, files, numbers)
+    Service->>+Repo: confirmationCount(lessonId)
+    Repo-->>-Service: confirmations
+    Service->>+Rules: needsNumbers(confirmations, faceCount)
+    Rules-->>-Service: true
+    Service->>+Repo: saveSharedPhotos(lessonId, files, numbers, expiresAt)
+    Repo-->>-Service: saved
+    Service-)Notify: notifyPhotoShared(students who confirmed)
+    Service-->>-Routes: expiresAt
+    Routes-->>-Teacher: 201
+    Teacher->>Store: remove(lessonId)
+    Student->>Repo: adds a row to number_claims, through the database's access rule
+    Teacher->>Repo: approves or rejects a pick that waits
 ```
 
 The teacher downloads the sheet, which is written in the browser:
@@ -200,29 +231,55 @@ sequenceDiagram
 
 | Case | What happens |
 |------|--------------|
-| No face in the registration photo (UC-06, 2a) | The page asks for another photo |
-| The student opted out (UC-01, 5a) | The phone sends nothing, and the student can request row and seat at once |
-| The student sent nothing within the hour (UC-01, 4a) | The result is `no_response`, and a response after the hour is refused with `round_closed` |
-| The hash does not fit, no match, or two students on one face (UC-01, 6a to 6c) | By the order in section 2 |
-| A second response, or no network | A second response returns the saved result. With no network, the page tries again the next time it opens within the hour |
-| A row-and-seat request (UC-01, 7a) | One request per student per lesson, and a rejected request stays rejected |
+| No photo in the lesson (UC-01, 1a) | No student can confirm, and the teacher marks attendance by hand |
+| The teacher leaves the page while the photo is processed (UC-01, 2a) | The work goes on in the background, and a short message shows when it ends |
+| A second photo, a photo outside the lesson, or a face count that is not a whole number from 0 to 500 | Refused with `round_exists`, `outside_lesson` or `bad_count` |
+| A confirmation after the 4 minutes, a second one, one for another student, or from another course (UC-01, 4a) | The database's access rule refuses it |
+| A share within the 4 minutes, with no need, a second time, or with numbers that miss a face | Refused with `round_open`, `no_need`, `already_shared` or `bad_numbers` |
+| The photo is not on this phone | The tab says that the photo can be shared only from the phone that took it |
+| Two picks of one number, or "not in the photo" (UC-01, 6c) | Both wait for the teacher. Approving one pick of a number rejects the others, and the rejected student is flagged |
+| No pick within 24 hours (UC-01, 6d) | The result is `absent` once the photo is deleted |
+| No network when confirming | The page says the confirmation was not sent, and the student can press again within the 4 minutes |
 
 ## 6. Configuration and performance budget
 
-Match threshold 0.36 (ADR-1), 60 minutes to respond, 1 to 3 photos in a round and a map of the hall of 15 rows by 20 seats.
+- **4 minutes** to confirm, set in the database function `start_attendance_round`.
+- **24 hours** for a shared photo (`SHARE_HOURS`).
+- **One photo** in a lesson (`MAX_PHOTOS`), with up to 500 faces (`MAX_FACES`).
+- **A shared photo of up to 10 MB.**
+- **The server looks for expired photos every 10 minutes.** While a pick or a share waits, the student's page asks again every 30 s.
 
-A second database job clears the run history once a day, so that it does not fill the free database.
-
-Budget: a response within 2 s in 95% of cases (NFR-03), and 2 minutes per photo to find the faces (NFR-04).
+Budget: a confirmation within 2 s in 95% of cases (NFR-03), and 2 minutes to find the faces in a photo of 50 faces (NFR-04).
 
 ## 7. Alternatives considered and trade-offs
 
-- **A database job against a timer on our server:** the free server sleeps, and a timer would be lost.
-- **A database function against checking and then writing:** two responses at the same moment could both get `present`.
-- **A view over results and requests against rewriting the result:** results stay written only by the server.
+- **Counting faces against recognising each face (ADR-10):** in a real hall, recognition marked a student present on another person's face.
+- **One photo against up to three:** with no recognition, a person in two photos would be counted twice.
+- **Confirming straight to the database against a call to our server:**
+  - The free server sleeps.
+  - The access rule already checks the student, the course and the 4 minutes.
+- **A view that works out the result against stored results:**
+  - The rules sit in one place.
+  - A pick, a decision or the end of the 4 minutes changes the result with no job.
+- **Sharing from the phone that took the photo against uploading it at once:** the photo reaches the server only when it is needed.
 
 ## 8. Testing and rollout plan
 
-- **Unit tests:** `FaceMatcher`, `AttendanceRules`, `ClassFaceCache` and `AttendanceService` with a fake repository.
-- **On the database:** `record_attendance_match` with two students on one face, and the job that deletes face-prints.
-- **Rollout:** built first, end to end.
+- **Unit tests:**
+  - `AttendanceRules` and `AttendanceService`, with a fake repository.
+  - In the browser: the numbers, the count sentences, the pick sentences and the sheet cells.
+- **On the database:**
+  - Who may confirm and when.
+  - Every result of the sheet.
+  - The rules of sharing, the picks and the teacher's decision on them.
+  - The teacher's own change.
+  - Deleting a shared photo.
+- **In the browser:**
+  - Photographing the class.
+  - Confirming.
+  - The live sheet.
+  - More confirmations than faces, with two students on one number.
+  - Sharing only from the phone that took the photo.
+  - The teacher's change.
+  - The download.
+- **Rollout:** the database change deletes the tables of face recognition. It runs on the live database only after the team approves.

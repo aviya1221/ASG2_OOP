@@ -311,7 +311,7 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
   - [x] Documents: use cases
   - [x] Documents: tools report (a decision in place of ADR-1)
   - [ ] Documents: SDD
-  - [ ] Documents: EDD-Attendance
+  - [x] Documents: EDD-Attendance
   - [ ] Documents: STD
 - [ ] Unit tests for the core classes (per the STP, step 8)
 - [x] Test automation: GitHub Actions runs the type check and the unit, integration and browser tests on every push
