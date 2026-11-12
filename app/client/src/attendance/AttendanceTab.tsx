@@ -254,6 +254,7 @@ const SHARE_ERRORS: Record<string, string> = {
 };
 
 function countText(count: FaceCount): string {
+  if (count.identified === 0) return `בתמונות נמצאו ${count.total} פרצופים, ואף אחד מהם לא שייך לסטודנט שזוהה.`;
   const identified = count.identified === 1 ? "אחד מהם שייך לסטודנט שזוהה" : `${count.identified} שייכים לסטודנטים שזוהו`;
   const unknown = count.unknown === 1 ? "ופרצוף אחד לא זוהה" : `ו־${count.unknown} לא זוהו`;
   return `בתמונות נמצאו ${count.total} פרצופים. ${identified}, ${unknown}.`;
