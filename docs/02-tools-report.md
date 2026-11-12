@@ -520,7 +520,7 @@ The need comes from the [forum decisions](features/F2-lesson-forum-strategy.md) 
   - The feature depends on an outside service and is not open source. It stays behind the `LlmClient` interface, so the provider can be replaced and the pilot can fall back to `FakeLlmClient`.
   - The transcript and the summary of a 10-minute recording take about 76,000 tokens, and the review adds to that.
   - The server has to extract the sound from the video for the fallback.
-  - The Gemini SDK already retries overload errors, but the feature still needs a second model for when Gemini stays overloaded (R7).
+  - The server sends a request once more after an overload error, but the feature still needs a second model for when Gemini stays overloaded (R7).
   - The server deletes the recording, here and at Google, once the summary is ready.
 
 ### ADR-3: Database, sign-in, files and live updates

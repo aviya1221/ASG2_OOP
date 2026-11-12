@@ -14,12 +14,8 @@ export interface GeminiConfig {
   embeddingModel: string;
   /** Length of each embedding vector; 768 is one of the sizes Google recommends. */
   embeddingDimensions: number;
-  /**
-   * Whether Google keeps each interaction (1 day on the free tier, 55 days on
-   * paid). Off by default: we send student work and never continue a
-   * conversation on Google's side.
-   */
-  storeInteractions: boolean;
+  /** How long to wait before sending a request again after a busy answer from Google. */
+  busyRetryDelayMs: number;
   /** How long `uploadFile` waits for Google to finish processing a file (videos take a while). */
   fileReadyTimeoutMs: number;
   /** How often `uploadFile` checks whether the file is ready. */
@@ -34,7 +30,7 @@ export const GEMINI_DEFAULTS = {
   /** Google's recommended embedding model (multimodal). */
   embeddingModel: "gemini-embedding-2",
   embeddingDimensions: 768,
-  storeInteractions: false,
+  busyRetryDelayMs: 5_000,
   fileReadyTimeoutMs: 5 * 60_000,
   filePollIntervalMs: 2_000,
 } as const satisfies Omit<GeminiConfig, "apiKey">;

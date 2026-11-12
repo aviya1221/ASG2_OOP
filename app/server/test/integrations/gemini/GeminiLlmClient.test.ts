@@ -11,19 +11,18 @@ import { LlmError, type UploadedFile } from "../../../src/llm/index.ts";
 
 const CONFIG: GeminiConfig = { ...GEMINI_DEFAULTS, apiKey: "test-key" };
 
-/** What a finished interaction looks like (only the fields the adapter reads). */
+/** What a finished answer looks like (only the fields the adapter reads). */
 function completed(text: string) {
   return {
-    id: "interaction-1",
-    status: "completed",
-    model: "gemini-3.6-flash",
-    output_text: text,
-    usage: { total_input_tokens: 12, total_output_tokens: 5, total_tokens: 17 },
+    text,
+    candidates: [{ finishReason: "STOP" }],
+    modelVersion: "gemini-3.6-flash",
+    usageMetadata: { promptTokenCount: 12, candidatesTokenCount: 3, thoughtsTokenCount: 2, totalTokenCount: 17 },
   };
 }
 
 type Handlers = {
-  create?: (params: any) => unknown;
+  generateContent?: (params: any) => unknown;
   upload?: (params: any) => unknown;
   get?: (params: any) => unknown;
   delete?: (params: any) => unknown;
@@ -32,19 +31,19 @@ type Handlers = {
 
 /** A stand-in for the Google SDK that records every call and never touches the network. */
 function fakeSdk(handlers: Handlers = {}) {
-  const calls: Record<keyof Handlers, any[]> = { create: [], upload: [], get: [], delete: [], embedContent: [] };
+  const calls: Record<keyof Handlers, any[]> = { generateContent: [], upload: [], get: [], delete: [], embedContent: [] };
   const call = (name: keyof Handlers, fallback: (params: any) => unknown) => async (params: any) => {
     calls[name].push(params);
     return (handlers[name] ?? fallback)(params);
   };
   const sdk = {
-    interactions: { create: call("create", () => completed("hello")) },
     files: {
       upload: call("upload", () => ({ name: "files/1", uri: "https://files/1", mimeType: "video/mp4", state: FileState.ACTIVE })),
       get: call("get", () => ({ name: "files/1", uri: "https://files/1", state: FileState.ACTIVE })),
       delete: call("delete", () => ({})),
     },
     models: {
+      generateContent: call("generateContent", () => completed("hello")),
       embedContent: call("embedContent", (params) => ({
         embeddings: params.contents.map((_: unknown, i: number) => ({ values: [i + 1, 0] })),
       })),
@@ -60,11 +59,16 @@ function apiError(status: number): Error {
 const noWait = async () => {};
 
 describe("GeminiLlmClient.generateText", () => {
-  it("sends the prompt to the configured model without storing it, and maps the answer", async () => {
+  it("sends the prompt to the configured model as one turn of the user, and maps the answer", async () => {
     const { sdk, calls } = fakeSdk();
     const result = await new GeminiLlmClient(CONFIG, { sdk }).generateText({ prompt: "Summarise the lesson" });
 
-    assert.deepEqual(calls.create[0], { model: "gemini-3.6-flash", input: "Summarise the lesson", store: false });
+    assert.deepEqual(calls.generateContent[0], {
+      model: "gemini-3.6-flash",
+      contents: [{ role: "user", parts: [{ text: "Summarise the lesson" }] }],
+      config: {},
+    });
+    // The thinking tokens count as output.
     assert.deepEqual(result, {
       text: "hello",
       model: "gemini-3.6-flash",
@@ -84,13 +88,16 @@ describe("GeminiLlmClient.generateText", () => {
       attachments: [{ mimeType: "application/pdf", data: new Uint8Array([1, 2, 3]) }, { file: video }],
     });
 
-    const params = calls.create[0];
-    assert.equal(params.system_instruction, "You are a fair teaching assistant");
-    assert.deepEqual(params.generation_config, { max_output_tokens: 400, thinking_level: "low" });
-    assert.deepEqual(params.input, [
-      { type: "document", data: "AQID", mime_type: "application/pdf" },
-      { type: "video", uri: "https://files/9", mime_type: "video/mp4" },
-      { type: "text", text: "Review this" },
+    const params = calls.generateContent[0];
+    assert.deepEqual(params.config, {
+      systemInstruction: "You are a fair teaching assistant",
+      maxOutputTokens: 400,
+      thinkingConfig: { thinkingLevel: "LOW" },
+    });
+    assert.deepEqual(params.contents[0].parts, [
+      { inlineData: { data: "AQID", mimeType: "application/pdf" } },
+      { fileData: { fileUri: "https://files/9", mimeType: "video/mp4" } },
+      { text: "Review this" },
     ]);
   });
 
@@ -100,36 +107,81 @@ describe("GeminiLlmClient.generateText", () => {
     await client.generateText({ prompt: "Review this", seed: 20261109 });
     await client.generateText({ prompt: "Review this" });
 
-    assert.deepEqual(calls.create[0].generation_config, { seed: 20261109 });
-    assert.equal(calls.create[1].generation_config, undefined);
+    assert.deepEqual(calls.generateContent[0].config, { seed: 20261109 });
+    assert.deepEqual(calls.generateContent[1].config, {});
   });
 
-  it("throws 'incomplete' when the interaction did not finish", async () => {
-    const { sdk } = fakeSdk({ create: () => ({ ...completed("half an ans"), status: "incomplete" }) });
+  it("throws 'incomplete' when the model stopped early", async () => {
+    const { sdk } = fakeSdk({
+      generateContent: () => ({ ...completed("half an ans"), candidates: [{ finishReason: "MAX_TOKENS" }] }),
+    });
     await assert.rejects(new GeminiLlmClient(CONFIG, { sdk }).generateText({ prompt: "x" }), {
       name: "LlmError",
       kind: "incomplete",
+      message: /MAX_TOKENS/,
+    });
+  });
+
+  it("throws 'incomplete' when Google blocked the request and gave no answer", async () => {
+    const { sdk } = fakeSdk({ generateContent: () => ({ promptFeedback: { blockReason: "SAFETY" } }) });
+    await assert.rejects(new GeminiLlmClient(CONFIG, { sdk }).generateText({ prompt: "x" }), {
+      kind: "incomplete",
+      message: /blocked: SAFETY/,
     });
   });
 
   it("throws 'bad-output' on an empty answer", async () => {
-    const { sdk } = fakeSdk({ create: () => completed("   ") });
+    const { sdk } = fakeSdk({ generateContent: () => completed("   ") });
     await assert.rejects(new GeminiLlmClient(CONFIG, { sdk }).generateText({ prompt: "x" }), { kind: "bad-output" });
   });
 
-  it("turns SDK errors into LlmError (429 = rate limit, worth retrying later)", async () => {
-    const { sdk } = fakeSdk({
-      create: () => {
+  it("turns SDK errors into LlmError (429 = rate limit, worth retrying later) and does not send again at once", async () => {
+    const { sdk, calls } = fakeSdk({
+      generateContent: () => {
         throw apiError(429);
       },
     });
-    await assert.rejects(new GeminiLlmClient(CONFIG, { sdk }).generateText({ prompt: "x" }), (error: unknown) => {
+    await assert.rejects(new GeminiLlmClient(CONFIG, { sdk, sleep: noWait }).generateText({ prompt: "x" }), (error: unknown) => {
       assert.ok(error instanceof LlmError);
       assert.equal(error.kind, "rate-limit");
       assert.equal(error.status, 429);
       assert.equal(error.retryable, true);
       return true;
     });
+    assert.equal(calls.generateContent.length, 1);
+  });
+
+  it("sends the request once more after a busy answer (503), after the configured wait", async () => {
+    let attempts = 0;
+    const waits: number[] = [];
+    const { sdk, calls } = fakeSdk({
+      generateContent: () => {
+        attempts += 1;
+        if (attempts === 1) throw apiError(503);
+        return completed("second time");
+      },
+    });
+    const sleep = async (ms: number) => {
+      waits.push(ms);
+    };
+    const result = await new GeminiLlmClient(CONFIG, { sdk, sleep }).generateText({ prompt: "x" });
+
+    assert.equal(result.text, "second time");
+    assert.equal(calls.generateContent.length, 2);
+    assert.deepEqual(waits, [GEMINI_DEFAULTS.busyRetryDelayMs]);
+  });
+
+  it("gives up after a second busy answer", async () => {
+    const { sdk, calls } = fakeSdk({
+      generateContent: () => {
+        throw apiError(503);
+      },
+    });
+    await assert.rejects(new GeminiLlmClient(CONFIG, { sdk, sleep: noWait }).generateText({ prompt: "x" }), {
+      kind: "unavailable",
+      status: 503,
+    });
+    assert.equal(calls.generateContent.length, 2);
   });
 });
 
@@ -137,25 +189,25 @@ describe("GeminiLlmClient.generateJson", () => {
   const schema = { type: "object", properties: { score: { type: "integer" } }, required: ["score"] };
 
   it("asks for JSON that follows the schema and parses the answer", async () => {
-    const { sdk, calls } = fakeSdk({ create: () => completed('{"score": 87}') });
+    const { sdk, calls } = fakeSdk({ generateContent: () => completed('{"score": 87}') });
     const result = await new GeminiLlmClient(CONFIG, { sdk }).generateJson<{ score: number }>({
       prompt: "Grade it",
       schema,
     });
 
-    assert.deepEqual(calls.create[0].response_format, { type: "text", mime_type: "application/json", schema });
+    assert.deepEqual(calls.generateContent[0].config, { responseMimeType: "application/json", responseJsonSchema: schema });
     assert.deepEqual(result.data, { score: 87 });
   });
 
   it("throws 'bad-output' when the answer is not JSON", async () => {
-    const { sdk } = fakeSdk({ create: () => completed("Sure! Here is the grade: 87") });
+    const { sdk } = fakeSdk({ generateContent: () => completed("Sure! Here is the grade: 87") });
     await assert.rejects(new GeminiLlmClient(CONFIG, { sdk }).generateJson({ prompt: "x", schema }), {
       kind: "bad-output",
     });
   });
 
   it("runs the feature's own check and reports a failure as 'bad-output'", async () => {
-    const { sdk } = fakeSdk({ create: () => completed('{"score": 140}') });
+    const { sdk } = fakeSdk({ generateContent: () => completed('{"score": 140}') });
     const validate = (value: unknown) => {
       const { score } = value as { score: number };
       if (score > 100) throw new Error("score above 100");

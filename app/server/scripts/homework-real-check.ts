@@ -15,12 +15,11 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { GoogleGenAI } from "@google/genai";
 import { loadConfig } from "../src/config/env.ts";
 import { GuideGenerator } from "../src/homework/GuideGenerator.ts";
 import { hasMixedScript, SolutionReviewer } from "../src/homework/SolutionReviewer.ts";
 import { REVIEW_SEED, type ReviewGuide, type SectionMark } from "../src/homework/types.ts";
-import { GeminiLlmClient, type GeminiSdk } from "../src/integrations/gemini/index.ts";
+import { GeminiLlmClient } from "../src/integrations/gemini/index.ts";
 import { LlmError } from "../src/llm/index.ts";
 
 const SPIKE = fileURLToPath(new URL("../../spikes/homework-review/", import.meta.url));
@@ -61,15 +60,8 @@ interface Run {
 const config = loadConfig();
 if (config.llm.provider !== "gemini") throw new Error("Real calls need LLM_PROVIDER=gemini (the default) and GEMINI_API_KEY.");
 const gemini = config.llm.gemini;
-const real = new GoogleGenAI({ apiKey: gemini.apiKey });
-// The text model allows 20 requests a day, so a refused guide is not sent again by the SDK.
-const guideLlm = new GeminiLlmClient(gemini, {
-  sdk: {
-    files: real.files,
-    models: real.models,
-    interactions: { create: (params: unknown) => real.interactions.create(params as never, { maxRetries: 0 }) },
-  } as unknown as GeminiSdk,
-});
+// The text model allows 20 requests a day. The adapter sends a guide again only after a busy answer.
+const guideLlm = new GeminiLlmClient(gemini);
 const reviewLlm = new GeminiLlmClient({ ...gemini, textModel: gemini.reviewModel });
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));

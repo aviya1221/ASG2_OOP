@@ -3,7 +3,7 @@ import { describe, it } from "node:test";
 import { toLlmError } from "../../../src/integrations/gemini/index.ts";
 import { LlmError } from "../../../src/llm/index.ts";
 
-/** Mimics the SDK's two error families: `status` (files, embeddings) and `statusCode` (interactions). */
+/** Mimics the SDK's error classes, which keep the HTTP status in `status` or in `statusCode`. */
 function withStatus(field: "status" | "statusCode", value: number): Error {
   return Object.assign(new Error("boom"), { [field]: value });
 }

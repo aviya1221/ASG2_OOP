@@ -9,20 +9,18 @@ describe("loadConfig: LLM settings", () => {
     assert.deepEqual(config.llm, { provider: "gemini", gemini: { ...GEMINI_DEFAULTS, apiKey: "abc" } });
   });
 
-  it("reads the optional model names and the store flag", () => {
+  it("reads the optional model names", () => {
     const config = loadConfig({
       GEMINI_API_KEY: "abc",
       GEMINI_TEXT_MODEL: "gemini-3.8-flash",
       GEMINI_REVIEW_MODEL: "gemini-3.8-flash-lite",
       GEMINI_EMBEDDING_MODEL: "gemini-embedding-001",
-      GEMINI_STORE_INTERACTIONS: "TRUE",
     });
     assert.equal(config.llm.provider, "gemini");
     if (config.llm.provider !== "gemini") return;
     assert.equal(config.llm.gemini.textModel, "gemini-3.8-flash");
     assert.equal(config.llm.gemini.reviewModel, "gemini-3.8-flash-lite");
     assert.equal(config.llm.gemini.embeddingModel, "gemini-embedding-001");
-    assert.equal(config.llm.gemini.storeInteractions, true);
   });
 
   it("needs no key for the fake provider", () => {
@@ -36,13 +34,6 @@ describe("loadConfig: LLM settings", () => {
 
   it("rejects an unknown provider", () => {
     assert.throws(() => loadConfig({ LLM_PROVIDER: "openai" }), { name: "ConfigError", message: /LLM_PROVIDER/ });
-  });
-
-  it("rejects a store flag that is not true or false", () => {
-    assert.throws(() => loadConfig({ GEMINI_API_KEY: "abc", GEMINI_STORE_INTERACTIONS: "yes" }), {
-      name: "ConfigError",
-      message: /GEMINI_STORE_INTERACTIONS/,
-    });
   });
 });
 

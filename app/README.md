@@ -102,7 +102,7 @@ app/server/
     integrations/
       supabase/             checks sign-in tokens with Supabase
       gemini/               the only folder that imports @google/genai
-        GeminiLlmClient.ts  implements LlmClient (Interactions API, Files API, embeddings)
+        GeminiLlmClient.ts  implements LlmClient (generateContent, Files API, embeddings)
         GeminiConfig.ts     settings and default models
         toLlmError.ts       SDK errors -> LlmError
   scripts/gemini-smoke.ts   real end-to-end call (evidence for the step 2 spike)
@@ -156,19 +156,19 @@ In unit tests the same class gets `new FakeLlmClient()`, so it is tested without
 
 | Our need | Gemini feature | Google's guide |
 |----------|----------------|----------------|
-| Review text, summaries | Interactions API with a system instruction | [Text generation](https://aistudio.google.com/docs/text-generation) |
-| Rubric scores the app can store | Structured output: `response_format` with a JSON schema | [Structured output](https://aistudio.google.com/docs/structured-output) |
-| A homework PDF or photo | File sent inline with the prompt | [Interactions](https://aistudio.google.com/docs/interactions) |
+| Review text, summaries | `generateContent` with a system instruction | [Text generation](https://aistudio.google.com/docs/text-generation) |
+| Rubric scores the app can store | Structured output: `responseMimeType` with a JSON schema (`responseJsonSchema`) | [Structured output](https://aistudio.google.com/docs/structured-output) |
+| A homework PDF or photo | File sent inline with the prompt | [Text generation](https://aistudio.google.com/docs/text-generation) |
 | A recorded class video | Files API (up to 2 GB per file, deleted after 48 hours) | [Files API](https://aistudio.google.com/docs/files) |
 | Comparing homework between students | `gemini-embedding-2` vectors + cosine similarity | [Embeddings](https://aistudio.google.com/docs/embeddings) |
 
 ### Decisions
 
-- **Interactions API, not `generateContent`.** Google calls `generateContent` legacy (still supported) and recommends the Interactions API for all new projects; new models launch there.
-- **`store: false`.** Otherwise Google keeps every interaction (1 day on the free tier, 55 days on paid). We send student work and never continue a conversation on Google's side.
+- **`generateContent`, not the Interactions API (changed on 2026-11-12).** Google recommends the Interactions API for new projects, and we started there. From 2026-11-11 it answered "high demand" (503) for `gemini-3.6-flash` on every request, while `generateContent` on the same model answered at once, and the SDK's own retry of an interaction broke with "TypeError: unusable". `generateContent` is still supported, and nothing outside the adapter changed.
+- **No conversation on Google's side.** Each request stands alone; we never continue a conversation there.
 - **Default model `gemini-3.6-flash`**, the current stable Flash model. The `gemini-2.5-*` models are deprecated and re-routed on 2026-12-01. Change it with `GEMINI_TEXT_MODEL`, no code change.
 - **SDK pinned to the 2.x line.** Version 3.0.0 came out on 2026-11-06 and switches the default API version to `v1`; upgrade once we have checked it.
-- **No retry code of our own.** The SDK already retries 408, 429 and 5xx with back-off, so an error that reaches us is final; `LlmError.retryable` tells the UI whether to offer "try again later".
+- **One retry of our own.** The SDK does not retry `generateContent`. After a busy answer (5xx or no connection) the adapter waits 5 s and sends the request once more. Any other error, or a second busy answer, reaches the feature, and `LlmError.retryable` tells the UI whether to offer "try again later".
 - **The API key stays on the server.** The phone never calls Gemini directly.
 
 ### Limits to keep in mind
@@ -189,7 +189,6 @@ Copy [server/.env.example](server/.env.example) to `server/.env`. The `.env` fil
 | `GEMINI_TEXT_MODEL` | no | `gemini-3.6-flash` | Model for text and JSON answers, and for the review guides of homework |
 | `GEMINI_REVIEW_MODEL` | no | `gemini-3.5-flash-lite` | Model that reviews homework solutions (ADR-9) |
 | `GEMINI_EMBEDDING_MODEL` | no | `gemini-embedding-2` | Model for comparing texts |
-| `GEMINI_STORE_INTERACTIONS` | no | `false` | Let Google keep interactions |
 | `PORT` | no | `8787` | The port of the web server |
 | `WEB_ORIGIN` | to run the server | | The addresses of the web client, separated by commas |
 | `SUPABASE_URL` | to run the server | | The address of the Supabase project |

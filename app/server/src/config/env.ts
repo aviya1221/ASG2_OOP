@@ -83,7 +83,6 @@ function loadLlmSettings(env: Env): LlmSettings {
       textModel: read(env, "GEMINI_TEXT_MODEL") ?? GEMINI_DEFAULTS.textModel,
       reviewModel: read(env, "GEMINI_REVIEW_MODEL") ?? GEMINI_DEFAULTS.reviewModel,
       embeddingModel: read(env, "GEMINI_EMBEDDING_MODEL") ?? GEMINI_DEFAULTS.embeddingModel,
-      storeInteractions: readBoolean(env, "GEMINI_STORE_INTERACTIONS") ?? GEMINI_DEFAULTS.storeInteractions,
     },
   };
 }
@@ -92,12 +91,4 @@ function loadLlmSettings(env: Env): LlmSettings {
 function read(env: Env, name: string): string | undefined {
   const value = env[name]?.trim();
   return value ? value : undefined;
-}
-
-function readBoolean(env: Env, name: string): boolean | undefined {
-  const value = read(env, name)?.toLowerCase();
-  if (value === undefined) return undefined;
-  if (value === "true") return true;
-  if (value === "false") return false;
-  throw new ConfigError(`${name} must be "true" or "false", got "${value}"`);
 }

@@ -3,14 +3,13 @@ import { LlmError, type LlmErrorKind } from "../../llm/index.ts";
 /**
  * Translates any error thrown by the Google Gen AI SDK into our `LlmError`.
  *
- * The SDK has several error classes (one family for the Interactions API,
- * another for files and embeddings), and not all of them are exported.
+ * The SDK has several error classes, and not all of them are exported.
  * They do share two facts we can read safely: an HTTP status (`status` or
  * `statusCode`) and a class name for network problems. So we read those
  * instead of using `instanceof`.
  *
- * The SDK already retries 408, 429 and 5xx a few times with back-off, so an
- * error that reaches us has already been retried.
+ * The SDK does not retry `models.generateContent`; `GeminiLlmClient` sends it
+ * once more itself after a busy answer (`unavailable`).
  */
 export function toLlmError(error: unknown): LlmError {
   if (error instanceof LlmError) return error;

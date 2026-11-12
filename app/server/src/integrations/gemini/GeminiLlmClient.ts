@@ -1,4 +1,4 @@
-import { FileState, GoogleGenAI, type Interactions } from "@google/genai";
+import { FileState, FinishReason, GoogleGenAI, ThinkingLevel, type Content, type GenerateContentParameters, type GenerateContentResponseUsageMetadata, type Part } from "@google/genai";
 import {
   LlmError,
   parseJsonAnswer,
@@ -21,21 +21,26 @@ import { toLlmError } from "./toLlmError.ts";
  * they run with no network and no key.
  */
 export type GeminiSdk = {
-  interactions: Pick<GoogleGenAI["interactions"], "create">;
   files: Pick<GoogleGenAI["files"], "upload" | "get" | "delete">;
-  models: Pick<GoogleGenAI["models"], "embedContent">;
+  models: Pick<GoogleGenAI["models"], "generateContent" | "embedContent">;
 };
 
 export interface GeminiLlmClientDeps {
   /** Defaults to `new GoogleGenAI({ apiKey })`. */
   sdk?: GeminiSdk;
-  /** Waiting between file-status checks; replaced in tests so they do not really wait. */
+  /** Waiting between file-status checks and before a retry; replaced in tests so they do not really wait. */
   sleep?: (ms: number) => Promise<void>;
   /** Clock for the file-ready timeout; replaced in tests. */
   now?: () => number;
 }
 
-type CreateParams = Interactions.InteractionCreateParams.CreateModelInteractionParamsNonStreaming;
+/** Our effort levels in Google's words. */
+const THINKING_LEVEL = {
+  minimal: ThinkingLevel.MINIMAL,
+  low: ThinkingLevel.LOW,
+  medium: ThinkingLevel.MEDIUM,
+  high: ThinkingLevel.HIGH,
+} as const;
 
 /** Older embedding model that takes a task type and needs manual normalising (Google's embeddings page). */
 const LEGACY_EMBEDDING_MODEL = "gemini-embedding-001";
@@ -46,9 +51,13 @@ const EMBED_BATCH_SIZE = 100;
 /**
  * `LlmClient` backed by Google Gemini, following Google's documentation
  * (https://aistudio.google.com/docs, checked 2026-11-06):
- * - text and JSON answers use the Interactions API (`interactions.create`),
- *   which Google recommends for all new projects; JSON uses `response_format`
- *   with a JSON schema;
+ * - text and JSON answers use `models.generateContent`; JSON uses
+ *   `responseMimeType` with a JSON schema. We moved here from the Interactions API
+ *   on 2026-11-12: for days it answered "high demand" (503) for gemini-3.6-flash
+ *   while generateContent answered at once, and the SDK's own retry of an
+ *   interaction broke with "TypeError: unusable" (docs/left-for-later.md, item 25);
+ * - generateContent is not retried by the SDK, so we send it once more ourselves
+ *   after a busy answer (`unavailable`), after `busyRetryDelayMs`;
  * - large files go through the Files API (`files.upload`), and we wait until
  *   the file is ACTIVE before using it;
  * - embeddings use `models.embedContent`, one Content object per text so we
@@ -73,12 +82,13 @@ export class GeminiLlmClient implements LlmClient {
   }
 
   async generateText(request: LlmRequest): Promise<LlmTextResult> {
-    return this.#interact(request);
+    return this.#generate(request);
   }
 
   async generateJson<T = unknown>(request: LlmJsonRequest<T>): Promise<LlmJsonResult<T>> {
-    const { text, model, usage } = await this.#interact(request, {
-      response_format: { type: "text", mime_type: "application/json", schema: request.schema },
+    const { text, model, usage } = await this.#generate(request, {
+      responseMimeType: "application/json",
+      responseJsonSchema: request.schema,
     });
     return { data: parseJsonAnswer(text, request.validate), model, usage };
   }
@@ -170,72 +180,75 @@ export class GeminiLlmClient implements LlmClient {
     return legacy && dimensions !== LEGACY_FULL_DIMENSIONS ? vectors.map(normalize) : vectors;
   }
 
-  /** Sends one interaction and checks that it really finished with a text answer. */
-  async #interact(request: LlmRequest, extra: Partial<CreateParams> = {}): Promise<LlmTextResult> {
-    const generationConfig = {
-      ...(request.maxOutputTokens !== undefined ? { max_output_tokens: request.maxOutputTokens } : {}),
-      ...(request.effort !== undefined ? { thinking_level: request.effort } : {}),
-      ...(request.seed !== undefined ? { seed: request.seed } : {}),
-    };
-    const params: CreateParams = {
+  /** Sends one request, once more after a busy answer, and checks that it really finished with a text answer. */
+  async #generate(request: LlmRequest, extra: GenerateContentParameters["config"] = {}): Promise<LlmTextResult> {
+    const params: GenerateContentParameters = {
       model: this.#config.textModel,
-      input: toInput(request),
-      store: this.#config.storeInteractions,
-      ...(request.instructions ? { system_instruction: request.instructions } : {}),
-      ...(Object.keys(generationConfig).length > 0 ? { generation_config: generationConfig } : {}),
-      ...extra,
+      contents: toContents(request),
+      config: {
+        ...(request.instructions ? { systemInstruction: request.instructions } : {}),
+        ...(request.maxOutputTokens !== undefined ? { maxOutputTokens: request.maxOutputTokens } : {}),
+        ...(request.effort !== undefined ? { thinkingConfig: { thinkingLevel: THINKING_LEVEL[request.effort] } } : {}),
+        ...(request.seed !== undefined ? { seed: request.seed } : {}),
+        ...extra,
+      },
     };
 
-    let interaction;
+    let response;
     try {
-      interaction = await this.#sdk.interactions.create(params);
+      response = await this.#sdk.models.generateContent(params);
     } catch (error) {
-      throw toLlmError(error);
+      const first = toLlmError(error);
+      if (first.kind !== "unavailable") throw first;
+      await this.#sleep(this.#config.busyRetryDelayMs);
+      try {
+        response = await this.#sdk.models.generateContent(params);
+      } catch (second) {
+        throw toLlmError(second);
+      }
     }
 
-    if (interaction.status !== "completed") {
-      throw new LlmError("incomplete", `Gemini stopped with status "${interaction.status}"`);
+    const finish = response.candidates?.[0]?.finishReason;
+    if (finish === undefined) {
+      const blocked = response.promptFeedback?.blockReason;
+      throw new LlmError("incomplete", `Gemini gave no answer${blocked ? ` (blocked: ${blocked})` : ""}`);
     }
-    const text = interaction.output_text ?? "";
+    if (finish !== FinishReason.STOP) {
+      throw new LlmError("incomplete", `Gemini stopped with reason "${finish}"`);
+    }
+    const text = response.text ?? "";
     if (text.trim() === "") {
       throw new LlmError("bad-output", "Gemini returned an empty answer");
     }
     return {
       text,
-      model: interaction.model ?? this.#config.textModel,
-      usage: toUsage(interaction.usage),
+      model: response.modelVersion ?? this.#config.textModel,
+      usage: toUsage(response.usageMetadata),
     };
   }
 }
 
 /** Files first, then the prompt: Google's tip for prompts that include media. */
-function toInput(request: LlmRequest): CreateParams["input"] {
-  const attachments = request.attachments ?? [];
-  if (attachments.length === 0) return request.prompt;
-  return [...attachments.map(toContent), { type: "text", text: request.prompt }];
+function toContents(request: LlmRequest): Content[] {
+  const files = (request.attachments ?? []).map(toPart);
+  return [{ role: "user", parts: [...files, { text: request.prompt }] }];
 }
 
-function toContent(attachment: Attachment): Interactions.Content {
+function toPart(attachment: Attachment): Part {
   if ("file" in attachment) {
     const { uri, mimeType } = attachment.file;
-    return { type: contentType(mimeType), uri, mime_type: mimeType } as Interactions.Content;
+    return { fileData: { fileUri: uri, mimeType } };
   }
   const data = Buffer.from(attachment.data.buffer, attachment.data.byteOffset, attachment.data.byteLength).toString("base64");
-  return { type: contentType(attachment.mimeType), data, mime_type: attachment.mimeType } as Interactions.Content;
+  return { inlineData: { data, mimeType: attachment.mimeType } };
 }
 
-function contentType(mimeType: string): "image" | "video" | "audio" | "document" {
-  if (mimeType.startsWith("image/")) return "image";
-  if (mimeType.startsWith("video/")) return "video";
-  if (mimeType.startsWith("audio/")) return "audio";
-  return "document";
-}
-
-function toUsage(usage: { total_input_tokens?: number; total_output_tokens?: number; total_tokens?: number } | undefined): LlmUsage | undefined {
+/** The thinking tokens count as output, as they are billed. */
+function toUsage(usage: GenerateContentResponseUsageMetadata | undefined): LlmUsage | undefined {
   if (!usage) return undefined;
-  const inputTokens = usage.total_input_tokens ?? 0;
-  const outputTokens = usage.total_output_tokens ?? 0;
-  return { inputTokens, outputTokens, totalTokens: usage.total_tokens ?? inputTokens + outputTokens };
+  const inputTokens = usage.promptTokenCount ?? 0;
+  const outputTokens = (usage.candidatesTokenCount ?? 0) + (usage.thoughtsTokenCount ?? 0);
+  return { inputTokens, outputTokens, totalTokens: usage.totalTokenCount ?? inputTokens + outputTokens };
 }
 
 function normalize(vector: number[]): number[] {

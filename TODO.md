@@ -230,6 +230,7 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
   - [x] Unit tests with a fake SDK (no network, no API key)
   - [x] Smoke script: one real call with our key (evidence for the step 2 spike)
   - [x] Document the LLM layer in `app/README.md` (structure, settings, reused libraries)
+  - [x] Send text and JSON with `generateContent`, and once more after a busy answer ([left for later](docs/left-for-later.md), item 25)
 - [ ] Only if we find we need it: Sign in with Google. Removed for now to keep the product simple; the server check and the Google Cloud setup guide can be restored from commits `173a8e6` and `3222230`.
 - [x] Base of the product
   - [x] Local database (Supabase in Docker)
