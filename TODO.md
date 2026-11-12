@@ -284,6 +284,15 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
   - [x] Polls at any time
   - [x] A one-page summary, shown to the class only after the teacher publishes it
   - [x] A weekly timetable as the first screen of teachers and students
+- [ ] Attendance: students who were not recognised pick their number in the class photo (2026-11-12, replaces row and seat)
+  - [ ] Database: where each student was seen, shared photos, numbers and picks; row and seat removed
+  - [ ] Server: record where each matched student was seen in every photo
+  - [ ] Server: receive the shared photo, notify who may pick, delete it after 24 hours
+  - [ ] Client: the teacher's phone keeps the class photos until the end of the hour
+  - [ ] Client: the teacher sees the face count and shares the photo with numbers
+  - [ ] Client: the student picks a number and the teacher approves
+  - [ ] Tests: picking a number instead of row and seat
+  - [ ] Documents: decisions note, SRS, use cases, SDD, EDD and STD (after the code)
 - [ ] Unit tests for the core classes (per the STP, step 8)
 - [x] Test automation: GitHub Actions runs the type check and the unit, integration and browser tests on every push
 - [x] Test IDs in the test names, and a script that writes Passed or Failed into the traceability matrix
