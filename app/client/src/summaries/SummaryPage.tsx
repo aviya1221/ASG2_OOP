@@ -98,7 +98,7 @@ export function SummaryPage() {
           ) : (
             <p>אין עדיין סיכום לשיעור הזה. הוא יופיע כאן אחרי שהמרצה יפרסם אותו.</p>
           ))}
-        {inProgress && <p role="status">הסיכום בהכנה. הוא יופיע כאן כשיהיה מוכן.</p>}
+        {inProgress && <p role="status">ההקלטה עלתה, והסיכום בהכנה. הוא יהיה מוכן בעוד כמה דקות, ואפשר לעבור לעמוד אחר בינתיים.</p>}
         {failed && (
           <p className="problem" role="alert">
             יצירת הסיכום נכשלה.{isTeacher ? " אפשר להעלות את ההקלטה שוב." : ""}
@@ -249,7 +249,7 @@ function RecordingUpload({ lessonId, again }: { lessonId: string; again: boolean
         key: lessonId,
         scope: lessonId,
         label: "העלאת הקלטת השיעור",
-        doneText: "ההקלטה הועלתה, והסיכום בהכנה.",
+        doneText: "ההקלטה עלתה. הסיכום יהיה מוכן בעוד כמה דקות.",
         failText: "העלאת ההקלטה נכשלה.",
         link: `/lessons/${lessonId}/summary`,
         stopsOnClose: true,

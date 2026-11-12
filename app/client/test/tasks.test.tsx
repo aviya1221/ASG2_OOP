@@ -4,7 +4,7 @@ import { useState } from "react";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it, vi } from "vitest";
 import { BackgroundTasksProvider, samePlace, useEndedCount, useTask, useTasks, type TaskInfo } from "../src/tasks/BackgroundTasks.tsx";
-import { TaskIndicator, TaskMessages } from "../src/tasks/TaskNotices.tsx";
+import { TaskMessages } from "../src/tasks/TaskNotices.tsx";
 
 vi.mock("../src/lib/supabase.ts", () => ({ supabase: {} }));
 
@@ -48,7 +48,6 @@ function App({ work, at = "/lessons/L1/forum" }: { work: () => Promise<string>; 
   return (
     <MemoryRouter initialEntries={[at]}>
       <BackgroundTasksProvider>
-        <TaskIndicator />
         <button onClick={() => setShown(!shown)}>מעבר עמוד</button>
         {shown && <Screen work={work} />}
         <TaskMessages />
@@ -65,14 +64,12 @@ describe("BackgroundTasks", () => {
 
     await user.click(screen.getByRole("button", { name: "התחלה" }));
     expect(screen.getByText("מצב: running")).toBeVisible();
-    expect(screen.getByRole("button", { name: "פעולה ברקע" })).toBeVisible();
 
     await user.click(screen.getByRole("button", { name: "מעבר עמוד" }));
     expect(screen.queryByText(/מצב:/)).toBeNull();
     await act(async () => work.resolve("ok"));
 
     expect(screen.getByRole("status")).toHaveTextContent("המטלה פורסמה.");
-    expect(screen.queryByRole("button", { name: "פעולה ברקע" })).toBeNull();
     await user.click(screen.getByRole("button", { name: "מעבר עמוד" }));
     expect(screen.getByText("מצב: done")).toBeVisible();
     expect(screen.getByText("הסתיימו: 1")).toBeVisible();

@@ -198,7 +198,7 @@ test("TC-119 publishing goes on while the teacher moves to another tab, and its 
     await route.continue();
   });
   await page.getByRole("button", { name: "פרסום המטלה" }).click();
-  await expect(page.getByRole("button", { name: "פעולה ברקע" })).toBeVisible();
+  await expect(page.getByRole("status").getByText(/מכין את הנחיות הבדיקה מהמטלה/)).toBeVisible();
 
   const tabs = page.getByRole("navigation", { name: "לשוניות השיעור" });
   await tabs.getByRole("link", { name: "נוכחות" }).click();

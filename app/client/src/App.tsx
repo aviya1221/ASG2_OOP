@@ -7,7 +7,7 @@ import { TopBar } from "./layout/TopBar.tsx";
 import { LessonPage } from "./lessons/LessonPage.tsx";
 import { LessonsPage } from "./lessons/LessonsPage.tsx";
 import { SummaryPage } from "./summaries/SummaryPage.tsx";
-import { TaskIndicator, TaskMessages } from "./tasks/TaskNotices.tsx";
+import { TaskMessages } from "./tasks/TaskNotices.tsx";
 import { AdminPage } from "./timetable/AdminPage.tsx";
 
 export function App() {
@@ -22,9 +22,7 @@ export function App() {
   const { person } = session;
   return (
     <>
-      <TopBar person={person}>
-        <TaskIndicator />
-      </TopBar>
+      <TopBar person={person} />
       <Routes>
         <Route path="/lessons/:lessonId/summary" element={<SummaryPage />} />
         <Route path="/lessons/:lessonId/:tab?" element={<LessonPage />} />
