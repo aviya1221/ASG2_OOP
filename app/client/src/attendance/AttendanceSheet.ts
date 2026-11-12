@@ -3,9 +3,12 @@ import { supabase } from "../lib/supabase.ts";
 export interface SheetRow {
   idNumber: string;
   name: string;
-  attendance: string | null;
+  attendance: string;
   decidedBy: string | null;
-  /** The number the student picked in the shared class photo, and its state. */
+  confirmed: boolean;
+  /** The teacher set this result by hand. */
+  changedByTeacher: boolean;
+  /** The number the student picked in the shared class photo, or null for "I am not in the photo", and its state. */
   claimNumber: number | null;
   claimStatus: string | null;
   /** Another student's pick of the same number waits too. */
@@ -15,16 +18,17 @@ export interface SheetRow {
 
 export const RESULT_LABELS: Record<string, string> = {
   present: "נוכח",
-  review: "לבדיקה",
-  not_found: "לא נמצא",
-  conflict: "התנגשות",
-  no_response: "לא הגיב",
+  absent: "לא נוכח",
+  pending: "ממתין",
+  confirmed: "אישר",
+  waiting: "עוד לא אישר",
+  no_photo: "לא צולם",
 };
 
-const DECIDED_LABELS: Record<string, string> = { face: "זיהוי פנים", photo_number: "מספר בתמונה" };
-const FLAG_NOTE = "בחירה שנדחתה, או 3 בחירות ומעלה בקורס";
+const DECIDED_LABELS: Record<string, string> = { confirmation: "אישור עצמי", photo_number: "מספר בתמונה", teacher: "החלטת המרצה" };
+const FLAG_NOTE = "בחירת מספר שנדחתה בקורס";
 const HEADERS = ["תעודת זהות", "שם", "נוכחות", "איך הוחלט", "הערה"];
-const COLUMN_WIDTHS = [14, 24, 12, 14, 36];
+const COLUMN_WIDTHS = [14, 24, 12, 14, 24];
 
 export async function loadSheet(lessonId: string): Promise<SheetRow[]> {
   const { data } = await supabase.from("attendance_sheet").select("*").eq("lesson_id", lessonId).order("id_number");
@@ -33,6 +37,8 @@ export async function loadSheet(lessonId: string): Promise<SheetRow[]> {
     name: row.name,
     attendance: row.attendance,
     decidedBy: row.decided_by,
+    confirmed: row.confirmed,
+    changedByTeacher: row.changed_by_teacher,
     claimNumber: row.claim_number,
     claimStatus: row.claim_status,
     claimContested: row.claim_contested,
@@ -45,7 +51,7 @@ export function sheetCells(rows: SheetRow[]): string[][] {
   return rows.map((row) => [
     row.idNumber,
     row.name,
-    row.attendance ? (RESULT_LABELS[row.attendance] ?? row.attendance) : "",
+    RESULT_LABELS[row.attendance] ?? row.attendance,
     row.decidedBy ? (DECIDED_LABELS[row.decidedBy] ?? row.decidedBy) : "",
     row.flagged ? FLAG_NOTE : "",
   ]);

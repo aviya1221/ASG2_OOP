@@ -2,7 +2,8 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { respondToOpenRounds } from "../src/attendance/AttendanceResponder.ts";
 import { sheetCells, type SheetRow } from "../src/attendance/AttendanceSheet.ts";
 import { FaceStore, hashOfPrint } from "../src/attendance/FaceStore.ts";
-import { countFaces, numberUnknownFaces } from "../src/attendance/numberedPhoto.ts";
+import { countText, progressText } from "../src/attendance/attendanceText.ts";
+import { numberFaces } from "../src/attendance/numberedPhoto.ts";
 
 const mocks = vi.hoisted(() => ({ rounds: [] as { lesson_id: string }[], results: [] as { lesson_id: string }[], callServer: vi.fn() }));
 
@@ -81,38 +82,74 @@ describe("respondToOpenRounds", () => {
 });
 
 describe("sheetCells", () => {
-  const ROW: SheetRow = { idNumber: "012345678", name: "=דנה", attendance: "present", decidedBy: "photo_number", claimNumber: 32, claimStatus: "approved", claimContested: false, flagged: true };
+  const ROW: SheetRow = {
+    idNumber: "012345678",
+    name: "=דנה",
+    attendance: "present",
+    decidedBy: "photo_number",
+    confirmed: true,
+    changedByTeacher: false,
+    claimNumber: 32,
+    claimStatus: "pending",
+    claimContested: false,
+    flagged: true,
+  };
 
   it("TC-028 gives the columns of REQ-19 as text", () => {
     const [cells] = sheetCells([ROW]);
-    expect(cells).toEqual(["012345678", "=דנה", "נוכח", "מספר בתמונה", "בחירה שנדחתה, או 3 בחירות ומעלה בקורס"]);
+    expect(cells).toEqual(["012345678", "=דנה", "נוכח", "מספר בתמונה", "בחירת מספר שנדחתה בקורס"]);
   });
 
-  it("leaves a cell empty when there is no result yet", () => {
-    const [cells] = sheetCells([{ ...ROW, attendance: null, decidedBy: null, flagged: false }]);
-    expect(cells?.slice(2)).toEqual(["", "", ""]);
+  it("names every result and every way it was decided", () => {
+    const cells = sheetCells([
+      { ...ROW, attendance: "absent", decidedBy: null, flagged: false },
+      { ...ROW, attendance: "present", decidedBy: "confirmation" },
+      { ...ROW, attendance: "present", decidedBy: "teacher" },
+      { ...ROW, attendance: "pending", decidedBy: null },
+      { ...ROW, attendance: "no_photo", decidedBy: null },
+    ]);
+    expect(cells.map((row) => row.slice(2, 4))).toEqual([
+      ["לא נוכח", ""],
+      ["נוכח", "אישור עצמי"],
+      ["נוכח", "החלטת המרצה"],
+      ["ממתין", ""],
+      ["לא צולם", ""],
+    ]);
   });
 });
 
-describe("numberUnknownFaces", () => {
-  const PHOTOS = [
-    { boxes: [[300, 0, 40, 40], [10, 0, 40, 40], [150, 0, 40, 40]] },
-    { boxes: [[50, 0, 40, 40], [20, 0, 40, 40]] },
-  ];
-
-  it("numbers only the faces of no present student, across the photos and left to right", () => {
-    const numbers = numberUnknownFaces(PHOTOS, [{ photoNo: 0, faceNo: 2 }, { photoNo: 1, faceNo: 0 }]);
-    expect(numbers.map((item) => [item.number, item.photoNo, item.faceNo])).toEqual([
-      [1, 0, 1],
-      [2, 0, 0],
-      [3, 1, 1],
+describe("numberFaces", () => {
+  it("puts a number on every face, from left to right", () => {
+    const numbers = numberFaces([
+      [300, 0, 40, 40],
+      [10, 0, 40, 40],
+      [150, 0, 40, 40],
     ]);
-    expect(numbers[0]!.box).toEqual([10, 0, 40, 40]);
+    expect(numbers.map((item) => [item.number, item.faceNo])).toEqual([
+      [1, 1],
+      [2, 2],
+      [3, 0],
+    ]);
+    expect(numbers[0]).toEqual({ number: 1, photoNo: 0, faceNo: 1, box: [10, 0, 40, 40] });
+    expect(numberFaces([])).toEqual([]);
+  });
+});
+
+describe("countText", () => {
+  it("says that every student who confirmed is present when no more confirmed than the faces", () => {
+    expect(countText(38, 41)).toBe("38 סטודנטים אישרו, ובתמונה נמצאו 41 פרצופים. כל מי שאישר מסומן נוכח.");
+    expect(countText(1, 1)).toBe("סטודנט אחד אישר, ובתמונה נמצא פרצוף אחד. כל מי שאישר מסומן נוכח.");
   });
 
-  it("counts every face, the faces of present students and the others", () => {
-    const numbers = numberUnknownFaces(PHOTOS, [{ photoNo: 0, faceNo: 2 }]);
-    expect(countFaces(PHOTOS, numbers)).toEqual({ total: 5, identified: 1, unknown: 4 });
-    expect(numberUnknownFaces(PHOTOS, PHOTOS.flatMap((photo, photoNo) => photo.boxes.map((_, faceNo) => ({ photoNo, faceNo }))))).toEqual([]);
+  it("asks every student who confirmed to pick a number when more confirmed than the faces", () => {
+    expect(countText(42, 41)).toBe("42 סטודנטים אישרו, אבל בתמונה נמצאו רק 41 פרצופים. כל מי שאישר צריך לבחור את המספר שלו בתמונת הכיתה.");
+    expect(countText(2, 1)).toBe("2 סטודנטים אישרו, אבל בתמונה נמצא רק פרצוף אחד. כל מי שאישר צריך לבחור את המספר שלו בתמונת הכיתה.");
+    expect(countText(1, 0)).toBe("סטודנט אחד אישר, אבל בתמונה לא נמצא אף פרצוף. כל מי שאישר צריך לבחור את המספר שלו בתמונת הכיתה.");
+  });
+
+  it("says when no student confirmed, also while the minutes run", () => {
+    expect(countText(0, 41)).toBe("אף סטודנט לא אישר. בתמונה נמצאו 41 פרצופים.");
+    expect(progressText(0, 41)).toBe("עוד אף סטודנט לא אישר. בתמונה נמצאו 41 פרצופים.");
+    expect(progressText(12, 41)).toBe("עד עכשיו 12 סטודנטים אישרו. בתמונה נמצאו 41 פרצופים.");
   });
 });

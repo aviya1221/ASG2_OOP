@@ -491,10 +491,12 @@ legend {
 }
 
 .result-present { background: #95c374; }
-.result-review { background: #ebcf5b; }
-.result-not_found { background: #d4703c; }
-.result-conflict { background: #efc6c2; }
-.result-no_response { background: #4a6fa5; color: #ffffff; }
+.result-absent { background: #d4703c; }
+.result-pending { background: #ebcf5b; }
+.result-confirmed { background: #4a6fa5; color: #ffffff; }
+.result-waiting,
+.result-no_photo { background: #dcdcdc; }
+.chip.contested { background: #efc6c2; }
 
 .request,
 .row-between {

@@ -1,45 +1,19 @@
 import { canvasToJpeg, type StoredPhoto } from "./ClassPhotoStore.ts";
 
-/** One face in one photo of the round. */
-export interface FaceSpot {
+/** A number drawn on a face of the class photo. */
+export interface PhotoNumber {
   photoNo: number;
   faceNo: number;
-}
-
-/** A number drawn on a face that belongs to no present student. */
-export interface PhotoNumber extends FaceSpot {
   number: number;
   box: number[];
 }
 
-export interface FaceCount {
-  total: number;
-  identified: number;
-  unknown: number;
-}
-
-const key = (spot: FaceSpot) => `${spot.photoNo}:${spot.faceNo}`;
-
-/**
- * Gives a number to every face that belongs to no present student. The numbers run across all the photos,
- * and inside a photo from left to right, so "number 32" names one face in the whole lesson.
- */
-export function numberUnknownFaces(photos: { boxes: number[][] }[], identified: FaceSpot[]): PhotoNumber[] {
-  const known = new Set(identified.map(key));
-  const numbers: PhotoNumber[] = [];
-  photos.forEach((photo, photoNo) => {
-    const unknown = photo.boxes
-      .map((box, faceNo) => ({ photoNo, faceNo, box }))
-      .filter((face) => !known.has(key(face)))
-      .sort((a, b) => a.box[0]! + a.box[2]! / 2 - (b.box[0]! + b.box[2]! / 2));
-    for (const face of unknown) numbers.push({ ...face, number: numbers.length + 1 });
-  });
-  return numbers;
-}
-
-export function countFaces(photos: { boxes: number[][] }[], numbers: PhotoNumber[]): FaceCount {
-  const total = photos.reduce((sum, photo) => sum + photo.boxes.length, 0);
-  return { total, identified: total - numbers.length, unknown: numbers.length };
+/** A number on every face of the class photo, from left to right, so "number 32" names one face. */
+export function numberFaces(boxes: number[][]): PhotoNumber[] {
+  return boxes
+    .map((box, faceNo) => ({ photoNo: 0, faceNo, box }))
+    .sort((a, b) => a.box[0]! + a.box[2]! / 2 - (b.box[0]! + b.box[2]! / 2))
+    .map((face, index) => ({ ...face, number: index + 1 }));
 }
 
 const FRAME = "#ffd400";
