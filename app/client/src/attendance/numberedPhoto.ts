@@ -65,7 +65,10 @@ export async function drawNumbers(photo: StoredPhoto, numbers: PhotoNumber[]): P
   const context = canvas.getContext("2d")!;
   context.drawImage(await imageOf(photo.jpeg), 0, 0, canvas.width, canvas.height);
 
-  const line = Math.max(2, Math.round(Math.min(canvas.width, canvas.height) / 500));
+  const shortSide = Math.min(canvas.width, canvas.height);
+  const line = Math.max(2, Math.round(shortSide / 500));
+  // Half the face, but never larger than a twentieth of the photo, so labels of neighbours do not cover each other.
+  const largestFont = Math.max(16, Math.round(shortSide / 20));
   context.textAlign = "center";
   context.textBaseline = "middle";
   for (const item of numbers) {
@@ -74,14 +77,16 @@ export async function drawNumbers(photo: StoredPhoto, numbers: PhotoNumber[]): P
     context.strokeStyle = FRAME;
     context.strokeRect(x, y, width, height);
 
-    const fontSize = Math.max(16, Math.round(height * 0.7));
+    const fontSize = Math.min(largestFont, Math.max(16, Math.round(height * 0.5)));
     context.font = `bold ${fontSize}px sans-serif`;
     const label = String(item.number);
     const labelWidth = context.measureText(label).width + fontSize * 0.5;
     const labelHeight = fontSize * 1.2;
     const left = Math.min(Math.max(0, x + width / 2 - labelWidth / 2), canvas.width - labelWidth);
-    // Above the face, or below it when the face is at the top edge of the photo.
-    const top = y - labelHeight - line >= 0 ? y - labelHeight - line : y + height + line;
+    // Above the face; below it when the face is at the top edge; inside the frame when neither fits.
+    let top = y - labelHeight - line;
+    if (top < 0) top = y + height + line;
+    if (top + labelHeight > canvas.height) top = Math.max(0, y + line);
     context.fillStyle = LABEL_BACKGROUND;
     context.fillRect(left, top, labelWidth, labelHeight);
     context.fillStyle = FRAME;
