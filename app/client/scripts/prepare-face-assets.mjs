@@ -1,6 +1,6 @@
 /**
- * Puts the face tools where the web page can load them: OpenCV.js and ONNX Runtime from
- * node_modules, and the two models from their public source. The files are not committed.
+ * Puts the face finder where the web page can load it: OpenCV.js from node_modules, and the
+ * YuNet model from its public source. The files are not committed.
  */
 import { createWriteStream, existsSync, statSync } from "node:fs";
 import { copyFile, mkdir } from "node:fs/promises";
@@ -14,19 +14,13 @@ const modules = join(client, "node_modules");
 const vendor = join(client, "public", "vendor");
 const models = join(client, "public", "models");
 
-const COPIES = [
-  [join(modules, "@techstark/opencv-js/dist/opencv.js"), join(vendor, "opencv.js")],
-  [join(modules, "onnxruntime-web/dist/ort.wasm.min.mjs"), join(vendor, "ort", "ort.wasm.min.mjs")],
-  [join(modules, "onnxruntime-web/dist/ort-wasm-simd-threaded.mjs"), join(vendor, "ort", "ort-wasm-simd-threaded.mjs")],
-  [join(modules, "onnxruntime-web/dist/ort-wasm-simd-threaded.wasm"), join(vendor, "ort", "ort-wasm-simd-threaded.wasm")],
-];
+const COPIES = [[join(modules, "@techstark/opencv-js/dist/opencv.js"), join(vendor, "opencv.js")]];
 
 const MODELS = [
   { name: "face_detection_yunet_2023mar.onnx", size: 232_589, url: "https://huggingface.co/opencv/face_detection_yunet/resolve/main/face_detection_yunet_2023mar.onnx" },
-  { name: "face_recognition_sface_2021dec.onnx", size: 38_696_353, url: "https://huggingface.co/opencv/face_recognition_sface/resolve/main/face_recognition_sface_2021dec.onnx" },
 ];
 
-await mkdir(join(vendor, "ort"), { recursive: true });
+await mkdir(vendor, { recursive: true });
 await mkdir(models, { recursive: true });
 
 for (const [from, to] of COPIES) await copyFile(from, to);

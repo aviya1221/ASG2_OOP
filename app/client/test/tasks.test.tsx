@@ -119,6 +119,6 @@ describe("samePlace", () => {
   it("counts a lesson address with no tab as the attendance tab", () => {
     expect(samePlace("/lessons/L1", "/lessons/L1/attendance")).toBe(true);
     expect(samePlace("/lessons/L1/forum", "/lessons/L1/homework")).toBe(false);
-    expect(samePlace("/face/", "/face")).toBe(true);
+    expect(samePlace("/lessons/L1/forum/", "/lessons/L1/forum")).toBe(true);
   });
 });

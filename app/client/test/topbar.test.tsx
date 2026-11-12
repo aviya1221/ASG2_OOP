@@ -20,13 +20,11 @@ describe("TopBar", () => {
     expect(user).toHaveTextContent("ישראל ישראלי");
     expect(user).toHaveTextContent("מרצה");
     expect(screen.getByRole("button", { name: "יציאה" })).toBeVisible();
-    expect(screen.queryByRole("link", { name: "רישום פנים" })).toBeNull();
   });
 
-  it("TC-007 gives a student the face registration, and hides the back arrow on the first screen", () => {
+  it("TC-007 shows a student their role, and hides the back arrow on the first screen", () => {
     showAt("/", "student");
     expect(screen.getByLabelText("המשתמש המחובר")).toHaveTextContent("סטודנט");
-    expect(screen.getByRole("link", { name: "רישום פנים" })).toHaveAttribute("href", "/face");
     expect(screen.queryByRole("button", { name: "חזרה" })).toBeNull();
   });
 });
@@ -36,6 +34,6 @@ describe("parentOf", () => {
     expect(parentOf("/")).toBeNull();
     expect(parentOf("/lessons/L1/summary")).toBe("/lessons/L1/forum");
     expect(parentOf("/lessons/L1/forum")).toBe("/");
-    expect(parentOf("/face")).toBe("/");
+    expect(parentOf("/lessons/L1")).toBe("/");
   });
 });

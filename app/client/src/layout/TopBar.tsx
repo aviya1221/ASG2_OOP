@@ -1,9 +1,9 @@
-import { ArrowRight, Camera, House, LogOut } from "lucide-react";
+import { ArrowRight, House, LogOut } from "lucide-react";
 import type { ReactNode } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import type { Person, Role } from "../accounts/session.tsx";
 import { supabase } from "../lib/supabase.ts";
-import { ICON, IconButton, IconLink } from "../ui/Icon.tsx";
+import { ICON, IconButton } from "../ui/Icon.tsx";
 
 export const ROLE_NAMES: Record<Role, string> = { admin: "מנהל", teacher: "מרצה", student: "סטודנט" };
 
@@ -42,7 +42,6 @@ export function TopBar({ person, children }: { person: Person; children?: ReactN
           <b>{person.name}</b>
           <span>{ROLE_NAMES[person.role]}</span>
         </p>
-        {person.role === "student" && <IconLink icon={Camera} label="רישום פנים" to="/face" />}
         <IconButton icon={LogOut} label="יציאה" onClick={() => void supabase.auth.signOut()} />
       </div>
     </header>

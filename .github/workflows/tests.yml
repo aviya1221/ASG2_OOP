@@ -50,11 +50,11 @@ jobs:
       - name: Integration tests
         run: npm run test:integration
 
-      - name: Keep the face models between runs
+      - name: Keep the face model between runs
         uses: actions/cache@v4
         with:
           path: app/client/public/models
-          key: face-models-yunet-2023mar-sface-2021dec
+          key: face-models-yunet-2023mar
 
       - name: Install the test browsers
         run: npx playwright install --with-deps chromium webkit

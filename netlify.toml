@@ -10,8 +10,8 @@
 [build.environment]
   NODE_VERSION = "22"
 
-# The face tools do not change between versions, so phones keep them for a week
-# instead of downloading about 63 MB again.
+# The face finder does not change between versions, so phones keep it for a week
+# instead of downloading about 11 MB again.
 [[headers]]
   for = "/models/*"
   [headers.values]
