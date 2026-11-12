@@ -543,46 +543,23 @@ td {
   border-radius: 8px;
 }
 
-/* A wide hall scrolls inside its own box, so the page itself never scrolls sideways. */
-.hall {
-  overflow-x: auto;
-  display: grid;
-  gap: 4px;
+/* The numbers of the faces in the shared photo: a student picks one. */
+.number-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
-.board {
-  min-width: 960px;
-  height: 28px;
-  display: grid;
-  align-items: center;
-  padding-inline-start: 12px;
-  background: var(--ink);
-  color: var(--paper);
-  font-size: 14px;
-}
-
-.hall-row {
-  min-width: 960px;
-  display: grid;
-  grid-template-columns: 28px repeat(20, minmax(44px, 1fr));
-  gap: 2px;
-  align-items: center;
-}
-
-.hall-number {
-  text-align: center;
-  font-size: 14px;
-  font-weight: 700;
-}
-
-.seat {
+.number-choice {
+  min-width: 44px;
+  min-height: 44px;
   background: var(--paper);
   border: 1px solid var(--line);
   border-radius: 6px;
-  font-size: 14px;
+  font-size: 15px;
 }
 
-.seat.chosen {
+.number-choice.chosen {
   background: var(--ink);
   color: var(--paper);
 }

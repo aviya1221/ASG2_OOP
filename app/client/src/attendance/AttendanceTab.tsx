@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState, type ChangeEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type ChangeEvent, type ReactNode } from "react";
 import { Camera, Check, Download, Send, Share2, X } from "lucide-react";
 import { Link } from "react-router";
 import { useSession, type Person } from "../accounts/session.tsx";
@@ -12,8 +12,6 @@ import { useEndedCount, useTask, useTasks } from "../tasks/BackgroundTasks.tsx";
 import { ICON, IconButton } from "../ui/Icon.tsx";
 
 const MAX_PHOTOS = 3;
-const ROWS = 15;
-const SEATS = 20;
 const RESULT_KINDS = ["present", "review", "not_found", "conflict", "no_response"];
 
 type Round = { expiresAt: Date } | null | undefined;
@@ -407,7 +405,7 @@ function RoundView({ lessonId, expiresAt }: { lessonId: string; expiresAt: Date 
     void loadSheet(lessonId).then(setRows);
   }, [lessonId]);
   useEffect(load, [load]);
-  useLive(lessonId, ["attendance_results", "seat_requests"], load);
+  useLive(lessonId, ["attendance_results", "number_claims"], load);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -418,11 +416,12 @@ function RoundView({ lessonId, expiresAt }: { lessonId: string; expiresAt: Date 
   }, [expiresAt, load]);
 
   async function decide(idNumber: string, status: "approved" | "rejected") {
-    await supabase.from("seat_requests").update({ status }).eq("lesson_id", lessonId).eq("student_id", idNumber);
+    await supabase.from("number_claims").update({ status }).eq("lesson_id", lessonId).eq("student_id", idNumber);
     load();
   }
 
-  const requests = rows.filter((row) => row.requestStatus === "pending");
+  const picks = rows.filter((row) => row.claimStatus === "pending");
+  const pickersOf = (number: number | null) => rows.filter((row) => row.claimNumber === number && row.claimStatus === "pending").length;
 
   return (
     <section className="stack">
@@ -440,18 +439,23 @@ function RoundView({ lessonId, expiresAt }: { lessonId: string; expiresAt: Date 
 
       <FaceReplacements />
 
-      {requests.length > 0 && (
+      {picks.length > 0 && (
         <>
-          <h2>בקשות שורה ומושב</h2>
+          <h2>בחירות מספר בתמונה</h2>
           <ul className="stack plain">
-            {requests.map((row) => (
+            {picks.map((row) => (
               <li key={row.idNumber} className="card request">
                 <span>
-                  {row.name}: שורה {row.rowNo}, מושב {row.seatNo}
+                  {row.name}: מספר {row.claimNumber}
+                  {row.claimContested && (
+                    <span className="chip result-conflict">
+                      {pickersOf(row.claimNumber)} סטודנטים בחרו את מספר {row.claimNumber}
+                    </span>
+                  )}
                 </span>
                 <span className="actions">
-                  <IconButton icon={Check} className="approve" label={`אישור הבקשה של ${row.name}`} onClick={() => void decide(row.idNumber, "approved")} />
-                  <IconButton icon={X} className="danger" label={`דחיית הבקשה של ${row.name}`} onClick={() => void decide(row.idNumber, "rejected")} />
+                  <IconButton icon={Check} className="approve" label={`אישור הבחירה של ${row.name}`} onClick={() => void decide(row.idNumber, "approved")} />
+                  <IconButton icon={X} className="danger" label={`דחיית הבחירה של ${row.name}`} onClick={() => void decide(row.idNumber, "rejected")} />
                 </span>
               </li>
             ))}
@@ -534,35 +538,55 @@ function FaceReplacements() {
 
 interface StudentState {
   result: string | null;
-  request: { rowNo: number; seatNo: number; status: string } | null;
+  claim: { number: number; status: string; contested: boolean } | null;
   registered: boolean;
   optedOut: boolean;
+  photos: SharedPhoto[];
+  numbers: number[];
 }
 
-const REQUEST_LABELS: Record<string, string> = { pending: "ממתינה לאישור", approved: "אושרה", rejected: "נדחתה" };
+/** What a student sees about their pick. Two picks of one number wait for the teacher together. */
+function claimText(claim: { status: string; contested: boolean }): string {
+  if (claim.status === "pending") return claim.contested ? "הועבר למרצה להמשך טיפול" : "ממתין לאישור המרצה";
+  return claim.status === "approved" ? "אושר" : "נדחה";
+}
+
+/** While a pick waits, another student's pick of the same number is not sent to this page, so it asks again. */
+const CLAIM_POLL_MS = 30_000;
 
 function StudentAttendance({ lessonId, person }: { lessonId: string; person: Person }) {
   const [round] = useRound(lessonId);
   const [state, setState] = useState<StudentState | null>(null);
 
   const load = useCallback(async () => {
-    const [result, request, status] = await Promise.all([
+    const [result, claim, status, photos, numbers] = await Promise.all([
       supabase.from("attendance_results").select("result").eq("lesson_id", lessonId).eq("student_id", person.idNumber).maybeSingle(),
-      supabase.from("seat_requests").select("row_no, seat_no, status").eq("lesson_id", lessonId).eq("student_id", person.idNumber).maybeSingle(),
+      supabase.from("my_number_claim").select("number, status, contested").eq("lesson_id", lessonId).maybeSingle(),
       supabase.from("my_face_status").select("registered, opted_out").maybeSingle(),
+      loadSharedPhotos(lessonId),
+      supabase.from("photo_numbers").select("number").eq("lesson_id", lessonId).order("number"),
     ]);
     setState({
       result: result.data?.result ?? null,
-      request: request.data ? { rowNo: request.data.row_no, seatNo: request.data.seat_no, status: request.data.status } : null,
+      claim: claim.data ? { number: claim.data.number, status: claim.data.status, contested: claim.data.contested } : null,
       registered: status.data?.registered ?? false,
       optedOut: status.data?.opted_out ?? false,
+      photos,
+      numbers: (numbers.data ?? []).map((row) => row.number as number),
     });
   }, [lessonId, person.idNumber]);
 
   useEffect(() => {
     void load();
   }, [load]);
-  useLive(lessonId, ["attendance_results", "seat_requests"], () => void load());
+  useLive(lessonId, ["attendance_results", "number_claims", "shared_photos"], () => void load());
+
+  const waiting = state?.claim?.status === "pending";
+  useEffect(() => {
+    if (!waiting) return;
+    const timer = setInterval(() => void load(), CLAIM_POLL_MS);
+    return () => clearInterval(timer);
+  }, [waiting, load]);
 
   if (round === undefined || !state) return <p>טוען...</p>;
   if (!round) {
@@ -576,43 +600,51 @@ function StudentAttendance({ lessonId, person }: { lessonId: string; person: Per
   }
 
   const hourOver = round.expiresAt.getTime() <= Date.now();
-  const mayRequest = !state.request && state.result !== "present" && (hourOver || state.optedOut);
+  const shown = state.claim?.status === "approved" ? "present" : (state.result ?? (hourOver ? "no_response" : null));
+  const photoUp = state.photos.length > 0 && state.photos[0]!.expiresAt > new Date();
+
+  let picking: ReactNode = null;
+  if (state.claim) {
+    picking = (
+      <p className="card">
+        בחרת את מספר {state.claim.number}: {claimText(state.claim)}
+      </p>
+    );
+  } else if (state.result !== "present" && hourOver) {
+    if (photoUp) picking = <NumberPicker lessonId={lessonId} idNumber={person.idNumber} photos={state.photos} numbers={state.numbers} onSent={() => void load()} />;
+    else if (state.photos.length > 0) picking = <p className="muted">הזמן לבחירת מספר בתמונת הכיתה הסתיים.</p>;
+    else picking = <p className="muted">המרצה עוד לא שיתף את תמונת הכיתה.</p>;
+  } else if (!hourOver && state.optedOut) {
+    picking = <p className="muted">אחרי השעה אפשר יהיה לבחור את המספר שלך בתמונת הכיתה, אם המרצה ישתף אותה.</p>;
+  }
 
   return (
     <section className="stack">
       <h2 className="visually-hidden">נוכחות</h2>
-      {state.result ? (
+      {shown ? (
         <p>
-          התוצאה שלך: <ResultChip kind={state.result} />
-        </p>
-      ) : hourOver ? (
-        <p>
-          התוצאה שלך: <ResultChip kind="no_response" />
+          התוצאה שלך: <ResultChip kind={shown} />
         </p>
       ) : state.registered ? (
         <p>הנוכחות נאספת.</p>
       ) : (
         !state.optedOut && <Link to="/face">רישום פנים</Link>
       )}
-      {state.request && (
-        <p className="card">
-          בקשה לשורה {state.request.rowNo}, מושב {state.request.seatNo}: {REQUEST_LABELS[state.request.status]}
-        </p>
-      )}
-      {mayRequest && <SeatPicker lessonId={lessonId} idNumber={person.idNumber} onSent={() => void load()} />}
+      {picking}
     </section>
   );
 }
 
-function SeatPicker({ lessonId, idNumber, onSent }: { lessonId: string; idNumber: string; onSent: () => void }) {
-  const [seat, setSeat] = useState<{ row: number; seat: number } | null>(null);
+/** "I am number 32": the student finds their face in the shared photo and picks its number. */
+function NumberPicker({ lessonId, idNumber, photos, numbers, onSent }: { lessonId: string; idNumber: string; photos: SharedPhoto[]; numbers: number[]; onSent: () => void }) {
+  const [chosen, setChosen] = useState<number | null>(null);
   const [problem, setProblem] = useState("");
 
   async function send() {
-    if (!seat) return;
-    const { error } = await supabase.from("seat_requests").insert({ lesson_id: lessonId, student_id: idNumber, row_no: seat.row, seat_no: seat.seat });
+    if (chosen === null) return;
+    const { error } = await supabase.from("number_claims").insert({ lesson_id: lessonId, student_id: idNumber, number: chosen });
     if (error) {
-      setProblem("הבקשה לא נשלחה.");
+      setProblem("הבחירה לא נשלחה.");
       return;
     }
     onSent();
@@ -620,28 +652,14 @@ function SeatPicker({ lessonId, idNumber, onSent }: { lessonId: string; idNumber
 
   return (
     <>
-      <h2>איפה ישבת?</h2>
-      <p className="muted">שורה 1 היא הקרובה ללוח, ומושב 1 הוא הקרוב לחלון.</p>
-      <div className="hall" role="group" aria-label="מפת האולם">
-        <div className="board">לוח</div>
-        {Array.from({ length: ROWS }, (_, rowIndex) => (
-          <div className="hall-row" key={rowIndex}>
-            <span className="hall-number">{rowIndex + 1}</span>
-            {Array.from({ length: SEATS }, (_, seatIndex) => {
-              const chosen = seat?.row === rowIndex + 1 && seat.seat === seatIndex + 1;
-              return (
-                <button
-                  key={seatIndex}
-                  className={chosen ? "seat chosen" : "seat"}
-                  aria-label={`שורה ${rowIndex + 1}, מושב ${seatIndex + 1}`}
-                  aria-pressed={chosen}
-                  onClick={() => setSeat({ row: rowIndex + 1, seat: seatIndex + 1 })}
-                >
-                  {seatIndex + 1}
-                </button>
-              );
-            })}
-          </div>
+      <h2>מה המספר שלך בתמונה?</h2>
+      <p className="muted">לא זיהינו אותך בתמונת הכיתה. צריך למצוא את עצמך בתמונה ולבחור את המספר שעל הפנים שלך. נגיעה בתמונה פותחת אותה בגודל מלא.</p>
+      <SharedPhotoList photos={photos} />
+      <div className="number-grid" role="group" aria-label="המספרים בתמונה">
+        {numbers.map((number) => (
+          <button key={number} className={chosen === number ? "number-choice chosen" : "number-choice"} aria-pressed={chosen === number} onClick={() => setChosen(number)}>
+            {number}
+          </button>
         ))}
       </div>
       {problem && (
@@ -649,9 +667,9 @@ function SeatPicker({ lessonId, idNumber, onSent }: { lessonId: string; idNumber
           {problem}
         </p>
       )}
-      <button className="primary" disabled={!seat} onClick={() => void send()}>
+      <button className="primary" disabled={chosen === null} onClick={() => void send()}>
         <Send {...ICON} />
-        שליחת בקשה
+        {chosen === null ? "בחירת מספר" : `אני מספר ${chosen}`}
       </button>
     </>
   );

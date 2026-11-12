@@ -5,9 +5,11 @@ export interface SheetRow {
   name: string;
   attendance: string | null;
   decidedBy: string | null;
-  rowNo: number | null;
-  seatNo: number | null;
-  requestStatus: string | null;
+  /** The number the student picked in the shared class photo, and its state. */
+  claimNumber: number | null;
+  claimStatus: string | null;
+  /** Another student's pick of the same number waits too. */
+  claimContested: boolean;
   flagged: boolean;
 }
 
@@ -19,8 +21,8 @@ export const RESULT_LABELS: Record<string, string> = {
   no_response: "לא הגיב",
 };
 
-const DECIDED_LABELS: Record<string, string> = { face: "זיהוי פנים", row_and_seat: "שורה ומושב" };
-const FLAG_NOTE = "בקשה שנדחתה, או 3 בקשות ומעלה בקורס";
+const DECIDED_LABELS: Record<string, string> = { face: "זיהוי פנים", photo_number: "מספר בתמונה" };
+const FLAG_NOTE = "בחירה שנדחתה, או 3 בחירות ומעלה בקורס";
 const HEADERS = ["תעודת זהות", "שם", "נוכחות", "איך הוחלט", "הערה"];
 const COLUMN_WIDTHS = [14, 24, 12, 14, 36];
 
@@ -31,9 +33,9 @@ export async function loadSheet(lessonId: string): Promise<SheetRow[]> {
     name: row.name,
     attendance: row.attendance,
     decidedBy: row.decided_by,
-    rowNo: row.row_no,
-    seatNo: row.seat_no,
-    requestStatus: row.request_status,
+    claimNumber: row.claim_number,
+    claimStatus: row.claim_status,
+    claimContested: row.claim_contested,
     flagged: row.flagged,
   }));
 }

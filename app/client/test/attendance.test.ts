@@ -81,11 +81,11 @@ describe("respondToOpenRounds", () => {
 });
 
 describe("sheetCells", () => {
-  const ROW: SheetRow = { idNumber: "012345678", name: "=דנה", attendance: "present", decidedBy: "row_and_seat", rowNo: 3, seatNo: 5, requestStatus: "approved", flagged: true };
+  const ROW: SheetRow = { idNumber: "012345678", name: "=דנה", attendance: "present", decidedBy: "photo_number", claimNumber: 32, claimStatus: "approved", claimContested: false, flagged: true };
 
   it("TC-028 gives the columns of REQ-19 as text", () => {
     const [cells] = sheetCells([ROW]);
-    expect(cells).toEqual(["012345678", "=דנה", "נוכח", "שורה ומושב", "בקשה שנדחתה, או 3 בקשות ומעלה בקורס"]);
+    expect(cells).toEqual(["012345678", "=דנה", "נוכח", "מספר בתמונה", "בחירה שנדחתה, או 3 בחירות ומעלה בקורס"]);
   });
 
   it("leaves a cell empty when there is no result yet", () => {
