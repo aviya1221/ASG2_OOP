@@ -25,4 +25,15 @@ export class FaceMatcher {
     }
     return best;
   }
+
+  /** The most similar face in each photo, so a student seen in two photos is known in both. */
+  bestInEachPhoto(print: ArrayLike<number>, faces: ClassFace[]): FaceMatch[] {
+    const byPhoto = new Map<number, FaceMatch>();
+    for (const face of faces) {
+      const score = cosine(print, face.print);
+      const best = byPhoto.get(face.photoNo);
+      if (!best || score > best.score) byPhoto.set(face.photoNo, { photoNo: face.photoNo, faceNo: face.faceNo, score });
+    }
+    return [...byPhoto.values()].sort((a, b) => a.photoNo - b.photoNo);
+  }
 }

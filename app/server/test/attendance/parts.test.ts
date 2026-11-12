@@ -21,6 +21,23 @@ describe("FaceMatcher", () => {
 
   it("gives no match when the round has no faces", () => {
     assert.equal(matcher.best([1, 0], []), null);
+    assert.deepEqual(matcher.bestInEachPhoto([1, 0], []), []);
+  });
+
+  it("finds the most similar face in each photo, in photo order", () => {
+    const seen = matcher.bestInEachPhoto([1, 0], [
+      { photoNo: 2, faceNo: 0, print: [1, 1] },
+      { photoNo: 0, faceNo: 0, print: [0, 1] },
+      { photoNo: 0, faceNo: 5, print: [1, 0.2] },
+      { photoNo: 2, faceNo: 3, print: [1, 0] },
+    ]);
+    assert.deepEqual(
+      seen.map((face) => [face.photoNo, face.faceNo]),
+      [
+        [0, 5],
+        [2, 3],
+      ],
+    );
   });
 
   it("scores a print of zeros as 0, and does not divide by zero", () => {

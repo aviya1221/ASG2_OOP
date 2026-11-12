@@ -13,4 +13,6 @@ export interface AttendanceRepository {
   findResult(lessonId: string, studentId: string): Promise<Result | null>;
   saveResult(lessonId: string, studentId: string, result: Result): Promise<void>;
   recordMatch(lessonId: string, studentId: string, match: FaceMatch): Promise<Result>;
+  /** Where a matched student was seen, one face in each photo. */
+  saveSightings(lessonId: string, studentId: string, faces: FaceMatch[]): Promise<void>;
 }

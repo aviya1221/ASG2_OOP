@@ -103,6 +103,9 @@ export class AttendanceService {
       await repository.saveResult(lessonId, studentId, "not_found");
       return "not_found";
     }
+    // Saved before the result, so a failure here leaves no result and the phone can respond again.
+    const seen = matcher.bestInEachPhoto(print, faces).filter((face) => face.score >= this.#threshold);
+    await repository.saveSightings(lessonId, studentId, seen);
     return repository.recordMatch(lessonId, studentId, match);
   }
 

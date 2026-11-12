@@ -120,4 +120,11 @@ export class SupabaseAttendanceRepository implements AttendanceRepository {
     throwIf(error);
     return data as Result;
   }
+
+  async saveSightings(lessonId: string, studentId: string, faces: FaceMatch[]): Promise<void> {
+    if (faces.length === 0) return;
+    const rows = faces.map((face) => ({ lesson_id: lessonId, student_id: studentId, photo_no: face.photoNo, face_no: face.faceNo }));
+    const { error } = await this.#db.from("face_sightings").upsert(rows);
+    throwIf(error);
+  }
 }

@@ -33,6 +33,7 @@ class FakeRepository implements AttendanceRepository {
   loadFacesCalls = 0;
   saveRoundCalls = 0;
   matches: FaceMatch[] = [];
+  sightings = new Map<string, FaceMatch[]>();
 
   async findLesson() {
     return this.lesson;
@@ -70,6 +71,9 @@ class FakeRepository implements AttendanceRepository {
     this.matches.push(match);
     this.results.set(student, "present");
     return "present";
+  }
+  async saveSightings(_lesson: string, student: string, faces: FaceMatch[]) {
+    this.sightings.set(student, faces);
   }
 }
 
@@ -128,6 +132,33 @@ describe("AttendanceService.respond", () => {
     repository.faces = [{ photoNo: 0, faceNo: 3, print: Array.from(printOf(0.37, Math.sqrt(1 - 0.37 * 0.37))) }];
     assert.equal(await service.respond("L1", "S1", print, hash), "present");
     assert.equal(repository.matches[0]?.faceNo, 3);
+  });
+
+  it("records where a matched student was seen, in every photo where the face passed the threshold", async () => {
+    const print = printOf(1, 0);
+    const hash = register("S1", print);
+    repository.faces = [
+      { photoNo: 0, faceNo: 0, print: Array.from(printOf(0, 1)) },
+      { photoNo: 0, faceNo: 1, print: Array.from(printOf(1, 0.1)) },
+      { photoNo: 1, faceNo: 0, print: Array.from(printOf(0.9, 0.3)) },
+      { photoNo: 2, faceNo: 0, print: Array.from(printOf(0.1, 1)) },
+    ];
+    assert.equal(await service.respond("L1", "S1", print, hash), "present");
+    assert.deepEqual(
+      repository.sightings.get("S1")?.map((face) => [face.photoNo, face.faceNo]),
+      [
+        [0, 1],
+        [1, 0],
+      ],
+    );
+  });
+
+  it("records no sighting for a student who was not found", async () => {
+    const print = printOf(1, 0);
+    const hash = register("S1", print);
+    repository.faces = [{ photoNo: 0, faceNo: 0, print: Array.from(printOf(0, 1)) }];
+    assert.equal(await service.respond("L1", "S1", print, hash), "not_found");
+    assert.equal(repository.sightings.has("S1"), false);
   });
 
   it("TC-022 a second response returns the saved result and compares nothing", async () => {

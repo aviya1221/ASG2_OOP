@@ -292,7 +292,7 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
   - [ ] No loading sign: the page says in words what is running and for how long
 - [ ] Attendance: students who were not recognised pick their number in the class photo (2026-11-12, replaces row and seat)
   - [x] Database: where each student was seen, shared photos, numbers and picks; row and seat removed
-  - [ ] Server: record where each matched student was seen in every photo
+  - [x] Server: record where each matched student was seen in every photo
   - [ ] Server: receive the shared photo, notify who may pick, delete it after 24 hours
   - [ ] Client: the teacher's phone keeps the class photos until the end of the hour
   - [ ] Client: the teacher sees the face count and shares the photo with numbers
