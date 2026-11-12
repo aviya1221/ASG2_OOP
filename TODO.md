@@ -290,7 +290,7 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
   - [x] Homework of the course: every lesson of the course shows all its homework
   - [x] Tabs in the middle that react to the pointer, with no main title under them
   - [x] No loading sign: the page says in words what is running and for how long
-- [ ] Attendance: students who were not recognised pick their number in the class photo (2026-11-12, replaces row and seat)
+- [x] Attendance: students who were not recognised pick their number in the class photo (2026-11-12, replaces row and seat; replaced the same day by the next item, which also covers its documents)
   - [x] Database: where each student was seen, shared photos, numbers and picks; row and seat removed
   - [x] Server: record where each matched student was seen in every photo
   - [x] Server: receive the shared photo, notify who may pick, delete it after 24 hours
@@ -298,7 +298,16 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
   - [x] Client: the teacher sees the face count and shares the photo with numbers
   - [x] Client: the student picks a number and the teacher approves
   - [x] Tests: picking a number instead of row and seat
-  - [ ] Documents: decisions note, SRS, use cases, SDD, EDD and STD (after the code)
+- [ ] Attendance: students confirm they were in the lesson, and the class photo only counts faces (2026-11-12, replaces face recognition)
+  - [ ] Decisions note: the new attendance flow
+  - [ ] Database: confirmations, the face count, picks by everyone who confirmed and the teacher's changes; face tables removed
+  - [ ] Server: the face count, the rule of more confirmations than faces, and sharing the photo only then
+  - [ ] Client: the teacher takes one photo, sees the count and shares the photo with a number on every face
+  - [ ] Client: the student presses "I was in the lesson" within 4 minutes, and picks a number when needed
+  - [ ] Client: the teacher changes a student's attendance
+  - [ ] Face registration and the face-print model removed
+  - [ ] Tests: confirmations, the face count, picks and the teacher's changes
+  - [ ] Documents: SRS, use cases, SDD, EDD, STD and the tools report (after the code)
 - [ ] Unit tests for the core classes (per the STP, step 8)
 - [x] Test automation: GitHub Actions runs the type check and the unit, integration and browser tests on every push
 - [x] Test IDs in the test names, and a script that writes Passed or Failed into the traceability matrix
