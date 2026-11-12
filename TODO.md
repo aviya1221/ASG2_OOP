@@ -306,7 +306,7 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
   - [x] Client: the student presses "I was in the lesson" within 4 minutes, and picks a number when needed
   - [x] Client: the teacher changes a student's attendance
   - [x] Face registration and the face-print model removed
-  - [ ] Tests: confirmations, the face count, picks and the teacher's changes
+  - [x] Tests: confirmations, the face count, picks and the teacher's changes
   - [ ] Documents: SRS, use cases, SDD, EDD, STD and the tools report (after the code)
 - [ ] Unit tests for the core classes (per the STP, step 8)
 - [x] Test automation: GitHub Actions runs the type check and the unit, integration and browser tests on every push

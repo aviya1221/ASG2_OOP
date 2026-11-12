@@ -1,6 +1,4 @@
-import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
-import { fileURLToPath } from "node:url";
 import { expect, type Page } from "@playwright/test";
 import { createClient } from "@supabase/supabase-js";
 
@@ -31,25 +29,6 @@ export async function openAs(page: Page, idNumber: string, path: string): Promis
 export function studentFor(projectName: string, base: number): string {
   const offset = projectName === "iphone-webkit" ? 1 : 0;
   return `3${String(base + offset).padStart(8, "0")}`;
-}
-
-/** A face-print with a direction of its own: numbers from a seeded generator, so different seeds are far apart. */
-export function printFor(seed: number): number[] {
-  let state = (seed * 2654435761) >>> 0;
-  const next = () => {
-    state = (state + 0x6d2b79f5) >>> 0;
-    let t = state;
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296 - 0.5;
-  };
-  const values = Array.from({ length: 128 }, next);
-  const length = Math.hypot(...values);
-  return values.map((value) => Math.fround(value / length));
-}
-
-export function hashOf(print: number[]): string {
-  return createHash("sha256").update(Buffer.from(Float32Array.from(print).buffer)).digest("hex");
 }
 
 let lectureNumber = 2_000_000 + Math.floor(Math.random() * 1_000_000);
@@ -108,51 +87,26 @@ export async function signedInClient(idNumber: string) {
   return client;
 }
 
-/** Opens a round directly in the database. */
-export async function startRound(lessonId: string, prints: number[][]): Promise<void> {
-  const faces = prints.map((print, face_no) => ({ photo_no: 0, face_no, box: [face_no, 0, 40, 40], print }));
-  const { error } = await secret.rpc("start_attendance_round", { p_lesson: lessonId, p_faces: faces });
+/** The teacher's phone sent the number of faces in the class photo: the 4 minutes for confirming start. */
+export async function photograph(lessonId: string, faceCount: number): Promise<void> {
+  const { error } = await secret.rpc("start_attendance_round", { p_lesson: lessonId, p_face_count: faceCount });
   if (error) throw new Error(error.message);
 }
 
-export async function endHour(lessonId: string): Promise<void> {
+/** The 4 minutes for confirming end at once. */
+export async function endConfirming(lessonId: string): Promise<void> {
   const { error } = await secret.from("attendance_rounds").update({ expires_at: new Date(Date.now() - 1000).toISOString() }).eq("lesson_id", lessonId);
   if (error) throw new Error(error.message);
 }
 
-export async function clearFace(idNumber: string): Promise<void> {
-  await secret.from("face_replacements").delete().eq("student_id", idNumber);
-  await secret.from("face_registrations").delete().eq("student_id", idNumber);
-}
-
-export async function registerFace(idNumber: string, print: number[]): Promise<void> {
-  const { error } = await secret.from("face_registrations").upsert({ student_id: idNumber, hash: hashOf(print), opted_out: false });
+/** "I was in the lesson", sent from the student's own phone. */
+export async function confirmAs(idNumber: string, lessonId: string): Promise<void> {
+  const client = await signedInClient(idNumber);
+  const { error } = await client.from("attendance_confirmations").insert({ lesson_id: lessonId, student_id: idNumber });
   if (error) throw new Error(error.message);
-}
-
-/** Puts the face-print on this browser, as a registration on this phone would. */
-export async function storeFaceInBrowser(page: Page, idNumber: string, print: number[]): Promise<void> {
-  await page.addInitScript(
-    ([id, value]) => localStorage.setItem(`face-print:${id}`, value as string),
-    [idNumber, JSON.stringify({ print, hash: hashOf(print) })],
-  );
-}
-
-/** The student's phone sends a response to the server. */
-export async function respondAs(idNumber: string, lessonId: string, print: number[]): Promise<Response> {
-  const client = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_PUBLIC_KEY!, NO_SESSION);
-  const { data, error } = await client.auth.signInWithPassword({ email: `${idNumber}@${EMAIL_DOMAIN}`, password: PASSWORD });
-  if (error) throw new Error(error.message);
-  return fetch(`${SERVER_URL}/attendance/response`, {
-    method: "POST",
-    headers: { "content-type": "application/json", authorization: `Bearer ${data.session.access_token}` },
-    body: JSON.stringify({ lessonId, print, hash: hashOf(print) }),
-  });
 }
 
 const dataUrl = (name: string) => `data:image/jpeg;base64,${readFileSync(new URL(`./photos/${name}`, import.meta.url)).toString("base64")}`;
-
-export const PERSON_PHOTO = fileURLToPath(new URL("./photos/person-1.jpg", import.meta.url));
 
 /** A photo of a class of three made-up people, drawn on a canvas in the browser. */
 export async function classPhoto(page: Page): Promise<{ name: string; mimeType: string; buffer: Buffer }> {
@@ -175,7 +129,7 @@ export async function classPhoto(page: Page): Promise<{ name: string; mimeType: 
   return { name: "class.jpg", mimeType: "image/jpeg", buffer: Buffer.from(base64, "base64") };
 }
 
-/** Puts a class photo on the teacher's phone, as sending the photos of a round does (ClassPhotoStore). */
+/** Puts the class photo on the teacher's phone, as sending the face count does (ClassPhotoStore). */
 export async function keepClassPhotoOnPhone(page: Page, lessonId: string, photo: { buffer: Buffer }, boxes: number[][]): Promise<void> {
   await page.evaluate(
     async ({ lessonId, base64, boxes }) => {
@@ -188,7 +142,7 @@ export async function keepClassPhotoOnPhone(page: Page, lessonId: string, photo:
       });
       await new Promise<void>((resolve, reject) => {
         const transaction = db.transaction("rounds", "readwrite");
-        transaction.objectStore("rounds").put({ lessonId, savedAt: Date.now(), dismissed: false, photos: [{ jpeg: bytes.buffer, width: 1500, height: 500, boxes }] });
+        transaction.objectStore("rounds").put({ lessonId, savedAt: Date.now(), photos: [{ jpeg: bytes.buffer, width: 1500, height: 500, boxes }] });
         transaction.oncomplete = () => resolve();
         transaction.onerror = () => reject(transaction.error);
       });
@@ -196,20 +150,6 @@ export async function keepClassPhotoOnPhone(page: Page, lessonId: string, photo:
     },
     { lessonId, base64: photo.buffer.toString("base64"), boxes },
   );
-}
-
-/** A photo with no face in it. */
-export async function blankPhoto(page: Page): Promise<{ name: string; mimeType: string; buffer: Buffer }> {
-  const base64 = await page.evaluate(() => {
-    const canvas = document.createElement("canvas");
-    canvas.width = 640;
-    canvas.height = 480;
-    const context = canvas.getContext("2d")!;
-    context.fillStyle = "#88aa99";
-    context.fillRect(0, 0, canvas.width, canvas.height);
-    return canvas.toDataURL("image/png").split(",")[1]!;
-  });
-  return { name: "blank.png", mimeType: "image/png", buffer: Buffer.from(base64, "base64") };
 }
 
 export function recordPosts(page: Page): { url: string; body: string }[] {
