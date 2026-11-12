@@ -108,7 +108,7 @@ EDD_REF_RE = re.compile(r"\bEDD-([A-Z][A-Za-z]*)\b")
 TRACE_SRC = "02a slide 19, traceability"
 
 # Requirements numbered outside the tens of their feature, because its range is full.
-EXTRA_REQ_FEATURE = {70: 2, 71: 0, 72: 0, 73: 4, 74: 5}
+EXTRA_REQ_FEATURE = {70: 2, 71: 0, 72: 0, 73: 4, 74: 5, 75: 5}
 
 WEAK_WORDS = [
     "fast", "quick", "quickly", "user-friendly", "user friendly", "easy", "easily",

@@ -228,21 +228,22 @@ Rules for REQ-13, checked in this order. Only the result "Present" marks the stu
 | REQ-49 | The system shall use the topic from the lesson summary as the lecture topic of the forum title when the teacher has not entered one. | Must | D-4 |
 | REQ-73 | The system shall show a new summary only to the teacher until the teacher publishes it to the class, and let the teacher hide it again. | Must | D-4 |
 
-#### F5: LLM homework review, REQ-50 to REQ-59 and REQ-74
+#### F5: LLM homework review, REQ-50 to REQ-59, REQ-74 and REQ-75
 
 | ID | Requirement | Priority | Source |
 |----|-------------|----------|--------|
-| REQ-50 | The system shall let the teacher publish a homework as a PDF file in the lesson's homework tab. | Must | D-5 |
+| REQ-50 | The system shall let the teacher of a course publish a homework as a PDF file from the homework tab of any lesson of that course. | Must | D-5 |
 | REQ-51 | The system shall automatically generate, when a homework is published, a review guide holding its questions, their sections, the requirements of each section and the review instructions for that homework, which every check of that homework uses unchanged. | Must | D-5 |
 | REQ-52 | The system shall show next to each homework a button that lets a student upload a solution as a PDF file to get feedback before submitting. | Must | D-5 |
 | REQ-53 | The system shall show the report of a check only to the student who requested it, giving for each section the score, what meets the requirements, what is missing and a direction for improvement. | Must | D-5 |
 | REQ-54 | The system shall give an answered section a score from 1 to 100, and give an unanswered section 0 with a notice at the top of the report. | Must | D-5 |
 | REQ-55 | The system shall calculate a question's score as the plain average of its sections, and the overall score as the plain average of all the questions, rounded to a whole number with a minimum of 1, regardless of any points stated in the homework. | Must | D-5 |
 | REQ-56 | The system shall allow a student up to 3 checks per homework, counting only checks that did not fail for a technical reason, with each check replacing the previous result in the chart and the third one final. | Must | D-5 |
-| REQ-57 | The system shall show everyone linked to the lesson a chart of every checked student's name and position, highlighting the viewing student's place, with equal scores sharing a place, that can be filtered by overall score, question or section. | Must | D-5 |
+| REQ-57 | The system shall show everyone linked to the course a chart of every checked student's name and position, highlighting the viewing student's place, with equal scores sharing a place, that can be filtered by overall score, question or section. | Must | D-5 |
 | REQ-58 | The system shall never reveal in a report the answer, working code, a final result or a rewritten passage of the homework. | Must | D-5 |
 | REQ-59 | The system shall delete a student's solution file within 1 minute of the end of the check, keeping only the scores, the report, the check number and the time. | Must | D-5 |
-| REQ-74 | The system shall let the teacher of the lesson delete a homework they published, after confirming, together with its file, its review guide and the students' checks. | Must | D-5 |
+| REQ-74 | The system shall let the teacher of the course delete a homework they published, after confirming, together with its file, its review guide and the students' checks. | Must | D-5 |
+| REQ-75 | The system shall show in the homework tab of every lesson of a course all the homework of that course, newest first, each with the date and the lecture in which it was published. | Must | D-5 |
 
 #### F6: Forms, REQ-60 to REQ-69
 
@@ -308,8 +309,8 @@ See [05-use-cases.md](05-use-cases.md).
 | Poll | Entity | Lesson, question, answer options, open or closed, whether another answer is allowed |
 | Form | Entity | Lesson, questions and their types, open or closed, whether another answer is allowed |
 | Answer | Entity | The poll or form, student, the answer |
-| Lesson summary | Entity | Lesson, the four parts of the summary page |
-| Homework | Entity | Lesson, PDF file, review guide (questions, sections, requirements, review instructions) |
+| Lesson summary | Entity | Lesson, the text of the summary, whether the class sees it |
+| Homework | Entity | Course, the lesson in which it was published, PDF file, review guide (questions, sections, requirements, review instructions) |
 | Homework check | Entity | Homework, student, check number, time, section scores, overall score, report |
 | Attendance sheet | Spreadsheet columns | ID number, name, attendance, how it was decided, note for flagged students |
 
@@ -366,14 +367,14 @@ See [05-use-cases.md](05-use-cases.md).
 | REQ-47 Teacher edits the summary | UC-04 | SDD §2.7, EDD-LessonSummary | TC-087 | Passed |
 | REQ-48 Delete the recording | UC-04 | SDD §2.7, EDD-LessonSummary | TC-088, TC-102 | Passed |
 | REQ-49 Forum topic from the summary | UC-04 | SDD §2.7, EDD-LessonSummary | TC-089 | Passed |
-| REQ-50 Publish a homework PDF | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-130 | Passed |
+| REQ-50 Publish a homework PDF for the course | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-130 | Not run |
 | REQ-51 Generate the review guide | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-131 | Passed |
 | REQ-52 Upload a solution for feedback | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-132 | Passed |
 | REQ-53 Report for the student only | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-133 | Passed |
 | REQ-54 Section scores from 0 to 100 | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-134 | Passed |
 | REQ-55 Question and overall scores | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-135 | Passed |
 | REQ-56 Three checks per homework | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-136 | Passed |
-| REQ-57 Class chart with filter | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-137 | Passed |
+| REQ-57 Course chart with filter | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-137 | Not run |
 | REQ-58 Report never reveals the answer | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-138 | Passed |
 | REQ-59 Delete the solution file | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-139 | Passed |
 | REQ-60 Build a form | UC-03 | SDD §2.6, EDD-Polls | TC-070, TC-101 | Passed |
@@ -391,6 +392,7 @@ See [05-use-cases.md](05-use-cases.md).
 | REQ-72 Weekly timetable of lessons | UC-08 | SDD §2.1 | None yet | Gap |
 | REQ-73 Summary shown to the class only after publishing | UC-04 | SDD §2.7, EDD-LessonSummary | None yet | Gap |
 | REQ-74 Teacher deletes a homework | UC-05 | SDD §2.8, EDD-HomeworkReview | None yet | Gap |
+| REQ-75 Course homework in every lesson | UC-05 | SDD §2.8, EDD-HomeworkReview | None yet | Gap |
 | NFR-01 Hidden instructions do not raise the score | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-140 | Passed |
 | NFR-02 Forum and poll updates within 2 s | UC-02, UC-03 | SDD §2.11, EDD-Forum, EDD-Polls | TC-110 | Not run |
 | NFR-03 Attendance response within 2 s | UC-01 | SDD §2.4, EDD-Attendance | TC-111 | Not run |
