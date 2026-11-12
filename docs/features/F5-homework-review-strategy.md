@@ -1,7 +1,7 @@
 # F5 Homework review: approach and decisions
 
 What the team agreed about the homework review, before writing its documents.
-Agreed on 2026-11-08 and updated on 2026-11-11 after a walk-through of the working product. This note feeds the homework requirements in the SRS (F5), the homework review use case, the homework review EDD, its test cases and the LLM section of the tools report.
+Agreed on 2026-11-08 and updated on 2026-11-11 and 2026-11-12 after walk-throughs of the working product. This note feeds the homework requirements in the SRS (F5), the homework review use case, the homework review EDD, its test cases and the LLM section of the tools report.
 
 ## 1. The idea
 
@@ -22,13 +22,13 @@ This is a pilot, not a production system, so privacy reviews and outside approva
    All three are saved with the homework and reused unchanged for every student's check.
 3. **Only the rules that have nothing to do with the subject are fixed:** the score scale, the shape of the answer, and the protections in section 4.
 4. **No teacher approval.** The teacher publishes the PDF and can view the chart. They do not approve the generated reviewer and do not receive the feedback.
-5. **Where it sits.** In the lesson's homework tab, next to each homework, a "Get feedback before submitting" button.
+5. **Where it sits.** The homework tab of every lesson of a course lists all the homework of the course, newest first. Next to each homework it shows the date and the lecture in which it was published, and a "Get feedback before submitting" button. The teacher publishes a homework from the homework tab of any of the lessons, and it appears in all the lessons of the course. Homework published before this change becomes homework of its course.
 6. **The report** opens after the check. For each section it shows the score, what meets the requirements, what is missing and a direction for improving it. The student sees their scores.
 7. **The scale.** An answered section gets one number from 1 to 100. A section that was not answered gets 0, and the report points out at the top which sections the student missed.
 8. **The overall score.** A question's score is the plain average of its sections, and the overall score is the plain average of all the questions. Points stated in the homework do not change this. The result is rounded and never goes below 1.
 9. **Three checks per student per homework.** Each check replaces that student's previous result in the chart. The third check is final for that student.
-10. **The chart.** The students of the lesson and its teacher see the name of every student who was checked and where their score stands. A student's own place is highlighted. A filter switches between the overall score, any question and any section of that homework.
-11. **Deleting a homework.** The teacher of the lesson can delete a homework they published, after confirming. Its file, its review guide and the students' checks are deleted with it.
+10. **The chart.** The students of the course and its teacher see the name of every student who was checked and where their score stands. A student's own place is highlighted. A filter switches between the overall score, any question and any section of that homework.
+11. **Deleting a homework.** The teacher of the course can delete a homework they published, after confirming. Its file, its review guide and the students' checks are deleted with it.
 
 ## 3. Keeping scores steady
 

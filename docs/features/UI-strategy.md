@@ -1,7 +1,7 @@
 # User interface: approach and decisions
 
 What the team agreed about the look and the screens of the product, before writing the design documents.
-Agreed on 2026-11-09 and updated on 2026-11-11 after a walk-through of the working product. This note feeds the SRS, the SDD and the tools report.
+Agreed on 2026-11-09 and updated on 2026-11-11 and 2026-11-12 after walk-throughs of the working product. This note feeds the SRS, the SDD and the tools report.
 
 ## 1. The idea
 
@@ -23,7 +23,7 @@ All the screens share one calm look: black bands for titles and navigation, and 
 7. **Entry.** One sign-in for everyone, and then a first screen by role.
 8. **Admin.** Works on a computer, on one screen with the weekly timetable and a form for a new course.
 9. **Teacher and student.** Work on a phone. The first screen is a weekly timetable of their lessons. Above it, a card leads in one tap to the lesson happening now, or to the next one. On a computer the whole week shows, Sunday to Friday. On a phone one day shows at a time, under a strip of the days, and it opens on today. Face registration and sign-out sit in the top bar.
-10. **Lesson page.** One page with three tabs: attendance, forum and homework.
+10. **Lesson page.** One page with three tabs: attendance, forum and homework. The tabs sit in the middle of the page's band, and each tab reacts when the pointer rests on it. The open tab already says where the user is, so the content below it starts with no main title. Inner headings that separate parts of a tab stay.
 11. **Attendance, teacher.** A large button to photograph the class. After the photos, the same place shows the time left to collect responses, and below it the count per result, the row-and-seat requests and the attendance sheet with a download button.
 12. **Attendance, student.** The student's result. A student who is not marked present picks their row and seat on a map of the hall and sends a request.
 13. **Forum.** Messages and replies, polls, forms and the button to the lesson summary. A list of all the lectures is one button away.
@@ -37,4 +37,4 @@ All the screens share one calm look: black bands for titles and navigation, and 
 ### Added after the walk-through (2026-11-11)
 
 17. **Icons.** Common actions show a thin-line icon instead of a word: expand (two arrows), close, delete (a bin), reply, edit, back and sign-out. Main actions, such as sending or publishing, show an icon and a short word. Every icon keeps its word as a hint and for screen readers, and no icon shows a face.
-18. **Long actions keep running.** Publishing a homework, checking a solution, uploading a recording, processing the class photos and registering a face go on when the user moves to another page of the product. A small sign in the top bar shows that something is running, and a short message says when it has ended. Closing or reloading the page during an upload asks the user first, because only that stops it.
+18. **Long actions keep running.** Publishing a homework, checking a solution, uploading a recording, processing the class photos and registering a face go on when the user moves to another page of the product. While it runs, the page where it started says in words what is happening and about how long it takes. No loading sign moves on the screen. A short message says when it has ended. Closing or reloading the page during an upload asks the user first, because only that stops it.
