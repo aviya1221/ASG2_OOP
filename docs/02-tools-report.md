@@ -99,6 +99,8 @@ The method is photo attendance ([interactive mock of the flow](assets/F1-attenda
 3. The server compares the face-prints and keeps only the result.
 4. Students who are not matched choose their row and seat, and the teacher approves them.
 
+**Changed on 2026-11-12 ([ADR-10](#adr-10-attendance-by-confirmation-checked-against-a-face-count)):** a test on a real class photo showed that recognising each student is not reliable enough. Students now confirm by themselves, and the class photo only counts faces. Of option 1 below, only the YuNet face finder is still used.
+
 So the need is a face tool that:
 - runs inside a web page on a phone, with nothing to install;
 - finds the small faces in the back rows of a lecture hall;
@@ -486,6 +488,8 @@ The need comes from the [forum decisions](features/F2-lesson-forum-strategy.md) 
 
 ### ADR-1: Face tool for photo attendance
 
+**Replaced on 2026-11-12 by [ADR-10](#adr-10-attendance-by-confirmation-checked-against-a-face-count).** Only the YuNet face finder is still used, to count the faces in the class photo. The rest stays as the record of the earlier decision.
+
 - **Context:** photo attendance needs a face tool that runs inside the web page on the teacher's phone and on the student's phone. It has to find the back-row faces and recognise them. The server never receives photos (section 2.4).
 - **Decision:** option 1.
   - OpenCV.js 4.10 runs the YuNet face finder on the full-resolution photo, with a confidence of 0.5.
@@ -613,16 +617,35 @@ The need comes from the [forum decisions](features/F2-lesson-forum-strategy.md) 
   - The same work can get a different section score in another check.
   - Both models are settings: `GEMINI_REVIEW_MODEL` and `GEMINI_TEXT_MODEL`.
 
+### ADR-10: Attendance by confirmation, checked against a face count
+
+- **Context:** on 2026-11-12 we ran the whole flow of ADR-1 on a real photo of a lecture hall with 41 faces, with 9 students registered.
+  - One student was marked present on another person's face, a second student was matched to a stranger, and a student who sat in the hall was missed.
+  - Right matches scored 0.35 to 0.43, and a wrong match scored up to 0.40, so no threshold separates them.
+  - The face finder found 41 faces in one shot of the hall.
+- **Decision:** we stop recognising each student ([decisions](features/F1-attendance-strategy.md)).
+  - Each student confirms "I was in the lesson" within 4 minutes of one class photo.
+  - The teacher's phone only counts the faces in the photo, with the YuNet face finder of ADR-1.
+  - When more students confirmed than there are faces, every student who confirmed picks the number on their face in the shared photo.
+- **Alternatives rejected:**
+  - A stricter threshold of 0.42: it also drops right matches, since a right and a wrong match both scored 0.40.
+  - A "clear winner" rule, where the best face must beat the second by 0.05: it separated this test, but it rests on 3 right matches only.
+  - Every student picks their face and the phone checks only that face: it keeps the face registration, and every student taps once more in every lesson.
+- **Consequences:**
+  - No face-print is kept, and the face registration, SFace and ONNX Runtime Web leave the product. The page downloads about 11 MB once instead of 64 MB.
+  - The shared photo reaches the server and the students who confirmed, for 24 hours.
+  - The check catches a student who confirmed from outside the hall only when the confirmations outnumber the faces. If someone in the hall did not confirm, one such student passes unnoticed. The teacher can change any result by hand.
+
 ## 6. Technology risks
 
 | ID | Risk | Probability | Impact | Mitigation |
 |----|------|-------------|--------|------------|
-| R1 | Photos of a real lecture hall give worse results than the simulation, which used shrunk press photos | Medium | High | Shoot in a real hall with our team before the design is final; students who are not matched use the row-and-seat step |
+| R1 | Photos of a real lecture hall give worse results than the simulation, which used shrunk press photos | Medium | High | Happened on 2026-11-12, and led to ADR-10: the photo now only counts faces |
 | R2 | Finding the faces in a full-resolution photo takes too long on the teacher's phone | Medium | Medium | Time it on phones with the hands-on page; if it is too slow, shrink the photo only while the back-row faces stay at 28 px or more |
-| R3 | The 64 MB first download is slow on a weak network | Medium | Low | Download the models before the lesson (students at registration, the teacher on the first visit) and keep them in the browser; test the 10 MB version of SFace (not tested yet) |
+| R3 | The 11 MB first download of the face finder is slow on a weak network | Low | Low | Only the teacher's phone downloads it, and the browser keeps it for a week |
 | R4 | The face finder fails on photos above about 12 MP, and some phones save larger photos | High | High | Before finding faces, shrink a larger photo to 12 MP, or split it into two overlapping halves; test on phones |
-| R5 | In real hall photos, different people pass the match threshold more often than in the benchmark (1.2% against 0.1% of pairs), so an absent student could match someone else's face | Medium | High | Measure it again with registration photos and camera originals; use a stricter threshold for faces under 30 px; a face claimed by two students goes to the teacher |
-| R6 | Students with their heads bent down, or faces under 25 px, are not recognised | High | Medium | Ask the class to raise their heads before the photo; take 2 or 3 photos; students who are not matched use the row-and-seat step |
+| R5 | In real hall photos, different people pass the match threshold more often than in the benchmark (1.2% against 0.1% of pairs), so an absent student could match someone else's face | Medium | High | Happened on 2026-11-12, and led to ADR-10: no face is matched to a student any more |
+| R6 | Students with their heads bent down, or faces under 16 px, are not found, so the count is too low | High | Medium | Ask the class to raise their heads before the photo; a student who is not in the shared photo says so, and the teacher decides |
 | R7 | Gemini stays overloaded or a usage limit is reached during the pilot (error 503 in the spike) | Medium | High | A second model, the sound-only fallback, and `FakeLlmClient` with a ready result as plan B |
 | R8 | Mistakes in the transcript or the board list reach the summary page | High | Medium | The second review against the transcript and the board list; the teacher can edit the text or upload again |
 | R9 | A full lesson behaves differently from the 10-minute clip we tested, in limits, time or quality | Medium | Medium | Keep the pilot to recordings of about 10 minutes; test a full lesson before allowing longer ones |
@@ -638,8 +661,9 @@ The need comes from the [forum decisions](features/F2-lesson-forum-strategy.md) 
 | R19 | The AI assistant states something wrong, or writes code that only looks right | Medium | High | The team reads results against the raw numbers; tests and the document check run before every commit |
 | R20 | Phone notifications work on an iPhone only for a site added to the home screen; not yet checked | Medium | Medium | Check on real phones before the pilot; a message inside the site is the alternative |
 | R21 | The PollPosition code cannot be reused for quick polls, because it is built on Firebase; not yet checked | Low | Low | A quick poll has one question, so we can write it ourselves |
-| R22 | The web client becomes unavailable to everyone until the next month when the free plan of Netlify runs out of credits: 300 a month, 15 for each production publish and 20 for each GB served | Medium | High | Publish only at milestones, not on every push; a class of 50 downloading the 64 MB of face tools once uses about 65 credits; the web client is static files, so it can move to another free host |
+| R22 | The web client becomes unavailable to everyone until the next month when the free plan of Netlify runs out of credits: 300 a month, 15 for each production publish and 20 for each GB served | Medium | High | Publish only at milestones, not on every push; the teacher's phone downloading the 11 MB of the face finder once uses less than 1 credit; the web client is static files, so it can move to another free host |
 | R23 | One review can move a section by up to 35 points between checks, so a student sees a different score for similar work | High | Medium | The same file with the same seed gets the same score; the score is feedback before handing in, not a grade |
 | R24 | Arabic letters appear inside Hebrew words in a report (5 sections in the spike) | Medium | Low | The server looks for Arabic letters and asks again once with another seed |
 | R25 | `gemini-3.6-flash`, which makes the guides, allows 20 requests a day and was often busy | Medium | Medium | A guide is one request per homework, and the teacher can publish again; `gemini-3.5-flash-lite` can make the guide if needed, not yet tested |
 | R26 | A report gives away part of the answer (1 of 16 reports in the spike) | Low | Medium | The stricter wording, and the spike's test set runs again before each release |
+| R27 | An absent student confirms from outside the hall while a student in the hall does not confirm, so the count still adds up | Medium | Medium | The teacher can change any result by hand; the notification asks every student in the hall to confirm |

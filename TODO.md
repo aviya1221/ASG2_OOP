@@ -309,7 +309,7 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
   - [x] Tests: confirmations, the face count, picks and the teacher's changes
   - [x] Documents: SRS
   - [x] Documents: use cases
-  - [ ] Documents: tools report (a decision in place of ADR-1)
+  - [x] Documents: tools report (a decision in place of ADR-1)
   - [ ] Documents: SDD
   - [ ] Documents: EDD-Attendance
   - [ ] Documents: STD
