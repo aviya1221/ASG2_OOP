@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useRef, useState, type ChangeEvent } from "react";
-import { Camera, Check, Download, Send, X } from "lucide-react";
+import { Camera, Check, Download, Send, Share2, X } from "lucide-react";
 import { Link } from "react-router";
 import { useSession, type Person } from "../accounts/session.tsx";
-import { callServer, ServerError } from "../lib/server.ts";
+import { callServer, ServerError, uploadToServer } from "../lib/server.ts";
 import { supabase } from "../lib/supabase.ts";
 import { downloadSheet, loadSheet, RESULT_LABELS, type SheetRow } from "./AttendanceSheet.ts";
-import { canvasToJpeg, ClassPhotoStore } from "./ClassPhotoStore.ts";
+import { canvasToJpeg, ClassPhotoStore, type StoredRound } from "./ClassPhotoStore.ts";
 import { faceEngine, photoToCanvas } from "./FaceEngine.ts";
+import { countFaces, drawNumbers, numberUnknownFaces, type FaceCount, type FaceSpot } from "./numberedPhoto.ts";
 import { useEndedCount, useTask, useTasks } from "../tasks/BackgroundTasks.tsx";
 import { ICON, IconButton } from "../ui/Icon.tsx";
 
@@ -204,6 +205,196 @@ function PhotoTaker({ lessonId }: { lessonId: string }) {
   );
 }
 
+interface SharedPhoto {
+  photoNo: number;
+  filePath: string;
+  expiresAt: Date;
+  removed: boolean;
+}
+
+async function loadSharedPhotos(lessonId: string): Promise<SharedPhoto[]> {
+  const { data } = await supabase.from("shared_photos").select("photo_no, file_path, expires_at, file_removed").eq("lesson_id", lessonId).order("photo_no");
+  return (data ?? []).map((row) => ({ photoNo: row.photo_no, filePath: row.file_path, expiresAt: new Date(row.expires_at), removed: row.file_removed }));
+}
+
+function timeOf(date: Date): string {
+  return date.toLocaleString("he-IL", { weekday: "long", hour: "2-digit", minute: "2-digit" });
+}
+
+/** The shared class photos. A tap opens the full photo, so a face can be enlarged. */
+function SharedPhotoList({ photos }: { photos: SharedPhoto[] }) {
+  const [urls, setUrls] = useState<string[]>([]);
+  const paths = photos.filter((photo) => !photo.removed).map((photo) => photo.filePath);
+  const joined = paths.join(",");
+
+  useEffect(() => {
+    if (!joined) return;
+    void supabase.storage
+      .from("class-photos")
+      .createSignedUrls(joined.split(","), 3_600)
+      .then(({ data }) => setUrls((data ?? []).map((item) => item.signedUrl ?? "")));
+  }, [joined]);
+
+  return (
+    <div className="class-photos">
+      {urls.map((url, index) =>
+        url ? (
+          <a key={url} href={url} target="_blank" rel="noreferrer">
+            <img src={url} alt={`תמונת הכיתה ${index + 1} עם מספרים`} />
+          </a>
+        ) : null,
+      )}
+    </div>
+  );
+}
+
+const SHARE_ERRORS: Record<string, string> = {
+  round_open: "אפשר לשתף רק אחרי השעה.",
+  already_shared: "התמונה כבר שותפה.",
+  identified_face: "התוצאות השתנו. אפשר לפתוח את הלשונית מחדש ולנסות שוב.",
+  file_too_large: "התמונה גדולה מדי לשיתוף.",
+};
+
+function countText(count: FaceCount): string {
+  const unknown = count.unknown === 1 ? "ופרצוף אחד לא זוהה" : `ו־${count.unknown} לא זוהו`;
+  return `בתמונות נמצאו ${count.total} פרצופים. ${count.identified} שייכים לסטודנטים שזוהו, ${unknown}.`;
+}
+
+/**
+ * After the hour the teacher sees how many faces belong to no present student, and may share the photo
+ * with a number on each of them. The photo waits only on the phone that took it.
+ */
+function ClassPhotoShare({ lessonId, hourOver }: { lessonId: string; hourOver: boolean }) {
+  const { start } = useTasks();
+  const sharing = useTask("class-share", lessonId);
+  const ended = useEndedCount(lessonId);
+  const [stored, setStored] = useState<StoredRound | null | undefined>(undefined);
+  const [identified, setIdentified] = useState<FaceSpot[] | null>(null);
+  const [shared, setShared] = useState<SharedPhoto[] | null>(null);
+  const [drawn, setDrawn] = useState<{ photoNo: number; jpeg: Blob; url: string }[]>([]);
+
+  const load = useCallback(() => {
+    void ClassPhotoStore.load(lessonId)
+      .catch(() => null)
+      .then(setStored);
+    void supabase
+      .from("identified_faces")
+      .select("photo_no, face_no")
+      .eq("lesson_id", lessonId)
+      .then(({ data }) => setIdentified((data ?? []).map((row) => ({ photoNo: row.photo_no, faceNo: row.face_no }))));
+    void loadSharedPhotos(lessonId).then(setShared);
+  }, [lessonId]);
+  useEffect(() => {
+    if (hourOver) load();
+  }, [hourOver, load, ended]);
+
+  const numbers = stored && !stored.dismissed && identified ? numberUnknownFaces(stored.photos, identified) : [];
+  const numbersKey = JSON.stringify(numbers);
+
+  useEffect(() => {
+    if (!stored || numbers.length === 0 || (shared && shared.length > 0)) return;
+    let cancelled = false;
+    let made: { photoNo: number; jpeg: Blob; url: string }[] = [];
+    void (async () => {
+      for (const [photoNo, photo] of stored.photos.entries()) {
+        const onPhoto = numbers.filter((item) => item.photoNo === photoNo);
+        if (onPhoto.length === 0) continue;
+        const jpeg = await drawNumbers(photo, onPhoto);
+        made.push({ photoNo, jpeg, url: URL.createObjectURL(jpeg) });
+      }
+      if (cancelled) made.forEach((item) => URL.revokeObjectURL(item.url));
+      else setDrawn(made);
+    })();
+    return () => {
+      cancelled = true;
+      made.forEach((item) => URL.revokeObjectURL(item.url));
+      made = [];
+    };
+    // The numbers are compared by value, through their key.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stored, numbersKey, shared]);
+
+  if (!hourOver || stored === undefined || identified === null || shared === null) return null;
+
+  if (shared.length > 0) {
+    const until = shared[0]!.expiresAt;
+    return (
+      <div className="stack">
+        <h2>תמונת הכיתה עם המספרים</h2>
+        <p>{until > new Date() ? `התמונה שותפה עם הסטודנטים שלא זוהו. אפשר לבחור מספר עד ${timeOf(until)}.` : "הזמן לבחירת מספר הסתיים, והתמונה נמחקה."}</p>
+        {until > new Date() && <SharedPhotoList photos={shared} />}
+      </div>
+    );
+  }
+  if (!stored) return <p className="muted">את תמונת הכיתה עם המספרים אפשר לשתף רק מהמכשיר שצילם אותה.</p>;
+  if (stored.dismissed) return <p className="muted">בחרת לא לשתף את תמונת הכיתה.</p>;
+
+  const count = countFaces(stored.photos, numbers);
+  if (count.unknown === 0) return <p>בתמונות נמצאו {count.total} פרצופים, וכולם שייכים לסטודנטים שזוהו.</p>;
+
+  function share() {
+    start(
+      {
+        kind: "class-share",
+        key: lessonId,
+        scope: lessonId,
+        label: "שיתוף תמונת הכיתה",
+        doneText: "תמונת הכיתה שותפה עם הסטודנטים שלא זוהו.",
+        failText: "שיתוף תמונת הכיתה נכשל.",
+        link: `/lessons/${lessonId}/attendance`,
+        stopsOnClose: true,
+      },
+      async () => {
+        const form = new FormData();
+        form.set("lessonId", lessonId);
+        form.set("photoNos", JSON.stringify(drawn.map((item) => item.photoNo)));
+        form.set("numbers", JSON.stringify(numbers));
+        for (const item of drawn) form.append("photos", item.jpeg, `${item.photoNo}.jpg`);
+        await uploadToServer("/attendance/photos", form);
+        await ClassPhotoStore.remove(lessonId).catch(() => undefined);
+      },
+    );
+  }
+
+  async function dismiss() {
+    await ClassPhotoStore.dismiss(lessonId).catch(() => undefined);
+    load();
+  }
+
+  const busy = sharing?.status === "running";
+  const problem = sharing?.status === "failed" ? (SHARE_ERRORS[sharing.error instanceof ServerError ? sharing.error.code : ""] ?? "השיתוף נכשל. אפשר לנסות שוב.") : "";
+
+  return (
+    <div className="stack">
+      <h2>פרצופים שלא זוהו</h2>
+      <p>{countText(count)}</p>
+      <p className="muted">אפשר לשתף את התמונה עם מספר על כל פרצוף שלא זוהה. סטודנט שלא זוהה יבחר את המספר שלו, ואת הבחירה מאשרים כאן.</p>
+      <div className="class-photos">
+        {drawn.map((item) => (
+          <a key={item.url} href={item.url} target="_blank" rel="noreferrer">
+            <img src={item.url} alt={`תמונה ${item.photoNo + 1} עם מספרים`} />
+          </a>
+        ))}
+      </div>
+      {busy && <p role="status">משתף...</p>}
+      {problem && (
+        <p className="problem" role="alert">
+          {problem}
+        </p>
+      )}
+      <div className="actions">
+        <button className="primary" onClick={share} disabled={busy || drawn.length === 0}>
+          <Share2 {...ICON} />
+          שיתוף התמונה עם מספרים
+        </button>
+        <button onClick={() => void dismiss()} disabled={busy}>
+          אין צורך
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function minutesLeft(expiresAt: Date): number {
   return Math.ceil((expiresAt.getTime() - Date.now()) / 60_000);
 }
@@ -244,6 +435,8 @@ function RoundView({ lessonId, expiresAt }: { lessonId: string; expiresAt: Date 
           </li>
         ))}
       </ul>
+
+      <ClassPhotoShare lessonId={lessonId} hourOver={left <= 0} />
 
       <FaceReplacements />
 

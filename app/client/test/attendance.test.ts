@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { respondToOpenRounds } from "../src/attendance/AttendanceResponder.ts";
 import { sheetCells, type SheetRow } from "../src/attendance/AttendanceSheet.ts";
 import { FaceStore, hashOfPrint } from "../src/attendance/FaceStore.ts";
+import { countFaces, numberUnknownFaces } from "../src/attendance/numberedPhoto.ts";
 
 const mocks = vi.hoisted(() => ({ rounds: [] as { lesson_id: string }[], results: [] as { lesson_id: string }[], callServer: vi.fn() }));
 
@@ -90,5 +91,28 @@ describe("sheetCells", () => {
   it("leaves a cell empty when there is no result yet", () => {
     const [cells] = sheetCells([{ ...ROW, attendance: null, decidedBy: null, flagged: false }]);
     expect(cells?.slice(2)).toEqual(["", "", ""]);
+  });
+});
+
+describe("numberUnknownFaces", () => {
+  const PHOTOS = [
+    { boxes: [[300, 0, 40, 40], [10, 0, 40, 40], [150, 0, 40, 40]] },
+    { boxes: [[50, 0, 40, 40], [20, 0, 40, 40]] },
+  ];
+
+  it("numbers only the faces of no present student, across the photos and left to right", () => {
+    const numbers = numberUnknownFaces(PHOTOS, [{ photoNo: 0, faceNo: 2 }, { photoNo: 1, faceNo: 0 }]);
+    expect(numbers.map((item) => [item.number, item.photoNo, item.faceNo])).toEqual([
+      [1, 0, 1],
+      [2, 0, 0],
+      [3, 1, 1],
+    ]);
+    expect(numbers[0]!.box).toEqual([10, 0, 40, 40]);
+  });
+
+  it("counts every face, the faces of present students and the others", () => {
+    const numbers = numberUnknownFaces(PHOTOS, [{ photoNo: 0, faceNo: 2 }]);
+    expect(countFaces(PHOTOS, numbers)).toEqual({ total: 5, identified: 1, unknown: 4 });
+    expect(numberUnknownFaces(PHOTOS, PHOTOS.flatMap((photo, photoNo) => photo.boxes.map((_, faceNo) => ({ photoNo, faceNo }))))).toEqual([]);
   });
 });

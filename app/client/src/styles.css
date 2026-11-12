@@ -585,6 +585,19 @@ td {
   border-bottom: 1px solid var(--soft);
 }
 
+/* The shared class photos: each fills the width, and a tap opens it full size to enlarge a face. */
+.class-photos {
+  display: grid;
+  gap: 8px;
+}
+
+.class-photos img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
 /* A wide hall scrolls inside its own box, so the page itself never scrolls sideways. */
 .hall {
   overflow-x: auto;

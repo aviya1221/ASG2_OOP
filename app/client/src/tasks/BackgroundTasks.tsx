@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useSession } from "../accounts/session.tsx";
 
-export type TaskKind = "homework-publish" | "homework-check" | "summary-upload" | "class-photo" | "class-send" | "face-register";
+export type TaskKind = "homework-publish" | "homework-check" | "summary-upload" | "class-photo" | "class-send" | "class-share" | "face-register";
 
 /** What a long action is, where its result shows, and what to say when it ends (UI decision 18, NFR-13). */
 export interface TaskInfo {
