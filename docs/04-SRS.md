@@ -75,7 +75,7 @@ Each lesson has three tabs, and each tab can hold further tabs or processes of i
 
 | Tab | What it holds | Deliverables in the [SoW](03-SoW.md) |
 |-----|---------------|---------------------|
-| Attendance | Photo attendance, row-and-seat requests and the attendance sheet | D-1 |
+| Attendance | Confirming presence, the class photo that counts faces, picking a number in the photo and the attendance sheet | D-1 |
 | Forum | Messages, polls, forms and the button to the lesson summary | D-2, D-3, D-4 |
 | Homework | Published homework, feedback before submitting and the class chart | D-5 |
 
@@ -85,10 +85,10 @@ Each lesson has three tabs, and each tab can hold further tabs or processes of i
 |------|---------|
 | Lesson | One scheduled meeting of a course in the timetable |
 | Linked to a lesson | The teacher of the lesson and the students of its course |
-| Face-print | A list of numbers that describes a face, used to compare two faces |
-| Hash | A one-way code made from a face-print at registration, used to detect a changed face-print |
-| Match threshold | The score at or above which two face-prints count as the same person ([ADR-1](02-tools-report.md#adr-1-face-tool-for-photo-attendance)) |
-| Row and seat | A place in the hall: row 1 is nearest the board, seat 1 is next to the window |
+| Class photo | The one photo of the class that the teacher takes in a lesson. The teacher's phone counts the faces in it and does not tell whose face each one is |
+| Confirmation | A student's statement "I was in the lesson", sent from their own phone |
+| Time to confirm | The 4 minutes from the class photo, in which students may confirm |
+| Number pick | A student's choice of the number drawn on their face in the shared class photo, or their statement that they are not in it |
 | Pilot | The first use of the product in a live class |
 
 ### 1.4 References
@@ -97,7 +97,7 @@ Each lesson has three tabs, and each tab can hold further tabs or processes of i
 - [Technical tools report](02-tools-report.md)
 - [Use cases](05-use-cases.md)
 - [Polls build strategy](features/F3-polls-strategy.md)
-- [Attendance flow mock](assets/F1-attendance-flow-demo.html)
+- [Attendance decisions](features/F1-attendance-strategy.md)
 
 ## 2. Overall description
 
@@ -115,20 +115,21 @@ The product is standalone: every feature runs inside it, with no outside poll or
 
 ### 2.3 Operating environment
 
-The product runs in a web browser on a phone or a computer. The teacher's phone and each student's phone need a camera for attendance, and every user needs a network connection.
+The product runs in a web browser on a phone or a computer. The teacher's phone needs a camera for attendance, and every user needs a network connection.
 
 ### 2.4 Constraints
 
 - Nothing is installed on a phone: the product is a website.
 - The product does not connect to Moodle, Zoom or personal-information systems.
 - Every service runs on a free tier during the pilot.
-- The server never receives a photo taken for attendance.
+- The product keeps no face-print or other data that tells whose face is in a photo.
+- The server receives the class photo only when the teacher shares it, and deletes it after 24 hours.
 
 ### 2.5 Assumptions
 
 - The admin has the list of students for each course.
-- Every student has a phone with a camera and a browser.
-- The teacher's phone takes photos in which the back-row faces are at least 28 px high ([ADR-1](02-tools-report.md#adr-1-face-tool-for-photo-attendance)).
+- Every student has a phone with a browser.
+- The class photo shows every face in the hall at least 16 px high, the smallest size at which the face finder found faces in our tests ([ADR-1](02-tools-report.md#adr-1-face-tool-for-photo-attendance)).
 
 ## 3. Specific requirements
 
@@ -149,38 +150,41 @@ The product runs in a web browser on a phone or a computer. The teacher's phone 
 | REQ-04 | The system shall show each teacher and each student only the lessons of their own courses. | Must | D-1 to D-5 |
 | REQ-05 | The system shall give each student access to their lessons with no room code or join step. | Must | D-1 to D-5 |
 | REQ-06 | The system shall show each lesson as one page with three tabs: attendance, forum and homework. | Must | D-1 to D-5 |
-| REQ-07 | The system shall let a student register their face once, from 1 photo taken on their own phone. | Must | D-1 |
-| REQ-08 | The system shall let a student opt out of face recognition. | Must | D-1 |
-| REQ-09 | The system shall require approval from a teacher of one of the student's courses before the student replaces their registered face. | Should | D-1 |
+| REQ-07 | Withdrawn on 2026-11-12, when personal face recognition was removed ([F1 decisions](features/F1-attendance-strategy.md)). It said: the system shall let a student register their face once, from 1 photo taken on their own phone. | Withdrawn | D-1 |
+| REQ-08 | Withdrawn on 2026-11-12, when personal face recognition was removed ([F1 decisions](features/F1-attendance-strategy.md)). It said: the system shall let a student opt out of face recognition. | Withdrawn | D-1 |
+| REQ-09 | Withdrawn on 2026-11-12, when personal face recognition was removed ([F1 decisions](features/F1-attendance-strategy.md)). It said: the system shall require a teacher's approval before a student replaces their registered face. | Withdrawn | D-1 |
 | REQ-71 | The system shall show the name and role of the signed-in user at the top of every screen. | Must | D-1 to D-5 |
 | REQ-72 | The system shall show each teacher and each student their lessons as a weekly timetable, from which the lesson happening now, or else the next one, opens in one tap. | Must | D-1 to D-5 |
 
-#### F1: Attendance and spreadsheet (main feature), REQ-10 to REQ-19
-
-Face registration and opting out are REQ-07 to REQ-09.
+#### F1: Attendance and spreadsheet (main feature), REQ-10 to REQ-19 and REQ-76
 
 | ID | Requirement | Priority | Source |
 |----|-------------|----------|--------|
-| REQ-10 | The system shall let the teacher of a lesson take 1 to 3 photos of the class during that lesson. | Must | D-1 |
-| REQ-11 | The system shall notify every student of the course after the teacher has taken the photos. | Must | D-1 |
-| REQ-12 | The system shall collect a student's response when the student opens the app at any time in the 1 hour after the photos, with no further action by the student. | Must | D-1 |
+| REQ-10 | The system shall let the teacher of a lesson take one class photo during that lesson, and send the server only the number of faces that the teacher's phone finds in it. | Must | D-1 |
+| REQ-11 | The system shall notify every student of the course when the teacher takes the class photo. | Must | D-1 |
+| REQ-12 | The system shall let each student of the course confirm "I was in the lesson" once, only within the 4 minutes after the class photo. | Must | D-1 |
 | REQ-13 | The system shall give each student one attendance result, by the rules in the table below. | Must | D-1 |
-| REQ-14 | The system shall let a student who is not marked present after that hour, or who opted out, request attendance by entering their row and seat. | Must | D-1 |
-| REQ-15 | The system shall let the teacher approve or reject each row-and-seat request. | Must | D-1 |
-| REQ-16 | The system shall keep a record of every row-and-seat request. | Should | D-1 |
-| REQ-17 | The system shall flag a student who has a rejected request, or who has made 3 or more requests in the same course. | Should | D-1 |
-| REQ-18 | The system shall show the teacher the lesson's attendance sheet inside the app, updated with each new result. | Must | D-1 |
+| REQ-14 | The system shall let the teacher share the class photo with a number on every face, only when more students confirmed than there are faces in it. | Must | D-1 |
+| REQ-15 | The system shall show the shared class photo only to the teacher and to the students who confirmed, for 24 hours from the sharing. | Must | D-1 |
+| REQ-16 | The system shall let each student who confirmed pick the number on their face in the shared photo, or state that they are not in it. | Must | D-1 |
+| REQ-17 | The system shall pass to the teacher, for approval or rejection, every pick of a number that another student also picked, and every statement that a student is not in the photo. | Must | D-1 |
+| REQ-18 | The system shall show the teacher the lesson's attendance sheet inside the app, updated with each new confirmation, pick or decision. | Must | D-1 |
 | REQ-19 | The system shall let the teacher download a lesson's attendance sheet as a spreadsheet file with one row per student: ID number, name, attendance, how it was decided and a note for flagged students. | Must | D-1 |
+| REQ-76 | The system shall let the teacher of a lesson set any student's attendance in that lesson to present or not present at any time, and take that decision back. | Must | D-1 |
 
-Rules for REQ-13, checked in this order. Only the result "Present" marks the student present.
+Rules for REQ-13, checked in this order. A student who has a rejected pick in the course is flagged in the sheet.
 
 | Order | Condition | Result |
 |-------|-----------|--------|
-| 1 | The student's face-print does not fit the hash saved at registration | Review |
-| 2 | The student's best score is below the match threshold | Not found |
-| 3 | The score is at or above the match threshold, and no other student matched the same face | Present |
-| 4 | Two or more students matched the same face | Conflict: the system does not choose among them and passes the case to the teacher for follow-up |
-| 5 | The student sent nothing within the hour | No response |
+| 1 | The teacher set the student's attendance (REQ-76) | The teacher's decision |
+| 2 | The teacher has not taken the class photo | No photo |
+| 3 | The 4 minutes are still running | Confirmed, or not confirmed yet |
+| 4 | The student did not confirm within the 4 minutes | Not present |
+| 5 | No more students confirmed than there are faces in the photo | Present |
+| 6 | The teacher approved the student's pick, or no other student picked the same number | Present |
+| 7 | The teacher rejected the student's pick, or approved another student's pick of the same number | Not present |
+| 8 | The student's pick waits for the teacher, or the shared photo is up and the student has not picked yet | Waiting |
+| 9 | The shared photo was deleted and the student did not pick | Not present |
 
 #### F2: Comments and suggestions, REQ-20 to REQ-29 and REQ-70
 
@@ -265,8 +269,8 @@ Rules for REQ-13, checked in this order. Only the result "Present" marks the stu
 | Interface | What passes through it |
 |-----------|------------------------|
 | Google Gemini (AI service) | The server sends homework files, solutions and lesson recordings, and receives answers in a fixed structure. The service key stays on the server. |
-| Phone notifications | The server notifies students through the browser's notification mechanism after the teacher has photographed the class. |
-| Phone camera | The website uses the camera through the browser, for face registration and for photographing the class. |
+| Phone notifications | The server notifies students through the browser's notification mechanism when the teacher photographs the class, and when the teacher shares the class photo with numbers. |
+| Phone camera | The website uses the camera of the teacher's phone through the browser, for photographing the class. |
 | Files | Homework and solutions are uploaded as PDF files, and recordings as video files. The attendance sheet is downloaded as a spreadsheet file, in the format chosen in the [tools report](02-tools-report.md). |
 
 ### 3.3 Non-functional requirements
@@ -277,17 +281,17 @@ Rules for REQ-13, checked in this order. Only the result "Present" marks the stu
 |----|----------|-------------|----------|
 | NFR-01 | Security | Text in a student's file that addresses the reviewer, visible or hidden, shall raise the median score of a section over 3 reviews by no more than 10 points compared with the same file without that text. | Must |
 | NFR-02 | Performance | With 50 students connected, a new forum message or poll result shall appear for everyone within 2 s in 95% of cases. | Must |
-| NFR-03 | Performance | With 50 students responding in the same minute, the server shall process a student's attendance response within 2 s in 95% of cases. | Must |
-| NFR-04 | Performance | The teacher's phone shall find the faces in a class photo with 50 faces within 2 minutes per photo. | Must |
+| NFR-03 | Performance | With 50 students confirming in the same minute, the system shall save a student's confirmation within 2 s in 95% of cases. | Must |
+| NFR-04 | Performance | The teacher's phone shall find the faces in a class photo with 50 faces within 2 minutes. | Must |
 | NFR-05 | Performance | The summary of a 10-minute recording shall be ready within 5 minutes of the end of the upload. | Must |
 | NFR-06 | Performance | The report on a solution of up to 20 pages shall be ready within 3 minutes. | Must |
 | NFR-07 | Usability | The website shall work with no installation in the last 2 versions of Chrome on Android and of Safari on iPhone. | Must |
 | NFR-08 | Security | The service key of the AI service shall appear in 0 of the server's responses to a browser. | Must |
-| NFR-09 | Security | The server shall delete a student's face-print within 1 s of the comparison. | Must |
-| NFR-10 | Security | The server shall delete the face-prints from a class photo within 1 minute of the end of the hour in which students can respond. | Must |
+| NFR-09 | Security | The server shall delete a shared class photo within 10 minutes of the end of its 24 hours while it runs, and within 1 minute of starting when the photo's time ended while it was down. | Must |
+| NFR-10 | Security | The teacher's phone shall delete the class photo right after sharing it, or within 1 minute of the end of the 4 minutes when there is no need to share it. | Must |
 | NFR-11 | Availability | The product shall be available for 99% of lesson time during the pilot. | Must |
-| NFR-12 | Usability | The website shall fit every screen width from 320 px to 1920 px, with sideways scrolling only inside the box of content wider than the screen, such as the map of the hall. | Must |
-| NFR-13 | Usability | An action that has started (publishing a homework, checking a solution, uploading a recording, processing the class photos or registering a face) shall go on to its end and show its result in 100% of the cases in which the user moves to another page of the product before it ends. | Must |
+| NFR-12 | Usability | The website shall fit every screen width from 320 px to 1920 px, with sideways scrolling only inside the box of content wider than the screen, such as a wide table. | Must |
+| NFR-13 | Usability | An action that has started (publishing a homework, checking a solution, uploading a recording or processing the class photo) shall go on to its end and show its result in 100% of the cases in which the user moves to another page of the product before it ends. | Must |
 
 ## 4. Appendices
 
@@ -302,9 +306,12 @@ See [05-use-cases.md](05-use-cases.md).
 | User | Entity | ID number, name, role (admin, teacher or student) |
 | Course | Entity | Course number, name, teacher, weekly hours, students |
 | Lesson | Entity | Course, date, lecture number, lecture topic |
-| Face registration | Entity | Student, hash, whether the student opted out |
+| Class photo | Entity | Lesson, number of faces, end of the 4 minutes |
+| Confirmation | Entity | Student, lesson, time |
+| Shared class photo | Entity | Lesson, the photo with numbers, the face under each number, deletion time |
+| Number pick | Entity | Student, lesson, number or "not in the photo", the teacher's decision |
+| Teacher's attendance decision | Entity | Student, lesson, present or not present, time |
 | Attendance result | Entity | Student, lesson, result, how it was decided |
-| Row-and-seat request | Entity | Student, lesson, row, seat, the teacher's decision |
 | Forum message | Entity | Lesson, writer, text, whether the class sees the name, the message it replies to, time |
 | Poll | Entity | Lesson, question, answer options, open or closed, whether another answer is allowed |
 | Form | Entity | Lesson, questions and their types, open or closed, whether another answer is allowed |
@@ -324,17 +331,17 @@ See [05-use-cases.md](05-use-cases.md).
 | REQ-04 Users see only their own lessons | UC-08 | SDD §2.2 | TC-004 | Passed |
 | REQ-05 No room code or join step | UC-08 | SDD §2.2 | TC-005 | Passed |
 | REQ-06 Lesson page with three tabs | UC-08 | SDD §2.1 | TC-005 | Passed |
-| REQ-07 Register a face from one photo | UC-06 | SDD §2.3, EDD-Attendance | TC-010, TC-011 | Passed |
-| REQ-08 Opt out of face recognition | UC-06 | SDD §2.3, EDD-Attendance | TC-012 | Passed |
-| REQ-09 Teacher approves replacing a face | UC-06 | SDD §2.3, EDD-Attendance | TC-013 | Passed |
-| REQ-10 Teacher photographs the class | UC-01 | SDD §2.3, EDD-Attendance | TC-014, TC-015, TC-100, TC-118 | Not run |
+| REQ-07 Register a face (withdrawn) | None | None | None | Withdrawn |
+| REQ-08 Opt out of face recognition (withdrawn) | None | None | None | Withdrawn |
+| REQ-09 Teacher approves replacing a face (withdrawn) | None | None | None | Withdrawn |
+| REQ-10 Teacher photographs the class and sends the face count | UC-01 | SDD §2.3, EDD-Attendance | TC-014, TC-015, TC-118 | Not run |
 | REQ-11 Notify the students | UC-01 | SDD §2.9, EDD-Attendance | TC-016, TC-118 | Not run |
-| REQ-12 Collect the student's response | UC-01 | SDD §2.4, EDD-Attendance | TC-017, TC-100, TC-118 | Not run |
-| REQ-13 One attendance result per student | UC-01 | SDD §2.4, EDD-Attendance | TC-018, TC-019, TC-020, TC-021, TC-022 | Passed |
-| REQ-14 Row-and-seat request | UC-01 | SDD §2.4, EDD-Attendance | TC-023 | Passed |
-| REQ-15 Teacher decides row-and-seat requests | UC-01 | SDD §2.4, EDD-Attendance | TC-024 | Passed |
-| REQ-16 Keep a record of requests | UC-01 | SDD §2.4, EDD-Attendance | TC-025 | Passed |
-| REQ-17 Flag students | UC-01 | SDD §2.4, EDD-Attendance | TC-026 | Passed |
+| REQ-12 Confirm within 4 minutes of the photo | UC-01 | SDD §2.4, EDD-Attendance | TC-017, TC-100, TC-118 | Not run |
+| REQ-13 One attendance result per student | UC-01 | SDD §2.4, EDD-Attendance | TC-021 | Not run |
+| REQ-14 Share the photo with numbers only when needed | UC-01 | SDD §2.4, EDD-Attendance | None yet | Gap |
+| REQ-15 Shared photo for 24 hours, only to those who confirmed | UC-01 | SDD §2.4, EDD-Attendance | None yet | Gap |
+| REQ-16 Pick a number or say "not in the photo" | UC-01 | SDD §2.4, EDD-Attendance | None yet | Gap |
+| REQ-17 The teacher decides shared numbers and "not in the photo" | UC-01 | SDD §2.4, EDD-Attendance | None yet | Gap |
 | REQ-18 Attendance sheet in the app | UC-01 | SDD §2.4, EDD-Attendance | TC-027 | Passed |
 | REQ-19 Download the attendance sheet | UC-01 | SDD §2.4, EDD-Attendance | TC-028 | Passed |
 | REQ-20 Separate forum per lesson | UC-02 | SDD §2.5, EDD-Forum | TC-040 | Passed |
@@ -393,16 +400,17 @@ See [05-use-cases.md](05-use-cases.md).
 | REQ-73 Summary shown to the class only after publishing | UC-04 | SDD §2.7, EDD-LessonSummary | None yet | Gap |
 | REQ-74 Teacher deletes a homework | UC-05 | SDD §2.8, EDD-HomeworkReview | None yet | Gap |
 | REQ-75 Course homework in every lesson | UC-05 | SDD §2.8, EDD-HomeworkReview | None yet | Gap |
+| REQ-76 The teacher changes a student's attendance | UC-01 | SDD §2.4, EDD-Attendance | None yet | Gap |
 | NFR-01 Hidden instructions do not raise the score | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-140 | Passed |
 | NFR-02 Forum and poll updates within 2 s | UC-02, UC-03 | SDD §2.11, EDD-Forum, EDD-Polls | TC-110 | Not run |
-| NFR-03 Attendance response within 2 s | UC-01 | SDD §2.4, EDD-Attendance | TC-111 | Not run |
-| NFR-04 Find faces within 2 minutes per photo | UC-01 | SDD §2.3, EDD-Attendance | TC-112 | Not run |
+| NFR-03 Confirmation saved within 2 s | UC-01 | SDD §2.4, EDD-Attendance | TC-111 | Not run |
+| NFR-04 Find faces within 2 minutes | UC-01 | SDD §2.3, EDD-Attendance | TC-112 | Not run |
 | NFR-05 Summary within 5 minutes | UC-04 | SDD §2.7, EDD-LessonSummary | TC-113 | Not run |
 | NFR-06 Report within 3 minutes | UC-05 | SDD §2.8, EDD-HomeworkReview | TC-141 | Passed |
 | NFR-07 Supported browsers | All | SDD §2.1 | TC-114 | Not run |
 | NFR-08 Service key stays on the server | All | SDD §2.10 | TC-115 | Not run |
-| NFR-09 Student face-print deleted within 1 s | UC-01 | SDD §2.4, EDD-Attendance | TC-029 | Passed |
-| NFR-10 Class face-prints deleted within 1 minute of the hour's end | UC-01 | SDD §2.4, EDD-Attendance | TC-100 | Passed |
+| NFR-09 Shared photo deleted after 24 hours | UC-01 | SDD §2.4, EDD-Attendance | None yet | Gap |
+| NFR-10 The teacher's phone deletes the class photo | UC-01 | SDD §2.3, EDD-Attendance | None yet | Gap |
 | NFR-11 99% availability in the pilot | All | SDD §5 | TC-116 | Not run |
 | NFR-12 Fits every screen width | All | SDD §2.1 | TC-117 | Not run |
-| NFR-13 Long actions keep running between pages | UC-01, UC-04, UC-05, UC-06 | SDD §2.1 | None yet | Gap |
+| NFR-13 Long actions keep running between pages | UC-01, UC-04, UC-05 | SDD §2.1 | None yet | Gap |
