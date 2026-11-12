@@ -308,7 +308,7 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
   - [x] Face registration and the face-print model removed
   - [x] Tests: confirmations, the face count, picks and the teacher's changes
   - [x] Documents: SRS
-  - [ ] Documents: use cases
+  - [x] Documents: use cases
   - [ ] Documents: tools report (a decision in place of ADR-1)
   - [ ] Documents: SDD
   - [ ] Documents: EDD-Attendance

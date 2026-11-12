@@ -92,7 +92,6 @@ flowchart LR
     uc3(["UC-03 Publish a poll or form and answer it"])
     uc4(["UC-04 Get a lesson summary"])
     uc5(["UC-05 Publish a homework and get feedback on it"])
-    uc6(["UC-06 Register a face"])
     uc7(["UC-07 Build the timetable"])
     uc8(["UC-08 Sign in and reach a lesson page"])
   end
@@ -109,7 +108,6 @@ flowchart LR
   student --- uc3
   student --- uc4
   student --- uc5
-  student --- uc6
   student --- uc8
   uc4 --- gemini
   uc5 --- gemini
@@ -138,26 +136,26 @@ flowchart LR
 ### UC-01: Take attendance in a lesson
 
 - Actor: Teacher. Students also take part.
-- Preconditions: The teacher is on the lesson page, and every student of the course has registered a face or opted out.
+- Preconditions: The teacher is on the lesson page, during the lesson.
 - Main success flow:
-  1. The teacher opens the attendance tab and takes 1 to 3 photos of the class.
-  2. The teacher's phone finds the faces and sends the server only the face-prints and their positions, never the photo.
-  3. The system notifies every student of the course.
-  4. A student opens the app within 1 hour.
-  5. The student's phone sends the student's face-print and hash, with no further action by the student.
-  6. The system checks the hash, compares the face-print with those from the photo, deletes the student's face-print and records a result.
-  7. The teacher's attendance sheet updates with each result.
-  8. The teacher downloads the sheet.
+  1. The teacher opens the attendance tab and takes one photo of the class.
+  2. The teacher's phone counts the faces in the photo and sends the server only that number. The photo stays on the phone.
+  3. The system notifies every student of the course, and the 4 minutes for confirming start.
+  4. A student who is in the lesson presses "I was in the lesson" within the 4 minutes.
+  5. The teacher's attendance sheet updates with each confirmation.
+  6. When the 4 minutes end, the system compares the confirmations with the faces. No more students confirmed than there are faces, so every student who confirmed is present.
+  7. The teacher downloads the sheet.
 - Alternative flows:
-  - 2a. The teacher moves to another page in the middle: the work goes on to its end, the photos already processed are kept, and a short message shows when it has ended.
-  - 4a. The student does not open the app within 1 hour: the result is No response.
-  - 5a. The student opted out of face recognition: the student goes straight to a row-and-seat request (7a).
-  - 6a. The face-print does not fit the hash: the result is Review, with no comparison.
-  - 6b. The best score is below the match threshold: the result is Not found.
-  - 6c. Two or more students matched the same face: the result is Conflict, and the case passes to the teacher for follow-up.
-  - 7a. A student who is not marked present after the hour enters a row and seat, and the teacher approves or rejects the request. Every request is recorded, and a student with a rejected request or 3 or more requests in the course is flagged.
-- Postconditions: Every student of the course has one attendance result, and the server has deleted the face-prints from the photo within 1 minute of the end of the hour.
-- Covers: REQ-10 to REQ-19, NFR-03, NFR-04, NFR-09, NFR-10, NFR-13
+  - 1a. The teacher does not take a photo: no student can confirm, and the teacher marks attendance by hand (8a).
+  - 2a. The teacher moves to another page in the middle: the processing goes on to its end, and a short message shows when it has ended.
+  - 4a. A student does not confirm within the 4 minutes: the result is Not present.
+  - 6a. More students confirmed than there are faces: the teacher shares the photo with a number on every face, only from the phone that took it. The students who confirmed are notified, and each picks their number within 24 hours.
+  - 6b. A number that only one student picked: that student is present.
+  - 6c. Two students picked the same number, or a student says they are not in the photo: the case passes to the teacher, who approves or rejects it. Approving one pick of a number rejects the others, and a student with a rejected pick is flagged.
+  - 6d. A student who confirmed does not pick a number within 24 hours: the result is Not present, and the server deletes the photo.
+  - 8a. At any time the teacher changes a student's attendance by hand: the teacher's decision wins over every rule, and the teacher can take it back.
+- Postconditions: Every student of the course has one attendance result, and no face-print is kept. The class photo leaves the teacher's phone when it is shared, or at once when there is no need to share it, and the server deletes a shared photo 24 hours after sharing.
+- Covers: REQ-10 to REQ-19, REQ-76, NFR-03, NFR-04, NFR-09, NFR-10, NFR-13
 
 ### UC-02: Post a message in the forum
 
@@ -235,21 +233,18 @@ flowchart LR
 - Postconditions: The new result replaces the previous one in the chart, the third check is final, and the report does not give the solution.
 - Covers: REQ-50 to REQ-59, REQ-74, NFR-01, NFR-06, NFR-13
 
-### UC-06: Register a face
+### UC-06: Register a face (withdrawn)
 
-- Actor: Student.
-- Preconditions: The student has signed in and has not registered a face yet.
+Withdrawn on 2026-11-12, when personal face recognition was removed ([F1 decisions](features/F1-attendance-strategy.md)). It stays here, empty, until the design documents stop pointing to it.
+
+- Actor: None, since students no longer register a face.
+- Preconditions: None.
 - Main success flow:
-  1. The student takes 1 photo of themselves on their phone.
-  2. The phone calculates the face-print, and keeps it and the photo on the phone only.
-  3. The phone sends the server only the hash, and the system saves it.
+  1. None: attendance follows UC-01.
 - Alternative flows:
-  - 1a. The student opts out of face recognition: there is no face-print or hash, and the student's attendance is always by row and seat.
-  - 2a. No face is found in the photo: the student is asked to take another one.
-  - 3a. Replacing the photo: the new hash is saved only with approval from a teacher of one of the student's courses.
-  - 3b. The student moves to another page in the middle: the registration goes on to its end, and a short message shows when it has ended.
-- Postconditions: The server holds only the hash, and the photo and the face-print stay on the phone.
-- Covers: REQ-07 to REQ-09, NFR-13
+  - None.
+- Postconditions: No face-print or hash of a student exists.
+- Covers: REQ-07 to REQ-09, all withdrawn
 
 ### UC-07: Build the timetable
 
@@ -287,34 +282,28 @@ UC-01, the main feature:
 
 ```mermaid
 flowchart TD
-  start((" ")) --> photo("Teacher takes 1 to 3 photos of the class")
-  photo --> send("Teacher's phone sends the server the face-prints and positions")
-  send --> notify("System notifies every student of the course")
-  notify --> opted{"Student opted out of face recognition?"}
-  opted -->|"[yes]"| ask{"Student requests attendance by row and seat?"}
-  opted -->|"[no]"| opened{"Student opened the app within 1 hour?"}
-  opened -->|"[no]"| noresp("Result: No response")
-  opened -->|"[yes]"| response("Student's phone sends the face-print and hash")
-  response --> hash{"Does the face-print fit the hash?"}
-  hash -->|"[no]"| review("Result: Review")
-  hash -->|"[yes]"| compare("System compares, then deletes the student's face-print")
-  compare --> score{"Best score at or above the threshold?"}
-  score -->|"[no]"| notfound("Result: Not found")
-  score -->|"[yes]"| other{"Another student matched the same face?"}
-  other -->|"[yes]"| conflict("Result: Conflict, passed to the teacher")
-  other -->|"[no]"| present("Result: Present")
-  noresp --> ask
-  review --> ask
-  notfound --> ask
-  conflict --> ask
-  ask -->|"[yes]"| decide{"Teacher approves the request?"}
-  ask -->|"[no]"| sheet("Attendance sheet shows the result")
-  decide -->|"[yes]"| approved("Result: Present")
-  decide -->|"[no]"| flagged("Request rejected, student flagged")
-  present --> sheet
-  approved --> sheet
+  start((" ")) --> photo("Teacher takes one photo of the class")
+  photo --> count("Teacher's phone sends the server only the number of faces")
+  count --> notify("System notifies every student of the course")
+  notify --> confirmed{"Student confirms within the 4 minutes?"}
+  confirmed -->|"[no]"| absent("Result: Not present")
+  confirmed -->|"[yes]"| more{"More confirmations than faces?"}
+  more -->|"[no]"| present("Result: Present")
+  more -->|"[yes]"| share("Teacher shares the photo with a number on every face")
+  share --> picked{"Student picks within 24 hours?"}
+  picked -->|"[no]"| absent
+  picked -->|"[yes]"| alone{"Only this student picked that number?"}
+  alone -->|"[yes]"| present
+  alone -->|"[no, or not in the photo]"| decide{"Teacher approves the pick?"}
+  decide -->|"[yes]"| present
+  decide -->|"[no]"| flagged("Result: Not present, student flagged")
+  present --> sheet("Attendance sheet shows the result")
+  absent --> sheet
   flagged --> sheet
-  sheet --> download("Teacher downloads the sheet")
+  sheet --> change{"Teacher changes it by hand?"}
+  change -->|"[yes]"| teacher("Result: the teacher's decision")
+  change -->|"[no]"| download("Teacher downloads the sheet")
+  teacher --> download
   download --> stop((("&nbsp;")))
   classDef dot fill:#222222,stroke:#222222
   class start,stop dot
@@ -328,10 +317,10 @@ flowchart TD
        Then ...
 -->
 
-- As a teacher, I want to take attendance from a photo of the class so that I do not waste lesson time.
-  - Given the students have registered their faces
-  - When I take the photo and they respond within 1 hour
-  - Then the sheet shows a result for every student
+- As a teacher, I want attendance to take one photo and a few minutes so that I do not waste lesson time.
+  - Given the students are in the hall
+  - When I take one photo and they press "I was in the lesson" within 4 minutes
+  - Then the sheet shows every student who confirmed as present, when no more confirmed than there are faces
 - As a student, I want to ask a question in the forum without showing my name to the class so that I am not embarrassed to ask.
   - Given I am in the forum of the lesson
   - When I write a message and choose to hide my name
@@ -348,10 +337,10 @@ flowchart TD
   - Given the homework is published and I have checks left
   - When I upload a solution
   - Then a report opens with a score and what is missing for each section, without the solution
-- As a student, I want to register my face once so that my attendance is marked automatically.
-  - Given I have not registered yet
-  - When I take one photo
-  - Then the server keeps only a hash
+- As a student who was in the lesson, I want to point to my face in the class photo when someone confirmed without being there so that I am still marked present.
+  - Given more students confirmed than there are faces, and the teacher shared the photo
+  - When I pick the number on my face and no other student picks it
+  - Then I am marked present
 - As an admin, I want to create a course with its students so that everyone reaches the lessons with no code.
   - Given I have the list of students
   - When I create a course
