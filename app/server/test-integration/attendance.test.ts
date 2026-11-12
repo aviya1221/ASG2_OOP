@@ -18,6 +18,7 @@ import { COURSE_A, ID, L2, publicClient, secretClient, signedIn } from "./helper
 const secret = secretClient();
 let server: Server;
 let base: string;
+let service: AttendanceService;
 let lectureNumber = 1000 + Math.floor(Math.random() * 900_000);
 const createdLessons: string[] = [];
 
@@ -26,7 +27,7 @@ type Who = keyof typeof ID;
 before(async () => {
   const verifier = new SupabaseUserVerifier(secret);
   const notifications = new NotificationService(new SupabaseNotificationRepository(secret), new SilentSender());
-  const service = new AttendanceService({
+  service = new AttendanceService({
     repository: new SupabaseAttendanceRepository(secret),
     cache: new ClassFaceCache(),
     matcher: new FaceMatcher(),
@@ -113,8 +114,40 @@ function photo(...prints: number[][]) {
 }
 
 async function startRound(lessonId: string, ...prints: number[][]): Promise<void> {
-  const { status } = await call("T1", "/attendance/class", { lessonId, photos: [photo(...prints)] });
+  await startRoundWith(lessonId, [photo(...prints)]);
+}
+
+async function startRoundWith(lessonId: string, photos: ReturnType<typeof photo>[]): Promise<void> {
+  const { status } = await call("T1", "/attendance/class", { lessonId, photos });
   assert.equal(status, 201);
+}
+
+const JPEG_BYTES = new Uint8Array([0xff, 0xd8, 0xff, 0xe0, 0x00, 0x10, 0x4a, 0x46, 0x49, 0x46]);
+
+function number(value: number, faceNo: number, photoNo = 0) {
+  return { number: value, photoNo, faceNo, box: [faceNo, faceNo, 40, 40] };
+}
+
+/** The teacher's phone shares one class photo, with these numbers drawn on it. */
+async function share(who: Who, lessonId: string, numbers: unknown[], bytes: Uint8Array = JPEG_BYTES): Promise<{ status: number; json: Record<string, unknown> }> {
+  const client = await signedIn(who);
+  const token = (await client.auth.getSession()).data.session!.access_token;
+  const form = new FormData();
+  form.set("lessonId", lessonId);
+  form.set("photoNos", JSON.stringify([0]));
+  form.set("numbers", JSON.stringify(numbers));
+  form.append("photos", new Blob([bytes], { type: "image/jpeg" }), "0.jpg");
+  const response = await fetch(`${base}/attendance/photos`, { method: "POST", headers: { authorization: `Bearer ${token}` }, body: form });
+  const text = await response.text();
+  return { status: response.status, json: text ? JSON.parse(text) : {} };
+}
+
+/** A shared photo with number 1, written straight into the database with no file. */
+async function shareDirectly(lessonId: string): Promise<void> {
+  const shared = await secret.from("shared_photos").insert({ lesson_id: lessonId, photo_no: 0, file_path: `${lessonId}/none.jpg`, expires_at: new Date(Date.now() + 3_600_000).toISOString() });
+  assert.equal(shared.error, null);
+  const numbered = await secret.from("photo_numbers").insert({ lesson_id: lessonId, number: 1, photo_no: 0, face_no: 0, box: [0, 0, 40, 40] });
+  assert.equal(numbered.error, null);
 }
 
 async function respond(who: Who, lessonId: string, print: number[]) {
@@ -220,98 +253,154 @@ describe("the calls of attendance", () => {
     assert.equal(await sheet(), "no_response");
   });
 
-  it("TC-023 a student asks for row and seat only when allowed", async () => {
+  it("the teacher's count knows a present student in every photo", async () => {
     const lessonId = await newLesson();
-    await startRound(lessonId, PRINT_OTHER);
-    const SEAT = { lesson_id: lessonId, row_no: 3, seat_no: 5 };
+    await startRoundWith(lessonId, [photo(PRINT_S1, PRINT_OTHER), photo(PRINT_OTHER, PRINT_S1)]);
+    assert.equal((await respond("S1", lessonId, PRINT_S1)).json.result, "present");
 
+    const teacher = await signedIn("T1");
+    const { data } = await teacher.from("identified_faces").select("photo_no, face_no").eq("lesson_id", lessonId).order("photo_no");
+    assert.deepEqual(data, [
+      { photo_no: 0, face_no: 0 },
+      { photo_no: 1, face_no: 1 },
+    ]);
     const s1 = await signedIn("S1");
-    assert.ok((await s1.from("seat_requests").insert({ ...SEAT, student_id: ID.S1 })).error, "during the hour");
-
-    const present = await newLesson();
-    await startRound(present, PRINT_S2);
-    await respond("S2", present, PRINT_S2);
-
-    await endHour(lessonId);
-    await endHour(present);
-    assert.equal((await s1.from("seat_requests").insert({ ...SEAT, student_id: ID.S1 })).error, null, "after the hour");
-
-    const s2 = await signedIn("S2");
-    assert.ok((await s2.from("seat_requests").insert({ ...SEAT, lesson_id: present, student_id: ID.S2 })).error, "already present");
-    assert.ok((await s2.from("seat_requests").insert({ ...SEAT, row_no: 16, student_id: ID.S2 })).error, "row outside the map");
-    assert.ok((await s2.from("seat_requests").insert({ ...SEAT, student_id: ID.S1 })).error, "in the name of another student");
+    assert.deepEqual((await s1.from("identified_faces").select("*").eq("lesson_id", lessonId)).data, []);
   });
 
-  it("TC-023 a student who opted out asks during the hour", async () => {
+  it("the teacher shares the photo only after the hour, once, and with no number on a present face", async () => {
     const lessonId = await newLesson();
-    await startRound(lessonId, PRINT_OTHER);
-    await call("S2", "/faces/register", { optOut: true });
-    const s2 = await signedIn("S2");
-    const status = await s2.from("my_face_status").select("registered, opted_out").single();
-    assert.deepEqual(status.data, { registered: false, opted_out: true });
-    assert.equal((await s2.from("seat_requests").insert({ lesson_id: lessonId, student_id: ID.S2, row_no: 1, seat_no: 1 })).error, null);
-    await registerDirectly(ID.S2, PRINT_S2);
+    await startRound(lessonId, PRINT_S1, PRINT_OTHER);
+    await respond("S1", lessonId, PRINT_S1);
+
+    const early = await share("T1", lessonId, [number(1, 1)]);
+    assert.deepEqual([early.status, early.json.error], [409, "round_open"]);
+    await endHour(lessonId);
+
+    assert.equal((await share("T2", lessonId, [number(1, 1)])).json.error, "not_the_teacher");
+    assert.equal((await share("S2", lessonId, [number(1, 1)])).status, 403);
+    const onPresent = await share("T1", lessonId, [number(1, 0)]);
+    assert.deepEqual([onPresent.status, onPresent.json.error], [400, "identified_face"]);
+
+    const shared = await share("T1", lessonId, [number(1, 1)]);
+    assert.equal(shared.status, 201);
+    assert.ok(Date.parse(shared.json.expiresAt as string) > Date.now() + 23 * 3_600_000);
+    const again = await share("T1", lessonId, [number(1, 1)]);
+    assert.deepEqual([again.status, again.json.error], [409, "already_shared"]);
   });
 
-  it("TC-024 the teacher decides a request, and only that teacher", async () => {
+  it("refuses a file that is not a JPEG", async () => {
     const lessonId = await newLesson();
     await startRound(lessonId, PRINT_OTHER);
     await endHour(lessonId);
+    const { status, json } = await share("T1", lessonId, [number(1, 0)], new Uint8Array([0x25, 0x50, 0x44, 0x46]));
+    assert.deepEqual([status, json.error], [400, "bad_photos"]);
+  });
+
+  it("only a student who was not marked present picks a number, and sees the photo", async () => {
+    const lessonId = await newLesson();
+    await startRound(lessonId, PRINT_S1, PRINT_OTHER);
+    await respond("S1", lessonId, PRINT_S1);
+    await endHour(lessonId);
+    const s1 = await signedIn("S1");
+    const s2 = await signedIn("S2");
+    const pick = (client: typeof s1, student: string) => client.from("number_claims").insert({ lesson_id: lessonId, student_id: student, number: 1 });
+
+    assert.ok((await pick(s2, ID.S2)).error, "before the photo is shared");
+    assert.equal((await share("T1", lessonId, [number(1, 1)])).status, 201);
+
+    assert.ok((await pick(s1, ID.S1)).error, "already present");
+    assert.ok((await pick(s2, ID.S1)).error, "in the name of another student");
+    assert.ok((await s2.from("number_claims").insert({ lesson_id: lessonId, student_id: ID.S2, number: 9 })).error, "a number that is not in the photo");
+    assert.equal((await pick(s2, ID.S2)).error, null);
+    assert.ok((await pick(s2, ID.S2)).error, "one pick per lesson");
+
+    const { data: photos } = await s2.from("shared_photos").select("file_path").eq("lesson_id", lessonId);
+    const path = photos![0]!.file_path as string;
+    assert.equal((await s2.storage.from("class-photos").download(path)).error, null);
+    assert.equal((await (await signedIn("T1")).storage.from("class-photos").download(path)).error, null);
+    assert.ok((await s1.storage.from("class-photos").download(path)).error, "a present student does not see the photo");
+    assert.ok((await (await signedIn("S51")).storage.from("class-photos").download(path)).error, "a student of another course");
+  });
+
+  it("two picks of one number go to the teacher, who approves one and the other is rejected", async () => {
+    const lessonId = await newLesson();
+    await startRound(lessonId, PRINT_OTHER);
+    await endHour(lessonId);
+    assert.equal((await share("T1", lessonId, [number(1, 0)])).status, 201);
     for (const who of ["S1", "S2"] as const) {
       const client = await signedIn(who);
-      assert.equal((await client.from("seat_requests").insert({ lesson_id: lessonId, student_id: ID[who], row_no: 2, seat_no: 2 })).error, null);
+      assert.equal((await client.from("number_claims").insert({ lesson_id: lessonId, student_id: ID[who], number: 1 })).error, null);
     }
 
-    const other = await signedIn("T2");
-    assert.deepEqual((await other.from("seat_requests").update({ status: "approved" }).eq("lesson_id", lessonId).select()).data, []);
-
-    const teacher = await signedIn("T1");
-    assert.equal((await teacher.from("seat_requests").update({ status: "approved" }).eq("lesson_id", lessonId).eq("student_id", ID.S1)).error, null);
-    assert.equal((await teacher.from("seat_requests").update({ status: "rejected" }).eq("lesson_id", lessonId).eq("student_id", ID.S2)).error, null);
-
-    const { data } = await teacher.from("attendance_sheet").select("id_number, attendance, decided_by").eq("lesson_id", lessonId).in("id_number", [ID.S1, ID.S2]).order("id_number");
-    assert.deepEqual(data, [
-      { id_number: ID.S1, attendance: "present", decided_by: "row_and_seat" },
-      { id_number: ID.S2, attendance: "no_response", decided_by: null },
-    ]);
-  });
-
-  it("TC-025 a request is kept, one per lesson", async () => {
-    const lessonId = await newLesson();
-    await startRound(lessonId, PRINT_OTHER);
-    await endHour(lessonId);
     const s1 = await signedIn("S1");
-    assert.equal((await s1.from("seat_requests").insert({ lesson_id: lessonId, student_id: ID.S1, row_no: 3, seat_no: 5 })).error, null);
-    assert.ok((await s1.from("seat_requests").insert({ lesson_id: lessonId, student_id: ID.S1, row_no: 4, seat_no: 6 })).error);
+    const mine = await s1.from("my_number_claim").select("number, status, contested").eq("lesson_id", lessonId).single();
+    assert.deepEqual(mine.data, { number: 1, status: "pending", contested: true });
+    assert.deepEqual((await s1.from("number_claims").select("student_id").eq("lesson_id", lessonId)).data, [{ student_id: ID.S1 }]);
+
+    const other = await signedIn("T2");
+    assert.deepEqual((await other.from("number_claims").update({ status: "approved" }).eq("lesson_id", lessonId).select()).data, []);
 
     const teacher = await signedIn("T1");
-    const { data } = await teacher.from("seat_requests").select("row_no, seat_no, status, created_at").eq("lesson_id", lessonId).eq("student_id", ID.S1).single();
-    assert.equal(data?.row_no, 3);
-    assert.equal(data?.status, "pending");
-    assert.ok(data?.created_at);
+    const sheet = async () =>
+      (await teacher.from("attendance_sheet").select("id_number, attendance, decided_by, claim_number, claim_status, claim_contested").eq("lesson_id", lessonId).in("id_number", [ID.S1, ID.S2]).order("id_number")).data;
+    assert.deepEqual(
+      (await sheet())?.map((row) => [row.claim_number, row.claim_status, row.claim_contested]),
+      [
+        [1, "pending", true],
+        [1, "pending", true],
+      ],
+    );
+
+    assert.equal((await teacher.from("number_claims").update({ status: "approved" }).eq("lesson_id", lessonId).eq("student_id", ID.S1)).error, null);
+    assert.deepEqual(await sheet(), [
+      { id_number: ID.S1, attendance: "present", decided_by: "photo_number", claim_number: 1, claim_status: "approved", claim_contested: false },
+      { id_number: ID.S2, attendance: "no_response", decided_by: null, claim_number: 1, claim_status: "rejected", claim_contested: false },
+    ]);
+    const decided = await secret.from("number_claims").select("decided_at").eq("lesson_id", lessonId);
+    assert.ok(decided.data?.every((row) => row.decided_at));
   });
 
-  it("TC-026 a rejected request, or 3 requests in the course, flags the student", async () => {
+  it("a rejected pick, or 3 picks in the course, flags the student", async () => {
     const lessons = [await newLesson(), await newLesson(), await newLesson()];
     for (const lessonId of lessons) {
       await startRound(lessonId, PRINT_OTHER);
+      await shareDirectly(lessonId);
     }
     const insert = (lessonId: string, student: string, status: string) =>
-      secret.from("seat_requests").upsert({ lesson_id: lessonId, student_id: student, row_no: 1, seat_no: 1, status });
+      secret.from("number_claims").upsert({ lesson_id: lessonId, student_id: student, number: 1, status });
 
     const S3 = "300000003";
     const S4 = "300000004";
     const S5 = "300000005";
     await insert(lessons[0]!, S3, "rejected");
-    await insert(lessons[0]!, S4, "approved");
-    await insert(lessons[1]!, S4, "approved");
-    for (const lessonId of lessons) await insert(lessonId, S5, "approved");
+    await insert(lessons[0]!, S4, "pending");
+    await insert(lessons[1]!, S4, "pending");
+    for (const lessonId of lessons) await insert(lessonId, S5, "pending");
 
     const teacher = await signedIn("T1");
     const { data } = await teacher.from("attendance_sheet").select("id_number, flagged").eq("lesson_id", lessons[2]!).in("id_number", [S3, S4, S5]).order("id_number");
     assert.deepEqual(data?.map((row) => row.flagged), [true, false, true]);
 
-    await secret.from("seat_requests").delete().in("student_id", [S3, S4, S5]);
+    await secret.from("number_claims").delete().in("student_id", [S3, S4, S5]);
+  });
+
+  it("deletes a shared photo after its time, and then no one picks", async () => {
+    const lessonId = await newLesson();
+    await startRound(lessonId, PRINT_OTHER);
+    await endHour(lessonId);
+    assert.equal((await share("T1", lessonId, [number(1, 0)])).status, 201);
+    const { data: photos } = await secret.from("shared_photos").select("file_path").eq("lesson_id", lessonId);
+    const path = photos![0]!.file_path as string;
+
+    await secret.from("shared_photos").update({ expires_at: new Date(Date.now() - 1000).toISOString() }).eq("lesson_id", lessonId);
+    assert.ok((await service.removeExpiredPhotos()) >= 1);
+
+    assert.ok((await secret.storage.from("class-photos").download(path)).error, "the file is gone");
+    const { data } = await secret.from("shared_photos").select("file_removed").eq("lesson_id", lessonId).single();
+    assert.equal(data?.file_removed, true);
+    const s2 = await signedIn("S2");
+    assert.ok((await s2.from("number_claims").insert({ lesson_id: lessonId, student_id: ID.S2, number: 1 })).error);
   });
 
   it("TC-029 no table keeps the face-print of a student", async () => {
@@ -355,6 +444,7 @@ describe("the calls of attendance", () => {
     assert.deepEqual((await s1.from("class_faces").select("print")).data, []);
     assert.deepEqual((await s1.from("face_registrations").select("hash")).data, []);
     assert.deepEqual((await s1.from("push_subscriptions").select("endpoint")).data, []);
+    assert.deepEqual((await s1.from("face_sightings").select("face_no")).data, []);
     assert.ok((await s1.rpc("run_minute_jobs")).error);
     assert.ok((await s1.rpc("record_attendance_match", { p_lesson: L2, p_student: ID.S1, p_photo: 0, p_face: 0, p_score: 1 })).error);
     assert.ok((await s1.from("attendance_results").insert({ lesson_id: L2, student_id: ID.S1, result: "present" })).error);

@@ -15,6 +15,7 @@ describe("NotificationService", () => {
     const repository: NotificationRepository = {
       saveSubscription: async () => {},
       subscriptionsOfLesson: async (lessonId) => (lessonId === "L1" ? COURSE_A : [{ endpoint: "https://push/s51", p256dh: "k", auth: "a" }]),
+      subscriptionsOfStudents: async () => [],
       deleteSubscription: async (endpoint) => {
         deleted.push(endpoint);
       },
@@ -32,6 +33,35 @@ describe("NotificationService", () => {
     assert.deepEqual(deleted, ["https://push/gone"]);
   });
 
+  it("tells only the chosen students that the class photo is shared", async () => {
+    const asked: string[][] = [];
+    const messages: string[] = [];
+    const service = new NotificationService(
+      {
+        saveSubscription: async () => {},
+        subscriptionsOfLesson: async () => COURSE_A,
+        subscriptionsOfStudents: async (students) => {
+          asked.push(students);
+          return [COURSE_A[1]!];
+        },
+        deleteSubscription: async () => {},
+      },
+      {
+        send: async (_subscription, message) => {
+          messages.push(message);
+          return 201;
+        },
+      },
+    );
+
+    await service.notifyPhotoShared([]);
+    await service.notifyPhotoShared(["S2"]);
+
+    assert.deepEqual(asked, [["S2"]]);
+    assert.equal(messages.length, 1);
+    assert.match(JSON.parse(messages[0]!).body, /המספר שלך/);
+  });
+
   it("saves a subscription under the student", async () => {
     const saved: [string, PushSubscriptionData][] = [];
     const service = new NotificationService(
@@ -40,6 +70,7 @@ describe("NotificationService", () => {
           saved.push([student, subscription]);
         },
         subscriptionsOfLesson: async () => [],
+        subscriptionsOfStudents: async () => [],
         deleteSubscription: async () => {},
       },
       { send: async () => 201 },

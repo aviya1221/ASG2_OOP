@@ -57,3 +57,13 @@ const app = createApp({
 app.listen(config.port, "0.0.0.0", () => {
   console.log(`Server listening on port ${config.port}`);
 });
+
+// Shared class photos are deleted 24 hours after sharing. The free server sleeps, so this also runs when it wakes.
+const PHOTO_SWEEP_MS = 10 * 60_000;
+function removeExpiredPhotos(): void {
+  attendance.removeExpiredPhotos().catch((error: unknown) => {
+    console.error(error instanceof Error ? error.message : "Deleting expired class photos failed");
+  });
+}
+removeExpiredPhotos();
+setInterval(removeExpiredPhotos, PHOTO_SWEEP_MS);

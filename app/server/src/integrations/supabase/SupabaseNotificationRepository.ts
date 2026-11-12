@@ -19,10 +19,11 @@ export class SupabaseNotificationRepository implements NotificationRepository {
     if (lesson.error) throw new Error(lesson.error.message);
     const students = await this.#db.from("course_students").select("student_id_number").eq("course_id", lesson.data.course_id);
     if (students.error) throw new Error(students.error.message);
-    const { data, error } = await this.#db
-      .from("push_subscriptions")
-      .select("endpoint, p256dh, auth")
-      .in("student_id", (students.data ?? []).map((row) => row.student_id_number));
+    return this.subscriptionsOfStudents((students.data ?? []).map((row) => row.student_id_number));
+  }
+
+  async subscriptionsOfStudents(studentIds: string[]): Promise<PushSubscriptionData[]> {
+    const { data, error } = await this.#db.from("push_subscriptions").select("endpoint, p256dh, auth").in("student_id", studentIds);
     if (error) throw new Error(error.message);
     return data ?? [];
   }

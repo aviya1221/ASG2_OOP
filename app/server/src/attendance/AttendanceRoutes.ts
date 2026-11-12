@@ -1,9 +1,13 @@
-import { Router, type Request, type Response } from "express";
+import { Router, type NextFunction, type Request, type Response } from "express";
+import multer from "multer";
 import { requireUser, signedInUser, type UserVerifier } from "../http/auth.ts";
 import { HttpError } from "../http/errors.ts";
 import type { NotificationService } from "../notifications/NotificationService.ts";
 import type { AttendanceService } from "./AttendanceService.ts";
-import { PRINT_LENGTH, type PhotoFaces } from "./types.ts";
+import { JPEG, MAX_PHOTO_BYTES, MAX_PHOTOS, PRINT_LENGTH, type PhotoFaces, type PhotoNumber, type SharedPhotoFile } from "./types.ts";
+
+/** The shared photos stay in memory until they are saved in the file storage. */
+const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: MAX_PHOTO_BYTES, files: MAX_PHOTOS } });
 
 const HASH_PATTERN = /^[0-9a-f]{64}$/;
 const STATUS_OF_REGISTRATION = { registered: 201, opted_out: 201, waiting_for_teacher: 202 } as const;
@@ -36,6 +40,39 @@ function photosOf(value: unknown): PhotoFaces[] {
   return value as PhotoFaces[];
 }
 
+function jsonField(value: unknown, name: string): unknown {
+  if (typeof value !== "string") throw new HttpError(400, "bad_request", `${name} is missing.`);
+  try {
+    return JSON.parse(value);
+  } catch {
+    throw new HttpError(400, "bad_request", `${name} is not valid JSON.`);
+  }
+}
+
+/** Each file is a JPEG, and `photoNos` says which photo of the round it is, in the same order. */
+function sharedFilesOf(files: Express.Multer.File[], photoNos: unknown): SharedPhotoFile[] {
+  const isJpeg = (file: Express.Multer.File) => file.mimetype === JPEG && file.buffer[0] === 0xff && file.buffer[1] === 0xd8 && file.buffer[2] === 0xff;
+  if (!Array.isArray(photoNos) || photoNos.length !== files.length || !files.every(isJpeg)) {
+    throw new HttpError(400, "bad_photos", "Each photo must be a JPEG file with its photo number.");
+  }
+  return files.map((file, index) => ({ photoNo: Number(photoNos[index]), jpeg: file.buffer }));
+}
+
+function numbersOf(value: unknown): PhotoNumber[] {
+  const valid =
+    Array.isArray(value) &&
+    value.every(
+      (item) =>
+        typeof item?.number === "number" &&
+        typeof item?.photoNo === "number" &&
+        typeof item?.faceNo === "number" &&
+        Array.isArray(item?.box) &&
+        item.box.every((n: unknown) => typeof n === "number"),
+    );
+  if (!valid) throw new HttpError(400, "bad_numbers", "Each number needs a photo, a face and a box.");
+  return (value as PhotoNumber[]).map(({ number, photoNo, faceNo, box }) => ({ number, photoNo, faceNo, box }));
+}
+
 /** The calls of attendance (docs/07-EDD/README.md, API docs). */
 export class AttendanceRoutes {
   readonly #service: AttendanceService;
@@ -54,6 +91,7 @@ export class AttendanceRoutes {
     router.post("/faces/register", signedIn, this.registerFace);
     router.post("/attendance/class", signedIn, this.startRound);
     router.post("/attendance/response", signedIn, this.respond);
+    router.post("/attendance/photos", signedIn, receivePhotos, this.sharePhotos);
     router.post("/notifications/subscribe", signedIn, this.subscribe);
     return router;
   }
@@ -86,6 +124,15 @@ export class AttendanceRoutes {
     res.json({ result });
   };
 
+  sharePhotos = async (req: Request, res: Response): Promise<void> => {
+    requireRole(res, "teacher");
+    const body = req.body ?? {};
+    const files = sharedFilesOf((req.files as Express.Multer.File[] | undefined) ?? [], jsonField(body.photoNos, "photoNos"));
+    const numbers = numbersOf(jsonField(body.numbers, "numbers"));
+    const { expiresAt } = await this.#service.sharePhotos(lessonIdOf(body), signedInUser(res).idNumber, files, numbers);
+    res.status(201).json({ expiresAt: expiresAt.toISOString() });
+  };
+
   subscribe = async (req: Request, res: Response): Promise<void> => {
     requireRole(res, "student");
     const { endpoint, keys } = req.body ?? {};
@@ -95,4 +142,19 @@ export class AttendanceRoutes {
     await this.#notifications.subscribe(signedInUser(res).idNumber, { endpoint, p256dh: keys.p256dh, auth: keys.auth });
     res.status(204).end();
   };
+}
+
+function receivePhotos(req: Request, res: Response, next: NextFunction): void {
+  upload.array("photos", MAX_PHOTOS)(req, res, (error: unknown) => {
+    const code = (error as { code?: string })?.code;
+    if (code === "LIMIT_FILE_SIZE") {
+      next(new HttpError(413, "file_too_large", "A photo is larger than 10 MB."));
+      return;
+    }
+    if (code === "LIMIT_FILE_COUNT" || code === "LIMIT_UNEXPECTED_FILE") {
+      next(new HttpError(400, "bad_photos", `Send 1 to ${MAX_PHOTOS} photos.`));
+      return;
+    }
+    next(error);
+  });
 }

@@ -7,6 +7,7 @@ export interface PushSubscriptionData {
 export interface NotificationRepository {
   saveSubscription(studentId: string, subscription: PushSubscriptionData): Promise<void>;
   subscriptionsOfLesson(lessonId: string): Promise<PushSubscriptionData[]>;
+  subscriptionsOfStudents(studentIds: string[]): Promise<PushSubscriptionData[]>;
   deleteSubscription(endpoint: string): Promise<void>;
 }
 
@@ -16,7 +17,8 @@ export interface PushSender {
 }
 
 const GONE = new Set([404, 410]);
-const MESSAGE = JSON.stringify({ title: "נוכחות", body: "הכיתה צולמה. פתיחת האתר תסמן את הנוכחות." });
+const ROUND_MESSAGE = JSON.stringify({ title: "נוכחות", body: "הכיתה צולמה. פתיחת האתר תסמן את הנוכחות." });
+const PHOTO_MESSAGE = JSON.stringify({ title: "נוכחות", body: "לא זוהית בתמונת הכיתה. אפשר לבחור את המספר שלך בתמונה." });
 
 export class NotificationService {
   readonly #repository: NotificationRepository;
@@ -31,12 +33,22 @@ export class NotificationService {
     await this.#repository.saveSubscription(studentId, subscription);
   }
 
-  /** Notifies every student of the course of this lesson, and forgets subscriptions that no longer exist. */
+  /** Notifies every student of the course of this lesson that the class was photographed. */
   async notifyCourse(lessonId: string): Promise<void> {
-    const subscriptions = await this.#repository.subscriptionsOfLesson(lessonId);
+    await this.#sendAll(await this.#repository.subscriptionsOfLesson(lessonId), ROUND_MESSAGE);
+  }
+
+  /** Tells these students that the class photo with numbers is waiting for them. */
+  async notifyPhotoShared(studentIds: string[]): Promise<void> {
+    if (studentIds.length === 0) return;
+    await this.#sendAll(await this.#repository.subscriptionsOfStudents(studentIds), PHOTO_MESSAGE);
+  }
+
+  /** Sends to each subscription, and forgets subscriptions that no longer exist. */
+  async #sendAll(subscriptions: PushSubscriptionData[], message: string): Promise<void> {
     await Promise.all(
       subscriptions.map(async (subscription) => {
-        const status = await this.#sender.send(subscription, MESSAGE);
+        const status = await this.#sender.send(subscription, message);
         if (GONE.has(status)) await this.#repository.deleteSubscription(subscription.endpoint);
       }),
     );

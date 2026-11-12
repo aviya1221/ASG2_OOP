@@ -1,10 +1,12 @@
+import { randomUUID } from "node:crypto";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { AttendanceRepository } from "../../attendance/AttendanceRepository.ts";
-import type { ClassFace, FaceMatch, LessonInfo, PhotoFaces, Registration, Result, Round } from "../../attendance/types.ts";
+import { JPEG, type ClassFace, type FaceMatch, type FaceSpot, type LessonInfo, type PhotoFaces, type PhotoNumber, type Registration, type Result, type Round, type SharedPhotoFile } from "../../attendance/types.ts";
 import { HttpError } from "../../http/errors.ts";
 
 const UNIQUE_VIOLATION = "23505";
 const MAX_FACES_READ = 1000;
+const PHOTO_BUCKET = "class-photos";
 
 function throwIf(error: { message: string } | null): void {
   if (error) throw new Error(error.message);
@@ -126,5 +128,71 @@ export class SupabaseAttendanceRepository implements AttendanceRepository {
     const rows = faces.map((face) => ({ lesson_id: lessonId, student_id: studentId, photo_no: face.photoNo, face_no: face.faceNo }));
     const { error } = await this.#db.from("face_sightings").upsert(rows);
     throwIf(error);
+  }
+
+  async identifiedFaces(lessonId: string): Promise<FaceSpot[]> {
+    const results = await this.#db.from("attendance_results").select("student_id, photo_no, face_no").eq("lesson_id", lessonId).eq("result", "present");
+    throwIf(results.error);
+    const sightings = await this.#db.from("face_sightings").select("student_id, photo_no, face_no").eq("lesson_id", lessonId);
+    throwIf(sightings.error);
+    const present = new Set((results.data ?? []).map((row) => row.student_id as string));
+    return [...(results.data ?? []).filter((row) => row.photo_no !== null), ...(sightings.data ?? []).filter((row) => present.has(row.student_id))].map((row) => ({
+      photoNo: row.photo_no as number,
+      faceNo: row.face_no as number,
+    }));
+  }
+
+  async hasSharedPhotos(lessonId: string): Promise<boolean> {
+    const { count, error } = await this.#db.from("shared_photos").select("photo_no", { count: "exact", head: true }).eq("lesson_id", lessonId);
+    throwIf(error);
+    return (count ?? 0) > 0;
+  }
+
+  async saveSharedPhotos(lessonId: string, files: SharedPhotoFile[], numbers: PhotoNumber[], expiresAt: Date): Promise<void> {
+    const paths = files.map((file) => `${lessonId}/${file.photoNo}-${randomUUID()}.jpg`);
+    const uploaded: string[] = [];
+    try {
+      for (const [index, file] of files.entries()) {
+        throwIf((await this.#db.storage.from(PHOTO_BUCKET).upload(paths[index]!, file.jpeg, { contentType: JPEG })).error);
+        uploaded.push(paths[index]!);
+      }
+      const shared = await this.#db
+        .from("shared_photos")
+        .insert(files.map((file, index) => ({ lesson_id: lessonId, photo_no: file.photoNo, file_path: paths[index], expires_at: expiresAt.toISOString() })));
+      if (shared.error?.code === UNIQUE_VIOLATION) throw new HttpError(409, "already_shared", "The class photo of this lesson was already shared.");
+      throwIf(shared.error);
+      const numbered = await this.#db
+        .from("photo_numbers")
+        .insert(numbers.map((item) => ({ lesson_id: lessonId, number: item.number, photo_no: item.photoNo, face_no: item.faceNo, box: item.box })));
+      throwIf(numbered.error);
+    } catch (error) {
+      // The numbers are deleted with their photo rows (on delete cascade).
+      await this.#db.from("shared_photos").delete().in("file_path", paths);
+      if (uploaded.length > 0) await this.#db.storage.from(PHOTO_BUCKET).remove(uploaded);
+      throw error;
+    }
+  }
+
+  async studentsWhoMayPick(lessonId: string): Promise<string[]> {
+    const lesson = await this.#db.from("lessons").select("course_id").eq("id", lessonId).single();
+    throwIf(lesson.error);
+    const students = await this.#db.from("course_students").select("student_id_number").eq("course_id", lesson.data!.course_id);
+    throwIf(students.error);
+    const present = await this.#db.from("attendance_results").select("student_id").eq("lesson_id", lessonId).eq("result", "present");
+    throwIf(present.error);
+    const presentIds = new Set((present.data ?? []).map((row) => row.student_id as string));
+    return (students.data ?? []).map((row) => row.student_id_number as string).filter((id) => !presentIds.has(id));
+  }
+
+  async expiredPhotoFiles(now: Date): Promise<string[]> {
+    const { data, error } = await this.#db.from("shared_photos").select("file_path").eq("file_removed", false).lte("expires_at", now.toISOString());
+    throwIf(error);
+    return (data ?? []).map((row) => row.file_path as string);
+  }
+
+  async removePhotoFiles(paths: string[]): Promise<void> {
+    if (paths.length === 0) return;
+    throwIf((await this.#db.storage.from(PHOTO_BUCKET).remove(paths)).error);
+    throwIf((await this.#db.from("shared_photos").update({ file_removed: true }).in("file_path", paths)).error);
   }
 }

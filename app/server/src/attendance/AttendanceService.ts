@@ -5,7 +5,7 @@ import type { AttendanceRepository } from "./AttendanceRepository.ts";
 import type { AttendanceRules } from "./AttendanceRules.ts";
 import type { ClassFaceCache } from "./ClassFaceCache.ts";
 import type { FaceMatcher } from "./FaceMatcher.ts";
-import { MATCH_THRESHOLD, MAX_PHOTOS, type ClassFace, type PhotoFaces, type RegistrationStatus, type Result, type Round } from "./types.ts";
+import { MATCH_THRESHOLD, MAX_PHOTOS, SHARE_HOURS, type ClassFace, type FaceSpot, type PhotoFaces, type PhotoNumber, type RegistrationStatus, type Result, type Round, type SharedPhotoFile } from "./types.ts";
 
 export interface AttendanceParts {
   repository: AttendanceRepository;
@@ -109,6 +109,47 @@ export class AttendanceService {
     return repository.recordMatch(lessonId, studentId, match);
   }
 
+  /**
+   * After the hour, the teacher shares the class photos with a number on each face that belongs to no
+   * present student. The students who were not marked present are told they may pick their number.
+   */
+  async sharePhotos(lessonId: string, teacherId: string, files: SharedPhotoFile[], numbers: PhotoNumber[]): Promise<{ expiresAt: Date }> {
+    const { repository, notifications } = this.#parts;
+    const lesson = await repository.findLesson(lessonId);
+    if (!lesson) throw new HttpError(404, "not_found", "There is no such lesson.");
+    if (lesson.teacherId !== teacherId) throw new HttpError(403, "not_the_teacher", "Only the teacher of the lesson can do this.");
+
+    const round = await repository.findRound(lessonId);
+    if (!round) throw new HttpError(404, "no_round", "The class has not been photographed.");
+    const now = this.#now();
+    if (now < round.expiresAt) throw new HttpError(409, "round_open", "The photo can be shared only after the hour.");
+    if (await repository.hasSharedPhotos(lessonId)) throw new HttpError(409, "already_shared", "The class photo of this lesson was already shared.");
+
+    checkSharedPhotos(files, numbers);
+    const identified = new Set((await repository.identifiedFaces(lessonId)).map(spotKey));
+    if (numbers.some((item) => identified.has(spotKey(item)))) {
+      throw new HttpError(400, "identified_face", "A number was drawn on the face of a present student.");
+    }
+
+    const expiresAt = new Date(now.getTime() + SHARE_HOURS * 3_600_000);
+    await repository.saveSharedPhotos(lessonId, files, numbers, expiresAt);
+    repository
+      .studentsWhoMayPick(lessonId)
+      .then((students) => notifications.notifyPhotoShared(students))
+      .catch((error: unknown) => {
+        console.error(error instanceof Error ? error.message : "Sending notifications failed");
+      });
+    return { expiresAt };
+  }
+
+  /** Deletes the shared photos whose time is over, and answers how many were deleted. */
+  async removeExpiredPhotos(): Promise<number> {
+    const { repository } = this.#parts;
+    const paths = await repository.expiredPhotoFiles(this.#now());
+    await repository.removePhotoFiles(paths);
+    return paths.length;
+  }
+
   async #facesOf(round: Round): Promise<ClassFace[]> {
     const { repository, cache } = this.#parts;
     const cached = cache.get(round.lessonId);
@@ -117,6 +158,37 @@ export class AttendanceService {
     cache.put(round.lessonId, faces, round.expiresAt);
     return faces;
   }
+}
+
+function spotKey(spot: FaceSpot): string {
+  return `${spot.photoNo}:${spot.faceNo}`;
+}
+
+/** 1 to 3 photos, each once, and every number once, on a face of one of these photos. */
+function checkSharedPhotos(files: SharedPhotoFile[], numbers: PhotoNumber[]): void {
+  const photoNos = new Set(files.map((file) => file.photoNo));
+  const validPhotos =
+    files.length >= 1 &&
+    files.length <= MAX_PHOTOS &&
+    photoNos.size === files.length &&
+    files.every((file) => Number.isInteger(file.photoNo) && file.photoNo >= 0 && file.photoNo < MAX_PHOTOS);
+  if (!validPhotos) throw new HttpError(400, "bad_photos", `Send 1 to ${MAX_PHOTOS} photos, each once.`);
+
+  const validNumbers =
+    numbers.length >= 1 &&
+    new Set(numbers.map((item) => item.number)).size === numbers.length &&
+    new Set(numbers.map(spotKey)).size === numbers.length &&
+    numbers.every(
+      (item) =>
+        Number.isInteger(item.number) &&
+        item.number > 0 &&
+        photoNos.has(item.photoNo) &&
+        Number.isInteger(item.faceNo) &&
+        item.faceNo >= 0 &&
+        item.box.length === 4 &&
+        item.box.every(Number.isInteger),
+    );
+  if (!validNumbers) throw new HttpError(400, "bad_numbers", "Each number needs a photo, a face and a box, and each appears once.");
 }
 
 function facesOf(photos: PhotoFaces[]): ClassFace[] {

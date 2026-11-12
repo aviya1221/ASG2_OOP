@@ -5,7 +5,7 @@ import { AttendanceRules } from "../../src/attendance/AttendanceRules.ts";
 import { AttendanceService, hashOfPrint } from "../../src/attendance/AttendanceService.ts";
 import { ClassFaceCache } from "../../src/attendance/ClassFaceCache.ts";
 import { FaceMatcher } from "../../src/attendance/FaceMatcher.ts";
-import type { ClassFace, FaceMatch, LessonInfo, PhotoFaces, Registration, Result, Round } from "../../src/attendance/types.ts";
+import type { ClassFace, FaceMatch, FaceSpot, LessonInfo, PhotoFaces, PhotoNumber, Registration, Result, Round, SharedPhotoFile } from "../../src/attendance/types.ts";
 import { NotificationService } from "../../src/notifications/NotificationService.ts";
 
 const NOW = new Date("2026-12-01T10:00:00Z");
@@ -34,6 +34,11 @@ class FakeRepository implements AttendanceRepository {
   saveRoundCalls = 0;
   matches: FaceMatch[] = [];
   sightings = new Map<string, FaceMatch[]>();
+  identified: FaceSpot[] = [];
+  shared: { files: SharedPhotoFile[]; numbers: PhotoNumber[]; expiresAt: Date } | null = null;
+  mayPick = ["S2", "S3"];
+  expired = ["L0/0-a.jpg"];
+  removed: string[] = [];
 
   async findLesson() {
     return this.lesson;
@@ -75,21 +80,44 @@ class FakeRepository implements AttendanceRepository {
   async saveSightings(_lesson: string, student: string, faces: FaceMatch[]) {
     this.sightings.set(student, faces);
   }
+  async identifiedFaces() {
+    return this.identified;
+  }
+  async hasSharedPhotos() {
+    return this.shared !== null;
+  }
+  async saveSharedPhotos(_lesson: string, files: SharedPhotoFile[], numbers: PhotoNumber[], expiresAt: Date) {
+    this.shared = { files, numbers, expiresAt };
+  }
+  async studentsWhoMayPick() {
+    return this.mayPick;
+  }
+  async expiredPhotoFiles() {
+    return this.expired;
+  }
+  async removePhotoFiles(paths: string[]) {
+    this.removed.push(...paths);
+  }
 }
 
 let repository: FakeRepository;
 let service: AttendanceService;
 let notified: string[];
+let toldToPick: string[][];
 
 beforeEach(() => {
   repository = new FakeRepository();
   notified = [];
+  toldToPick = [];
   const notifications = new NotificationService(
-    { saveSubscription: async () => {}, subscriptionsOfLesson: async () => [], deleteSubscription: async () => {} },
+    { saveSubscription: async () => {}, subscriptionsOfLesson: async () => [], subscriptionsOfStudents: async () => [], deleteSubscription: async () => {} },
     { send: async () => 201 },
   );
   notifications.notifyCourse = async (lessonId: string) => {
     notified.push(lessonId);
+  };
+  notifications.notifyPhotoShared = async (students: string[]) => {
+    toldToPick.push(students);
   };
   service = new AttendanceService({
     repository,
@@ -225,6 +253,72 @@ describe("AttendanceService.startRound", () => {
     repository.round = null;
     await assert.rejects(service.startRound("L1", "T1", []), { code: "bad_photos" });
     await assert.rejects(service.startRound("L1", "T1", [...PHOTOS, ...PHOTOS, ...PHOTOS, ...PHOTOS]), { code: "bad_photos" });
+  });
+});
+
+describe("AttendanceService.sharePhotos", () => {
+  const JPEG = new Uint8Array([0xff, 0xd8, 0xff]);
+  const FILES: SharedPhotoFile[] = [{ photoNo: 0, jpeg: JPEG }];
+  const NUMBERS: PhotoNumber[] = [
+    { number: 1, photoNo: 0, faceNo: 2, box: [10, 10, 40, 40] },
+    { number: 2, photoNo: 0, faceNo: 5, box: [90, 10, 40, 40] },
+  ];
+
+  beforeEach(() => {
+    repository.round = { lessonId: "L1", expiresAt: new Date(NOW.getTime() - 1) };
+  });
+
+  it("saves the photos for 24 hours and tells the students who may pick", async () => {
+    const { expiresAt } = await service.sharePhotos("L1", "T1", FILES, NUMBERS);
+    assert.equal(expiresAt.getTime() - NOW.getTime(), 24 * 3_600_000);
+    assert.deepEqual(repository.shared?.numbers, NUMBERS);
+    await new Promise((resolve) => setImmediate(resolve));
+    assert.deepEqual(toldToPick, [["S2", "S3"]]);
+  });
+
+  it("refuses another teacher, a share during the hour, and a second share", async () => {
+    await assert.rejects(service.sharePhotos("L1", "T2", FILES, NUMBERS), { status: 403, code: "not_the_teacher" });
+
+    repository.round = { lessonId: "L1", expiresAt: new Date(NOW.getTime() + 1) };
+    await assert.rejects(service.sharePhotos("L1", "T1", FILES, NUMBERS), { status: 409, code: "round_open" });
+
+    repository.round = null;
+    await assert.rejects(service.sharePhotos("L1", "T1", FILES, NUMBERS), { status: 404, code: "no_round" });
+
+    repository.round = { lessonId: "L1", expiresAt: new Date(NOW.getTime() - 1) };
+    await service.sharePhotos("L1", "T1", FILES, NUMBERS);
+    await assert.rejects(service.sharePhotos("L1", "T1", FILES, NUMBERS), { status: 409, code: "already_shared" });
+  });
+
+  it("refuses a number on the face of a present student", async () => {
+    repository.identified = [{ photoNo: 0, faceNo: 5 }];
+    await assert.rejects(service.sharePhotos("L1", "T1", FILES, NUMBERS), { status: 400, code: "identified_face" });
+    assert.equal(repository.shared, null);
+  });
+
+  it("refuses photos and numbers that do not fit each other", async () => {
+    const refused: [SharedPhotoFile[], PhotoNumber[], string][] = [
+      [[], NUMBERS, "bad_photos"],
+      [[...FILES, ...FILES], NUMBERS, "bad_photos"],
+      [[{ photoNo: 3, jpeg: JPEG }], NUMBERS, "bad_photos"],
+      [FILES, [], "bad_numbers"],
+      [FILES, [NUMBERS[0]!, { ...NUMBERS[1]!, number: 1 }], "bad_numbers"],
+      [FILES, [NUMBERS[0]!, { ...NUMBERS[1]!, faceNo: 2 }], "bad_numbers"],
+      [FILES, [{ ...NUMBERS[0]!, photoNo: 1 }], "bad_numbers"],
+      [FILES, [{ ...NUMBERS[0]!, number: 0 }], "bad_numbers"],
+      [FILES, [{ ...NUMBERS[0]!, box: [1, 2, 3] }], "bad_numbers"],
+    ];
+    for (const [files, numbers, code] of refused) {
+      await assert.rejects(service.sharePhotos("L1", "T1", files, numbers), { status: 400, code });
+    }
+    assert.equal(repository.shared, null);
+  });
+});
+
+describe("AttendanceService.removeExpiredPhotos", () => {
+  it("deletes the files whose time is over", async () => {
+    assert.equal(await service.removeExpiredPhotos(), 1);
+    assert.deepEqual(repository.removed, ["L0/0-a.jpg"]);
   });
 });
 

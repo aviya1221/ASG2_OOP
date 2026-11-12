@@ -1,4 +1,4 @@
-import type { ClassFace, FaceMatch, LessonInfo, PhotoFaces, Registration, Result, Round } from "./types.ts";
+import type { ClassFace, FaceMatch, FaceSpot, LessonInfo, PhotoFaces, PhotoNumber, Registration, Result, Round, SharedPhotoFile } from "./types.ts";
 
 /** Everything attendance reads and writes. The server holds the secret key, so this may touch closed tables. */
 export interface AttendanceRepository {
@@ -15,4 +15,12 @@ export interface AttendanceRepository {
   recordMatch(lessonId: string, studentId: string, match: FaceMatch): Promise<Result>;
   /** Where a matched student was seen, one face in each photo. */
   saveSightings(lessonId: string, studentId: string, faces: FaceMatch[]): Promise<void>;
+  /** The faces that belong to a present student, in every photo they were seen in. */
+  identifiedFaces(lessonId: string): Promise<FaceSpot[]>;
+  hasSharedPhotos(lessonId: string): Promise<boolean>;
+  saveSharedPhotos(lessonId: string, files: SharedPhotoFile[], numbers: PhotoNumber[], expiresAt: Date): Promise<void>;
+  /** The students of the course whom the face check did not mark present. */
+  studentsWhoMayPick(lessonId: string): Promise<string[]>;
+  expiredPhotoFiles(now: Date): Promise<string[]>;
+  removePhotoFiles(paths: string[]): Promise<void>;
 }
