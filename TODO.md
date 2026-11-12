@@ -299,7 +299,7 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
   - [x] Client: the student picks a number and the teacher approves
   - [x] Tests: picking a number instead of row and seat
 - [ ] Attendance: students confirm they were in the lesson, and the class photo only counts faces (2026-11-12, replaces face recognition)
-  - [ ] Decisions note: the new attendance flow
+  - [x] Decisions note: the new attendance flow → [docs/features/F1-attendance-strategy.md](docs/features/F1-attendance-strategy.md)
   - [ ] Database: confirmations, the face count, picks by everyone who confirmed and the teacher's changes; face tables removed
   - [ ] Server: the face count, the rule of more confirmations than faces, and sharing the photo only then
   - [ ] Client: the teacher takes one photo, sees the count and shares the photo with a number on every face
