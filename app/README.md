@@ -212,8 +212,7 @@ Copy [server/.env.example](server/.env.example) to `server/.env`. The `.env` fil
 | [React Router](https://github.com/remix-run/react-router) | Addresses of the web client | MIT |
 | [Supabase CLI](https://github.com/supabase/cli) | Local database (dev tool) | MIT |
 | [Vitest](https://github.com/vitest-dev/vitest), [Testing Library](https://github.com/testing-library) and [jsdom](https://github.com/jsdom/jsdom) | Unit tests of the client (dev tools) | MIT |
-| [OpenCV.js](https://github.com/TechStark/opencv-js), [YuNet and SFace](https://github.com/opencv/opencv_zoo) | Finds faces and makes face-prints in the browser | Apache-2.0 / MIT |
-| [ONNX Runtime Web](https://github.com/microsoft/onnxruntime) | Runs the face-print model in the browser | MIT |
+| [OpenCV.js](https://github.com/TechStark/opencv-js), [YuNet](https://github.com/opencv/opencv_zoo) | Finds and counts the faces in the class photo, in the browser | Apache-2.0 / MIT |
 | [write-excel-file](https://gitlab.com/catamphetamine/write-excel-file) | Writes the attendance sheet | MIT |
 | [web-push](https://github.com/web-push-libs/web-push) | Sends phone notifications | MPL-2.0 |
 | [multer](https://github.com/expressjs/multer) | Receives the recording of a lesson | MIT |
