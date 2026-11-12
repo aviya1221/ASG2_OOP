@@ -80,7 +80,7 @@ export function FacePage({ person }: { person: Person }) {
     try {
       await callServer("/faces/register", { optOut: true });
       setStatus({ registered: false, optedOut: true });
-      setDone("בחרת לא להשתתף בזיהוי פנים. הנוכחות תהיה לפי שורה ומושב.");
+      setDone("בחרת לא להשתתף בזיהוי פנים. אחרי צילום הכיתה אפשר יהיה לבחור את המספר שלך בתמונה, אם המרצה ישתף אותה.");
     } catch {
       setProblem("הבחירה לא נשמרה. אפשר לנסות שוב.");
     }
