@@ -8,6 +8,7 @@ import {
   endHour,
   hashOf,
   ID,
+  keepClassPhotoOnPhone,
   newLesson,
   openAs,
   PERSON_PHOTO,
@@ -16,6 +17,7 @@ import {
   registerFace,
   respondAs,
   secret,
+  signedInClient,
   startRound,
   storeFaceInBrowser,
   studentFor,
@@ -147,26 +149,80 @@ test("TC-027 the sheet updates with each new result", async ({ page }, info) => 
   await expect(rowOf(second)).toContainText("נוכח", { timeout: 2_000 });
 });
 
-test("TC-024 a student picks a seat on the map, and the teacher approves it", async ({ browser, page }, info) => {
-  const student = studentFor(info.project.name, 22);
-  const lessonId = await newLesson([student]);
-  await startRound(lessonId, [printFor(99)]);
+test("a student who was not recognised picks a number in the shared photo, and the teacher approves it", async ({ browser, page }, info) => {
+  // A teacher and two students, each signing in, take longer than one page.
+  test.setTimeout(90_000);
+  const known = studentFor(info.project.name, 22);
+  const first = studentFor(info.project.name, 26);
+  const second = studentFor(info.project.name, 28);
+  const print = printFor(22);
+  await registerFace(known, print);
+  const lessonId = await newLesson([known, first, second]);
+  await startRound(lessonId, [print, printFor(97), printFor(98)]);
+  expect((await respondAs(known, lessonId, print)).status).toBe(200);
   await endHour(lessonId);
+  const names = Object.fromEntries(((await secret.from("people").select("id_number, name").in("id_number", [first, second])).data ?? []).map((row) => [row.id_number, row.name]));
 
-  await openAs(page, student, `/lessons/${lessonId}/attendance`);
-  await page.getByRole("button", { name: "שורה 3, מושב 5", exact: true }).click();
-  await page.getByRole("button", { name: "שליחת בקשה" }).click();
-  await expect(page.getByText("בקשה לשורה 3, מושב 5: ממתינה לאישור")).toBeVisible();
-
+  // The teacher's phone still has the photo, with the three face boxes of the round.
   const context = await browser.newContext();
   const teacher = await context.newPage();
-  await openAs(teacher, ID.T1, `/lessons/${lessonId}/attendance`);
-  const { data } = await secret.from("people").select("name").eq("id_number", student).single();
-  await teacher.getByRole("button", { name: `אישור הבקשה של ${data!.name}` }).click();
-  await expect(teacher.locator(`tr[data-student="${student}"]`)).toContainText("נוכח");
+  await openAs(teacher, ID.T1, "/");
+  await keepClassPhotoOnPhone(teacher, lessonId, await classPhoto(teacher), [
+    [100, 75, 300, 350],
+    [600, 75, 300, 350],
+    [1100, 75, 300, 350],
+  ]);
+  await teacher.goto(`/lessons/${lessonId}/attendance`);
+  await expect(teacher.getByText("בתמונות נמצאו 3 פרצופים. אחד מהם שייך לסטודנט שזוהה, ו־2 לא זוהו.")).toBeVisible();
+  await expect(teacher.getByRole("img", { name: "תמונה 1 עם מספרים" })).toBeVisible();
+  await teacher.getByRole("button", { name: "שיתוף התמונה עם מספרים" }).click();
+  await expect(teacher.getByText("התמונה שותפה עם הסטודנטים שלא זוהו.", { exact: false })).toBeVisible({ timeout: 15_000 });
+  const { data: numbers } = await secret.from("photo_numbers").select("number, face_no").eq("lesson_id", lessonId).order("number");
+  expect(numbers).toEqual([
+    { number: 1, face_no: 1 },
+    { number: 2, face_no: 2 },
+  ]);
+
+  await openAs(page, first, `/lessons/${lessonId}/attendance`);
+  await expect(page.getByRole("img", { name: "תמונת הכיתה 1 עם מספרים" })).toBeVisible();
+  await page.getByRole("button", { name: "1", exact: true }).click();
+  await page.getByRole("button", { name: "אני מספר 1" }).click();
+  await expect(page.getByText("בחרת את מספר 1: ממתין לאישור המרצה")).toBeVisible();
+
+  // A second student picks the same number, so both picks wait for the teacher together.
+  const other = await signedInClient(second);
+  expect((await other.from("number_claims").insert({ lesson_id: lessonId, student_id: second, number: 1 })).error).toBeNull();
+  await page.reload();
+  await expect(page.getByText("בחרת את מספר 1: הועבר למרצה להמשך טיפול")).toBeVisible();
+
+  await expect(teacher.getByText("2 סטודנטים בחרו את מספר 1").first()).toBeVisible();
+  await teacher.getByRole("button", { name: `אישור הבחירה של ${names[first]}` }).click();
+  await expect(teacher.locator(`tr[data-student="${first}"]`)).toContainText("נוכח");
+  await expect(teacher.getByRole("button", { name: `אישור הבחירה של ${names[second]}` })).toHaveCount(0);
   await context.close();
 
-  await expect(page.getByText("בקשה לשורה 3, מושב 5: אושרה")).toBeVisible();
+  await expect(page.getByText("בחרת את מספר 1: אושר")).toBeVisible();
+  const { data: claims } = await secret.from("number_claims").select("student_id, status").eq("lesson_id", lessonId).order("student_id");
+  expect(claims).toEqual([
+    { student_id: first, status: "approved" },
+    { student_id: second, status: "rejected" },
+  ]);
+});
+
+test("the photo can be shared only from the phone that took it", async ({ page }, info) => {
+  const student = studentFor(info.project.name, 32);
+  const lessonId = await newLesson([student]);
+  await startRound(lessonId, [printFor(96)]);
+  await endHour(lessonId);
+
+  await openAs(page, ID.T1, `/lessons/${lessonId}/attendance`);
+  await expect(page.getByText("את תמונת הכיתה עם המספרים אפשר לשתף רק מהמכשיר שצילם אותה.")).toBeVisible();
+
+  const context = await page.context().browser()!.newContext();
+  const studentPage = await context.newPage();
+  await openAs(studentPage, student, `/lessons/${lessonId}/attendance`);
+  await expect(studentPage.getByText("המרצה עוד לא שיתף את תמונת הכיתה.")).toBeVisible();
+  await context.close();
 });
 
 test("TC-028 download the sheet", async ({ page }, info) => {

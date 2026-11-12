@@ -175,6 +175,29 @@ export async function classPhoto(page: Page): Promise<{ name: string; mimeType: 
   return { name: "class.jpg", mimeType: "image/jpeg", buffer: Buffer.from(base64, "base64") };
 }
 
+/** Puts a class photo on the teacher's phone, as sending the photos of a round does (ClassPhotoStore). */
+export async function keepClassPhotoOnPhone(page: Page, lessonId: string, photo: { buffer: Buffer }, boxes: number[][]): Promise<void> {
+  await page.evaluate(
+    async ({ lessonId, base64, boxes }) => {
+      const bytes = Uint8Array.from(atob(base64), (char) => char.charCodeAt(0));
+      const db = await new Promise<IDBDatabase>((resolve, reject) => {
+        const request = indexedDB.open("class-photos", 1);
+        request.onupgradeneeded = () => request.result.createObjectStore("rounds", { keyPath: "lessonId" });
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+      });
+      await new Promise<void>((resolve, reject) => {
+        const transaction = db.transaction("rounds", "readwrite");
+        transaction.objectStore("rounds").put({ lessonId, savedAt: Date.now(), dismissed: false, photos: [{ jpeg: bytes.buffer, width: 1500, height: 500, boxes }] });
+        transaction.oncomplete = () => resolve();
+        transaction.onerror = () => reject(transaction.error);
+      });
+      db.close();
+    },
+    { lessonId, base64: photo.buffer.toString("base64"), boxes },
+  );
+}
+
 /** A photo with no face in it. */
 export async function blankPhoto(page: Page): Promise<{ name: string; mimeType: string; buffer: Buffer }> {
   const base64 = await page.evaluate(() => {
