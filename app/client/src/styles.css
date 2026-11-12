@@ -488,6 +488,7 @@ legend {
   border-radius: 999px;
   font-size: 14px;
   font-weight: 700;
+  white-space: nowrap;
 }
 
 .result-present { background: #95c374; }
@@ -530,6 +531,21 @@ td {
   padding: 8px 10px;
   text-align: right;
   border-bottom: 1px solid var(--soft);
+}
+
+/* The attendance sheet fits a phone: four narrow columns, with the teacher's change in the last one. */
+.attendance-table {
+  min-width: 0;
+}
+
+.attendance-table th,
+.attendance-table td {
+  padding: 8px 6px;
+}
+
+.attendance-table select {
+  font-size: 14px;
+  padding: 4px 6px;
 }
 
 /* The shared class photos: each fills the width, and a tap opens it full size to enlarge a face. */

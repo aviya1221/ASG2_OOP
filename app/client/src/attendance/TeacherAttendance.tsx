@@ -350,7 +350,7 @@ function PicksToDecide({ lessonId, rows, onDecided }: { lessonId: string; rows: 
 
 /** The teacher's own decision wins over every rule, and "automatic" takes it back. */
 const CHOICES = [
-  { value: "auto", label: "תוצאה אוטומטית" },
+  { value: "auto", label: "אוטומטי" },
   { value: "present", label: "נוכח" },
   { value: "absent", label: "לא נוכח" },
 ];
@@ -403,13 +403,12 @@ function AttendanceTable({ lessonId, rows, onChanged }: { lessonId: string; rows
         </p>
       )}
       <div className="table-box">
-        <table>
+        <table className="attendance-table">
           <thead>
             <tr>
               <th>תעודת זהות</th>
               <th>שם</th>
               <th>נוכחות</th>
-              <th>הערה</th>
               <th>שינוי</th>
             </tr>
           </thead>
@@ -417,11 +416,13 @@ function AttendanceTable({ lessonId, rows, onChanged }: { lessonId: string; rows
             {rows.map((row) => (
               <tr key={row.idNumber} data-student={row.idNumber}>
                 <td dir="ltr">{row.idNumber}</td>
-                <td>{row.name}</td>
+                <td>
+                  {row.name}
+                  {row.flagged && <div className="muted">מסומן</div>}
+                </td>
                 <td>
                   <ResultChip kind={row.attendance} />
                 </td>
-                <td>{row.flagged ? "מסומן" : ""}</td>
                 <td>
                   <select aria-label={`שינוי הנוכחות של ${row.name}`} value={choiceOf(row)} onChange={(event) => void change(row, event.target.value)}>
                     {CHOICES.map((choice) => (
