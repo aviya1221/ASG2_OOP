@@ -5,6 +5,7 @@ import { useSession, type Person } from "../accounts/session.tsx";
 import { callServer, ServerError } from "../lib/server.ts";
 import { supabase } from "../lib/supabase.ts";
 import { downloadSheet, loadSheet, RESULT_LABELS, type SheetRow } from "./AttendanceSheet.ts";
+import { canvasToJpeg, ClassPhotoStore } from "./ClassPhotoStore.ts";
 import { faceEngine, photoToCanvas } from "./FaceEngine.ts";
 import { useEndedCount, useTask, useTasks } from "../tasks/BackgroundTasks.tsx";
 import { ICON, IconButton } from "../ui/Icon.tsx";
@@ -65,6 +66,13 @@ interface PhotoFaces {
   faces: { box: number[]; print: number[] }[];
 }
 
+/** A processed photo: what the server gets, and the photo the phone keeps for the numbers. */
+interface ProcessedPhoto extends PhotoFaces {
+  jpeg: Blob;
+  width: number;
+  height: number;
+}
+
 function TeacherAttendance({ lessonId }: { lessonId: string }) {
   const [round, reload] = useRound(lessonId);
   // The photos are processed and sent in the background, so the tab reloads when that ends (NFR-13).
@@ -81,7 +89,7 @@ const SEND_ERRORS: Record<string, string> = {
 };
 
 /** Finds the faces in one class photo and makes their face-prints, in the browser. */
-async function facesIn(file: File): Promise<PhotoFaces> {
+async function facesIn(file: File): Promise<ProcessedPhoto> {
   const engine = faceEngine();
   await engine.load();
   const canvas = await photoToCanvas(file);
@@ -91,7 +99,20 @@ async function facesIn(file: File): Promise<PhotoFaces> {
     const print = await engine.makePrint(canvas, face);
     faces.push({ box: face.box.map(Math.round), print: Array.from(print) });
   }
-  return { faces };
+  // The reduced photo, so the face boxes fit it exactly when numbers are drawn after the hour.
+  return { faces, jpeg: await canvasToJpeg(canvas), width: canvas.width, height: canvas.height };
+}
+
+/** Kept only on this phone. A browser that cannot store it loses only the option to share the photo. */
+async function keepOnPhone(lessonId: string, photos: ProcessedPhoto[]): Promise<void> {
+  try {
+    await ClassPhotoStore.save(
+      lessonId,
+      photos.map(({ jpeg, width, height, faces }) => ({ jpeg, width, height, boxes: faces.map((face) => face.box) })),
+    );
+  } catch {
+    // Nothing to do: the round itself was sent.
+  }
 }
 
 /** The photos are kept with the background actions, so leaving the tab does not lose them. */
@@ -99,7 +120,7 @@ function PhotoTaker({ lessonId }: { lessonId: string }) {
   const { tasks, start, clear } = useTasks();
   const sending = useTask("class-send", lessonId);
   const photoTasks = tasks.filter((task) => task.kind === "class-photo" && task.scope === lessonId);
-  const photos = photoTasks.filter((task) => task.status === "done").map((task) => task.result as PhotoFaces);
+  const photos = photoTasks.filter((task) => task.status === "done").map((task) => task.result as ProcessedPhoto);
   const link = `/lessons/${lessonId}/attendance`;
 
   let progress = "";
@@ -144,7 +165,9 @@ function PhotoTaker({ lessonId }: { lessonId: string }) {
         stopsOnClose: true,
       },
       async () => {
-        await callServer("/attendance/class", { lessonId, photos });
+        // Only the face boxes and face-prints leave the phone.
+        await callServer("/attendance/class", { lessonId, photos: photos.map(({ faces }) => ({ faces })) });
+        await keepOnPhone(lessonId, photos);
         clear("class-photo", lessonId);
       },
     );

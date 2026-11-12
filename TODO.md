@@ -294,7 +294,7 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
   - [x] Database: where each student was seen, shared photos, numbers and picks; row and seat removed
   - [x] Server: record where each matched student was seen in every photo
   - [x] Server: receive the shared photo, notify who may pick, delete it after 24 hours
-  - [ ] Client: the teacher's phone keeps the class photos until the end of the hour
+  - [x] Client: the teacher's phone keeps the class photos until the end of the hour
   - [ ] Client: the teacher sees the face count and shares the photo with numbers
   - [ ] Client: the student picks a number and the teacher approves
   - [ ] Tests: picking a number instead of row and seat
