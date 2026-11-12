@@ -38,18 +38,18 @@ export class HomeworkService {
   async publish(lessonId: string, teacherId: string, title: string, pdf: Uint8Array): Promise<{ homework: Homework; questions: number }> {
     const lesson = await this.#repository.findLesson(lessonId);
     if (!lesson) throw new HttpError(404, "not_found", "There is no such lesson.");
-    if (lesson.teacherId !== teacherId) throw new HttpError(403, "not_the_teacher", "Only the teacher of the lesson can do this.");
+    if (lesson.teacherId !== teacherId) throw new HttpError(403, "not_the_teacher", "Only the teacher of the course can do this.");
     const guide = await withAi(() => this.#guides.generate(pdf));
     const homework = await this.#repository.saveHomework(lessonId, title, pdf, guide);
     return { homework, questions: guide.questions.length };
   }
 
-  /** Only the teacher of the lesson deletes a homework, and its guide, checks and file go with it (REQ-74). */
+  /** Only the teacher of the course deletes a homework, and its guide, checks and file go with it (REQ-74). */
   async remove(homeworkId: string, teacherId: string): Promise<void> {
     const homework = await this.#repository.findHomework(homeworkId);
     if (!homework) throw new HttpError(404, "not_found", "There is no such homework.");
     const lesson = await this.#repository.findLesson(homework.lessonId);
-    if (lesson?.teacherId !== teacherId) throw new HttpError(403, "not_the_teacher", "Only the teacher of the lesson can do this.");
+    if (lesson?.teacherId !== teacherId) throw new HttpError(403, "not_the_teacher", "Only the teacher of the course can do this.");
     await this.#repository.deleteHomework(homework);
   }
 
@@ -58,7 +58,7 @@ export class HomeworkService {
     const homework = await this.#repository.findHomework(homeworkId);
     if (!homework) throw new HttpError(404, "not_found", "There is no such homework.");
     if (!(await this.#repository.studiesLesson(homework.lessonId, studentId))) {
-      throw new HttpError(403, "not_in_course", "Only a student of the lesson can do this.");
+      throw new HttpError(403, "not_in_course", "Only a student of the course can do this.");
     }
     let used = await this.#repository.countChecks(homeworkId, studentId);
     if (used >= MAX_CHECKS) throw noChecksLeft();

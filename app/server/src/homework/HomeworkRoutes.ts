@@ -52,7 +52,7 @@ export class HomeworkRoutes {
 
   publish = async (req: Request, res: Response): Promise<void> => {
     const user = signedInUser(res);
-    if (user.role !== "teacher") throw new HttpError(403, "not_the_teacher", "Only the teacher of the lesson can do this.");
+    if (user.role !== "teacher") throw new HttpError(403, "not_the_teacher", "Only the teacher of the course can do this.");
     const pdf = pdfOf(req.file);
     const { homework, questions } = await this.#service.publish(textOf(req.body?.lessonId, "lessonId"), user.idNumber, textOf(req.body?.title, "title"), pdf);
     res.status(201).json({ homeworkId: homework.id, questions });
@@ -60,14 +60,14 @@ export class HomeworkRoutes {
 
   remove = async (req: Request, res: Response): Promise<void> => {
     const user = signedInUser(res);
-    if (user.role !== "teacher") throw new HttpError(403, "not_the_teacher", "Only the teacher of the lesson can do this.");
+    if (user.role !== "teacher") throw new HttpError(403, "not_the_teacher", "Only the teacher of the course can do this.");
     await this.#service.remove(String(req.params.id), user.idNumber);
     res.status(204).end();
   };
 
   check = async (req: Request, res: Response): Promise<void> => {
     const user = signedInUser(res);
-    if (user.role !== "student") throw new HttpError(403, "not_in_course", "Only a student of the lesson can do this.");
+    if (user.role !== "student") throw new HttpError(403, "not_in_course", "Only a student of the course can do this.");
     const check = await this.#service.check(String(req.params.id), user.idNumber, pdfOf(req.file));
     res.json({ checkNumber: check.checkNumber, overall: check.overall, questionScores: check.questionScores, report: check.report });
   };

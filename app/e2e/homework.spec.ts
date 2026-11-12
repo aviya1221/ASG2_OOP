@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { expect, test, type Page } from "@playwright/test";
-import { ID, newLesson, openAs, secret, SERVER_URL, signedInClient, studentFor } from "./helpers.ts";
+import { ID, newCourse, newLesson, openAs, secret, SERVER_URL, signedInClient, studentFor } from "./helpers.ts";
 
 test.describe.configure({ timeout: 120_000 });
 
@@ -86,6 +86,17 @@ test("TC-130 the teacher publishes a homework PDF, its student opens it, and a s
   await openAs(otherPage, ID.S51, `/lessons/${lessonId}/homework`);
   await expect(otherPage.getByText("השיעור הזה לא נמצא.")).toBeVisible();
   await other.close();
+});
+
+test("TC-144 a homework published in one lesson shows in every lesson of the course, with the lecture it came from", async ({ page }, info) => {
+  const student = studentFor(info.project.name, 90);
+  const [first, second] = await newCourse([student], [{ number: 1 }, { number: 2, hoursFromNow: 24 }]);
+  await publish(first!, "מטלה מההרצאה הראשונה");
+
+  await openAs(page, student, `/lessons/${second}/homework`);
+  const item = page.getByRole("region", { name: "מטלה מההרצאה הראשונה" });
+  await expect(item).toBeVisible();
+  await expect(item.getByText(/פורסמה בהרצאה 1 · /)).toBeVisible();
 });
 
 test("TC-132 the student checks a solution from the button next to the homework, and the report opens on the same page", async ({ page }, info) => {

@@ -2,6 +2,7 @@ import { FileText, Send, Trash2, Upload } from "lucide-react";
 import { useCallback, useEffect, useState, type FormEvent } from "react";
 import { useSession } from "../accounts/session.tsx";
 import { deleteOnServer, ServerError, uploadToServer } from "../lib/server.ts";
+import { localDay, shortDate } from "../lessons/lessons.ts";
 import { supabase } from "../lib/supabase.ts";
 import { useEndedCount, useTask, useTasks } from "../tasks/BackgroundTasks.tsx";
 import { ICON, IconAnchor, IconButton } from "../ui/Icon.tsx";
@@ -12,6 +13,8 @@ import { MAX_CHECKS, type ChartRow, type Check } from "./scores.ts";
 interface HomeworkItem {
   id: string;
   title: string;
+  /** Where and when it was published, for example "הרצאה 5 · 12.11" (REQ-75). */
+  published: string;
   url: string | null;
   checksUsed: number;
   latest: Check | null;
@@ -25,7 +28,7 @@ const FILE_ERRORS: Record<string, string> = {
 const PUBLISH_ERRORS: Record<string, string> = {
   ...FILE_ERRORS,
   ai_unavailable: "שירות הבדיקה לא הכין הנחיות, והמטלה לא פורסמה. אפשר לנסות שוב.",
-  not_the_teacher: "רק למרצה של השיעור מותר לפרסם בו מטלה.",
+  not_the_teacher: "רק למרצה של הקורס מותר לפרסם בו מטלה.",
 };
 const CHECK_ERRORS: Record<string, string> = {
   ...FILE_ERRORS,
@@ -37,15 +40,23 @@ function messageOf(errors: Record<string, string>, error: unknown): string {
   return errors[error instanceof ServerError ? error.code : ""] ?? "הפעולה נכשלה. אפשר לנסות שוב.";
 }
 
-/** Homework of the lesson: the teacher publishes, students check solutions, and everyone sees the chart (UC-05). */
-export function HomeworkTab({ lessonId }: { lessonId: string }) {
+/**
+ * Homework of the course, shown in every lesson of it (REQ-75): the teacher publishes from any lesson,
+ * students check solutions, and everyone sees the chart (UC-05).
+ */
+export function HomeworkTab({ lessonId, courseId }: { lessonId: string; courseId: string }) {
   const session = useSession();
   const role = session.status === "signed-in" ? session.person.role : null;
   const [items, setItems] = useState<HomeworkItem[] | null>(null);
   const [problem, setProblem] = useState("");
 
   const load = useCallback(async () => {
-    const { data: rows, error } = await supabase.from("homework").select("id, title, file_path").eq("lesson_id", lessonId).order("created_at");
+    // A homework keeps the lesson it was published in, and belongs to the course of that lesson.
+    const { data: rows, error } = await supabase
+      .from("homework")
+      .select("id, title, file_path, created_at, lessons!inner(course_id, lecture_number)")
+      .eq("lessons.course_id", courseId)
+      .order("created_at", { ascending: false });
     if (error || !rows) {
       setProblem("טעינת המטלות נכשלה.");
       setItems([]);
@@ -69,9 +80,11 @@ export function HomeworkTab({ lessonId }: { lessonId: string }) {
       rows.map((row) => {
         const mine = (checks.data ?? []).filter((check) => check.homework_id === row.id);
         const last = mine.at(-1);
+        const lesson = row.lessons as unknown as { lecture_number: number };
         return {
           id: row.id,
           title: row.title,
+          published: `הרצאה ${lesson.lecture_number} · ${shortDate(localDay(new Date(row.created_at)).key)}`,
           url: urlOf.get(row.file_path) ?? null,
           checksUsed: mine.length,
           latest: last ? { checkNumber: last.check_number, overall: last.overall, questionScores: last.question_scores, report: last.report } : null,
@@ -81,10 +94,10 @@ export function HomeworkTab({ lessonId }: { lessonId: string }) {
         };
       }),
     );
-  }, [lessonId]);
+  }, [courseId]);
 
-  // Publishing and checking go on in the background, so the list reloads whenever one of them ends (NFR-13).
-  const ended = useEndedCount(lessonId);
+  // Publishing and checking go on in the background, so the list reloads whenever one of them ends in this course (NFR-13).
+  const ended = useEndedCount(courseId);
   useEffect(() => {
     void load();
   }, [load, ended]);
@@ -106,23 +119,26 @@ export function HomeworkTab({ lessonId }: { lessonId: string }) {
   return (
     <div className="stack homework-tab">
       <h2>מטלות</h2>
-      {role === "teacher" && <PublishForm lessonId={lessonId} />}
+      {role === "teacher" && <PublishForm lessonId={lessonId} courseId={courseId} />}
       {problem && (
         <p className="problem" role="alert">
           {problem}
         </p>
       )}
-      {items.length === 0 && <p className="muted">עדיין אין מטלות בשיעור הזה.</p>}
+      {items.length === 0 && <p className="muted">עדיין אין מטלות בקורס הזה.</p>}
       {items.map((item) => (
         <section key={item.id} className="card stack homework" aria-label={item.title}>
           <div className="row-between">
-            <h3>{item.title}</h3>
+            <div>
+              <h3>{item.title}</h3>
+              <p className="muted">פורסמה ב{item.published}</p>
+            </div>
             <span className="actions">
               {item.url && <IconAnchor icon={FileText} label="פתיחת המטלה" href={item.url} target="_blank" rel="noopener noreferrer" />}
               {role === "teacher" && <IconButton icon={Trash2} className="danger" label={`מחיקת המטלה ${item.title}`} onClick={() => void remove(item)} />}
             </span>
           </div>
-          {role === "student" && <CheckForm lessonId={lessonId} homeworkId={item.id} title={item.title} used={item.checksUsed} />}
+          {role === "student" && <CheckForm lessonId={lessonId} courseId={courseId} homeworkId={item.id} title={item.title} used={item.checksUsed} />}
           {item.latest && <ReportView check={item.latest} />}
           {item.chart.length > 0 && <ClassChart rows={item.chart} />}
         </section>
@@ -131,9 +147,10 @@ export function HomeworkTab({ lessonId }: { lessonId: string }) {
   );
 }
 
-function PublishForm({ lessonId }: { lessonId: string }) {
+function PublishForm({ lessonId, courseId }: { lessonId: string; courseId: string }) {
   const { start } = useTasks();
-  const task = useTask("homework-publish", lessonId);
+  // One publish at a time in a course, seen from every lesson of it.
+  const task = useTask("homework-publish", courseId);
   const [title, setTitle] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [round, setRound] = useState(0);
@@ -160,8 +177,8 @@ function PublishForm({ lessonId }: { lessonId: string }) {
     start(
       {
         kind: "homework-publish",
-        key: lessonId,
-        scope: lessonId,
+        key: courseId,
+        scope: courseId,
         label: `פרסום המטלה "${name}"`,
         doneText: `המטלה "${name}" פורסמה.`,
         failText: `פרסום המטלה "${name}" נכשל.`,
@@ -201,7 +218,7 @@ function PublishForm({ lessonId }: { lessonId: string }) {
   );
 }
 
-function CheckForm({ lessonId, homeworkId, title, used }: { lessonId: string; homeworkId: string; title: string; used: number }) {
+function CheckForm({ lessonId, courseId, homeworkId, title, used }: { lessonId: string; courseId: string; homeworkId: string; title: string; used: number }) {
   const { start } = useTasks();
   const task = useTask("homework-check", homeworkId);
   const [file, setFile] = useState<File | null>(null);
@@ -227,7 +244,7 @@ function CheckForm({ lessonId, homeworkId, title, used }: { lessonId: string; ho
       {
         kind: "homework-check",
         key: homeworkId,
-        scope: lessonId,
+        scope: courseId,
         label: `בדיקת הפתרון של "${title}"`,
         doneText: `הדוח על הפתרון של "${title}" מוכן.`,
         failText: `בדיקת הפתרון של "${title}" נכשלה.`,

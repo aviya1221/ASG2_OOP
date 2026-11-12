@@ -84,7 +84,7 @@ export function LessonPage() {
         ) : openTab === "forum" ? (
           <ForumTab lessonId={lessonId} courseId={lesson.courseId} courseName={lesson.courseName} />
         ) : (
-          <HomeworkTab lessonId={lessonId} />
+          <HomeworkTab lessonId={lessonId} courseId={lesson.courseId} />
         )}
       </main>
     </>

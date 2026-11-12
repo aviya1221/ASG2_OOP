@@ -217,6 +217,36 @@ describe("the homework review", () => {
     assert.equal(files?.length, 0, "the PDF is deleted too");
   });
 
+  it("TC-144 a homework published in one lesson is listed for the whole course, newest first, with its lecture", async () => {
+    const first = await newLesson();
+    const second = await newLesson();
+    const older = await post("/homework", "T1", "file", HOMEWORK_PDF, { lessonId: first, title: "מטלה ישנה" });
+    const newer = await post("/homework", "T1", "file", HOMEWORK_PDF, { lessonId: second, title: "מטלה חדשה" });
+    assert.equal(older.status, 201);
+    assert.equal(newer.status, 201);
+    const { data: lesson } = await secret.from("lessons").select("lecture_number").eq("id", first).single();
+
+    // The query of the homework tab of any lesson of the course.
+    const student = await signedIn("S1");
+    const { data: rows, error } = await student
+      .from("homework")
+      .select("id, lessons!inner(course_id, lecture_number)")
+      .eq("lessons.course_id", COURSE_A)
+      .order("created_at", { ascending: false });
+    assert.equal(error, null);
+    const ids = rows!.map((row) => row.id as string);
+    assert.ok(ids.includes(older.json.homeworkId) && ids.includes(newer.json.homeworkId));
+    assert.ok(ids.indexOf(newer.json.homeworkId) < ids.indexOf(older.json.homeworkId));
+    const olderRow = rows!.find((row) => row.id === older.json.homeworkId)!;
+    assert.equal((olderRow.lessons as unknown as { lecture_number: number }).lecture_number, lesson!.lecture_number);
+
+    // A student checks the older homework, whichever lesson they came from, and a student of another course sees neither.
+    assert.equal((await check(older.json.homeworkId)).status, 200);
+    const other = await signedIn("S51");
+    const seen = await other.from("homework").select("id").in("id", [older.json.homeworkId, newer.json.homeworkId]);
+    assert.deepEqual(seen.data, []);
+  });
+
   it("refuses a file that is not a PDF", async () => {
     const lessonId = await newLesson();
     const answer = await post("/homework", "T1", "file", new TextEncoder().encode("notes"), { lessonId, title: "מטלה" }, "text/plain");
