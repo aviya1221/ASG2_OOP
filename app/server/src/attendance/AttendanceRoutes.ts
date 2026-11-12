@@ -4,17 +4,10 @@ import { requireUser, signedInUser, type UserVerifier } from "../http/auth.ts";
 import { HttpError } from "../http/errors.ts";
 import type { NotificationService } from "../notifications/NotificationService.ts";
 import type { AttendanceService } from "./AttendanceService.ts";
-import { JPEG, MAX_PHOTO_BYTES, MAX_PHOTOS, PRINT_LENGTH, type PhotoFaces, type PhotoNumber, type SharedPhotoFile } from "./types.ts";
+import { JPEG, MAX_PHOTO_BYTES, MAX_PHOTOS, type PhotoNumber, type SharedPhotoFile } from "./types.ts";
 
-/** The shared photos stay in memory until they are saved in the file storage. */
+/** The shared photo stays in memory until it is saved in the file storage. */
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: MAX_PHOTO_BYTES, files: MAX_PHOTOS } });
-
-const HASH_PATTERN = /^[0-9a-f]{64}$/;
-const STATUS_OF_REGISTRATION = { registered: 201, opted_out: 201, waiting_for_teacher: 202 } as const;
-
-function isPrint(value: unknown): value is number[] {
-  return Array.isArray(value) && value.length === PRINT_LENGTH && value.every((n) => typeof n === "number" && Number.isFinite(n));
-}
 
 function requireRole(res: Response, role: "teacher" | "student"): void {
   if (signedInUser(res).role !== role) throw new HttpError(403, role === "teacher" ? "not_the_teacher" : "not_in_course", "You may not do this.");
@@ -25,19 +18,9 @@ function lessonIdOf(body: { lessonId?: unknown }): string {
   return body.lessonId;
 }
 
-function photosOf(value: unknown): PhotoFaces[] {
-  const valid =
-    Array.isArray(value) &&
-    value.every(
-      (photo) =>
-        Array.isArray(photo?.faces) &&
-        photo.faces.every((face: { box?: unknown; print?: unknown }) => {
-          const box = face?.box;
-          return Array.isArray(box) && box.length === 4 && box.every(Number.isFinite) && isPrint(face.print);
-        }),
-    );
-  if (!valid) throw new HttpError(400, "bad_print", "Each face needs a box and a face-print of 128 numbers.");
-  return value as PhotoFaces[];
+function faceCountOf(body: { faceCount?: unknown }): number {
+  if (typeof body.faceCount !== "number") throw new HttpError(400, "bad_count", "faceCount is missing.");
+  return body.faceCount;
 }
 
 function jsonField(value: unknown, name: string): unknown {
@@ -53,7 +36,7 @@ function jsonField(value: unknown, name: string): unknown {
 function sharedFilesOf(files: Express.Multer.File[], photoNos: unknown): SharedPhotoFile[] {
   const isJpeg = (file: Express.Multer.File) => file.mimetype === JPEG && file.buffer[0] === 0xff && file.buffer[1] === 0xd8 && file.buffer[2] === 0xff;
   if (!Array.isArray(photoNos) || photoNos.length !== files.length || !files.every(isJpeg)) {
-    throw new HttpError(400, "bad_photos", "Each photo must be a JPEG file with its photo number.");
+    throw new HttpError(400, "bad_photos", "The photo must be a JPEG file with its photo number.");
   }
   return files.map((file, index) => ({ photoNo: Number(photoNos[index]), jpeg: file.buffer }));
 }
@@ -88,40 +71,18 @@ export class AttendanceRoutes {
   router(): Router {
     const router = Router();
     const signedIn = requireUser(this.#verifier);
-    router.post("/faces/register", signedIn, this.registerFace);
     router.post("/attendance/class", signedIn, this.startRound);
-    router.post("/attendance/response", signedIn, this.respond);
     router.post("/attendance/photos", signedIn, receivePhotos, this.sharePhotos);
     router.post("/notifications/subscribe", signedIn, this.subscribe);
     return router;
   }
 
-  registerFace = async (req: Request, res: Response): Promise<void> => {
-    requireRole(res, "student");
-    const { hash, optOut } = req.body ?? {};
-    if (optOut !== true && !(typeof hash === "string" && HASH_PATTERN.test(hash))) {
-      throw new HttpError(400, "bad_print", "A hash of 64 hexadecimal characters is needed.");
-    }
-    const status = await this.#service.registerFace(signedInUser(res).idNumber, optOut === true ? null : hash, optOut === true);
-    res.status(STATUS_OF_REGISTRATION[status]).json({ status });
-  };
-
+  /** Only the number of faces leaves the teacher's phone. */
   startRound = async (req: Request, res: Response): Promise<void> => {
     requireRole(res, "teacher");
     const body = req.body ?? {};
-    const round = await this.#service.startRound(lessonIdOf(body), signedInUser(res).idNumber, photosOf(body.photos));
+    const round = await this.#service.startRound(lessonIdOf(body), signedInUser(res).idNumber, faceCountOf(body));
     res.status(201).json({ expiresAt: round.expiresAt.toISOString() });
-  };
-
-  respond = async (req: Request, res: Response): Promise<void> => {
-    requireRole(res, "student");
-    const body = req.body ?? {};
-    if (!isPrint(body.print) || typeof body.hash !== "string") throw new HttpError(400, "bad_print", "A face-print of 128 numbers and its hash are needed.");
-
-    const print = Float32Array.from(body.print as number[]);
-    (body.print as number[]).fill(0);
-    const result = await this.#service.respond(lessonIdOf(body), signedInUser(res).idNumber, print, body.hash);
-    res.json({ result });
   };
 
   sharePhotos = async (req: Request, res: Response): Promise<void> => {
@@ -148,11 +109,11 @@ function receivePhotos(req: Request, res: Response, next: NextFunction): void {
   upload.array("photos", MAX_PHOTOS)(req, res, (error: unknown) => {
     const code = (error as { code?: string })?.code;
     if (code === "LIMIT_FILE_SIZE") {
-      next(new HttpError(413, "file_too_large", "A photo is larger than 10 MB."));
+      next(new HttpError(413, "file_too_large", "The photo is larger than 10 MB."));
       return;
     }
     if (code === "LIMIT_FILE_COUNT" || code === "LIMIT_UNEXPECTED_FILE") {
-      next(new HttpError(400, "bad_photos", `Send 1 to ${MAX_PHOTOS} photos.`));
+      next(new HttpError(400, "bad_photos", "Send the class photo once."));
       return;
     }
     next(error);

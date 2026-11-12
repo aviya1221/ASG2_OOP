@@ -2,8 +2,6 @@ import { createClient } from "@supabase/supabase-js";
 import { AttendanceRoutes } from "./attendance/AttendanceRoutes.ts";
 import { AttendanceRules } from "./attendance/AttendanceRules.ts";
 import { AttendanceService } from "./attendance/AttendanceService.ts";
-import { ClassFaceCache } from "./attendance/ClassFaceCache.ts";
-import { FaceMatcher } from "./attendance/FaceMatcher.ts";
 import { loadConfig, loadServerConfig } from "./config/env.ts";
 import { createServices } from "./container.ts";
 import { GuideGenerator } from "./homework/GuideGenerator.ts";
@@ -36,8 +34,6 @@ const notifications = new NotificationService(
 );
 const attendance = new AttendanceService({
   repository: new SupabaseAttendanceRepository(supabase),
-  cache: new ClassFaceCache(),
-  matcher: new FaceMatcher(),
   rules: new AttendanceRules(),
   notifications,
 });

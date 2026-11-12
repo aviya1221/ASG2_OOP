@@ -17,8 +17,8 @@ export interface PushSender {
 }
 
 const GONE = new Set([404, 410]);
-const ROUND_MESSAGE = JSON.stringify({ title: "נוכחות", body: "הכיתה צולמה. פתיחת האתר תסמן את הנוכחות." });
-const PHOTO_MESSAGE = JSON.stringify({ title: "נוכחות", body: "לא זוהית בתמונת הכיתה. אפשר לבחור את המספר שלך בתמונה." });
+const ROUND_MESSAGE = JSON.stringify({ title: "נוכחות", body: "המרצה צילם את הכיתה. אם אתה בשיעור, יש לך 4 דקות ללחוץ \"הייתי בשיעור\"." });
+const PHOTO_MESSAGE = JSON.stringify({ title: "נוכחות", body: "היו יותר אישורים מאנשים בתמונה. צריך לבחור את המספר שלך בתמונת הכיתה." });
 
 export class NotificationService {
   readonly #repository: NotificationRepository;
@@ -38,7 +38,7 @@ export class NotificationService {
     await this.#sendAll(await this.#repository.subscriptionsOfLesson(lessonId), ROUND_MESSAGE);
   }
 
-  /** Tells these students that the class photo with numbers is waiting for them. */
+  /** Tells the students who confirmed that the class photo with numbers is waiting for them. */
   async notifyPhotoShared(studentIds: string[]): Promise<void> {
     if (studentIds.length === 0) return;
     await this.#sendAll(await this.#repository.subscriptionsOfStudents(studentIds), PHOTO_MESSAGE);

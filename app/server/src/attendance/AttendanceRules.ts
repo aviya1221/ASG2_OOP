@@ -1,9 +1,10 @@
-import type { Decision } from "./types.ts";
-
-/** The first two rules of REQ-13. A match then goes to the database, which decides present or conflict. */
+/**
+ * The check when the time to confirm ends (docs/features/F1-attendance-strategy.md): more confirmations
+ * than faces in the class photo means someone confirmed without being in the hall, so every student
+ * who confirmed must pick their own number in the photo.
+ */
 export class AttendanceRules {
-  decide(hashFits: boolean, score: number, threshold: number): Decision {
-    if (!hashFits) return "review";
-    return score < threshold ? "not_found" : "matched";
+  needsNumbers(confirmations: number, faces: number): boolean {
+    return confirmations > faces;
   }
 }
