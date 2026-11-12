@@ -119,13 +119,13 @@ $$;
 create trigger reject_rival_claims after update on public.number_claims
   for each row execute function public.reject_rival_claims();
 
--- The student's own pick, and whether another student picked the same number.
+-- The student's own pick, and whether it waits together with another student's pick of the same number.
 create view public.my_number_claim as
   select
     c.lesson_id,
     c.number,
     c.status,
-    exists (
+    c.status = 'pending' and exists (
       select 1 from public.number_claims o
       where o.lesson_id = c.lesson_id and o.number = c.number and o.student_id <> c.student_id and o.status <> 'rejected'
     ) as contested
@@ -180,7 +180,7 @@ create view public.attendance_sheet as
     end as decided_by,
     c.number as claim_number,
     c.status as claim_status,
-    coalesce(rivals.total > 0, false) as claim_contested,
+    coalesce(c.status = 'pending' and rivals.total > 0, false) as claim_contested,
     (claims.rejected > 0 or claims.total >= 3) as flagged
   from public.lessons l
   join public.attendance_rounds r on r.lesson_id = l.id
