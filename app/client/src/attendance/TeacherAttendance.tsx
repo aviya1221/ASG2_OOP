@@ -51,7 +51,7 @@ export function TeacherAttendance({ lessonId }: { lessonId: string }) {
       )}
       {round && !open && <AfterConfirming lessonId={lessonId} round={round} />}
       <PicksToDecide lessonId={lessonId} rows={rows} onDecided={loadRows} />
-      <AttendanceTable lessonId={lessonId} rows={rows} />
+      <AttendanceTable lessonId={lessonId} rows={rows} onChanged={loadRows} />
     </section>
   );
 }
@@ -348,8 +348,37 @@ function PicksToDecide({ lessonId, rows, onDecided }: { lessonId: string; rows: 
 
 // ------------------------------------------------------------------ the sheet
 
-function AttendanceTable({ lessonId, rows }: { lessonId: string; rows: SheetRow[] }) {
+/** The teacher's own decision wins over every rule, and "automatic" takes it back. */
+const CHOICES = [
+  { value: "auto", label: "תוצאה אוטומטית" },
+  { value: "present", label: "נוכח" },
+  { value: "absent", label: "לא נוכח" },
+];
+
+function choiceOf(row: SheetRow): string {
+  if (!row.changedByTeacher) return "auto";
+  return row.attendance === "present" ? "present" : "absent";
+}
+
+async function changeAttendance(lessonId: string, idNumber: string, choice: string): Promise<boolean> {
+  const overrides = supabase.from("attendance_overrides");
+  const { error } =
+    choice === "auto"
+      ? await overrides.delete().eq("lesson_id", lessonId).eq("student_id", idNumber)
+      : await overrides.upsert({ lesson_id: lessonId, student_id: idNumber, present: choice === "present" });
+  return !error;
+}
+
+function AttendanceTable({ lessonId, rows, onChanged }: { lessonId: string; rows: SheetRow[]; onChanged: () => void }) {
+  const [problem, setProblem] = useState("");
   const kinds = RESULT_KINDS.filter((kind) => rows.some((row) => row.attendance === kind));
+
+  async function change(row: SheetRow, choice: string) {
+    setProblem("");
+    if (!(await changeAttendance(lessonId, row.idNumber, choice))) setProblem(`השינוי של ${row.name} לא נשמר. אפשר לנסות שוב.`);
+    onChanged();
+  }
+
   return (
     <>
       <div className="row-between">
@@ -368,6 +397,11 @@ function AttendanceTable({ lessonId, rows }: { lessonId: string; rows: SheetRow[
           ))}
         </ul>
       )}
+      {problem && (
+        <p className="problem" role="alert">
+          {problem}
+        </p>
+      )}
       <div className="table-box">
         <table>
           <thead>
@@ -376,6 +410,7 @@ function AttendanceTable({ lessonId, rows }: { lessonId: string; rows: SheetRow[
               <th>שם</th>
               <th>נוכחות</th>
               <th>הערה</th>
+              <th>שינוי</th>
             </tr>
           </thead>
           <tbody>
@@ -387,6 +422,15 @@ function AttendanceTable({ lessonId, rows }: { lessonId: string; rows: SheetRow[
                   <ResultChip kind={row.attendance} />
                 </td>
                 <td>{row.flagged ? "מסומן" : ""}</td>
+                <td>
+                  <select aria-label={`שינוי הנוכחות של ${row.name}`} value={choiceOf(row)} onChange={(event) => void change(row, event.target.value)}>
+                    {CHOICES.map((choice) => (
+                      <option key={choice.value} value={choice.value}>
+                        {choice.label}
+                      </option>
+                    ))}
+                  </select>
+                </td>
               </tr>
             ))}
           </tbody>
