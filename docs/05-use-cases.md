@@ -149,6 +149,7 @@ flowchart LR
   7. The teacher's attendance sheet updates with each result.
   8. The teacher downloads the sheet.
 - Alternative flows:
+  - 2a. The teacher moves to another page in the middle: the work goes on to its end, the photos already processed are kept, and a short message shows when it has ended.
   - 4a. The student does not open the app within 1 hour: the result is No response.
   - 5a. The student opted out of face recognition: the student goes straight to a row-and-seat request (7a).
   - 6a. The face-print does not fit the hash: the result is Review, with no comparison.
@@ -156,7 +157,7 @@ flowchart LR
   - 6c. Two or more students matched the same face: the result is Conflict, and the case passes to the teacher for follow-up.
   - 7a. A student who is not marked present after the hour enters a row and seat, and the teacher approves or rejects the request. Every request is recorded, and a student with a rejected request or 3 or more requests in the course is flagged.
 - Postconditions: Every student of the course has one attendance result, and the server has deleted the face-prints from the photo within 1 minute of the end of the hour.
-- Covers: REQ-10 to REQ-19, NFR-03, NFR-04, NFR-09, NFR-10
+- Covers: REQ-10 to REQ-19, NFR-03, NFR-04, NFR-09, NFR-10, NFR-13
 
 ### UC-02: Post a message in the forum
 
@@ -178,7 +179,7 @@ flowchart LR
 ### UC-03: Publish a poll or form and answer it
 
 - Actor: Teacher. Students also take part.
-- Preconditions: The teacher is in the forum of the lesson. For a poll, the lesson is in progress.
+- Preconditions: The teacher is in the forum of the lesson.
 - Main success flow:
   1. The teacher writes a question with at least 2 answer options and publishes a poll in the forum.
   2. The system shows the poll to every student of the lesson.
@@ -189,7 +190,7 @@ flowchart LR
   - 1a. Form: the teacher builds a form of one or more questions of the four types, before or during the lesson, and publishes it in the forum. A student answers it in a window over the forum, and only the teacher sees the answers.
   - 3a. The student answers again: the answer is refused, unless the teacher allowed another answer when creating the poll or form, and then it replaces the earlier one.
   - 3b. The poll or form is closed: the answer is refused.
-  - 5a. A poll that is still open at the end of the lesson closes automatically.
+  - 5a. A poll that was published before the end of the lesson and is still open at the end closes automatically. A poll published after the end stays open until the teacher closes it.
 - Postconditions: The poll or form and its results stay in the forum of the lesson.
 - Covers: REQ-30 to REQ-39, REQ-60 to REQ-69, NFR-02
 
@@ -200,15 +201,19 @@ flowchart LR
 - Main success flow:
   1. The teacher uploads the recording.
   2. The system sends the full video to Google Gemini and receives a transcript with speaker labels and a list of what was on the board.
-  3. The system writes the four parts of the summary, and corrects spelling mistakes and garbled copying against the transcript and the board list.
-  4. The system deletes the recording and opens the summary page. If the teacher did not enter a topic, the forum title takes it from the summary.
-  5. Everyone linked to the lesson opens the summary from the button in the forum.
+  3. The system writes a one-page summary of up to 450 words, with headings and key terms in bold: the topic of the lesson and a short opening paragraph, the main topics with the board content that adds to them, and the main questions with the teacher's answers. It then corrects spelling mistakes and garbled copying against the transcript and the board list.
+  4. The system deletes the recording and shows the summary only to the teacher. If the teacher did not enter a topic, the forum title takes it from the summary.
+  5. The teacher reads the summary and publishes it to the class.
+  6. Everyone linked to the lesson opens the summary from the button in the forum.
 - Alternative flows:
+  - 1a. The teacher moves to another page in the middle of the upload: the upload goes on to its end, and a short message shows when it has ended. Closing or reloading the page asks first, because only that stops the upload.
   - 2a. The file is too large or a usage limit is reached: the system sends the sound alone.
   - 2b. The service does not answer: the teacher gets a message and can upload again.
-  - 4a. The teacher edits the text of the summary, or uploads a new recording that creates a new summary.
-- Postconditions: The summary page is open, and the recording has been deleted.
-- Covers: REQ-40 to REQ-49, NFR-05
+  - 5a. The teacher edits the text of the summary, before or after publishing it, or uploads a new recording. The new recording creates a new summary, hidden from the class until the teacher publishes it.
+  - 5b. The teacher hides the summary from the class again.
+  - 6a. A student opens the page before the summary is published: the page says that it has not been published yet.
+- Postconditions: The summary is ready, the class sees it only after the teacher has published it, and the recording has been deleted.
+- Covers: REQ-40 to REQ-49, REQ-73, NFR-05, NFR-13
 
 ### UC-05: Publish a homework and get feedback on it
 
@@ -221,11 +226,14 @@ flowchart LR
   4. The system deletes the solution file and updates the chart.
   5. The students of the lesson and the teacher see the chart, and can filter it by overall score, question or section.
 - Alternative flows:
+  - 1a. The teacher moves to another page in the middle of publishing: the publishing goes on to its end, and a short message shows when it has ended.
   - 2a. The student has already made 3 checks: the system allows no further check.
   - 3a. A section was not answered: it gets 0 and is pointed out at the top of the report.
   - 3b. The check fails for a technical reason: it does not count, and the student can try again.
+  - 3c. The student moves to another page in the middle of the check: the check goes on to its end, and a short message shows when it has ended.
+  - 5a. The teacher deletes the homework: after confirming, it is deleted with its file, its review guide and the students' checks, and it disappears from the tab and from the chart.
 - Postconditions: The new result replaces the previous one in the chart, the third check is final, and the report does not give the solution.
-- Covers: REQ-50 to REQ-59, NFR-01, NFR-06
+- Covers: REQ-50 to REQ-59, REQ-74, NFR-01, NFR-06, NFR-13
 
 ### UC-06: Register a face
 
@@ -239,8 +247,9 @@ flowchart LR
   - 1a. The student opts out of face recognition: there is no face-print or hash, and the student's attendance is always by row and seat.
   - 2a. No face is found in the photo: the student is asked to take another one.
   - 3a. Replacing the photo: the new hash is saved only with approval from a teacher of one of the student's courses.
+  - 3b. The student moves to another page in the middle: the registration goes on to its end, and a short message shows when it has ended.
 - Postconditions: The server holds only the hash, and the photo and the face-print stay on the phone.
-- Covers: REQ-07 to REQ-09
+- Covers: REQ-07 to REQ-09, NFR-13
 
 ### UC-07: Build the timetable
 
@@ -261,15 +270,16 @@ flowchart LR
 - Preconditions: The user is on the list that the admin entered.
 - Main success flow:
   1. The user signs in.
-  2. The system shows only the lessons of the user's courses, with no room code or join step.
-  3. The user chooses a lesson.
+  2. The system shows a weekly timetable with only the lessons of the user's courses, with no room code or join step. Above it, a card leads to the lesson happening now, or else to the next one. The top of every screen shows the user's name and role.
+  3. The user chooses a lesson from the card or from the timetable.
   4. The system shows the lesson page with its three tabs.
 - Alternative flows:
   - 1a. The sign-in details are wrong: the system refuses, and the user can try again.
   - 1b. First sign-in: the user enters their ID number and chooses a password. The system refuses someone who is not on the list or who has already chosen a password.
+  - 2a. On a phone the timetable shows one day at a time, under a strip of the days of the week, and opens on today. The user can move to another day or another week.
   - 4a. The teacher enters the lecture topic, before or during the lecture, and it appears in the forum title.
 - Postconditions: The user is on the page of a lesson from their own courses.
-- Covers: REQ-01, REQ-04 to REQ-06, REQ-22
+- Covers: REQ-01, REQ-04 to REQ-06, REQ-22, REQ-71, REQ-72
 
 ## 4. Activity diagrams
 
@@ -331,9 +341,9 @@ flowchart TD
   - When I publish a poll and a student answers
   - Then the chart updates for everyone without reloading the page
 - As a student, I want to read a summary of the lesson so that I can go over the material.
-  - Given the lesson has ended and the teacher has uploaded a recording
+  - Given the lesson has ended, and the teacher has uploaded a recording and published the summary
   - When I press the button in the forum
-  - Then a page opens with the four parts of the summary
+  - Then a page opens with a one-page summary of the lesson
 - As a student, I want feedback on my homework before submitting it so that I can fix what is missing.
   - Given the homework is published and I have checks left
   - When I upload a solution
