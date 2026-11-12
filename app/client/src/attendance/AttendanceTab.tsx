@@ -175,7 +175,7 @@ function PhotoTaker({ lessonId }: { lessonId: string }) {
 
   return (
     <section className="stack">
-      <h2>נוכחות</h2>
+      <h2 className="visually-hidden">נוכחות</h2>
       {photos.length < MAX_PHOTOS && (
         <label className="primary big">
           <Camera {...ICON} />
@@ -375,7 +375,7 @@ function StudentAttendance({ lessonId, person }: { lessonId: string; person: Per
   if (!round) {
     return (
       <section className="stack">
-        <h2>נוכחות</h2>
+        <h2 className="visually-hidden">נוכחות</h2>
         <p>הכיתה עדיין לא צולמה.</p>
         {!state.registered && !state.optedOut && <Link to="/face">רישום פנים</Link>}
       </section>
@@ -387,7 +387,7 @@ function StudentAttendance({ lessonId, person }: { lessonId: string; person: Per
 
   return (
     <section className="stack">
-      <h2>נוכחות</h2>
+      <h2 className="visually-hidden">נוכחות</h2>
       {state.result ? (
         <p>
           התוצאה שלך: <ResultChip kind={state.result} />

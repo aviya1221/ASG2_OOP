@@ -196,8 +196,8 @@ export function ForumTab({ lessonId, courseId, courseName }: { lessonId: string;
 
   return (
     <section className="stack">
-      <div className="row-between">
-        <h2>פורום</h2>
+      <div className="row-between tab-head">
+        <h2 className="visually-hidden">פורום</h2>
         <span className="actions">
           <Link className="link-button small" to={`/lessons/${lessonId}/summary`}>
             <FileText {...ICON} />

@@ -118,7 +118,7 @@ export function HomeworkTab({ lessonId, courseId }: { lessonId: string; courseId
 
   return (
     <div className="stack homework-tab">
-      <h2>מטלות</h2>
+      <h2 className="visually-hidden">מטלות</h2>
       {role === "teacher" && <PublishForm lessonId={lessonId} courseId={courseId} />}
       {problem && (
         <p className="problem" role="alert">

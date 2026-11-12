@@ -193,6 +193,25 @@ button svg,
   .spin {
     animation: none;
   }
+
+  .tabs a {
+    transition: none;
+  }
+}
+
+/* Read by screen readers only: on a lesson page the open tab already shows the title (UI decision 10). */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* The tools at the head of a tab, at its far side once the title is hidden. */
+.tab-head {
+  justify-content: flex-end;
 }
 
 .task-list {
@@ -262,7 +281,7 @@ button svg,
   color: var(--paper);
 }
 
-/* The band of each page: its title on one side and, on a lesson page, the tabs on the other. */
+/* The band of each page: its title, and on a lesson page the tabs in the middle (UI decision 10). */
 .band {
   background: var(--ink);
   color: var(--paper);
@@ -308,6 +327,11 @@ button svg,
   place-items: center;
   text-decoration: none;
   font-weight: 500;
+  transition: background-color 0.15s ease;
+}
+
+.tabs a:hover:not([aria-current="page"]) {
+  background: rgb(255 255 255 / 14%);
 }
 
 .tabs a[aria-current="page"] {
@@ -737,8 +761,14 @@ td {
 }
 
 @media (min-width: 900px) {
+  /* The title on its side, and the tabs in the middle of the band. */
+  .band:has(.tabs) .band-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 480px) minmax(0, 1fr);
+  }
+
   .tabs {
-    flex: 0 1 480px;
+    grid-column: 2;
   }
 
   .band:has(.tabs) .band-title {

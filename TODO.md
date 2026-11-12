@@ -288,7 +288,7 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
   - [x] Decisions: homework of the course, the tabs in the middle and no loading sign
   - [x] SRS: homework of the course
   - [x] Homework of the course: every lesson of the course shows all its homework
-  - [ ] Tabs in the middle that react to the pointer, with no main title under them
+  - [x] Tabs in the middle that react to the pointer, with no main title under them
   - [ ] No loading sign: the page says in words what is running and for how long
 - [ ] Attendance: students who were not recognised pick their number in the class photo (2026-11-12, replaces row and seat)
   - [x] Database: where each student was seen, shared photos, numbers and picks; row and seat removed
