@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { respondToOpenRounds } from "../src/attendance/AttendanceResponder.ts";
 import { sheetCells, type SheetRow } from "../src/attendance/AttendanceSheet.ts";
 import { FaceStore, hashOfPrint } from "../src/attendance/FaceStore.ts";
-import { countText, progressText } from "../src/attendance/attendanceText.ts";
+import { claimText, claimTitle, countText, progressText } from "../src/attendance/attendanceText.ts";
 import { numberFaces } from "../src/attendance/numberedPhoto.ts";
 
 const mocks = vi.hoisted(() => ({ rounds: [] as { lesson_id: string }[], results: [] as { lesson_id: string }[], callServer: vi.fn() }));
@@ -151,5 +151,20 @@ describe("countText", () => {
     expect(countText(0, 41)).toBe("אף סטודנט לא אישר. בתמונה נמצאו 41 פרצופים.");
     expect(progressText(0, 41)).toBe("עוד אף סטודנט לא אישר. בתמונה נמצאו 41 פרצופים.");
     expect(progressText(12, 41)).toBe("עד עכשיו 12 סטודנטים אישרו. בתמונה נמצאו 41 פרצופים.");
+  });
+});
+
+describe("claimText", () => {
+  it("tells the student where their pick stands", () => {
+    expect(claimText({ number: 21, status: "pending", contested: false })).toBe("נקלט");
+    expect(claimText({ number: 21, status: "pending", contested: true })).toBe("הועבר למרצה להמשך טיפול");
+    expect(claimText({ number: null, status: "pending", contested: false })).toBe("ממתין להחלטת המרצה");
+    expect(claimText({ number: 21, status: "approved", contested: false })).toBe("אושר");
+    expect(claimText({ number: 21, status: "rejected", contested: false })).toBe("נדחה");
+  });
+
+  it("names the pick, or the request of a student who is not in the photo", () => {
+    expect(claimTitle({ number: 21, status: "pending", contested: false })).toBe("בחרת את מספר 21");
+    expect(claimTitle({ number: null, status: "pending", contested: false })).toBe("ביקשת לסמן שאינך מופיע בתמונה");
   });
 });
