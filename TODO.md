@@ -318,7 +318,7 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
   - [x] Database: an internal id and an email for each person, courses and sign-in by email
   - [x] Server: the signed-in person by the internal id
   - [x] Client: sign-in, the admin's course form and the attendance sheet by email
-  - [ ] Scripts and demo data by email
+  - [x] Scripts and demo data by email
   - [ ] Browser tests by email
   - [ ] Documents: SRS, use cases, tools report, app README, EDD and STD (after the code)
 - [ ] Unit tests for the core classes (per the STP, step 8)

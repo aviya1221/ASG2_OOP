@@ -6,16 +6,16 @@
  *   node --env-file=<file> scripts/import-demo-data.mjs <folder> <password>
  *
  * The env file holds SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY and SUPABASE_SECRET_KEY.
- * people.csv:  תעודת זהות,שם,תפקיד     (תפקיד: סטודנט, מרצה, מתרגל או מנהל)
- * courses.csv: מספר,שם,ת.ז. מרצה,יום,התחלה,סיום,תאריך ראשון,שבועות,סטודנטים
- *              (סטודנטים: "כולם", or ID numbers separated by spaces; a course with two weekly slots has two rows)
+ * people.csv:  אימייל,שם,תפקיד     (תפקיד: סטודנט, מרצה, מתרגל או מנהל)
+ * courses.csv: מספר,שם,אימייל מרצה,יום,התחלה,סיום,תאריך ראשון,שבועות,סטודנטים
+ *              (סטודנטים: "כולם", or emails separated by spaces; a course with two weekly slots has two rows)
+ * Every person signs in with the email in people.csv and the password given here.
  * Save the files as "CSV UTF-8" in Excel, so Hebrew stays readable.
  */
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { createClient } from "@supabase/supabase-js";
 
-const EMAIL_DOMAIN = "users.lesson.invalid";
 const ROLES = { סטודנט: "student", מרצה: "teacher", מתרגל: "teacher", מנהל: "admin" };
 const DAYS = { ראשון: 0, שני: 1, שלישי: 2, רביעי: 3, חמישי: 4, שישי: 5, שבת: 6 };
 const NO_SESSION = { auth: { persistSession: false, autoRefreshToken: false } };
@@ -74,16 +74,18 @@ function time(value) {
   return match && Number(match[1]) < 24 && Number(match[2]) < 60 ? `${match[1].padStart(2, "0")}:${match[2]}` : null;
 }
 
+const email = (value) => (value ?? "").trim().toLowerCase();
+
 const problems = [];
 const people = readCsv(join(folder, "people.csv")).map((row) => {
-  const person = { id: row["תעודת זהות"], name: row["שם"], role: ROLES[row["תפקיד"]] };
-  if (!/^\d{5,9}$/.test(person.id ?? "")) problems.push(`people.csv line ${row.line}: the ID number must be 5 to 9 digits`);
+  const person = { email: email(row["אימייל"]), name: row["שם"], role: ROLES[row["תפקיד"]] };
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(person.email)) problems.push(`people.csv line ${row.line}: the email must be a full address`);
   if (!person.name) problems.push(`people.csv line ${row.line}: the name is missing`);
   if (!person.role) problems.push(`people.csv line ${row.line}: the role must be סטודנט, מרצה, מתרגל or מנהל`);
   return person;
 });
-const personOf = new Map(people.map((person) => [person.id, person]));
-if (personOf.size !== people.length) problems.push("people.csv: an ID number appears twice");
+const personOf = new Map(people.map((person) => [person.email, person]));
+if (personOf.size !== people.length) problems.push("people.csv: an email appears twice");
 const students = people.filter((person) => person.role === "student");
 
 const courses = new Map();
@@ -94,13 +96,13 @@ for (const row of readCsv(join(folder, "courses.csv"))) {
   if (slot.day === undefined) problems.push(`${where}: the day must be a weekday name, such as ראשון`);
   if (!slot.start || !slot.end || slot.start >= slot.end) problems.push(`${where}: the hours must look like 09:00 and 11:00`);
   if (!courses.has(number)) {
-    const teacher = personOf.get(row["ת.ז. מרצה"]);
+    const teacher = personOf.get(email(row["אימייל מרצה"]));
     if (teacher?.role !== "teacher") problems.push(`${where}: the teacher must be a מרצה or מתרגל in people.csv`);
     const firstDate = isoDate(row["תאריך ראשון"]);
     const weeks = Number(row["שבועות"]);
     if (!firstDate) problems.push(`${where}: the first date must look like 2026-11-08`);
     if (!Number.isInteger(weeks) || weeks < 1) problems.push(`${where}: the number of weeks must be a whole number`);
-    const listed = row["סטודנטים"] === "כולם" ? students : row["סטודנטים"].split(/\s+/).filter(Boolean).map((id) => personOf.get(id));
+    const listed = row["סטודנטים"] === "כולם" ? students : row["סטודנטים"].split(/\s+/).filter(Boolean).map((address) => personOf.get(email(address)));
     if (listed.length === 0 || listed.some((person) => person?.role !== "student")) problems.push(`${where}: every student must be a סטודנט in people.csv`);
     if (!number || !row["שם"]) problems.push(`${where}: the number and the name are needed`);
     courses.set(number, { number, name: row["שם"], teacher, firstDate, weeks, students: listed, slots: [] });
@@ -119,47 +121,45 @@ const fail = (what, error) => {
 };
 
 // 1. People: add who is missing and update names. A role is never changed here.
-const { data: existing, error: readError } = await secret.from("people").select("id_number, name, role, user_id").in("id_number", [...personOf.keys()]);
+const { data: existing, error: readError } = await secret.from("people").select("email, name, role, user_id").in("email", [...personOf.keys()]);
 fail("reading people", readError);
-const known = new Map(existing.map((row) => [row.id_number, row]));
-const added = people.filter((person) => !known.has(person.id));
-if (added.length > 0) fail("adding people", (await secret.from("people").insert(added.map((p) => ({ id_number: p.id, name: p.name, role: p.role })))).error);
+const known = new Map(existing.map((row) => [row.email, row]));
+const added = people.filter((person) => !known.has(person.email));
+if (added.length > 0) fail("adding people", (await secret.from("people").insert(added.map((p) => ({ email: p.email, name: p.name, role: p.role })))).error);
 let renamed = 0;
-for (const person of people.filter((p) => known.has(p.id) && known.get(p.id).name !== p.name)) {
-  fail(`renaming ${person.id}`, (await secret.from("people").update({ name: person.name }).eq("id_number", person.id)).error);
+for (const person of people.filter((p) => known.has(p.email) && known.get(p.email).name !== p.name)) {
+  fail(`renaming ${person.email}`, (await secret.from("people").update({ name: person.name }).eq("email", person.email)).error);
   renamed++;
 }
-const roleChanges = people.filter((p) => known.has(p.id) && known.get(p.id).role !== p.role).map((p) => p.id);
+const roleChanges = people.filter((p) => known.has(p.email) && known.get(p.email).role !== p.role).map((p) => p.email);
 
-// 2. Accounts for everyone who has none yet. The first-sign-in trigger links each one to its person.
+// 2. Accounts for everyone who has none yet. The first-sign-in trigger links each one to its person by the email.
 let accounts = 0;
-for (const person of people.filter((p) => !known.get(p.id)?.user_id)) {
-  const { error } = await secret.auth.admin.createUser({
-    email: `${person.id}@${EMAIL_DOMAIN}`,
-    password,
-    email_confirm: true,
-    user_metadata: { id_number: person.id },
-  });
+for (const person of people.filter((p) => !known.get(p.email)?.user_id)) {
+  const { error } = await secret.auth.admin.createUser({ email: person.email, password, email_confirm: true });
   fail(`creating the account of ${person.name}`, error);
   accounts++;
 }
+const { data: ids, error: idsError } = await secret.from("people").select("id, email").in("email", [...personOf.keys()]);
+fail("reading the ids of people", idsError);
+const idOf = new Map(ids.map((row) => [row.email, row.id]));
 
 // 3. Courses, through the admin's own function.
 const admin = people.find((person) => person.role === "admin");
 const asAdmin = createClient(url, publicKey, NO_SESSION);
-fail("signing in as the admin", (await asAdmin.auth.signInWithPassword({ email: `${admin.id}@${EMAIL_DOMAIN}`, password })).error);
+fail("signing in as the admin", (await asAdmin.auth.signInWithPassword({ email: admin.email, password })).error);
 const { data: existingCourses, error: coursesError } = await secret.from("courses").select("id, number").in("number", [...courses.keys()]);
 fail("reading courses", coursesError);
 const courseIdOf = new Map(existingCourses.map((row) => [row.number, row.id]));
 let created = 0;
 let enrolled = 0;
 for (const course of courses.values()) {
-  const studentRows = course.students.map((s) => ({ id_number: s.id, name: s.name }));
+  const studentRows = course.students.map((s) => ({ email: s.email, name: s.name }));
   if (!courseIdOf.has(course.number)) {
     const { error } = await asAdmin.rpc("create_course", {
       p_number: course.number,
       p_name: course.name,
-      p_teacher: { id_number: course.teacher.id, name: course.teacher.name },
+      p_teacher: { email: course.teacher.email, name: course.teacher.name },
       p_weekly_hours: course.slots,
       p_first_date: course.firstDate,
       p_weeks: course.weeks,
@@ -170,9 +170,9 @@ for (const course of courses.values()) {
     continue;
   }
   const courseId = courseIdOf.get(course.number);
-  const { data: listed } = await secret.from("course_students").select("student_id_number").eq("course_id", courseId);
-  const missing = course.students.filter((s) => !listed.some((row) => row.student_id_number === s.id));
-  if (missing.length > 0) fail(`enrolling in ${course.number}`, (await secret.from("course_students").insert(missing.map((s) => ({ course_id: courseId, student_id_number: s.id })))).error);
+  const { data: listed } = await secret.from("course_students").select("student_id").eq("course_id", courseId);
+  const missing = course.students.filter((s) => !listed.some((row) => row.student_id === idOf.get(s.email)));
+  if (missing.length > 0) fail(`enrolling in ${course.number}`, (await secret.from("course_students").insert(missing.map((s) => ({ course_id: courseId, student_id: idOf.get(s.email) })))).error);
   enrolled += missing.length;
 }
 
