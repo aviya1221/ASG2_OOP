@@ -16,11 +16,11 @@ export class SupabaseUserVerifier implements UserVerifier {
 
     const { data: person } = await this.#supabase
       .from("people")
-      .select("id_number, role")
+      .select("id, role")
       .eq("user_id", data.user.id)
       .maybeSingle();
     if (!person) return null;
 
-    return { userId: data.user.id, idNumber: person.id_number as string, role: person.role as Role };
+    return { userId: data.user.id, personId: person.id as string, role: person.role as Role };
   }
 }

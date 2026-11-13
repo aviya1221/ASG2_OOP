@@ -20,10 +20,10 @@ export class SupabaseHomeworkRepository implements HomeworkRepository {
   }
 
   async findLesson(lessonId: string): Promise<HomeworkLesson | null> {
-    const { data, error } = await this.#db.from("lessons").select("courses(teacher_id_number)").eq("id", lessonId).maybeSingle();
+    const { data, error } = await this.#db.from("lessons").select("courses(teacher_id)").eq("id", lessonId).maybeSingle();
     if (error?.code === NOT_A_UUID) return null;
     throwIf(error);
-    return data ? { teacherId: (data.courses as unknown as { teacher_id_number: string }).teacher_id_number } : null;
+    return data ? { teacherId: (data.courses as unknown as { teacher_id: string }).teacher_id } : null;
   }
 
   async saveHomework(lessonId: string, title: string, pdf: Uint8Array, guide: ReviewGuide): Promise<Homework> {
@@ -62,7 +62,7 @@ export class SupabaseHomeworkRepository implements HomeworkRepository {
       .from("course_students")
       .select("course_id", { count: "exact", head: true })
       .eq("course_id", lesson.data.course_id)
-      .eq("student_id_number", studentId);
+      .eq("student_id", studentId);
     throwIf(error);
     return (count ?? 0) > 0;
   }

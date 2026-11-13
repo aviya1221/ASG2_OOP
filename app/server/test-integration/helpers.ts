@@ -16,7 +16,7 @@ if (!/^http:\/\/(127\.0\.0\.1|localhost)/.test(URL)) throw new Error(`Refusing t
 export const PASSWORD = "local-test-password";
 export const EMAIL_DOMAIN = "users.lesson.invalid";
 
-/** The made-up people, courses and lessons of supabase/seed.sql. */
+/** The internal ids of the made-up people, and the courses and lessons, of supabase/seed.sql. */
 export const ID = {
   A1: "100000001",
   T1: "200000001",
@@ -42,8 +42,9 @@ export function secretClient(): SupabaseClient {
   return createClient(URL, SECRET_KEY, NO_SESSION);
 }
 
-export function emailFor(idNumber: string): string {
-  return `${idNumber}@${EMAIL_DOMAIN}`;
+/** The made-up email of a person of the seed: their internal id at an address that cannot exist. */
+export function emailFor(personId: string): string {
+  return `${personId}@${EMAIL_DOMAIN}`;
 }
 
 export async function signedIn(who: keyof typeof ID): Promise<SupabaseClient> {
@@ -53,7 +54,7 @@ export async function signedIn(who: keyof typeof ID): Promise<SupabaseClient> {
   return client;
 }
 
-/** A number no other test run has used. */
+/** A number no other test run has used, for course numbers and new emails. */
 export function freshNumber(): string {
   return String(Date.now()).slice(-9);
 }

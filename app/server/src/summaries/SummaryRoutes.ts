@@ -42,7 +42,7 @@ export class SummaryRoutes {
     const lessonId = typeof req.body?.lessonId === "string" ? req.body.lessonId : "";
     if (!/^(video|audio)\//.test(file.mimetype)) throw new HttpError(400, "bad_request", "The recording must be a video or a sound file.");
 
-    await this.#service.start(lessonId, user.idNumber, { path: file.path, mimeType: file.mimetype });
+    await this.#service.start(lessonId, user.personId, { path: file.path, mimeType: file.mimetype });
     res.status(202).json({ status: "in_progress" });
   };
 }

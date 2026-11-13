@@ -22,7 +22,7 @@ export class SupabaseAttendanceRepository implements AttendanceRepository {
   async findLesson(lessonId: string): Promise<LessonInfo | null> {
     const { data, error } = await this.#db
       .from("lessons")
-      .select("id, course_id, starts_at, ends_at, courses(teacher_id_number)")
+      .select("id, course_id, starts_at, ends_at, courses(teacher_id)")
       .eq("id", lessonId)
       .maybeSingle();
     if (error?.code === "22P02") return null;
@@ -31,7 +31,7 @@ export class SupabaseAttendanceRepository implements AttendanceRepository {
     return {
       id: data.id,
       courseId: data.course_id,
-      teacherId: (data.courses as unknown as { teacher_id_number: string }).teacher_id_number,
+      teacherId: (data.courses as unknown as { teacher_id: string }).teacher_id,
       startsAt: new Date(data.starts_at),
       endsAt: new Date(data.ends_at),
     };

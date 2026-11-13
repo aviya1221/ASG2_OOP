@@ -15,11 +15,11 @@ export class SupabaseSummaryRepository implements SummaryRepository {
   }
 
   async findLesson(lessonId: string): Promise<SummaryLesson | null> {
-    const { data, error } = await this.#db.from("lessons").select("ends_at, courses(teacher_id_number)").eq("id", lessonId).maybeSingle();
+    const { data, error } = await this.#db.from("lessons").select("ends_at, courses(teacher_id)").eq("id", lessonId).maybeSingle();
     if (error?.code === "22P02") return null;
     throwIf(error);
     if (!data) return null;
-    return { endsAt: new Date(data.ends_at), teacherId: (data.courses as unknown as { teacher_id_number: string }).teacher_id_number };
+    return { endsAt: new Date(data.ends_at), teacherId: (data.courses as unknown as { teacher_id: string }).teacher_id };
   }
 
   async findState(lessonId: string): Promise<SummaryState | null> {

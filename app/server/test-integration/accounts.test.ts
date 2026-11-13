@@ -4,7 +4,7 @@ import { COURSE_A, COURSE_B, emailFor, freshNumber, ID, L1, L2, L3, PASSWORD, pu
 
 const NEW_COURSE = {
   p_name: "קורס בדיקה",
-  p_teacher: { id_number: ID.T1, name: "מרצה ראשון" },
+  p_teacher: { email: emailFor(ID.T1), name: "מרצה ראשון" },
   p_weekly_hours: [
     { day: 0, start: "10:00", end: "12:00" },
     { day: 2, start: "14:00", end: "15:00" },
@@ -12,8 +12,8 @@ const NEW_COURSE = {
   p_first_date: "2027-01-03",
   p_weeks: 3,
   p_students: [
-    { id_number: ID.S1, name: "סטודנט 1" },
-    { id_number: ID.S2, name: "סטודנט 2" },
+    { email: emailFor(ID.S1), name: "סטודנט 1" },
+    { email: emailFor(ID.S2).toUpperCase(), name: "סטודנט 2" },
   ],
 };
 
@@ -40,8 +40,8 @@ describe("accounts and timetable", () => {
     assert.equal(new Date(lessons![0]!.starts_at).toISOString(), "2027-01-03T08:00:00.000Z");
     assert.equal(new Date(lessons![1]!.ends_at).toISOString(), "2027-01-05T13:00:00.000Z");
 
-    const { data: students } = await admin.from("course_students").select("student_id_number").eq("course_id", courseId);
-    assert.equal(students?.length, 2);
+    const { data: students } = await admin.from("course_students").select("student_id").eq("course_id", courseId).order("student_id");
+    assert.deepEqual(students?.map((s) => s.student_id), [ID.S1, ID.S2], "the students are found by email, in any letter case");
   });
 
   it("TC-002 a course number that exists, or a missing detail, is refused and says what to fix", async () => {
@@ -54,11 +54,14 @@ describe("accounts and timetable", () => {
 
     const noName = await admin.rpc("create_course", { p_number: freshNumber(), ...NEW_COURSE, p_name: " " });
     assert.equal(noName.error?.message, "missing_name");
+
+    const noTeacher = await admin.rpc("create_course", { p_number: freshNumber(), ...NEW_COURSE, p_teacher: { email: " ", name: "מרצה" } });
+    assert.equal(noTeacher.error?.message, "missing_teacher");
   });
 
   it("TC-003 only the admin changes the timetable", async () => {
     const teacher = await signedIn("T1");
-    const added = await teacher.from("courses").insert({ number: freshNumber(), name: "x", teacher_id_number: ID.T1, weekly_hours: [] }).select();
+    const added = await teacher.from("courses").insert({ number: freshNumber(), name: "x", teacher_id: ID.T1, weekly_hours: [] }).select();
     assert.ok(added.error, "a teacher must not add a course");
 
     const created = await teacher.rpc("create_course", { p_number: freshNumber(), ...NEW_COURSE });
@@ -92,43 +95,34 @@ describe("accounts and timetable", () => {
 
   it("a person sees only their own row, and a teacher also sees the students of their courses", async () => {
     const student = await signedIn("S1");
-    const { data: own } = await student.from("people").select("id_number");
-    assert.deepEqual(own?.map((p) => p.id_number), [ID.S1]);
+    const { data: own } = await student.from("people").select("id, email");
+    assert.deepEqual(own, [{ id: ID.S1, email: emailFor(ID.S1) }]);
 
     const teacher = await signedIn("T2");
-    const { data: seen } = await teacher.from("people").select("id_number").order("id_number");
-    assert.deepEqual(seen?.map((p) => p.id_number), [ID.T2, ID.S51]);
+    const { data: seen } = await teacher.from("people").select("id").order("id");
+    assert.deepEqual(seen?.map((p) => p.id), [ID.T2, ID.S51]);
   });
 
-  it("TC-006 a first sign-in works only for someone on the list, and only once", async () => {
-    const number = freshNumber();
+  it("TC-006 a first sign-in by email works only for someone on the list, and only once", async () => {
+    const email = `new-${freshNumber()}@users.lesson.invalid`;
     const secret = secretClient();
-    assert.equal((await secret.from("people").insert({ id_number: number, name: "חדש", role: "student" })).error, null);
+    const added = await secret.from("people").insert({ email, name: "חדש", role: "student" }).select("id").single();
+    assert.equal(added.error, null);
+    assert.match(added.data!.id as string, /^[0-9a-f-]{36}$/, "a new person gets an internal id of their own");
 
-    const newcomer = publicClient();
-    const first = await newcomer.auth.signUp({
-      email: emailFor(number),
-      password: PASSWORD,
-      options: { data: { id_number: number } },
-    });
+    const first = await publicClient().auth.signUp({ email, password: PASSWORD });
     assert.equal(first.error, null);
-    const { data: linked } = await secret.from("people").select("user_id").eq("id_number", number).single();
+    const { data: linked } = await secret.from("people").select("user_id").eq("email", email).single();
     assert.equal(linked?.user_id, first.data.user?.id);
 
-    const second = await publicClient().auth.signUp({
-      email: emailFor(number),
-      password: "another-password",
-      options: { data: { id_number: number } },
-    });
+    const second = await publicClient().auth.signUp({ email, password: "another-password" });
     assert.ok(second.error || second.data.user?.identities?.length === 0, "a second registration must not create an account");
-    assert.ok((await publicClient().auth.signInWithPassword({ email: emailFor(number), password: "another-password" })).error);
+    assert.ok((await publicClient().auth.signInWithPassword({ email, password: "another-password" })).error);
 
-    const stranger = freshNumber() + "1";
-    const refused = await publicClient().auth.signUp({
-      email: emailFor(stranger.slice(-9)),
-      password: PASSWORD,
-      options: { data: { id_number: stranger.slice(-9) } },
-    });
+    const refused = await publicClient().auth.signUp({ email: `stranger-${freshNumber()}@users.lesson.invalid`, password: PASSWORD });
     assert.ok(refused.error, "someone who is not on the list must be refused");
+
+    const badEmail = await secret.from("people").insert({ email: "Not An Email", name: "x", role: "student" });
+    assert.ok(badEmail.error, "an email is kept only in small letters and in the form of an address");
   });
 });

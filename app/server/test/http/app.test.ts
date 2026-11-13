@@ -6,7 +6,7 @@ import express from "express";
 import { createApp } from "../../src/http/app.ts";
 import { requireUser, signedInUser, type SignedInUser, type UserVerifier } from "../../src/http/auth.ts";
 
-const STUDENT: SignedInUser = { userId: "u1", idNumber: "300000001", role: "student" };
+const STUDENT: SignedInUser = { userId: "u1", personId: "300000001", role: "student" };
 const verifier: UserVerifier = {
   verify: async (token) => (token === "good-token" ? STUDENT : null),
 };

@@ -121,7 +121,7 @@ async function pick(who: Who, lessonId: string, value: number | null, student: s
 }
 
 interface SheetRow {
-  id_number: string;
+  student_id: string;
   attendance: string;
   decided_by: string | null;
   flagged: boolean;
@@ -131,11 +131,11 @@ interface SheetRow {
 async function sheet(lessonId: string, ...who: Who[]): Promise<Pick<SheetRow, "attendance" | "decided_by">[]> {
   const teacher = await signedIn("T1");
   const ids = who.map((one) => ID[one]);
-  const { data, error } = await teacher.from("attendance_sheet").select("id_number, attendance, decided_by").eq("lesson_id", lessonId).in("id_number", ids);
+  const { data, error } = await teacher.from("attendance_sheet").select("student_id, attendance, decided_by").eq("lesson_id", lessonId).in("student_id", ids);
   assert.equal(error, null);
   const rows = (data ?? []) as SheetRow[];
   return ids.map((id) => {
-    const row = rows.find((item) => item.id_number === id)!;
+    const row = rows.find((item) => item.student_id === id)!;
     return { attendance: row.attendance, decided_by: row.decided_by };
   });
 }
@@ -305,7 +305,7 @@ describe("the calls of attendance", () => {
       { attendance: "present", decided_by: "teacher" },
       { attendance: "absent", decided_by: "teacher" },
     ]);
-    const flags = await teacher.from("attendance_sheet").select("id_number, flagged").eq("lesson_id", lessonId).in("id_number", [ID.S1, ID.S2]).order("id_number");
+    const flags = await teacher.from("attendance_sheet").select("student_id, flagged").eq("lesson_id", lessonId).in("student_id", [ID.S1, ID.S2]).order("student_id");
     assert.deepEqual(flags.data?.map((row) => row.flagged), [false, true]);
     const decided = await secret.from("number_claims").select("decided_at").eq("lesson_id", lessonId).in("student_id", [ID.S1, ID.S2]);
     assert.ok(decided.data?.every((row) => row.decided_at));
@@ -338,7 +338,7 @@ describe("the calls of attendance", () => {
 
     assert.deepEqual((await change(teacher, ID.S1, true)).data, [{ present: true }]);
     assert.deepEqual(await sheet(lessonId, "S1"), [{ attendance: "present", decided_by: "teacher" }]);
-    const row = await teacher.from("attendance_sheet").select("changed_by_teacher").eq("lesson_id", lessonId).eq("id_number", ID.S1).single();
+    const row = await teacher.from("attendance_sheet").select("changed_by_teacher").eq("lesson_id", lessonId).eq("student_id", ID.S1).single();
     assert.equal(row.data?.changed_by_teacher, true);
 
     await photograph(lessonId, 5);
@@ -364,7 +364,7 @@ describe("the calls of attendance", () => {
     assert.ok((await s1.rpc("start_attendance_round", { p_lesson: L2, p_face_count: 0 })).error);
     assert.ok((await s1.from("attendance_rounds").insert({ lesson_id: L2, expires_at: new Date().toISOString(), face_count: 0 })).error);
     assert.deepEqual((await publicClient().from("attendance_sheet").select("*")).data ?? [], []);
-    assert.deepEqual((await s1.from("attendance_sheet").select("id_number")).data, []);
+    assert.deepEqual((await s1.from("attendance_sheet").select("student_id")).data, []);
 
     const schedule = await secret.rpc("minute_job_schedule");
     assert.equal(schedule.data, "* * * * *");

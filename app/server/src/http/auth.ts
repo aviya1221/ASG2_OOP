@@ -5,7 +5,8 @@ export type Role = "admin" | "teacher" | "student";
 
 export interface SignedInUser {
   userId: string;
-  idNumber: string;
+  /** The person's internal id, which every table points to. No screen shows it. */
+  personId: string;
   role: Role;
 }
 

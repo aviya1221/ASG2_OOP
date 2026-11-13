@@ -10,8 +10,8 @@ import type { SignedInUser, UserVerifier } from "../../src/http/auth.ts";
 import { PDF_BYTES } from "./helpers.ts";
 
 const USERS: Record<string, SignedInUser> = {
-  teacher: { userId: "u-t1", idNumber: "T1", role: "teacher" },
-  student: { userId: "u-s1", idNumber: "S1", role: "student" },
+  teacher: { userId: "u-t1", personId: "T1", role: "teacher" },
+  student: { userId: "u-s1", personId: "S1", role: "student" },
 };
 const verifier: UserVerifier = { verify: async (token) => USERS[token] ?? null };
 

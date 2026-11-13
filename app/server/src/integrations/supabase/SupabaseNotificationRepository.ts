@@ -17,9 +17,9 @@ export class SupabaseNotificationRepository implements NotificationRepository {
   async subscriptionsOfLesson(lessonId: string): Promise<PushSubscriptionData[]> {
     const lesson = await this.#db.from("lessons").select("course_id").eq("id", lessonId).single();
     if (lesson.error) throw new Error(lesson.error.message);
-    const students = await this.#db.from("course_students").select("student_id_number").eq("course_id", lesson.data.course_id);
+    const students = await this.#db.from("course_students").select("student_id").eq("course_id", lesson.data.course_id);
     if (students.error) throw new Error(students.error.message);
-    return this.subscriptionsOfStudents((students.data ?? []).map((row) => row.student_id_number));
+    return this.subscriptionsOfStudents((students.data ?? []).map((row) => row.student_id));
   }
 
   async subscriptionsOfStudents(studentIds: string[]): Promise<PushSubscriptionData[]> {

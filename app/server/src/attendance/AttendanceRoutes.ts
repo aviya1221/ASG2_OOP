@@ -81,7 +81,7 @@ export class AttendanceRoutes {
   startRound = async (req: Request, res: Response): Promise<void> => {
     requireRole(res, "teacher");
     const body = req.body ?? {};
-    const round = await this.#service.startRound(lessonIdOf(body), signedInUser(res).idNumber, faceCountOf(body));
+    const round = await this.#service.startRound(lessonIdOf(body), signedInUser(res).personId, faceCountOf(body));
     res.status(201).json({ expiresAt: round.expiresAt.toISOString() });
   };
 
@@ -90,7 +90,7 @@ export class AttendanceRoutes {
     const body = req.body ?? {};
     const files = sharedFilesOf((req.files as Express.Multer.File[] | undefined) ?? [], jsonField(body.photoNos, "photoNos"));
     const numbers = numbersOf(jsonField(body.numbers, "numbers"));
-    const { expiresAt } = await this.#service.sharePhotos(lessonIdOf(body), signedInUser(res).idNumber, files, numbers);
+    const { expiresAt } = await this.#service.sharePhotos(lessonIdOf(body), signedInUser(res).personId, files, numbers);
     res.status(201).json({ expiresAt: expiresAt.toISOString() });
   };
 
@@ -100,7 +100,7 @@ export class AttendanceRoutes {
     if (typeof endpoint !== "string" || typeof keys?.p256dh !== "string" || typeof keys?.auth !== "string") {
       throw new HttpError(400, "bad_request", "A browser subscription is needed.");
     }
-    await this.#notifications.subscribe(signedInUser(res).idNumber, { endpoint, p256dh: keys.p256dh, auth: keys.auth });
+    await this.#notifications.subscribe(signedInUser(res).personId, { endpoint, p256dh: keys.p256dh, auth: keys.auth });
     res.status(204).end();
   };
 }
