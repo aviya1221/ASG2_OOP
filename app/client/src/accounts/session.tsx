@@ -4,7 +4,9 @@ import { supabase } from "../lib/supabase.ts";
 export type Role = "admin" | "teacher" | "student";
 
 export interface Person {
-  idNumber: string;
+  /** The internal id that every table points to. No screen shows it. */
+  id: string;
+  email: string;
   name: string;
   role: Role;
 }
@@ -36,11 +38,11 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     let active = true;
     void supabase
       .from("people")
-      .select("id_number, name, role")
+      .select("id, email, name, role")
       .eq("user_id", userId)
       .single()
       .then(({ data }) => {
-        if (active && data) setPerson({ idNumber: data.id_number, name: data.name, role: data.role as Role });
+        if (active && data) setPerson({ id: data.id, email: data.email, name: data.name, role: data.role as Role });
       });
     return () => {
       active = false;

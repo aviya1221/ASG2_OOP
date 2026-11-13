@@ -8,7 +8,8 @@ vi.mock("../src/lib/supabase.ts", () => ({ supabase: {} }));
 
 describe("sheetCells", () => {
   const ROW: SheetRow = {
-    idNumber: "012345678",
+    studentId: "s1",
+    email: "dana@example.com",
     name: "=דנה",
     attendance: "present",
     decidedBy: "photo_number",
@@ -22,7 +23,7 @@ describe("sheetCells", () => {
 
   it("TC-028 gives the columns of REQ-19 as text", () => {
     const [cells] = sheetCells([ROW]);
-    expect(cells).toEqual(["012345678", "=דנה", "נוכח", "מספר בתמונה", "בחירת מספר שנדחתה בקורס"]);
+    expect(cells).toEqual(["dana@example.com", "=דנה", "נוכח", "מספר בתמונה", "בחירת מספר שנדחתה בקורס"]);
   });
 
   it("names every result and every way it was decided", () => {

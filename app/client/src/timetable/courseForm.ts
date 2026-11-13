@@ -1,4 +1,4 @@
-import { isValidIdNumber } from "../accounts/identity.ts";
+import { isValidEmail, normalEmail } from "../accounts/identity.ts";
 
 export interface Slot {
   day: number;
@@ -7,14 +7,14 @@ export interface Slot {
 }
 
 export interface StudentEntry {
-  id_number: string;
+  email: string;
   name: string;
 }
 
 export interface CourseForm {
   number: string;
   name: string;
-  teacherId: string;
+  teacherEmail: string;
   teacherName: string;
   slots: Slot[];
   firstDate: string;
@@ -25,7 +25,7 @@ export interface CourseForm {
 export const DAYS = ["ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת"];
 export const DEFAULT_WEEKS = "13";
 
-/** One student per line: the ID number, then the name, separated by a space, a comma or a tab. */
+/** One student per line: the email, then the name, separated by a space, a comma or a tab. */
 export function parseStudents(text: string): { students: StudentEntry[]; badLines: string[] } {
   const students: StudentEntry[] = [];
   const badLines: string[] = [];
@@ -33,8 +33,8 @@ export function parseStudents(text: string): { students: StudentEntry[]; badLine
     const line = raw.trim();
     if (!line) continue;
     const match = /^(\S+?)[\s,]+(.+)$/.exec(line);
-    if (match && isValidIdNumber(match[1]!)) {
-      students.push({ id_number: match[1]!, name: match[2]!.trim() });
+    if (match && isValidEmail(match[1]!)) {
+      students.push({ email: normalEmail(match[1]!), name: match[2]!.trim() });
     } else {
       badLines.push(line);
     }
@@ -47,7 +47,7 @@ export function problemsIn(form: CourseForm): string[] {
   const problems: string[] = [];
   if (!form.number.trim()) problems.push("חסר מספר קורס.");
   if (!form.name.trim()) problems.push("חסר שם קורס.");
-  if (!isValidIdNumber(form.teacherId)) problems.push("תעודת הזהות של המרצה צריכה להכיל 5 עד 9 ספרות.");
+  if (!isValidEmail(form.teacherEmail)) problems.push("צריך כתובת אימייל מלאה של המרצה.");
   if (!form.teacherName.trim()) problems.push("חסר שם מרצה.");
   if (form.slots.length === 0) problems.push("חסרות שעות שבועיות.");
   if (form.slots.some((slot) => !slot.start || !slot.end || slot.start >= slot.end)) {

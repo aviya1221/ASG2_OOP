@@ -311,8 +311,8 @@ function PicksToDecide({ lessonId, rows, onDecided }: { lessonId: string; rows: 
   const picks = rows.filter((row) => row.claimStatus === "pending" && (row.claimNumber === null || row.claimContested));
   const pickersOf = (number: number | null) => rows.filter((row) => row.claimNumber === number && row.claimStatus === "pending").length;
 
-  async function decide(idNumber: string, status: "approved" | "rejected") {
-    await supabase.from("number_claims").update({ status }).eq("lesson_id", lessonId).eq("student_id", idNumber);
+  async function decide(studentId: string, status: "approved" | "rejected") {
+    await supabase.from("number_claims").update({ status }).eq("lesson_id", lessonId).eq("student_id", studentId);
     onDecided();
   }
 
@@ -322,7 +322,7 @@ function PicksToDecide({ lessonId, rows, onDecided }: { lessonId: string; rows: 
       <h2>בחירות מספר בתמונה</h2>
       <ul className="stack plain">
         {picks.map((row) => (
-          <li key={row.idNumber} className="card request">
+          <li key={row.studentId} className="card request">
             <span>
               {row.claimNumber === null ? (
                 `${row.name}: לא מופיע בתמונה`
@@ -336,8 +336,8 @@ function PicksToDecide({ lessonId, rows, onDecided }: { lessonId: string; rows: 
               )}
             </span>
             <span className="actions">
-              <IconButton icon={Check} className="approve" label={`אישור הבחירה של ${row.name}`} onClick={() => void decide(row.idNumber, "approved")} />
-              <IconButton icon={X} className="danger" label={`דחיית הבחירה של ${row.name}`} onClick={() => void decide(row.idNumber, "rejected")} />
+              <IconButton icon={Check} className="approve" label={`אישור הבחירה של ${row.name}`} onClick={() => void decide(row.studentId, "approved")} />
+              <IconButton icon={X} className="danger" label={`דחיית הבחירה של ${row.name}`} onClick={() => void decide(row.studentId, "rejected")} />
             </span>
           </li>
         ))}
@@ -360,12 +360,12 @@ function choiceOf(row: SheetRow): string {
   return row.attendance === "present" ? "present" : "absent";
 }
 
-async function changeAttendance(lessonId: string, idNumber: string, choice: string): Promise<boolean> {
+async function changeAttendance(lessonId: string, studentId: string, choice: string): Promise<boolean> {
   const overrides = supabase.from("attendance_overrides");
   const { error } =
     choice === "auto"
-      ? await overrides.delete().eq("lesson_id", lessonId).eq("student_id", idNumber)
-      : await overrides.upsert({ lesson_id: lessonId, student_id: idNumber, present: choice === "present" });
+      ? await overrides.delete().eq("lesson_id", lessonId).eq("student_id", studentId)
+      : await overrides.upsert({ lesson_id: lessonId, student_id: studentId, present: choice === "present" });
   return !error;
 }
 
@@ -375,7 +375,7 @@ function AttendanceTable({ lessonId, rows, onChanged }: { lessonId: string; rows
 
   async function change(row: SheetRow, choice: string) {
     setProblem("");
-    if (!(await changeAttendance(lessonId, row.idNumber, choice))) setProblem(`השינוי של ${row.name} לא נשמר. אפשר לנסות שוב.`);
+    if (!(await changeAttendance(lessonId, row.studentId, choice))) setProblem(`השינוי של ${row.name} לא נשמר. אפשר לנסות שוב.`);
     onChanged();
   }
 
@@ -406,7 +406,6 @@ function AttendanceTable({ lessonId, rows, onChanged }: { lessonId: string; rows
         <table className="attendance-table">
           <thead>
             <tr>
-              <th>תעודת זהות</th>
               <th>שם</th>
               <th>נוכחות</th>
               <th>שינוי</th>
@@ -414,10 +413,12 @@ function AttendanceTable({ lessonId, rows, onChanged }: { lessonId: string; rows
           </thead>
           <tbody>
             {rows.map((row) => (
-              <tr key={row.idNumber} data-student={row.idNumber}>
-                <td dir="ltr">{row.idNumber}</td>
+              <tr key={row.studentId} data-student={row.studentId}>
                 <td>
                   {row.name}
+                  <div className="email" dir="ltr">
+                    {row.email}
+                  </div>
                   {row.flagged && <div className="muted">מסומן</div>}
                 </td>
                 <td>

@@ -1,15 +1,11 @@
-/**
- * People sign in with their ID number. The sign-in service needs an e-mail address,
- * so each ID number maps to an address that no mail is ever sent to.
- */
-const EMAIL_DOMAIN = "users.lesson.invalid";
-
+/** People sign in with their email. No mail is sent to it: it only says who the person is. */
 export const MIN_PASSWORD_LENGTH = 6;
 
-export function emailForIdNumber(idNumber: string): string {
-  return `${idNumber.trim()}@${EMAIL_DOMAIN}`;
+/** The email as the product keeps it: with no spaces around it, and in small letters. */
+export function normalEmail(email: string): string {
+  return email.trim().toLowerCase();
 }
 
-export function isValidIdNumber(idNumber: string): boolean {
-  return /^[0-9]{5,9}$/.test(idNumber.trim());
+export function isValidEmail(email: string): boolean {
+  return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email.trim());
 }

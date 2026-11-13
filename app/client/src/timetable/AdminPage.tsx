@@ -1,5 +1,6 @@
 import { Plus, Save } from "lucide-react";
 import { useCallback, useEffect, useState, type FormEvent } from "react";
+import { normalEmail } from "../accounts/identity.ts";
 import { supabase } from "../lib/supabase.ts";
 import { ICON } from "../ui/Icon.tsx";
 import { DAYS, DEFAULT_WEEKS, parseStudents, problemsIn, saveErrorMessage, type CourseForm, type Slot } from "./courseForm.ts";
@@ -14,7 +15,7 @@ interface CourseRow {
 const EMPTY_FORM: CourseForm = {
   number: "",
   name: "",
-  teacherId: "",
+  teacherEmail: "",
   teacherName: "",
   slots: [{ day: 0, start: "10:00", end: "12:00" }],
   firstDate: "",
@@ -59,7 +60,7 @@ export function AdminPage() {
     const { error } = await supabase.rpc("create_course", {
       p_number: form.number,
       p_name: form.name,
-      p_teacher: { id_number: form.teacherId, name: form.teacherName },
+      p_teacher: { email: normalEmail(form.teacherEmail), name: form.teacherName },
       p_weekly_hours: form.slots,
       p_first_date: form.firstDate,
       p_weeks: Number(form.weeks),
@@ -117,8 +118,8 @@ export function AdminPage() {
             <input value={form.name} onChange={(e) => change("name", e.target.value)} />
           </label>
           <label className="field">
-            <span>תעודת זהות של המרצה</span>
-            <input value={form.teacherId} onChange={(e) => change("teacherId", e.target.value)} inputMode="numeric" dir="ltr" />
+            <span>האימייל של המרצה</span>
+            <input type="email" value={form.teacherEmail} onChange={(e) => change("teacherEmail", e.target.value)} inputMode="email" dir="ltr" />
           </label>
           <label className="field">
             <span>שם המרצה</span>
@@ -164,7 +165,7 @@ export function AdminPage() {
             <input value={form.weeks} onChange={(e) => change("weeks", e.target.value)} inputMode="numeric" dir="ltr" />
           </label>
           <label className="field">
-            <span>סטודנטים: בכל שורה תעודת זהות ואחריה שם</span>
+            <span>סטודנטים: בכל שורה אימייל ואחריו שם</span>
             <textarea rows={6} value={form.students} onChange={(e) => change("students", e.target.value)} />
           </label>
 

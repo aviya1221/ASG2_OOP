@@ -62,7 +62,7 @@ export function ForumTab({ lessonId, courseId, courseName }: { lessonId: string;
     const [writers, totals, mine] = await Promise.all([
       isTeacher ? ForumApi.loadWriters(lessonId) : Promise.resolve(new Map<string, string>()),
       SurveyApi.totals(surveys.filter((s) => s.kind === "poll").map((s) => s.id)),
-      isTeacher ? Promise.resolve(new Map<string, Answers>()) : SurveyApi.myAnswers(ids, person.idNumber),
+      isTeacher ? Promise.resolve(new Map<string, Answers>()) : SurveyApi.myAnswers(ids, person.id),
     ]);
     const answers = new Map<string, AnswerRow[]>();
     if (isTeacher) {
@@ -131,7 +131,7 @@ export function ForumTab({ lessonId, courseId, courseName }: { lessonId: string;
           whoAnswered={data.answers.get(survey.id) ?? []}
           compact={compact}
           onChoose={async (option) => {
-            await SurveyApi.answer(survey, person!.idNumber, { q1: option }, data.mine.has(survey.id));
+            await SurveyApi.answer(survey, person!.id, { q1: option }, data.mine.has(survey.id));
             await load();
           }}
           onClose={async () => {
@@ -280,7 +280,7 @@ export function ForumTab({ lessonId, courseId, courseName }: { lessonId: string;
           initialAnswers={data.mine.get(formFor.id)}
           onClose={() => setFormFor(null)}
           onSubmit={async (answers) => {
-            await SurveyApi.answer(formFor, person.idNumber, answers, data.mine.has(formFor.id));
+            await SurveyApi.answer(formFor, person.id, answers, data.mine.has(formFor.id));
             setFormFor(null);
             await load();
           }}

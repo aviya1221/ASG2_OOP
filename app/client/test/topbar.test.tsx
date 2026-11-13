@@ -8,7 +8,7 @@ vi.mock("../src/lib/supabase.ts", () => ({ supabase: { auth: { signOut: vi.fn() 
 function showAt(path: string, role: "teacher" | "student") {
   render(
     <MemoryRouter initialEntries={[path]}>
-      <TopBar person={{ idNumber: "200000001", name: "ישראל ישראלי", role }} />
+      <TopBar person={{ id: "200000001", email: "teacher@example.com", name: "ישראל ישראלי", role }} />
     </MemoryRouter>,
   );
 }

@@ -114,7 +114,7 @@ export const SurveyApi = {
     const { data } = await supabase.from("answers").select("student_id, value, people(name)").eq("survey_id", surveyId).order("answered_at");
     return (data ?? []).map((row) => ({
       studentId: row.student_id as string,
-      name: (row.people as unknown as { name: string } | null)?.name ?? (row.student_id as string),
+      name: (row.people as unknown as { name: string } | null)?.name ?? "",
       value: row.value as Answers,
     }));
   },

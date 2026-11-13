@@ -59,7 +59,7 @@ export const ForumApi = {
       .from("message_writers")
       .select("message_id, writer_id, people(name), forum_messages!inner(lesson_id)")
       .eq("forum_messages.lesson_id", lessonId);
-    return new Map((data ?? []).map((row) => [row.message_id as string, (row.people as unknown as { name: string } | null)?.name ?? row.writer_id]));
+    return new Map((data ?? []).map((row) => [row.message_id as string, (row.people as unknown as { name: string } | null)?.name ?? ""]));
   },
 
   async post(lessonId: string, text: string, showName: boolean, replyTo: string | null): Promise<Message> {

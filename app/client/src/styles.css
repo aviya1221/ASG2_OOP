@@ -543,6 +543,13 @@ td {
   padding: 8px 6px;
 }
 
+.attendance-table .email {
+  font-size: 13px;
+  color: var(--muted, #555555);
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
 .attendance-table select {
   font-size: 14px;
   padding: 4px 6px;

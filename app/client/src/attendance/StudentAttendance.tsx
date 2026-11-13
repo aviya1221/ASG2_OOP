@@ -70,7 +70,7 @@ export function StudentAttendance({ lessonId, person }: { lessonId: string; pers
 
   async function confirm() {
     setProblem("");
-    const { error } = await supabase.from("attendance_confirmations").insert({ lesson_id: lessonId, student_id: person.idNumber });
+    const { error } = await supabase.from("attendance_confirmations").insert({ lesson_id: lessonId, student_id: person.id });
     if (error) setProblem("האישור לא נשלח. ייתכן שהזמן לאישור הסתיים.");
     await load();
   }
@@ -103,7 +103,7 @@ export function StudentAttendance({ lessonId, person }: { lessonId: string; pers
     );
   } else if (state.confirmed && state.attendance === "pending") {
     const photoUp = state.photos.length > 0 && state.photos[0]!.expiresAt > new Date();
-    if (photoUp) body = <NumberPicker lessonId={lessonId} idNumber={person.idNumber} photos={state.photos} numbers={state.numbers} onSent={() => void load()} />;
+    if (photoUp) body = <NumberPicker lessonId={lessonId} studentId={person.id} photos={state.photos} numbers={state.numbers} onSent={() => void load()} />;
     else if (state.photos.length > 0) body = <p className="muted">הזמן לבחירת מספר בתמונת הכיתה הסתיים.</p>;
     else body = <p className="muted">היו יותר אישורים מאנשים בתמונה. המרצה ישתף את תמונת הכיתה, ותבחר בה את המספר שלך.</p>;
   } else if (!state.confirmed && result === "absent") {
@@ -130,12 +130,12 @@ export function StudentAttendance({ lessonId, person }: { lessonId: string; pers
 }
 
 /** "I am number 32": the student finds their face in the shared photo and picks its number, or says they are not in it. */
-function NumberPicker({ lessonId, idNumber, photos, numbers, onSent }: { lessonId: string; idNumber: string; photos: SharedPhoto[]; numbers: number[]; onSent: () => void }) {
+function NumberPicker({ lessonId, studentId, photos, numbers, onSent }: { lessonId: string; studentId: string; photos: SharedPhoto[]; numbers: number[]; onSent: () => void }) {
   const [chosen, setChosen] = useState<number | null>(null);
   const [problem, setProblem] = useState("");
 
   async function send(value: number | null) {
-    const { error } = await supabase.from("number_claims").insert({ lesson_id: lessonId, student_id: idNumber, number: value });
+    const { error } = await supabase.from("number_claims").insert({ lesson_id: lessonId, student_id: studentId, number: value });
     if (error) {
       setProblem("הבחירה לא נשלחה.");
       return;

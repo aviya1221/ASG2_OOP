@@ -1,20 +1,20 @@
 import { useState, type FormEvent } from "react";
 import { supabase } from "../lib/supabase.ts";
-import { emailForIdNumber, isValidIdNumber, MIN_PASSWORD_LENGTH } from "./identity.ts";
+import { isValidEmail, MIN_PASSWORD_LENGTH, normalEmail } from "./identity.ts";
 
 type Mode = "sign-in" | "first-time";
 
 export function SignInPage() {
   const [mode, setMode] = useState<Mode>("sign-in");
-  const [idNumber, setIdNumber] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [problem, setProblem] = useState("");
   const [busy, setBusy] = useState(false);
 
   async function submit(event: FormEvent) {
     event.preventDefault();
-    if (!isValidIdNumber(idNumber)) {
-      setProblem("תעודת הזהות צריכה להכיל 5 עד 9 ספרות.");
+    if (!isValidEmail(email)) {
+      setProblem("צריך להקליד כתובת אימייל מלאה.");
       return;
     }
     if (password.length < MIN_PASSWORD_LENGTH) {
@@ -24,15 +24,15 @@ export function SignInPage() {
 
     setBusy(true);
     setProblem("");
-    const email = emailForIdNumber(idNumber);
+    const address = normalEmail(email);
     const { error } =
       mode === "sign-in"
-        ? await supabase.auth.signInWithPassword({ email, password })
-        : await supabase.auth.signUp({ email, password, options: { data: { id_number: idNumber.trim() } } });
+        ? await supabase.auth.signInWithPassword({ email: address, password })
+        : await supabase.auth.signUp({ email: address, password });
     setBusy(false);
 
     if (error) {
-      setProblem(mode === "sign-in" ? "תעודת הזהות או הסיסמה שגויים." : "תעודת הזהות לא מופיעה ברשימה, או שכבר נבחרה לה סיסמה.");
+      setProblem(mode === "sign-in" ? "האימייל או הסיסמה שגויים." : "האימייל לא מופיע ברשימה, או שכבר נבחרה לו סיסמה.");
     }
   }
 
@@ -52,8 +52,8 @@ export function SignInPage() {
       <main className="content narrow">
         <form className="stack" onSubmit={submit} noValidate>
           <label className="field">
-            <span>תעודת זהות</span>
-            <input value={idNumber} onChange={(e) => setIdNumber(e.target.value)} inputMode="numeric" autoComplete="username" dir="ltr" />
+            <span>אימייל</span>
+            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} inputMode="email" autoComplete="username" dir="ltr" />
           </label>
           <label className="field">
             <span>{mode === "sign-in" ? "סיסמה" : "סיסמה חדשה"}</span>

@@ -1,7 +1,9 @@
 import { supabase } from "../lib/supabase.ts";
 
 export interface SheetRow {
-  idNumber: string;
+  /** The internal id, used only to point to the student. No screen shows it. */
+  studentId: string;
+  email: string;
   name: string;
   attendance: string;
   decidedBy: string | null;
@@ -27,13 +29,14 @@ export const RESULT_LABELS: Record<string, string> = {
 
 const DECIDED_LABELS: Record<string, string> = { confirmation: "אישור עצמי", photo_number: "מספר בתמונה", teacher: "החלטת המרצה" };
 const FLAG_NOTE = "בחירת מספר שנדחתה בקורס";
-const HEADERS = ["תעודת זהות", "שם", "נוכחות", "איך הוחלט", "הערה"];
-const COLUMN_WIDTHS = [14, 24, 12, 14, 24];
+const HEADERS = ["אימייל", "שם", "נוכחות", "איך הוחלט", "הערה"];
+const COLUMN_WIDTHS = [30, 24, 12, 14, 24];
 
 export async function loadSheet(lessonId: string): Promise<SheetRow[]> {
-  const { data } = await supabase.from("attendance_sheet").select("*").eq("lesson_id", lessonId).order("id_number");
+  const { data } = await supabase.from("attendance_sheet").select("*").eq("lesson_id", lessonId).order("name");
   return (data ?? []).map((row) => ({
-    idNumber: row.id_number,
+    studentId: row.student_id,
+    email: row.email,
     name: row.name,
     attendance: row.attendance,
     decidedBy: row.decided_by,
@@ -46,10 +49,10 @@ export async function loadSheet(lessonId: string): Promise<SheetRow[]> {
   }));
 }
 
-/** The rows of the file: every cell is text, so an ID number keeps its leading zero and nothing runs as a formula. */
+/** The rows of the file: every cell is text, so nothing in a name or an email runs as a formula. */
 export function sheetCells(rows: SheetRow[]): string[][] {
   return rows.map((row) => [
-    row.idNumber,
+    row.email,
     row.name,
     RESULT_LABELS[row.attendance] ?? row.attendance,
     row.decidedBy ? (DECIDED_LABELS[row.decidedBy] ?? row.decidedBy) : "",
