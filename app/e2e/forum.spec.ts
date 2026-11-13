@@ -74,7 +74,7 @@ test("TC-046 a hidden name: the class sees no name, and the teacher sees who wro
   const context = await browser.newContext();
   const teacher = await context.newPage();
   await openAs(teacher, ID.T1, `/lessons/${lessonId}/forum`);
-  const { data } = await secret.from("people").select("name").eq("id_number", writer).single();
+  const { data } = await secret.from("people").select("name").eq("id", writer).single();
   await expect(teacher.locator("article", { hasText: "שאלה בלי שם" })).toContainText(`${data!.name} (השם מוסתר מהכיתה)`);
   await context.close();
 });

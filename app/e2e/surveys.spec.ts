@@ -161,7 +161,7 @@ test("UC-03 the teacher sees who answered a poll, and closes it", async ({ page 
     .single();
   const client = await signedInClient(student);
   await client.from("answers").insert({ survey_id: poll!.id, student_id: student, value: { q1: 1 } });
-  const { data: person } = await secret.from("people").select("name").eq("id_number", student).single();
+  const { data: person } = await secret.from("people").select("name").eq("id", student).single();
 
   await openAs(page, ID.T1, `/lessons/${lessonId}/forum`);
   const card = page.getByRole("article", { name: "סקר: מוכנים?" });

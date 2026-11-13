@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { expect, type Page } from "@playwright/test";
 import { createClient } from "@supabase/supabase-js";
 
-/** The made-up people and lessons of supabase/seed.sql and scripts/seed-users.mjs. */
+/** The internal ids of the made-up people, and the lessons, of supabase/seed.sql and scripts/seed-users.mjs. */
 export const ID = { A1: "100000001", T1: "200000001", S1: "300000001", S51: "300000051" } as const;
 export const L1 = "11111111-0000-4000-8000-000000000001";
 export const PASSWORD = "local-test-password";
@@ -12,17 +12,22 @@ const EMAIL_DOMAIN = "users.lesson.invalid";
 const NO_SESSION = { auth: { persistSession: false, autoRefreshToken: false } };
 export const secret = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SECRET_KEY!, NO_SESSION);
 
-export async function signIn(page: Page, idNumber: string, password: string = PASSWORD): Promise<void> {
-  await page.getByLabel("תעודת זהות").fill(idNumber);
+/** The made-up email of a person of the seed: their internal id at an address that cannot exist. */
+export function emailFor(personId: string): string {
+  return `${personId}@${EMAIL_DOMAIN}`;
+}
+
+export async function signIn(page: Page, personId: string, password: string = PASSWORD): Promise<void> {
+  await page.getByLabel("אימייל").fill(emailFor(personId));
   await page.getByLabel("סיסמה").fill(password);
   await page.getByRole("button", { name: "כניסה", exact: true }).click();
 }
 
 /** Opens an address as this user, and waits until the user is signed in. */
-export async function openAs(page: Page, idNumber: string, path: string): Promise<void> {
+export async function openAs(page: Page, personId: string, path: string): Promise<void> {
   await page.goto(path);
-  await signIn(page, idNumber);
-  await expect(page.getByLabel("תעודת זהות")).toHaveCount(0);
+  await signIn(page, personId);
+  await expect(page.getByLabel("אימייל")).toHaveCount(0);
 }
 
 /** Student number `n` of course A, chosen so that two browsers running one test do not share a student. */
@@ -39,14 +44,14 @@ export async function newLesson(students: string[] = []): Promise<string> {
   const number = `E2E-${lectureNumber}`;
   const course = await secret
     .from("courses")
-    .insert({ number, name: "קורס בדיקה", teacher_id_number: ID.T1, weekly_hours: [{ day: 0, start: "10:00", end: "12:00" }] })
+    .insert({ number, name: "קורס בדיקה", teacher_id: ID.T1, weekly_hours: [{ day: 0, start: "10:00", end: "12:00" }] })
     .select("id")
     .single();
   if (course.error) throw new Error(course.error.message);
   const courseId = course.data.id as string;
 
   if (students.length > 0) {
-    const added = await secret.from("course_students").insert(students.map((student_id_number) => ({ course_id: courseId, student_id_number })));
+    const added = await secret.from("course_students").insert(students.map((student_id) => ({ course_id: courseId, student_id })));
     if (added.error) throw new Error(added.error.message);
   }
 
@@ -82,7 +87,7 @@ export async function newCourse(students: string[], lessons: { number: number; t
 /** A signed-in connection to the database, as the phone of this person has. */
 export async function signedInClient(idNumber: string) {
   const client = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_PUBLIC_KEY!, NO_SESSION);
-  const { error } = await client.auth.signInWithPassword({ email: `${idNumber}@${EMAIL_DOMAIN}`, password: PASSWORD });
+  const { error } = await client.auth.signInWithPassword({ email: emailFor(idNumber), password: PASSWORD });
   if (error) throw new Error(error.message);
   return client;
 }

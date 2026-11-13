@@ -53,7 +53,7 @@ async function checkRow(homeworkId: string, studentId: string, overall: number, 
 }
 
 async function nameOf(idNumber: string): Promise<string> {
-  const { data } = await secret.from("people").select("name").eq("id_number", idNumber).single();
+  const { data } = await secret.from("people").select("name").eq("id", idNumber).single();
   return data!.name as string;
 }
 

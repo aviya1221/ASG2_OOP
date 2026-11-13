@@ -319,7 +319,7 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
   - [x] Server: the signed-in person by the internal id
   - [x] Client: sign-in, the admin's course form and the attendance sheet by email
   - [x] Scripts and demo data by email
-  - [ ] Browser tests by email
+  - [x] Browser tests by email
   - [ ] Documents: SRS, use cases, tools report, app README, EDD and STD (after the code)
 - [ ] Unit tests for the core classes (per the STP, step 8)
 - [x] Test automation: GitHub Actions runs the type check and the unit, integration and browser tests on every push

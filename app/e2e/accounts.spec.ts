@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { ID, L1, signIn } from "./helpers.ts";
+import { emailFor, ID, L1, signIn } from "./helpers.ts";
 
 test("TC-001 refuse a lesson without signing in, and refuse a wrong password", async ({ page }) => {
   await page.goto(`/lessons/${L1}`);
@@ -7,7 +7,7 @@ test("TC-001 refuse a lesson without signing in, and refuse a wrong password", a
   await expect(page.getByRole("navigation", { name: "לשוניות השיעור" })).toHaveCount(0);
 
   await signIn(page, ID.S1, "wrong-password");
-  await expect(page.getByRole("alert")).toHaveText("תעודת הזהות או הסיסמה שגויים.");
+  await expect(page.getByRole("alert")).toHaveText("האימייל או הסיסמה שגויים.");
 });
 
 test("TC-002 the admin creates a course, and the same number is refused @computer", async ({ page }) => {
@@ -20,10 +20,10 @@ test("TC-002 the admin creates a course, and the same number is refused @compute
   async function fillForm() {
     await page.getByLabel("מספר קורס").fill(number);
     await page.getByLabel("שם הקורס").fill("הנדסת תוכנה");
-    await page.getByLabel("תעודת זהות של המרצה").fill(ID.T1);
+    await page.getByLabel("האימייל של המרצה").fill(emailFor(ID.T1));
     await page.getByLabel("שם המרצה").fill("מרצה ראשון");
     await page.getByLabel("תאריך התחלה").fill("2027-02-07");
-    await page.getByLabel(/סטודנטים/).fill(`${ID.S1} סטודנט 1\n300000002 סטודנט 2\n300000003 סטודנט 3`);
+    await page.getByLabel(/סטודנטים/).fill(`${emailFor(ID.S1)} סטודנט 1\n${emailFor("300000002")} סטודנט 2\n${emailFor("300000003")} סטודנט 3`);
     await page.getByRole("button", { name: "שמירת הקורס" }).click();
   }
 

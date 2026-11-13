@@ -13,8 +13,8 @@ const THREE_FACES = [
 ];
 
 async function namesOf(students: string[]): Promise<Record<string, string>> {
-  const { data } = await secret.from("people").select("id_number, name").in("id_number", students);
-  return Object.fromEntries((data ?? []).map((row) => [row.id_number, row.name]));
+  const { data } = await secret.from("people").select("id, name").in("id", students);
+  return Object.fromEntries((data ?? []).map((row) => [row.id, row.name]));
 }
 
 const rowOf = (page: Page, student: string) => page.locator(`tr[data-student="${student}"]`);
@@ -188,15 +188,18 @@ test("the teacher changes a student's attendance, also with no photo, and goes b
 });
 
 test("TC-028 download the sheet", async ({ page }, info) => {
-  const zeroId = info.project.name === "iphone-webkit" ? "012345679" : "012345678";
-  await secret.from("people").upsert({ id_number: zeroId, name: "=1+1", role: "student" });
-  const lessonId = await newLesson([zeroId]);
+  // A name that looks like a formula must reach the file as plain text.
+  const formulaId = `formula-${info.project.name}`;
+  const email = `${formulaId}@users.lesson.invalid`;
+  await secret.from("people").upsert({ id: formulaId, email, name: "=1+1", role: "student" });
+  const lessonId = await newLesson([formulaId]);
   await photograph(lessonId, 1);
-  await secret.from("attendance_confirmations").insert({ lesson_id: lessonId, student_id: zeroId });
+  await secret.from("attendance_confirmations").insert({ lesson_id: lessonId, student_id: formulaId });
   await endConfirming(lessonId);
 
   await openAs(page, ID.T1, `/lessons/${lessonId}/attendance`);
-  await expect(rowOf(page, zeroId)).toContainText("נוכח");
+  await expect(rowOf(page, formulaId)).toContainText("נוכח");
+  await expect(rowOf(page, formulaId)).toContainText(email);
 
   const [download] = await Promise.all([page.waitForEvent("download"), page.getByRole("button", { name: "הורדת הגיליון" }).click()]);
   const reader = fileURLToPath(new URL("./read-sheet.mjs", import.meta.url));
@@ -208,7 +211,7 @@ test("TC-028 download the sheet", async ({ page }, info) => {
 
   expect(file.rightToLeft).toBe(true);
   expect(file.formulas).toBe(0);
-  expect(file.rows[0]).toEqual(["תעודת זהות", "שם", "נוכחות", "איך הוחלט", "הערה"]);
-  const row = file.rows.find((candidate) => candidate[0] === zeroId);
-  expect(row?.slice(0, 4)).toEqual([zeroId, "=1+1", "נוכח", "אישור עצמי"]);
+  expect(file.rows[0]).toEqual(["אימייל", "שם", "נוכחות", "איך הוחלט", "הערה"]);
+  const row = file.rows.find((candidate) => candidate[0] === email);
+  expect(row?.slice(0, 4)).toEqual([email, "=1+1", "נוכח", "אישור עצמי"]);
 });
