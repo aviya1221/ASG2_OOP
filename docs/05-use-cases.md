@@ -249,9 +249,9 @@ Withdrawn on 2026-11-12, when personal face recognition was removed ([F1 decisio
 ### UC-07: Build the timetable
 
 - Actor: Admin.
-- Preconditions: The admin has signed in and has the list of students of the course.
+- Preconditions: The admin has signed in and has the list of students of the course, with their emails.
 - Main success flow:
-  1. The admin creates a course with its course number, name, teacher, weekly hours, first date, number of weeks and students.
+  1. The admin creates a course with its course number, name, teacher, weekly hours, first date, number of weeks and students. The teacher and each student are given by email and name.
   2. The system saves the course and adds its lessons to the timetable.
 - Alternative flows:
   - 1a. A detail is missing or the course number already exists: the system does not save and shows what to fix.
@@ -270,7 +270,7 @@ Withdrawn on 2026-11-12, when personal face recognition was removed ([F1 decisio
   4. The system shows the lesson page with its three tabs.
 - Alternative flows:
   - 1a. The sign-in details are wrong: the system refuses, and the user can try again.
-  - 1b. First sign-in: the user enters their ID number and chooses a password. The system refuses someone who is not on the list or who has already chosen a password.
+  - 1b. First sign-in: the user enters their email and chooses a password. No mail is sent. The system refuses an email that is not on the list, or one that already has a password.
   - 2a. On a phone the timetable shows one day at a time, under a strip of the days of the week, and opens on today. The user can move to another day or another week.
   - 4a. The teacher enters the lecture topic, before or during the lecture, and it appears in the forum title.
 - Postconditions: The user is on the page of a lesson from their own courses.

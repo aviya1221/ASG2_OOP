@@ -127,7 +127,7 @@ The product runs in a web browser on a phone or a computer. The teacher's phone 
 
 ### 2.5 Assumptions
 
-- The admin has the list of students for each course.
+- The admin has the list of students for each course, with their emails.
 - Every student has a phone with a browser.
 - The class photo shows every face in the hall at least 16 px high, the smallest size at which the face finder found faces in our tests ([ADR-1](02-tools-report.md#adr-1-face-tool-for-photo-attendance)).
 
@@ -145,7 +145,7 @@ The product runs in a web browser on a phone or a computer. The teacher's phone 
 | ID | Requirement | Priority | Source |
 |----|-------------|----------|--------|
 | REQ-01 | The system shall require a user to sign in before showing any lesson. | Must | D-1 to D-5 |
-| REQ-02 | The system shall let the admin create a course with its number, name, teacher, weekly hours, first date, number of weeks and list of students. | Must | D-1 to D-5 |
+| REQ-02 | The system shall let the admin create a course with its number, name, teacher, weekly hours, first date, number of weeks and list of students, with each person given as an email followed by a name. | Must | D-1 to D-5 |
 | REQ-03 | The system shall allow only the admin to change the timetable. | Must | D-1 to D-5 |
 | REQ-04 | The system shall show each teacher and each student only the lessons of their own courses. | Must | D-1 to D-5 |
 | REQ-05 | The system shall give each student access to their lessons with no room code or join step. | Must | D-1 to D-5 |
@@ -169,7 +169,7 @@ The product runs in a web browser on a phone or a computer. The teacher's phone 
 | REQ-16 | The system shall let each student who confirmed pick the number on their face in the shared photo, or state that they are not in it. | Must | D-1 |
 | REQ-17 | The system shall pass to the teacher, for approval or rejection, every pick of a number that another student also picked, and every statement that a student is not in the photo. | Must | D-1 |
 | REQ-18 | The system shall show the teacher the lesson's attendance sheet inside the app, updated with each new confirmation, pick or decision. | Must | D-1 |
-| REQ-19 | The system shall let the teacher download a lesson's attendance sheet as a spreadsheet file with one row per student: ID number, name, attendance, how it was decided and a note for flagged students. | Must | D-1 |
+| REQ-19 | The system shall let the teacher download a lesson's attendance sheet as a spreadsheet file with one row per student: email, name, attendance, how it was decided and a note for flagged students. | Must | D-1 |
 | REQ-76 | The system shall let the teacher of a lesson set any student's attendance in that lesson to present or not present at any time, and take that decision back. | Must | D-1 |
 
 Rules for REQ-13, checked in this order. A student who has a rejected pick in the course is flagged in the sheet.
@@ -303,7 +303,7 @@ See [05-use-cases.md](05-use-cases.md).
 
 | Entity / field | Type | Description |
 |----------------|------|-------------|
-| User | Entity | ID number, name, role (admin, teacher or student) |
+| User | Entity | Email, name, role (admin, teacher or student) |
 | Course | Entity | Course number, name, teacher, weekly hours, students |
 | Lesson | Entity | Course, date, lecture number, lecture topic |
 | Class photo | Entity | Lesson, number of faces, end of the 4 minutes |
@@ -319,7 +319,7 @@ See [05-use-cases.md](05-use-cases.md).
 | Lesson summary | Entity | Lesson, the text of the summary, whether the class sees it |
 | Homework | Entity | Course, the lesson in which it was published, PDF file, review guide (questions, sections, requirements, review instructions) |
 | Homework check | Entity | Homework, student, check number, time, section scores, overall score, report |
-| Attendance sheet | Spreadsheet columns | ID number, name, attendance, how it was decided, note for flagged students |
+| Attendance sheet | Spreadsheet columns | Email, name, attendance, how it was decided, note for flagged students |
 
 ### C. Traceability matrix
 

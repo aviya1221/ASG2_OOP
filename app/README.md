@@ -52,7 +52,7 @@ cp client/.env.example client/.env.local  # then add the public key from: npx su
 npm --prefix client run dev
 ```
 
-Sign in with the ID number `100000001` (admin), `200000001` (teacher) or `300000001` (student). The made-up data is in [supabase/seed.sql](supabase/seed.sql).
+Sign in with the email `100000001@users.lesson.invalid` (admin), `200000001@users.lesson.invalid` (teacher) or `300000001@users.lesson.invalid` (student), and the password `local-test-password`. The made-up data is in [supabase/seed.sql](supabase/seed.sql).
 
 To call Gemini, copy `server/.env.example` to `server/.env`, add a key from <https://aistudio.google.com/apikey> and run `npm --prefix server run smoke:gemini`.
 

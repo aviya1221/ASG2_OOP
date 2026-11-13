@@ -579,6 +579,7 @@ The need comes from the [forum decisions](features/F2-lesson-forum-strategy.md) 
 - **Consequences:**
   - A student's text cannot run as a formula in the teacher's Excel.
   - ID numbers stay text, so they cannot be used for calculations in the sheet.
+  - **Since 2026-11-13** users are identified by email, and the sheet has no ID number. Writing every cell as text still keeps a name that starts with "=" from running as a formula.
 
 ### ADR-7: Form builder
 
