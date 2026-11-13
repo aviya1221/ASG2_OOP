@@ -315,7 +315,7 @@ Lecturer's definition of done: **a feature is not done until its docs and tests 
   - [x] Documents: UI decisions, app README, the list of what is left for later, and a note on the old attendance mock
   - [ ] Documents: STD
 - [ ] Users are identified by email instead of ID number (2026-11-13)
-  - [ ] Database: an internal id and an email for each person, courses and sign-in by email
+  - [x] Database: an internal id and an email for each person, courses and sign-in by email
   - [ ] Server: the signed-in person by the internal id
   - [ ] Client: sign-in, the admin's course form and the attendance sheet by email
   - [ ] Scripts and demo data by email
